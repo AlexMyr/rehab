@@ -6,6 +6,11 @@ $ft=new ft(ADMIN_PATH.MODULE."templates/");
 
 $dbu = new mysql_db();
 
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
+
 $dbu->query("select * from trainer where trainer_id=".$_SESSION[U_ID]." ");
 
 $dbu->move_next();
@@ -25,23 +30,29 @@ if(isset($glob['paym']))
 }
 
 if($dbu->f('active')!=0 && $dbu->f('is_trial')!=1) 
-{
+	{
 	
-	$ft->define(array('main' => "profile_payment_done.html"));
-	$page_title = "Payment Plan";
-	$ft->assign('PAGE_TITLE', $page_title);
-}
+		$ft->define(array('main' => "profile_payment_done.html"));
+		$page_title = "Payment Plan";
+		$ft->assign('PAGE_TITLE', $page_title);
+	}
 else
 	{
 		$ft->define(array('main' => "profile_payment.html"));
+        
+        $pag = isset($glob['pag']) ? $glob['pag'] : pathinfo(__FILE__, PATHINFO_FILENAME);
+        $tags = get_template_tag($pag, $curr_lang);
+        
 		$ft->assign('CSS_PAGE', $glob['pag']);
-		if($dbu->f('active')==0) $page_title = "Your Trial Account Has Expired";
-		else $page_title = "Choose a Payment Plan";
+		if($dbu->f('active')==0)
+            $page_title = isset($tags['T.EXPIRED']) ? $tags['T.EXPIRED'] : 'Your Trial Account Has Expired';
+		else 
+            $page_title = isset($tags['T.CHOOSE']) ? $tags['T.CHOOSE'] : 'Choose a Payment Plan';
 		$ft->assign('PAGE_TITLE', $page_title);
 		$ft->define_dynamic('price_user_line','main');
 		$ft->define_dynamic('price_clinic_line','main');
 		
-		$query = $dbu->query("select * from price_plan_new where is_active = 1 ");
+		$query = $dbu->query("select * from price_plan_new where is_active = 1 AND currency='".$currency."'");
 		$price_plan_id = array();
 		$price_plan_name = array();
 		$has_logo = array();
@@ -87,7 +98,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Place logo</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.LOGO'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.($has_logo[$i] ? '&#10004;' : '').'</td>';
@@ -95,7 +106,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Create an Exercise Programme</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.CREATE_PROGRAM'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.($can_create_exercise[$i] ? '&#10004;' : '').'</td>';
@@ -103,7 +114,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Email</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.EMAIL'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.($email[$i] ? '&#10004;' : '').'</td>';
@@ -111,7 +122,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Photo and lineart</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.PHOTO'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.($photo_lineart[$i] ? '&#10004;' : '').'</td>';
@@ -119,7 +130,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Number of users at any one time</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.NUMBER_USERS'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.$user_count[$i].'</td>';
@@ -127,7 +138,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Expiry</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.EXPIRY'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.$licence_period[$i].'</td>';
@@ -135,7 +146,7 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Cost</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.COST'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			$payment_table .= '<td>'.$price_value[$i].'</td>';
@@ -143,16 +154,16 @@ else
 		$payment_table .= '</tr>';
 		
 		$payment_table .= '<tr>
-					<td class="priceTableLeftColumn">Choose plan</td>';
+					<td class="priceTableLeftColumn">'.$tags['T.CHOOSE'].'</td>';
 		for($i=0;$i<$payment_count;$i++)
 		{
 			if(substr_count($price_value[$i],'POA'))
-				$payment_table .= '<td>Contact us</td>';
+				$payment_table .= '<td>'.$tags['T.CONTACT'].'</td>';
 			else
 			{
 				$payment_table .= '<td>
 										<a class="moreBtn" id="submitPayment" style="margin-left:25px; width:85px;" href="index.php?act=member-pay&pag=profile_do_payment&price_id='.$price_plan_id[$i].'">
-											<span>Choose plan</span>
+											<span>'.$tags['T.CHOOSE'].'</span>
 										</a>
 										
 									</td>';
@@ -205,9 +216,9 @@ else
 		//	}
 	}
 
-$site_meta_title=$meta_title." - Payment";
-$site_meta_keywords=$meta_keywords.", Payment";
-$site_meta_description=$meta_description." Payment";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

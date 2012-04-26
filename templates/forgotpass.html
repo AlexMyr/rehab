@@ -1,17 +1,17 @@
 	<div id="content" class="siteContent login">
 		{MESSAGE}
 		<div class="loginForm">
-			<h2>I forgot my password</h2>
+			<h2>{T.I_FORGOT}</h2>
 			<form action="index.php" method="post">
 				<input type="hidden" name="act" value="member-forgotpass">
 				<input type="hidden" name="pag" value="forgotpass">
 				<div>
-					<label for="username">Email</label>
+					<label for="username">{T.EMAIL}</label>
 					<span>
 						<input class="textField" type="text" id="username" name="username" value="{UNAME}" />
 					</span>
 				</div>
-				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Remind my password</span></button></div>
+				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.REMIND}</span></button></div>
 			</form>
 		</div>
 		<!-- div class="joinForm">

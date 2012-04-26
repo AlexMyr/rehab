@@ -1,0 +1,76 @@
+<script language=Javascript>
+<!--
+
+function highlight(field) {
+	field.focus();
+  	field.select();
+}
+
+-->
+</script>
+
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="right"><div class="RedBorder"><div class="FastMenu"><a href="#tags" class="RedBoldLink">Content</a> | {ADVANCED_LINK} | <a href="index.php?pag=menu_link_add&web_page_id={WEB_PAGE_ID}&p={PAGE_FILE_NAME}" class="RedBoldLink">Link in Menu</a> | <a href="{PREVIEW_LINK}" class="RedBoldLink" target="_blank">Preview</a> &nbsp;&nbsp;</div> 
+    </div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>  
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="translation_list">
+  <input type="hidden" name="template_file" value="{TEMPLATE_FILE}">
+  <input type="hidden" name="lang" value="{LANG}">
+  <input type="hidden" name="act" value="translation-update">
+	<span style="font-size:20px; color:blue;">{LANG}</span>
+	<table width="590" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="6" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="130" height="20" bgcolor="#E8E8E8"><strong>Tag</strong></td>
+			<td width="376" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Text</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: content_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="6" height="20">&nbsp;</td>
+			<td width="230" height="20">{{TAG}}</td>
+			<td width="346" align="center"><input type=text name="tag_text[{TAG_ID}]" value="{TAG_TEXT}" size="55" class="txtField"></td>
+			</td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	   <!-- END DYNAMIC BLOCK: content_row -->
+		  <tr bgcolor="#E8E8E8">
+			<td width="6" height="20">&nbsp;</td>
+			<td width="430" height="20">&nbsp;</td>
+			<td width="76" align="center"><span class="verdanaSmall">
+			  <input type="submit" name="update" value="Update" class="button">
+			</span></td>
+			<td width="78" align="center" class="verdanaSmall">&nbsp;
+			</td>
+		  </tr>
+	   
+	</table>
+</form>
+ 
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="590" height="20">&nbsp;</td>
+  </tr>
+</table>
+

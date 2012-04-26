@@ -24,9 +24,9 @@ while($dbu->move_next())
  	unset($ft);
  	return get_error_message('There are no FAQs');
  }
-$site_meta_title=$meta_title." - Frequently Asked Questions";
-$site_meta_keywords=$meta_keywords.", Frequently Asked Questions";
-$site_meta_description=$meta_description." Frequently Asked Questions";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $ft->assign('PAGE',$glob['pag']);
 $ft->assign('MESSAGE',$glob['error']);

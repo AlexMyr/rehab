@@ -41,9 +41,16 @@ if($_SESSION[U_ID])
 		$glob['pag'] = 'cms';
 	}
 }
+$curr_lang = (isset($_GET['lang']) && $_GET['lang'] != '') ? mysql_real_escape_string(strtolower(trim($_GET['lang']))) : 'en';
+$glob['lang'] = $curr_lang;
 
+switch($curr_lang){
+    case 'us': $currency = 'USD'; break;
+    default: $currency = 'GBP';
+}
+$ftm=new ft("");
 
-$exercise_session_pages = array("client_add_exercise","client_update_exercise","program_update_exercise");
+$exercise_session_pages = array("client_add_exercise","client_update_exercise");
 
 if(!empty($_SESSION['pids']) && !in_array($glob['pag'],$exercise_session_pages)) unset($_SESSION['pids']);
 $glob['success']=false;
@@ -55,7 +62,6 @@ if($glob['act'] && !$glob['skip_action'])
 
 	if(($cls_name)&&($func_name)&&(is_file("classes/cls_".$cls_name.".php"))&&($func_access[$cls_name][$func_name]))
 	{
-
     	if($user_level<=$func_access[$cls_name][$func_name])
         {
         	include_once("classes/cls_".$cls_name.".php");
@@ -97,8 +103,6 @@ if($glob['act'] && !$glob['skip_action'])
 //var_dump($glob['pag']);exit;
 include_once("php/gen/page_perm.php");
 
-
-
 if($glob['pag'])
 {
     if($page_access[$glob['pag']]['perm'] && $page_access[$glob['pag']]['perm'] >= $user_level)
@@ -115,6 +119,7 @@ if($glob['pag'])
 	    }
     else
 	    {
+            $glob['pag'] = 'login';
 	    	$page=include("php/login.php");
 	    }
 }
@@ -125,20 +130,18 @@ if($site_module[$page_access[$glob['pag']]['module']])
 	$current_module=$page_access[$glob['pag']]['module'];
 	
 	$dbu = new mysql_db();
-	$dbu->query("select * from ".$current_module."_template_czone");
+	$dbu->query("select * from ".$current_module."_template_czone WHERE lang='".$curr_lang."'");
 	while($dbu->move_next())
 	{
 		$template_tags[$dbu->f('template_czone_id')]=$dbu->f('tag');
 		$template_content[$dbu->f('template_czone_id')]=$dbu->f('content');
 	}
-	
 }
 else 
 {
     $template_file='main_template.html';
 }
 
-$ftm=new ft("");
 $ftm->define(array('main'=>$template_file));
 
 if($template_tags)
@@ -162,6 +165,10 @@ $ftm->assign('META_TITLE',$site_meta_title);
 $ftm->assign('META_KEYWORDS',$site_meta_keywords);
 $ftm->assign('META_DESCRIPTION',$site_meta_description);
 
+$q = mysql_query("SELECT * FROM tmpl_translate_".$curr_lang." WHERE template_file ='".pathinfo($template_file, PATHINFO_FILENAME)."'");
+while($row = mysql_fetch_assoc($q)){
+  $ftm->assign($row['tag'], $row['tag_text']);
+}
 $ftm->assign('PAGE',$page);
 $ftm->assign('BOTTOM_INCLUDES',$bottom_includes);
 $ftm->parse('CONTENT','main');

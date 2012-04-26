@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>{META_TITLE}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <Meta name="Author" content="{META_TITLE}">
+    <Meta name="Publisher" content="{META_TITLE}">
+    <Meta name="Copyright" content="{META_TITLE}">
+    <Meta name="Revisit-After" content="5 days">
+    <Meta HTTP-EQUIV="Expires" content="none">
+    <Meta name="Keywords" content="{META_KEYWORDS}">
+    <Meta name="Description" content="{META_DESCRIPTION}">
+    <Meta name="Pagetopic" content="select">
+    <Meta name="Pagetype" content="select">
+    <Meta name="Audience" content=" All">
+    <Meta name="Robots" content="INDEX,FOLLOW">
+    <link href="css/reset.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/layout.css" rel="stylesheet" type="text/css">
+    <LINK REL="shortcut icon" HREF="favicon.ico" TYPE="image/x-icon">
+    <!--script language="JavaScript" src="js/se.js">
+    </script-->
+    
+	<script type="text/javascript" src="js/libs/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="js/libs/jquery-ui-1.8.11.custom.min.js"></script>
+	
+	<script type="text/javascript" src="js/gdslider.js"></script>
+	<script type="text/javascript" src="js/init_dom_public.js"></script>
+	<script type="text/javascript" src="js/init_dom_private.js"></script>
+</head>
+<body>
+<div class="whirl">
+	<div class="siteBody">
+		<div class="header">
+			<h1 class="logo"><a href="index.php"><span>rehab my patient</span></a></h1>
+			<div class="navMenu">
+				<div class="lang">
+					<a id="lang_en" href="/index.php"><img src="/img/gb.gif"/></a>
+					<a id="lang_us" href="/us/index.php"><img src="/img/us.gif"/></a>
+					<script>
+					$(document).ready(function(){
+						var regExpr = /\/..\/.*/i;					
+						if(regExpr.exec(window.location.pathname)){
+							$('#lang_en').attr('href', (window.location.pathname+window.location.search).toString().substr(3));
+							$('#lang_us').attr('href', (window.location.pathname+window.location.search).toString());
+						}else{
+							$('#lang_en').attr('href', (window.location.pathname+window.location.search).toString());
+							$('#lang_us').attr('href', ('/us'+window.location.pathname+window.location.search).toString());
+						}
+					});
+					</script>
+				</div>
+			{MAIN_MENU_US}
+			</div>
+			<div style="display:none; position: absolute;" id="submenuList">
+				<ul>
+					<li class="changeURL"><a href="index.php?pag=profile_edit_email"><div class="subMenuLinkSpan">Change Email Address</div></a></li>
+					<!--<li class="changeURL"><a href="index.php?pag=profile_edit"><div class="subMenuLinkSpan">Edit Contact Information</div></a></li>-->
+					<li class="changeURL"><a href="index.php?pag=profile_header_paper"><div class="subMenuLinkSpan">Edit Header Paper</div></a></li>
+					<li class="changeURL"><a href="index.php?pag=profile_edit_password"><div class="subMenuLinkSpan">Change Password</div></a></li>
+				</ul>
+			</div>
+			<div class="clearAll"></div>
+		</div>
+		<div class="contentContainerBox">
+			<div class="col2lft scrolledList">
+				{CONTENT_US}
+			</div>
+			<div class="col2rgt">
+				{SIDEBAR_US}
+			</div>
+			<div class="clearAll"></div>
+			
+		</div>
+		<div class="footer">
+		{MAIN_MENU_US}
+		</div>
+    </div>
+
+{BOTTOM_INCLUDES}
+<script type="text/javascript"><!--
+document.write(unescape("%3Cscript id='pap_x2s6df8d' src='" + (("https:" == document.location.protocol) ? "https://" : "http://") + 
+"rehabmypatient.com/affiliate/scripts/trackjs.js' type='text/javascript'%3E%3C/script%3E"));//-->
+</script>
+<script type="text/javascript"><!--
+PostAffTracker.setAccountId('default1');
+try {
+PostAffTracker.track();
+} catch (err) { }
+//-->
+</script>
+</div>
+</body>
+</html>

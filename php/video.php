@@ -2,9 +2,9 @@
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "video.html"));
 
-$site_meta_title=$meta_title." - Video";
-$site_meta_keywords=$meta_keywords.", Video";
-$site_meta_description=$meta_description." Video";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $youtube = ytchannel();
 	

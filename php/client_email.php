@@ -6,6 +6,10 @@ $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client.html"));
 //$ft->assign('MESSAGE', get_error($glob['error']));
 
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
 //$page_title='Login Member';
 //$next_function ='auth-login';
 
@@ -79,7 +83,7 @@ while ($programs->next()&&$i<$l_r)
 }
 if ($i==0) {
 //	return '';
-	$glob['error'] = 'Exercise records not found for this client. Please add a new exercise first.';
+	$glob['error'] = $tags['T.NOT_FOUND'];
 }
 /// paginate here
 $start = $offset;
@@ -163,9 +167,9 @@ else $ft->assign('CSS_LAST_LINK', 'last displayNone');
 $ft->assign('LAST_LINK',"index.php?pag=".$glob['pag']."&last=1&offset=".($end-1).$arguments); 
 /// end paginate
 
-$site_meta_title=$meta_title." - Patient Record";
-$site_meta_keywords=$meta_keywords.", Patient Record";
-$site_meta_description=$meta_description." Patient Record";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

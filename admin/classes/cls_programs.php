@@ -137,7 +137,8 @@ class programs
 	
 		if(!$_FILES['lineart']['tmp_name'] && !$_FILES['image']['tmp_name'])
 		{
-			$this->dbu->query("UPDATE programs SET programs_code='".$ld['programs_code']."', programs_title='".addslashes($ld['programs_title'])."', description='".addslashes($ld['description'])."', sort_order='".addslashes($ld['sort_order'])."' WHERE programs_id='".$ld['programs_id']."'");
+			$this->dbu->query("UPDATE programs SET programs_code='".$ld['programs_code']."', sort_order='".addslashes($ld['sort_order'])."' WHERE programs_id='".$ld['programs_id']."'");
+            $this->dbu->query("UPDATE programs_translate_".$ld['lang']." SET  programs_title='".addslashes($ld['programs_title'])."', description='".addslashes($ld['description'])."' WHERE programs_id='".$ld['programs_id']."'");
 			$this->dbu->query("UPDATE programs_in_category SET category_id='".$ld['category_id']."' WHERE programs_id='".$ld['programs_id']."' AND main='1' ");
 			$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id='".$ld['programs_id']."' AND category_id='".$ld['category_id']."' AND main='0' ");
 		}
@@ -147,9 +148,10 @@ class programs
 				{
 					return false;
 				}	
-				$this->dbu->query("UPDATE programs SET programs_code='".$ld['programs_code']."', programs_title='".addslashes($ld['programs_title'])."', description='".addslashes($ld['description'])."' WHERE programs_id='".$ld['programs_id']."'");
-			$this->dbu->query("UPDATE programs_in_category SET category_id='".$ld['category_id']."' WHERE programs_id='".$ld['programs_id']."' AND main='1' ");
-			$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id='".$ld['programs_id']."' AND category_id='".$ld['category_id']."' AND main='0' ");
+				$this->dbu->query("UPDATE programs SET programs_code='".$ld['programs_code']."', sort_order='".addslashes($ld['sort_order'])."' WHERE programs_id='".$ld['programs_id']."'");
+                $this->dbu->query("UPDATE programs_translate_".$ld['lang']." SET  programs_title='".addslashes($ld['programs_title'])."', description='".addslashes($ld['description'])."' WHERE programs_id='".$ld['programs_id']."'");
+                $this->dbu->query("UPDATE programs_in_category SET category_id='".$ld['category_id']."' WHERE programs_id='".$ld['programs_id']."' AND main='1' ");
+                $this->dbu->query("DELETE FROM programs_in_category WHERE programs_id='".$ld['programs_id']."' AND category_id='".$ld['category_id']."' AND main='0' ");
 				$this->upload_file($ld);
 			}
 	    
@@ -170,6 +172,11 @@ class programs
 	    if(!$ld['programs_title'])
 	    {
 	        $ld['error'].="Please enter a title for the program."."<br>";
+	        $is_ok=false;
+	    }
+        if(!$ld['lang'])
+	    {
+	        $ld['error'].="Wrong lang parameter."."<br>";
 	        $is_ok=false;
 	    }
 	    if(!$ld['description'])

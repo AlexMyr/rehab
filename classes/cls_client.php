@@ -40,12 +40,12 @@ class client
 						");
 	    /* CHECK IF Client EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
-			{
-				$ld['error'] = 'Client already exist!';
-				return true;
-			}
+		{
+            $ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.EXIST');
+            return true;
+		}
 		else 
-			{
+		{
 //			$this->dbu->query("
 			$ld['client_id']=$this->dbu->query_get_id("
 								INSERT INTO 
@@ -66,11 +66,11 @@ class client
 			$ld['print_image_type']='';
 			$ld['client_note']='';
 			
-			$ld['error']="Client Succesfully added.";
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
 			
 		    return true;
-			}
 		}
+	}
 		
 	function validate_add_client(&$ld)
 		{
@@ -78,12 +78,12 @@ class client
 	
 			if(!$ld['first_name'])
 				{
-					$ld['error'].="Please fill in the 'First Name' field."."<br>";
+					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
 					$is_ok=false;
 				}
 			if(!$ld['surname'])
 				{
-					$ld['error'].="Please fill in the 'Surname' field."."<br>";
+					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
 					$is_ok=false;
 				}
 				
@@ -94,7 +94,7 @@ class client
 			//	}
 			if($ld['email'] && !secure_email($ld['email']))
 				{
-					$ld['error'].="Please provide a valid email address."."<br>";
+					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.VALID_EMAIL')."<br>";
 					$is_ok=false;
 				}
 
@@ -131,7 +131,7 @@ class client
 		/* CHECK IF Programme EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
 		{
-			$ld['error'] = 'Programme already exist!';
+			$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_EXIST');
 			return true;
 		}
 		else 
@@ -152,7 +152,7 @@ class client
 			$ld['print_image_type']='';
 			$ld['client_note']='';
 		
-			$ld['error']="Programme Succesfully added.";
+			$ld['error']= get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_SUCCESS');
 		
 			return true;
 		}
@@ -165,7 +165,7 @@ class client
 								trainer_id = '".$_SESSION[U_ID]."' AND
 								exercise_program_plan_id = '".$ld['program_id']."' 
 							");
-		$ld['error'] = "Programme deleted successfully.";
+		$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_DELETE');
 		return true;
 	}
 	
@@ -335,12 +335,12 @@ class client
         
 	        $mail->Send();
 		
-			$ld['error']="Programme sent successfully to patient email box.";
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_EMAIL');
 			return true;					
 		}
 		else
 		{
-			$ld['error']="Error..";
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.ERROR');
 	        return false;								
 		}
 	}
@@ -355,7 +355,7 @@ class client
 		$is_ok=true;
 		if(!$ld['program_name'])
 		{
-			$ld['error'].="Please fill in the 'Name' field."."<br>";
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
 			$is_ok=false;
 		}
 		return $is_ok;
@@ -366,7 +366,7 @@ class client
 		$is_ok=true;
 		if(!$ld['email'])
 		{
-			$ld['error'].="Please fill in the 'Email' field."."<br>";
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
 			$is_ok=false;
 		}
 		return $is_ok;
@@ -399,8 +399,8 @@ class client
 								AND
 										trainer_id = ".$_SESSION[U_ID]." 
 							");
-	
-		$ld['error']="Client Succesfully updated.";
+		
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.CLIENT_UPDATED');
 
 		return true;
 	}
@@ -411,12 +411,12 @@ class client
 
 		if(!$ld['first_name'])
 		{
-			$ld['error'].="Please fill in the 'First Name' field."."<br>";
+					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
 			$is_ok=false;
 		}
 		if(!$ld['surname'])
 		{
-			$ld['error'].="Please fill in the 'Surname' field."."<br>";
+					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
 			$is_ok=false;
 		}
 		//if(!$ld['email'])
@@ -426,7 +426,7 @@ class client
 		//	}
 		if($ld['email'] && !secure_email($ld['email']))
 		{
-			$ld['error'].="Please provide a valid email address."."<br>";
+					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.PROVIDE_EMAIL')."<br>";
 			$is_ok=false;
 		}
 /*				
@@ -449,7 +449,7 @@ class client
 		$this->dbu->query("DELETE FROM exercise_plan WHERE client_id='".$ld['client_id']."'");
 		$this->dbu->query("DELETE FROM client WHERE client_id='".$ld['client_id']."'");
 	    
-		$ld['error']="Client Succesfully deleted.";
+		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_DELETED');
 	
 	    return true;
 	}
@@ -491,7 +491,7 @@ class client
 											trainer_id = ".$_SESSION[U_ID]." 
 								");
 			
-			$ld['error']="Exercise Program Succesfully added to Client.";
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
 
 		    return true;
 		}
@@ -655,7 +655,7 @@ class client
 											trainer_id = ".$_SESSION[U_ID]." 
 								");
 
-			$ld['error']="Exercise Succesfully deleted.";
+        $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_DELETED');
 			return true;			
 		}
 
@@ -666,7 +666,6 @@ class client
 		
 	function mail_exercise(&$ld)
 		{
-			
 				//$this->dbu->query("SELECT client.*, trainer_profile.company_name, trainer_profile.email AS trainer_email, trainer_profile.website, trainer_profile.phone
 				//					FROM 
 				//						client 
@@ -714,50 +713,50 @@ class client
 		$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
 		$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
                 
-        require_once ('class.phpmailer.php');        
-        include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
-		
-        $mail = new PHPMailer();
-        //$body             = file_get_contents('contents.html');
-        //$body             = eregi_replace("[\]",'',$body);
-        $mail->IsSMTP(); // telling the class to use SMTP
-        $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
-        // 1 = errors and messages
-        // 2 = messages only
-        $mail->SMTPAuth = true; // enable SMTP authentication
-        $mail->Host = SMTP_HOST; // sets the SMTP server
-        $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
-        $mail->Username = SMTP_USERNAME; // SMTP account username
-        $mail->Password = SMTP_PASSWORD; // SMTP account password
-/*
-        $mail->SetFrom(ORDER_EMAIL, ORDER_EMAIL);
-        $mail->AddReplyTo(ORDER_EMAIL, ORDER_EMAIL);
-*/
-        $mail->SetFrom($fromMail, $fromMail);
-        //$mail->AddReplyTo($replyMail, $replyMail);
-        $mail->Subject = $message_data['subject'];
-        
-        //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
-         
-        $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
-        $mail->MsgHTML($body);
-        
-        //$address = $receiver_email;
-        $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
-        
-        $mail->Send();
-			$ld['error']="Exercise sent successfully to client email box.";
-        return true;					
-				}
-		else
-		{
-			$ld['error']="Please fill in your profile on My account page.";
-        return false;								
-		}
+            require_once ('class.phpmailer.php');        
+            include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
+            
+            $mail = new PHPMailer();
+            //$body             = file_get_contents('contents.html');
+            //$body             = eregi_replace("[\]",'',$body);
+            $mail->IsSMTP(); // telling the class to use SMTP
+            $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
+            // 1 = errors and messages
+            // 2 = messages only
+            $mail->SMTPAuth = true; // enable SMTP authentication
+            $mail->Host = SMTP_HOST; // sets the SMTP server
+            $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
+            $mail->Username = SMTP_USERNAME; // SMTP account username
+            $mail->Password = SMTP_PASSWORD; // SMTP account password
+    /*
+            $mail->SetFrom(ORDER_EMAIL, ORDER_EMAIL);
+            $mail->AddReplyTo(ORDER_EMAIL, ORDER_EMAIL);
+    */
+            $mail->SetFrom($fromMail, $fromMail);
+            //$mail->AddReplyTo($replyMail, $replyMail);
+            $mail->Subject = $message_data['subject'];
+            
+            //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+             
+            $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
+            $mail->MsgHTML($body);
+            
+            //$address = $receiver_email;
+            $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
+            
+            $mail->Send();
+                $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_SENT');
+            return true;					
+        }
+        else
+        {
+            $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_PROFILE');
+            return false;								
+        }
 
 //			return true;			
 //			return false;
-		}
+	}
 		
 		
 		
@@ -765,14 +764,14 @@ class client
 
 	function print_exercise(&$ld)
 		{
-			$ld['error']="Print exercise not implemented yet.";
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PRINT_EXERCISE');
 //			return true;			
 			return false;
 		}
 		
 	function pdf_exercise(&$ld)
 		{
-			$ld['error']="PDF exercise not implemented yet.";
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PDF_EXERCISE');
 //			return true;			
 			return false;
 		}

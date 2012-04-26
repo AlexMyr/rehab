@@ -5,6 +5,11 @@
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 //$ft->define(array('main' => "profile.html"));
 
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
+
 //$page_title='Login Member';
 //$next_function ='auth-login';
 
@@ -14,8 +19,8 @@ $dbu->query("select * from trainer where trainer_id=".$_SESSION[U_ID]." ");
 
 $dbu->move_next();
 
-if($dbu->f('active')==0) $page_title = "Your Trial Account Has Expired";
-else $page_title = "Register Your Account";
+if($dbu->f('active')==0) $page_title = $tags['T.EXPIRED'];
+else $page_title = $tags['T.REG_ACC'];
 
 
 $e_year=date("Y");

@@ -179,9 +179,14 @@ else $ft->assign('CSS_LAST_LINK', 'last displayNone');
 $ft->assign('LAST_LINK',"index.php?pag=".$glob['pag']."&last=1&offset=".($end-1).$arguments); 
 /// end paginate
 
-$site_meta_title=$meta_title." - Patient Record";
-$site_meta_keywords=$meta_keywords.", Patient Record";
-$site_meta_description=$meta_description." Patient Record";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
+
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

@@ -9,13 +9,15 @@ $ft->define_dynamic('programs_list','main');
 $dbu = new mysql_db();
 
 $select_all_programs = "SELECT DISTINCT
-							programs.*, programs_category.category_name, programs_category.category_id 
+							programs.*, programs_category.category_name, programs_category.category_id , translate.*
 						FROM 
 							programs 
 								INNER JOIN programs_in_category 
 									ON programs.programs_id=programs_in_category.programs_id
 								INNER JOIN programs_category 
 									ON programs_in_category.category_id=programs_category.category_id
+                                INNER JOIN programs_translate_en as translate
+                                    ON programs.programs_id=translate.programs_id
 						WHERE 1=1 
 						AND main=1 
 						";
@@ -45,7 +47,8 @@ while ($dbu->move_next())
 		'DESCRIPTION' => $dbu->f('description'),
 		'CATEGORY' => get_admin_category_path($dbu->f('category_id')),
 //		'CATEGORY' => $dbu->f('category_name'),
-		'EDIT_LINK' => 'index.php?pag=programs_add&programs_id='.$dbu->f('programs_id'),
+		'EDIT_LINK_EN' => 'index.php?pag=programs_add&lang=en&programs_id='.$dbu->f('programs_id'),
+        'EDIT_LINK_US' => 'index.php?pag=programs_add&lang=us&programs_id='.$dbu->f('programs_id'),
 		'DELETE_LINK' => 'index.php?pag=programs_list&programs_id='.$dbu->f('programs_id')."&act=programs-delete",
 	));
 	

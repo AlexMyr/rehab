@@ -23,9 +23,9 @@ if($glob['join_email'])
 		$ft->assign('JOIN_MAIL', $glob['join_email']);	
 	}
 
-$site_meta_title=$meta_title." - Login";
-$site_meta_keywords=$meta_keywords.", Login";
-$site_meta_description=$meta_description." Login";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 /*fb section */
 require 'fb/facebook.php';
@@ -52,13 +52,9 @@ if ($user) {
 
 if($user)
 {
-//if(isset($_COOKIE['test']))
-//{
-//	var_dump($user);
-//	var_dump($user_profile);exit;
-//}
-	
-	//define(FB_ID, $user_profile['id']);
+	if(isset($_COOKIE['test']))
+	{
+		
 	//check existing
 	$dbu->query("select * from trainer where fb_id = ".$user);
 	if($dbu->move_next())
@@ -69,32 +65,19 @@ if($user)
 	}
 	else
 	{
-		//var_dump("
-		//						INSERT INTO 
-		//									trainer 
-		//						SET 
-		//									username='".$user_profile['email']."', 
-		//									email='".$user_profile['email']."',
-		//									password='', 
-		//									create_date=NOW(), 
-		//									is_trial='1', 
-		//									expire_date='', 
-		//									active = '1',
-		//									fb_id = '".$user."'
-		//						");exit;
-		$dbu->query("
-								INSERT INTO 
-											trainer 
-								SET 
-											username='".$user_profile['email']."', 
-											email='".$user_profile['email']."',
-											password='', 
-											create_date=NOW(), 
-											is_trial='1', 
-											expire_date='', 
-											active = '1',
-											fb_id = '".$user."'
-								");
+			$dbu->query("
+									INSERT INTO 
+												trainer 
+									SET 
+												username='".$user_profile['email']."', 
+												email='".$user_profile['email']."',
+												password='', 
+												create_date=NOW(), 
+												is_trial='1', 
+												expire_date='', 
+												active = '1',
+												fb_id = '".$user_profile['id']."'
+									");
 		header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
 		exit;
 	}
@@ -129,6 +112,10 @@ else
 $ft->assign('FB_LOGIN', $fb_button);
 /*fb section */
 
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

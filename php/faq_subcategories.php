@@ -28,9 +28,9 @@ while($dbu->move_next())
   	$i++;
 }
  
-$site_meta_title=$meta_title." - F.A.Q's - ".$main_faq_category_name;
-$site_meta_keywords=$meta_keywords.", Frequently Asked Questions, ".$main_faq_category_name;
-$site_meta_description=$meta_description." Frequently Asked Questions ".$main_faq_category_name;
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title').$main_faq_category_name;
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords').$main_faq_category_name;
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description').$main_faq_category_name;
 
 $ft->assign('PAGE',$glob['pag']);
 $ft->assign('MESSAGE',$glob['error']);

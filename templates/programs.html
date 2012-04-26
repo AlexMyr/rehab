@@ -1,6 +1,6 @@
 	<div id="content" class="siteContent dashboard">
 		{MESSAGE}
-		<h2 class="bottomLine"><span class="pageTitle">My Programmes</span></h2>
+		<h2 class="bottomLine"><span class="pageTitle">{T.MY_PROGRAMMES}</span></h2>
 		<div class="sidebar">
 			<!-- div class="blueBox">
 				<div class="blueBoxContent">
@@ -12,24 +12,24 @@
 			<div class="greyBorderBox">
 				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
 				<div class="greyBorderBoxContent">
-					<h2>Add New Programme</h2>
+					<h2>{T.ADD_NEW}</h2>
 					<form action="index.php" method="post">
 						<input type="hidden" name="act" value="client-add_program_plan">
 						<input type="hidden" name="pag" value="programs">
 						<input type="hidden" name="program_id" value="">
 						
-						<label class="label" for="first_name">Name<sup>*</sup>:</label>
+						<label class="label" for="first_name">{T.NAME}<sup>*</sup>:</label>
 						<input class="textField" type="text" id="program_name" name="program_name" value="{PROGRAM_NAME}" />
 													
-						<label class="label" for="print_image_type">Image type:</label>
+						<label class="label" for="print_image_type">{T.IMAGE_TYPE}:</label>
 						<select id="print_image_type" class="textField" name="print_image_type">
 							{IMAGE_TYPE}
 						</select>
 						
-						<label class="label" for="client_note">Description of Programme:</label>
+						<label class="label" for="client_note">{T.DESCR_PROG}:</label>
 						<textarea class="textArea" id="client_note" name="client_note" >{CLIENT_NOTE}</textarea>
 							
-						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Add Programme</span></button></div>
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.ADD_PROG}</span></button></div>
 					</form>
 				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
 			</div>
@@ -37,9 +37,9 @@
 		<div class="clientList">
 			<div class="clientListTitle">
 				<!--<span class="add_exercise">&nbsp;</span>-->
-				<span class="name_program">Name</span>
-				<span class="description">Description</span>
-				<span class="actions">Actions</span>
+				<span class="name_program">{T.NAME}</span>
+				<span class="description">{T.DESCR}</span>
+				<span class="actions">{T.ACTIONS}</span>
 			</div>
 <!-- BEGIN DYNAMIC BLOCK: client_line -->
 			<div class="clientListRow">
@@ -55,10 +55,10 @@
 			</div>
 <!-- END DYNAMIC BLOCK: client_line -->
 <ul class="paginate {HIDE_NAV}">
-<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; Previous</span></a></li>
+<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
 {PAGG}
-<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>Next &gt;</span></a></li>
-<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>Last</span></a></li>
+<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
+<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
 </ul>
 
 		</div>

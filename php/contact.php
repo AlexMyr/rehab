@@ -16,9 +16,9 @@ $fts->assign(array(
                  )
            );
 
-$site_meta_title=$meta_title." - Contact";
-$site_meta_keywords=$meta_keywords.", Contact";
-$site_meta_description=$meta_description." Contact";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $fts->assign('PAGE',$glob['pag']);
 $fts->assign('ID',$glob['id']);

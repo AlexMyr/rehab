@@ -1,12 +1,12 @@
 	<div id="content" class="siteContent dashboard scrolledList">
 		<div id="imgLightBox" style="display:none; position: fixed;"></div>
 		{MESSAGE}
-		<h2 class="bottomLine"><span class="pageTitle">Create Exercise Plan /</span> {CLIENT_NAME}</h2>
+		<h2 class="bottomLine"><span class="pageTitle">{T.CREATE_PLAN} /</span> {CLIENT_NAME}</h2>
 		<div class="sidebar">
 			<div class="greyBorderBox">
 				<img src="img/exercises_top.png" class="greyBorderBoxTop">
 				<div class="greyBorderBoxContent">
-					<h2>Exercise Plan Preview</h2>
+					<h2>{T.PLAN_PREVIEW}</h2>
 					<form id="exerciseAddForm" action="index.php" method="post" onsubmit="return doSave();">
 						<input type="hidden" name="act" value="client-add_exercise">
 						<input type="hidden" name="pag" value="client_preview_exercise">
@@ -21,7 +21,7 @@
 <a id="del_{S_PROGRAM_ID}" class="exercise_del">&nbsp;</a>
 <span id="title_{S_PROGRAM_ID}" class="exercise_title">{S_PROGRAM_TITLE}</span>
 <span class="exercise_cat">{S_PROGRAM_CATEGORY}</span>
-<a id="details_{S_PROGRAM_ID}" class="exercise_details">details</a>
+<a id="details_{S_PROGRAM_ID}" class="exercise_details">{T.DETAILS}</a>
 <span id="text_{S_PROGRAM_ID}" class="exercise_text">{S_PROGRAM_DESCRIPTION}</span>
 <div class="clearAll"></div>
 </li>
@@ -29,7 +29,7 @@
 </ul>
 							</span>
 						{IMAGE_TYPE_CHANGE}
-						<div class="buttons login"><button id="exerciseAdd" type="submit"><b>&nbsp;</b><span>Save &amp; Continue</span></button></div>
+						<div class="buttons login"><button id="exerciseAdd" type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
 					</form>
 				</div>
 				<img src="img/exercises_bottom.png" class="greyBorderBoxBottom">
@@ -49,7 +49,7 @@
 				<div class="programText">
 					<h2>{PROGRAM_TITLE}</h2>
 					{PROGRAM_DESCRIPTION}
-					<a href="#" id="{PROGRAM_ID}" cid="{CLIENT_ID}" class="moreBtn"><span>Add exercise</span></a>
+					<a href="#" id="{PROGRAM_ID}" cid="{CLIENT_ID}" class="moreBtn"><span>{T.ADD_EXERCISE}</span></a>
 				</div>
 				<div class="clearAll"></div>
 			</div>
@@ -58,8 +58,8 @@
 			<div class="itemCompact{LAST_CSS}" id="compactView_{PROGRAM_ID}">
 				<img alt="{PROGRAM_TITLE}" src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138">
 				<span class="programCompact">
-				<a href="#" id="{PROGRAM_ID}" cid="{CLIENT_ID}" class="moreBtn"><span>Add exercise</span></a>
-				<a id="compactViewDetails_{PROGRAM_ID}" class="exercise_details"><span>Info</span></a>				
+				<a href="#" id="{PROGRAM_ID}" cid="{CLIENT_ID}" class="moreBtn"><span>T.ADD_EXERCISE</span></a>
+				<a id="compactViewDetails_{PROGRAM_ID}" class="exercise_details"><span>{T.INFO}</span></a>				
 				</span>
 					<h2>{PROGRAM_TITLE}</h2>
 				<div class="programCompactText" id="itemCompactText_{PROGRAM_ID}">
@@ -71,5 +71,5 @@
 <!-- END DYNAMIC BLOCK: exercise_compact_line -->
 		</div>
 		<div class="clearAll"></div>
-		<a class="changeViewBtn" style="float: right; margin-right: 30px; margin-top: 25px;" href="javascript:void(0);" id="scrollToTop"><span>Scroll To Top</span></a>
+		<a class="changeViewBtn" style="float: right; margin-right: 30px; margin-top: 25px;" href="javascript:void(0);" id="scrollToTop"><span>{T.SCROLL_TOP}</span></a>
 	</div>

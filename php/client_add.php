@@ -44,9 +44,9 @@ $ft->assign('HIDE_NAV','displayNone');
 
 $ft->assign('CSS_PAGE', $glob['pag']);
 
-$site_meta_title=$meta_title." - Client Record";
-$site_meta_keywords=$meta_keywords.", Client Record";
-$site_meta_description=$meta_description." Client Record";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

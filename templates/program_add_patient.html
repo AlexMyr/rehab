@@ -1,22 +1,22 @@
 	<div id="content" class="siteContent dashboard">
 		{MESSAGE}
-		<h2 class="bottomLine"><span class="pageTitle">Add Patient</span></h2>
+		<h2 class="bottomLine"><span class="pageTitle">{T.ADD_PATIENT}</span></h2>
 		<div class="clientList">
 			
 			<div class="contactInfo floatLft">
-				<h3>Send programme {PROGRAM_NAME} to your patient</h3>
+				<h3>{T.SEND_PROG} {PROGRAM_NAME} {T.TO_YOUR_PATIENT}</h3>
 				<form action="index.php" method="post">
 				<input type="hidden" name="act" value="client-send_program_email">
 				<input type="hidden" name="pag" value="program_add_patient">
 				<input type="hidden" name="program_id" value="{PROGRAM_ID}">
 				
-				<label class="label" for="first_name">Patient First Name:</label>
+				<label class="label" for="first_name">{T.FIRST_NAME}:</label>
 				<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
 					
-				<label class="label" for="surname">Patient Surname:</label>
+				<label class="label" for="surname">{T.SURNAME}:</label>
 				<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
 						
-				<label class="label" for="email">Patient Email:</label>
+				<label class="label" for="email">{T.EMAIL}:</label>
 				<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />
 				
 				<!--<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Send Email</span></button></div>-->

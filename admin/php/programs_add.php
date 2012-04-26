@@ -18,6 +18,7 @@ if(!$glob['programs_id'])
 		'PAG' =>'programs_add',
 		'EDIT' =>'hide',
 		'ACT' =>'programs-add',
+        'LANG' =>$glob['lang'],
 		'PAGE_TITLE' =>'Add Programs',
 		'MESSAGE' => $glob['error'],
 //		'CATEGORY' => build_programs_category_select($glob['programs_id']),
@@ -36,12 +37,11 @@ if(!$glob['programs_id'])
 else 
 {
 	//edit
-	$dbu->query("SELECT programs.programs_id, programs.programs_title,programs.description,programs.lineart,programs.thumb_lineart,
-		 programs.image,programs.thumb_image,programs.active,programs.sort_order,programs.programs_code, programs_category.category_id,
-		 programs_category.category_name,programs_category.category_level,programs_category.active,programs_category.sort_order as pc_sort_order
+	$dbu->query("SELECT programs.*, programs_category.*, programs_category.sort_order as pc_sort_order, translate.*
 					FROM programs 
 					INNER JOIN programs_in_category ON programs.programs_id=programs_in_category.programs_id 
-					INNER JOIN programs_category ON programs_in_category.category_id=programs_category.category_id 
+					INNER JOIN programs_category ON programs_in_category.category_id=programs_category.category_id
+                    INNER JOIN programs_translate_".$glob['lang']." as translate ON programs.programs_id=translate.programs_id 
 					WHERE programs.programs_id='".$glob['programs_id']."'
 					AND programs_in_category.main!='0'
 				");	
@@ -55,11 +55,13 @@ else
 	//			");	
 	$dbu->move_next();
 	$description =  $dbu->f('description');
+
 	
 	$ft->assign(array(
 		'PAGE_TITLE' =>'Edit Programs',
 		'PAG' =>'programs_add',
 		'ACT' =>'programs-update',
+        'LANG' =>$glob['lang'],
 		'PROGRAMS_ID' =>$dbu->f('programs_id'),
 		'PROGRAMS_CODE' =>$dbu->f('programs_code'),
 		'PROGRAMS_TITLE' =>$dbu->f('programs_title'),

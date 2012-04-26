@@ -840,21 +840,21 @@ function build_print_image_type_list($selected)
 	return $out_str;
 }
 
-function build_header_paper_button($has_access)
-	{
-		$out_str="";
-		$out_str.="<h2>Personalise your Headed Paper</h2>";
-		if($has_access==true)
-			{
-				$out_str.= "<a class=\"moreBtn\" href=\"index.php?pag=profile_header_paper\"><span>Edit Header Paper</span></a>";
-			}
-		else if($has_access==false)
-			{
-				$error_msg = "Only paid accounts have access to this section!";
-				$out_str.= "<a class=\"moreBtn\" href=\"javascript: void(0);\" onclick=\"alert('".$error_msg."');\"><span>Edit Header Paper</span></a>";
-			}
+function build_header_paper_button($has_access, $curr_lang = 'en'){
+    $tags = get_template_tag('header_paper', $curr_lang);
+    $out_str="";
+    $out_str.="<h2>".(isset($tags['T.PERSONALISE']) ? $tags['T.PERSONALISE'] : 'Personalise your Headed Paper')."</h2>";
+    if($has_access==true)
+    {
+        $out_str.= "<a class=\"moreBtn\" href=\"index.php?pag=profile_header_paper\"><span>".(isset($tags['T.EDIT']) ? $tags['T.EDIT'] : 'Edit Header Paper')."</span></a>";
+    }
+    else if($has_access==false)
+    {
+        $error_msg = isset($tags['T.PAID']) ? $tags['T.PAID'] : 'Only paid accounts have access to this section!';
+        $out_str.= "<a class=\"moreBtn\" href=\"javascript: void(0);\" onclick=\"alert('".$error_msg."');\"><span>".(isset($tags['T.EDIT']) ? $tags['T.EDIT'] : 'Edit Header Paper')."</span></a>";
+    }
 	return $out_str;
-	}
+}
 	
 function check_ip ($ip, $user){
 	$db=new mysql_db;

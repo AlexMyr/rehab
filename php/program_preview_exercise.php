@@ -127,7 +127,9 @@ $i = 0;
 
 while($i<count($exercise))
 {
-	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title FROM programs WHERE programs_id='".$exercise[$i]."'");
+	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title FROM programs
+                               INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
+                                WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
 	$ft->assign(array(
 		'IMG' => $get_program->f($image_type) ? $get_program->f($image_type) : 'noimg256.gif',
@@ -135,9 +137,11 @@ while($i<count($exercise))
 	));	
 	$get_data = $dbu->query("
 							SELECT 
-								exercise_plan_set.*, programs.programs_title
+								exercise_plan_set.*, translate.*
 							FROM 
-								exercise_plan_set, programs 
+								exercise_plan_set, programs
+                            INNER JOIN
+                                programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs.programs_id)
 							WHERE
 								is_program_plan = 1
 							AND
@@ -192,9 +196,14 @@ while($i<count($exercise))
     $i++;
 }
 
-$site_meta_title=$meta_title." - Preview Exercises";
-$site_meta_keywords=$meta_keywords.", Preview Exercises";
-$site_meta_description=$meta_description." Preview Exercises";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
+
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
 
 $ft->assign('PAGE',$glob['pag']);
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));

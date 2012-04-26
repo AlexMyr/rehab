@@ -183,15 +183,16 @@ else
 
 $program = $dbu->query("
 				SELECT 
-					programs.*, programs_in_category.category_id
+					programs.*, programs_in_category.category_id, translate.*
 				FROM
 						programs 
-					INNER JOIN
-						programs_in_category on programs.programs_id=programs_in_category.programs_id
+                INNER JOIN
+                    programs_in_category on programs.programs_id=programs_in_category.programs_id
+                INNER JOIN
+                    programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs_in_category.programs_id)
 				WHERE
-					".$where."
+					programs_in_category.category_id=".$glob['catID']." 
 					AND programs.active = 1
-                GROUP BY programs_id
 				ORDER BY programs.sort_order ASC
 					");
 $i=0;
@@ -224,13 +225,13 @@ while ($program->next())
 if ($i==0) 
 	{
 		//	return '';
-		$glob['error'] = 'No Exercise available on this category. Please select from the left menu.';
+		$glob['error'] = $tags['T.NO_EXERCISE'];
 	}
 // end the VIEW programs data
 }
 else 
 {
-	$glob['error'] = 'Please select a category from the left menu to begin.';
+	$glob['error'] = $tags['T.SELECT_CAT'];
 }
 if(!$_SESSION['pids'] || empty($_SESSION['pids']))
 {
@@ -289,9 +290,14 @@ $ft->define_dynamic('selected_line','main');
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);
 $ft->assign('CSS_PAGE', $glob['pag']);
 
-$site_meta_title=$meta_title." - Update Exercise";
-$site_meta_keywords=$meta_keywords.", Update Exercise";
-$site_meta_description=$meta_description." Update Exercise";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
+
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

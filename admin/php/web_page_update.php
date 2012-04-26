@@ -32,9 +32,14 @@ if(!$dbu->move_next())
 }
 
 //get permanent link
-$page_file_name=str_to_filename($dbu->f('name'));
-$ft->assign('PERMANENT_LINK',get_link('index.php?pag=cms&id='.$glob['web_page_id'].'&p='.$page_file_name));
-$ft->assign('PREVIEW_LINK',get_link('../index.php?pag=cms&id='.$glob['web_page_id'].'&p='.$page_file_name));
+//$page_file_name=str_to_filename($dbu->f('name'));
+$page_file_name=preg_match('~(.*)_(.*)~', $fn = $dbu->f('name'), $m) ? $m[1] : $fn;
+switch(strtolower($m[2])){
+    case 'us': $lang = 'us'; break;
+    default: $lang = '';
+}
+$ft->assign('PERMANENT_LINK',get_link('index.php?pag=cms&p='.$page_file_name));
+$ft->assign('PREVIEW_LINK',get_link($lang.'/index.php?pag=cms&p='.$page_file_name));
 //end permanent link
 
 $template_id=$dbu->f('template_id');

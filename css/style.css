@@ -531,3 +531,10 @@ label.error_validate{
     width: auto;
     height:36px;
 }
+.lang{
+	position:relative;
+	top:5px;
+}
+.lang a:hover{
+	background: none;
+}

@@ -1,10 +1,10 @@
 	<div id="content" class="siteContent dashboard">
 		{MESSAGE}
 		<h2 class="bottomLine">
-			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>Change Password</span></a>
-			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>Change Email Address</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>{T.CHANGE_PASS}</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>{T.CHANGE_EMAIL}</span></a>
 			{CANCEL_PAYMENT}
-			<span class="pageTitle">Your Account</span>
+			<span class="pageTitle">{T.YOUR_ACCOUNT}</span>
 			<span class="clearAll"></span>
 		</h2>
 		<div class="contactInfo floatLft">
@@ -33,13 +33,18 @@
 			<p>&nbsp;</p>
 		</div>-->
 		<div class="floatLft" style="width: 460px;">
-			<p><strong>Default Additional Notes:</strong></p>
+			<p><strong>{T.DEFAULT}:</strong></p>
 			<form action="index.php" method="post">
 				<input type="hidden" name="act" value="member-update_profile_notes">
 				<input type="hidden" name="pag" value="profile">
 				<input type="hidden" name="profile_id" value="{PROFILE_ID}">			
-				<textarea class="textArea" id="notes" name="exercise_notes">{EXERCISE_NOTES}</textarea>				
-				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save</span></button></div>
+				<textarea class="textArea" id="notes" name="exercise_notes">{EXERCISE_NOTES}</textarea>
+				<label class="label" for="language">{T.LANGUAGE}:</label>
+				<select id="language" name="language" style="width:120px; display: block;">
+					<option value="en" {LANG_EN}>British</option>
+					<option value="us" {LANG_US}>American</option>
+				</select>
+				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
 			</form>
 		</div>
 		<div class="clearAll"></div>

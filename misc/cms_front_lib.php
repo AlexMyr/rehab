@@ -37,10 +37,21 @@ function get_cms_tag_content($cms_tag_params)
 		{
 			global $bottom_includes, $menu_link_array;
 			$_db=new mysql_db();
-			$_db->query("select * from cms_menu where menu_id='".$cms_tag_params['id']."'");
-			$_db->move_next();
-			$cms_menu_id=$_db->f('menu_id');
-			
+            if($_SESSION['m_id']){
+                //preg_match('~.*_(.*)!~', $cms_tag_params['tag'], $m);
+                $m = str_replace('MAIN','LOGGED_IN', $cms_tag_params['tag']);
+                $_db->query("select * from cms_menu where tag_h='".$m."'");
+                $_db->move_next();
+                if($_db->f('menu_id')){
+                    $cms_menu_id = $_db->f('menu_id');
+                    $cms_tag_params['tag'] = $_db->f('tag_h');
+                }
+            }
+            else{
+                $_db->query("select * from cms_menu where menu_id='".$cms_tag_params['id']."'");
+                $_db->move_next();
+                $cms_menu_id=$_db->f('menu_id');
+            }
 			if($_db->f('tag_v')==$cms_tag_params['tag'])
 			{
 				// load the horizontal version of the menu
@@ -56,7 +67,7 @@ function get_cms_tag_content($cms_tag_params)
 				$mtpl['dynamic_menu_start']=str_replace('[!MENU_NAME!]', $_db->f('name'), $mtpl['dynamic_menu_start']);
 				$d_menu=new dynamic_menu($menu_array, $mtpl);
 				$ret.= $d_menu->build_menu();
-				return $ret;				
+				return $ret;
 			}
 			elseif ($_db->f('tag_h')==$cms_tag_params['tag'])
 			{
@@ -73,7 +84,7 @@ function get_cms_tag_content($cms_tag_params)
 				$mtpl['dynamic_menu_start']=str_replace('[!MENU_NAME!]', $_db->f('name'), $mtpl['dynamic_menu_start']);
 				$d_menu=new dynamic_menu($menu_array, $mtpl);
 				$ret.= $d_menu->build_menu();
-				return $ret;				
+				return $ret;
 			}
 			
 			if($cms_tag_params['file_name'] && is_file("php/".$cms_tag_params['file_name']))
@@ -775,7 +786,7 @@ function build_menu_link_blank_array($menu_id, $excluded=0)
 
 function build_menu_links_array($menu_id, $excluded=0)
 {
-	if($_SESSION['m_id'])$menu_id = 14;
+	//if($_SESSION['m_id'])$menu_id = 14;
     $db=new mysql_db;
     $db->query("select cms_menu_link.name, cms_menu_link.menu_link_id, cms_menu_link.url, cms_menu_link.sort_order, cms_menu_link.target,
      				   cms_menu_submenu.parent_id from cms_menu_link 
@@ -926,6 +937,30 @@ function get_submenu_array($m_links_array, $parent_id, $excluded=0)
 		
 	return false;
 }
+function get_template_tag($template_name, $lang, $tagname = false){
+    if($tagname){
+        $q = mysql_fetch_assoc(mysql_query("SELECT * FROM tmpl_translate_".$lang." WHERE template_file ='".$template_name."' AND tag='".$tagname."'"));
+        return ($q) ? $q['tag_text'] : false;
+    }
+    else{
+        $q = mysql_query("SELECT * FROM tmpl_translate_".$lang." WHERE template_file ='".$template_name."'");
+        while($row = mysql_fetch_assoc($q)){
+            $tags[$row['tag']] = $row['tag_text'];
+        }
+        return $tags;
+    }
+}
+function get_meta($page = false, $lang = 'en', $param = false){
+    if(!$page)
+        return false;
+    
+    $db=new mysql_db;
+    $db->query("SELECT * FROM meta_translate_".$lang." WHERE page_name='".$page."'");
+    $db->move_next();
 
-
+    if($param && in_array($param, array('title', 'keywords', 'description')))
+        return $db->f($param);
+    else
+        return array('title' => $db->f('title'), 'keywords' => $db->f('keywords'), 'description' => $db->f('description'));
+}
 ?>

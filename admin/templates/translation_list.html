@@ -1,0 +1,59 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="left"><div class="GrayBorder"><div class="MenuTitle">
+      <form name="search" action="index.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="pag" value="{PAGE}">
+		<table width="610" border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+			<td width="81">Search Key:</td>
+			<td width="529"><input type=text name="search_key" value="{SEARCH_KEY}" maxLength="255" size="30" class="txtField">
+			  <input type="submit" name="search1" value="Search" class="button"></td>
+		  </tr>
+		</table>
+      </form>
+    </div> 
+    </div></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11" bgcolor="#E8E8E8">{MESSAGE}</td>
+  </tr>
+</table>
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="6" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="510" height="20" bgcolor="#E8E8E8"><strong> Name</strong></td>
+			<td width="104" align="center" bgcolor="#E8E8E8"><strong>Action</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: template_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="6" height="20">&nbsp;</td>
+			<td width="510" height="20"><strong style="color:blue;">{LANG}</strong>  {NAME}</td>
+			<td width="104" align="center" class="verdanaSmall">
+			  <a href="{UPDATE_LINK_EN}" class="verdanaSlimLinkRed">Update EN</a> | <a href="{UPDATE_LINK_US}" class="verdanaSlimLinkRed">Update US</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: template_row -->
+</table>
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#E8E8E8">
+      <td width="202" height="20" align="right" valign="middle">{BACKLINK}</td>
+      <td width="204" height="20" align="center" valign="middle" class="verdanaBlackSlim11">
+        <form name="pagination" method="post" action="index.php">
+      		{PAG_DD}
+	  	</form> </td>
+      <td width="214" height="20" valign="middle">{NEXTLINK}</td>
+    </tr>
+</table>

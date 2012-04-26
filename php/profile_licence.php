@@ -30,9 +30,9 @@ $ft->assign('CSS_PAGE', $glob['pag']);
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');
 
-$site_meta_title=$meta_title." - License";
-$site_meta_keywords=$meta_keywords.", License";
-$site_meta_description=$meta_description." License";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 return $ft->fetch('CONTENT');
 

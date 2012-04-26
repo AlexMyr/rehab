@@ -160,9 +160,14 @@ $ft->assign('EMAIL', $glob['email']);
 //$ft->assign('IMAGE_TYPE', $glob['print_image_type']);
 $ft->assign('CLIENT_NOTE', $glob['client_note']);
 
-$site_meta_title=$meta_title." - My Patients";
-$site_meta_keywords=$meta_keywords.", My Patients";
-$site_meta_description=$meta_description." My Patients";
+$site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
+$site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
+$site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
+
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');

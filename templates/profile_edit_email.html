@@ -1,21 +1,21 @@
 	<div id="content" class="siteContent dashboard">
 		{MESSAGE}
 		<h2 class="bottomLine">
-			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>Change Password</span></a>
-			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>Change Email Address</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>{T.CHANGE_PASS}</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>{T.CHANGE_EMAIL}</span></a>
 			{CANCEL_PAYMENT}
-			<span class="pageTitle">Your Account</span>
+			<span class="pageTitle">{T.YOUR_ACCOUNT}</span>
 			<span class="clearAll"></span>
 		</h2>
 		<div class="contactInfo floatLft">
-			<h2>Change Email Address</h2>
+			<h2>{T.CHANGE_EMAIL}</h2>
 					<form action="index.php" method="post">
 						<input type="hidden" name="act" value="member-update_email">
 						<input type="hidden" name="pag" value="profile">
 						
-						<label class="label" for="email">Email:</label>
+						<label class="label" for="email">{T.EMAIL}:</label>
 						<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />
-						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Update Email</span></button></div>
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.UPDATE}</span></button></div>
 					</form>
 		</div>
 		<!--<div class="contactHeadedInfo floatLft">

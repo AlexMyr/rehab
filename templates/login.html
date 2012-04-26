@@ -27,23 +27,23 @@
 	    <!-- -->
 		
 		<div class="loginForm">
-			<h2>Login to my account</h2>
+			<h2>{T.LOGIN}</h2>
 			<form action="index.php" method="post">
 				<input type="hidden" name="act" value="auth-login">
 				<input type="hidden" name="pag" value="login">
 				<div>
-					<label for="username">Username</label>
+					<label for="username">{T.USERNAME}</label>
 					<span>
 						<input class="textField" type="text" id="username" name="username" value="{UNAME}" />
 					</span>
 				</div>
 				<div>
-					<label for="password">Password</label>
+					<label for="password">{T.PASS}</label>
 					<span>
 						<input class="textField" type="password" id="password" name="password" value="" />
 					</span>
 				</div>
-				<div class="buttons login"><a href="index.php?pag=forgotpass" class="floatRgt forgotpass"><span>Forgot my password</span></a> <button type="submit"><b>&nbsp;</b><span>Login</span></button></div>
+				<div class="buttons login"><a href="index.php?pag=forgotpass" class="floatRgt forgotpass"><span>{T.FORGOT}</span></a> <button type="submit"><b>&nbsp;</b><span>{T.LOGIN}</span></button></div>
 			</form>
 			<br />
 			<br />
@@ -54,18 +54,23 @@
 		<div class="joinForm">
 			<div class="top"></div>
 			<div class="content">
-				<h2>New User?</h2>
-				<p>30 days FREE trial</p>
+				<h2>{T.NEW_USER}</h2>
+				<p>{T.30_DAYS}</p>
 				<form action="index.php" method="POST">
 					<input type="hidden" name="act" value="member-join_now">
 					<input type="hidden" name="pag" value="login">
-					<label>Email</label>
+					<label>{T.EMAIL}</label>
 					<input class="textField" type="text" name="join_email" value="{JOIN_MAIL}">
-					<label>Password</label>
+					<label>{T.PASS}</label>
 					<input class="textField" type="password" name="join_pass" value="">
-					<label>Confirm Password</label>
+					<label>{T.CONFIRM}</label>
 					<input class="textField" type="password" name="join_pass_repeat" value="">
-					<div class="buttons new_join"><button type="submit"><b>&nbsp;</b><span>Create an account</span></button></div>
+					<label>{T.LANGUAGE}</label>
+					<select name="join_language" style="width:120px;display: block;">
+						<option value="en">British</option>
+						<option value="us">American</option>
+					</select>
+					<div class="buttons new_join"><button type="submit"><b>&nbsp;</b><span>{T.CREATE}</span></button></div>
 				</form>
 			</div>
 			<div class="bottom"></div>

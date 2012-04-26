@@ -382,6 +382,31 @@
 								'tag' =>'PRICES',
 								'menu' =>'member'
 								),
+                        'translation_list' =>array(
+								'perm' =>1,
+								'tag' =>'TRANSLATION',
+								'menu' =>'cms'
+								),
+                        'translation_update' =>array(
+								'perm' =>1,
+								'tag' =>'TRANSLATION',
+								'menu' =>'cms'
+								),
+                        'translation_meta_list' =>array(
+								'perm' =>1,
+								'tag' =>'TRANSLATION',
+								'menu' =>'cms'
+								),
+                        'translation_meta_update' =>array(
+								'perm' =>1,
+								'tag' =>'TRANSLATION',
+								'menu' =>'cms'
+								),
+                        'exercise_list' =>array(
+								'perm' =>1,
+								'tag' =>'EXERCISE',
+								'menu' =>'cms'
+								)
            );
  
 	$menu_access['cms']=1;
@@ -389,5 +414,7 @@
 	$menu_access['faq']=1; 
 	$menu_access['member']=1;
     $menu_access['statistic']=1; 
+    $menu_access['translation']=1;
+    $menu_access['exercise']=1;
 
 ?>

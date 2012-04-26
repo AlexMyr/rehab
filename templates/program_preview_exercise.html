@@ -12,11 +12,11 @@
 			<a class="moreBtn" id="2" href="{ADD_EXERCISE}"><span>{LINK_TEXT_3}</span></a>
 			<a class="moreBtn" id="2" href="{MAKE_MORE_CHANGES}" style="display:{VIS};" ><span>{LINK_MAKE MORE_CHANGES}</span></a>			
 			<div class="buttons" {VISIBILITY}>
-				<button type="submit"><b>&nbsp;</b><span>Save & Preview</span></button>
+				<button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button>
 			</div>
 			<a class="moreBtn discardBtn" id="2" style="display:{HIDE_PDF};" href={DISCARD} target="{TARGET}"><span>{LINK_TEXT}</span></a>
-			<a class="moreBtn" href="{EMAIL_URL}" style="display:{VIS}{HIDE_EMAIL};" ><span>Email to Client</span></a>
-			<a class="moreBtn" href="index.php?pag=programs" style="display:{VIS};" ><span>Finish</span></a>
+			<a class="moreBtn" href="{EMAIL_URL}" style="display:{VIS}{HIDE_EMAIL};" ><span>{T.EMAIL}</span></a>
+			<a class="moreBtn" href="index.php?pag=programs" style="display:{VIS};" ><span>{T.FINISH}</span></a>
 			<div class="clearAll"></div>
       </span>
 	  <span class="header_infos"> 
@@ -53,18 +53,18 @@
       {EXERCISE_TITLE}
       {EXERCISE_DESC}
 	  <div class="spacing">
-        <label for="sets">Sets</label>
+        <label for="sets">{T.SETS}</label>
         <input type="text" name="sets{PROGRAM_ID}" value="{SETS}" class="input_exercise"  {VISIBILITY} />
         <span {SPAN_VISIBILITY}>{SETS}</span>
-        <label for="repetitions">Repetitions</label>
+        <label for="repetitions">{T.REPETITIONS}</label>
         <input type="text" name="repetitions{PROGRAM_ID}" value="{REPETITIONS}" class="input_exercise" {VISIBILITY} />
         <span {SPAN_VISIBILITY}>{REPETITIONS}</span>
-        <label for="time">Time</label>
+        <label for="time">{T.TIME}</label>
         <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" {VISIBILITY} />
         <span {SPAN_VISIBILITY}>{TIME}</span> </div>
 	  </div>
       <!-- END DYNAMIC BLOCK: exercise_line -->
-	  <p>Aditional Notes</p>
+	  <p>{T.NOTES}</p>
       {EXERCISE_NOTES}
     </form>
   </div>

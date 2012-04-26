@@ -4,16 +4,14 @@
 *************************************************************************/
 unset($ftm);
 
-if(!is_numeric($glob['id']))
-{
-    $glob['id']=CMS_HOME_PAGE;
-}
+if(!isset($glob['p']))
+    $glob['p'] = 'home';
 
-$glob['web_page_id']=$glob['id'];
+$glob['web_page_name'] = $glob['p'].'_'.strtoupper($glob['lang']);
 $dbu=new mysql_db;
 $dbu->query("select cms_web_page.*, cms_template.file_name from cms_web_page
 			 inner join cms_template on cms_web_page.template_id=cms_template.template_id
-			 where web_page_id='".$glob['web_page_id']."'
+			 where cms_web_page.name='".$glob['web_page_name']."'
 			");
 if(!$dbu->move_next())
 {
@@ -28,6 +26,7 @@ if(!$dbu->move_next())
 	}
 }
 
+$glob['web_page_id'] = $dbu->f('web_page_id');
 $template_file_name=$dbu->f('file_name');
 $template_id=$dbu->f('template_id');
 $page_meta_title=$dbu->f('title');
@@ -68,11 +67,11 @@ foreach ($template_tags as $template_czone_id => $template_czone_tag)
 	$cms_tag_array=get_cms_tags_from_content($tag_content);
 	//****Replacing the CMS tags with objects
 	if($cms_tag_array)
-	foreach ( $cms_tag_array as $key => $cms_tag_params)
-	{
-		//if($cms_tag_params['tag'] == '!MAIN_MENU!') $cms_tag_params['tag'] = 'LOGGED_IN_MENU';
-		$tag_content=str_replace($cms_tag_params['tag'], get_cms_tag_content($cms_tag_params), $tag_content);
-	}
+        foreach ( $cms_tag_array as $key => $cms_tag_params)
+        {
+            //if($cms_tag_params['tag'] == '!MAIN_MENU!') $cms_tag_params['tag'] = 'LOGGED_IN_MENU';
+            $tag_content=str_replace($cms_tag_params['tag'], get_cms_tag_content($cms_tag_params), $tag_content);
+        }
 	$ftm->assign($template_czone_tag, $tag_content);
 }
 //exit;

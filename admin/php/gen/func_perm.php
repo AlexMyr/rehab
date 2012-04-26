@@ -297,8 +297,16 @@
 										'update' =>1,
 
 										),
-
-                                        
+                            'translation' => array(
+                                        'list' => 1,
+                                        'update' => 1,
+                                        'meta_list' => 1,
+                                        'meta_update' => 1
+                                        ),
+                            'exercise' => array(
+                                        'list' => 1,
+                                        'update' => 1
+                                        )
 
 );
 

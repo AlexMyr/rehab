@@ -1,0 +1,9 @@
+RewriteEngine On
+
+RewriteBase /
+
+RewriteRule us/$ index.php?lang=us [NE]
+RewriteRule us/$ index.php [NE]
+
+RewriteRule us/index\.php.* index.php?lang=us&%{QUERY_STRING} [NE]
+RewriteRule us/(.*) $1 [NE]

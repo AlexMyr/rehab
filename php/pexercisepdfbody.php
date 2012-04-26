@@ -83,7 +83,9 @@ while($i<count($exercise))
 		$ft->assign('BREAK_LINE',"");
 	$count_break++;
 	
-	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title FROM programs WHERE programs_id='".$exercise[$i]."'");
+	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title FROM programs
+                               INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
+                               WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
 	
 	$print_image = $get_program->f($image_type) ? $script_path.UPLOAD_PATH.$get_program->f($image_type) : $script_path.UPLOAD_PATH.'noimg256.gif';
@@ -94,9 +96,11 @@ while($i<count($exercise))
 	));	
 	$get_data = $dbu->query("
 							SELECT 
-								exercise_plan_set.*, programs.programs_title
+								exercise_plan_set.*, translate.*
 							FROM 
-								exercise_plan_set, programs 
+								exercise_plan_set, programs
+                            INNER JOIN
+                                programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs.programs_id)
 							WHERE 
 								1=1 AND programs.programs_id = exercise_plan_set.exercise_program_id
 							AND

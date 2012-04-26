@@ -1,10 +1,10 @@
 	<div id="content" class="siteContent dashboard">
 		{MESSAGE}
 		<h2 class="bottomLine">
-			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>Change Password</span></a>
-			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>Change Email Address</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>{T.CHANGE_PASS}</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>{T.CHANGE_EMAIL}</span></a>
 			{CANCEL_PAYMENT}
-			<span class="pageTitle">Your Account</span>
+			<span class="pageTitle">{T.YOUR_ACCOUNT}</span>
 			<span class="clearAll"></span>
 		</h2>
 		<div class="contactInfo floatLft">
@@ -13,44 +13,44 @@
 			<input type="hidden" name="act" value="member-update_custom_header">
 			<input type="hidden" name="pag" value="{PAG}">
 			
-			<label class="label" for="company_name">Clinic/Individual Name:</label>
+			<label class="label" for="company_name">{T.NAME}:</label>
 			<input class="textField" type="text" id="company_name" name="company_name" value="{COMPANY_NAME}" />
 			
-			<label class="label" for="first_name">First Name:</label>
+			<label class="label" for="first_name">{T.FIRST_NAME}:</label>
 			<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
 				
-			<label class="label" for="surname">Surname:</label>
+			<label class="label" for="surname">{T.SURNAME}:</label>
 			<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
 			
-			<label class="label" for="address">Address:</label>
+			<label class="label" for="address">{T.ADDRESS}:</label>
 			<textarea class="textArea" id="address" name="address" style="height:30px;" >{ADDRESS}</textarea>
 			
-			<label class="label" for="city">City:</label>
+			<label class="label" for="city">{T.CITY}:</label>
 			<input class="textField" type="text" id="city" name="city" value="{CITY}" />
 				
-			<label class="label" for="post_code">Post Code:</label>
+			<label class="label" for="post_code">{T.POST}:</label>
 			<input class="textField" type="text" id="post_code" name="post_code" value="{POST_CODE}" />
 					
-			<label class="label" for="email">Email:</label>
+			<label class="label" for="email">{T.EMAIL}:</label>
 			<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />
 					
-			<label class="label" for="website">Website:</label>
+			<label class="label" for="website">{T.WEBSITE}:</label>
 			<input class="textField" type="text" id="website" name="website" value="{WEBSITE}" />
 					
-			<label class="label" for="phone">Phone:</label>
+			<label class="label" for="phone">{T.PHONE}:</label>
 			<input class="textField" type="text" id="phone" name="phone" value="{PHONE}" />
 					
-			<label class="label" for="mobile">Mobile:</label>
+			<label class="label" for="mobile">{T.MOBILE}:</label>
 			<input class="textField" type="text" id="mobile" name="mobile" value="{MOBILE}" />
 					
-			<label class="label" for="fax">Fax:</label>
+			<label class="label" for="fax">{T.FAX}:</label>
 			<input class="textField" type="text" id="fax" name="fax" value="{FAX}" />
 			
 		</div>
 		<div class="contactHeadedInfo floatLft">
-			<h2>Personalise your Headed Paper</h2>
-			<p>Upload your logo and choose what information to put on your headed paper.</p>
-			<p>Just leave blank anything that you do not want to appear.</p>
+			<h2>{T.PERSONALISE}</h2>
+			<p>{T.UPLOAD}</p>
+			<p>{T.JUST_LEAVE}</p>
 			<p>&nbsp;</p>
 					
 						
@@ -87,17 +87,17 @@
 						
 						{IMG}
 						
-						<label class="label delete_image" for="delete_image">Delete Image:</label>
+						<label class="label delete_image" for="delete_image">{T.DELETE_IMAGE}:</label>
 						<input type="checkbox" id="delete_image" name="delete_image" value="1" {DELETE_IMAGE} />
 						
-						<label class="label">Tick to Delete this image. Do not tick if you are uploading a replacement image</label>
+						<label class="label">{T.TICK}</label>
 						
-						<label class="label" for="upload_image">Change your logo:</label>
+						<label class="label" for="upload_image">{T.CHANGE_LOGO}:</label>
 						<input class="textField" type="file" id="upload_image" name="upload_image" />
 						
-						<label class="label">Locate the file to upload. This will replace any existing image. The logo will automatically be resized. Accepted file formats are .jpg, .gif. png.</label>						
-								
-						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save Headed Paper</span></button></div>
+						<label class="label">{T.LOCATE_FILE}</label>						
+
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
 					</form>
 		</div>
 		<div class="clearAll"></div>

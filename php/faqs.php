@@ -9,6 +9,11 @@ $ft->define(array('main' => "faqs.html"));
 $ft->define_dynamic('faq_short_row','main');
 $ft->define_dynamic('faq_detailed_row','main');
 
+$tags = get_template_tag($glob['pag'], $glob['lang']);
+foreach($tags as $name => $row){
+  $ft->assign($name, $row);
+}
+
 $dbu=new mysql_db;
 $dbu->query("select name from faq_category where faq_category_id = '".$glob['id']."'");
 $dbu->move_next();
@@ -36,8 +41,8 @@ while($dbu->move_next())
 if($i==0)
  {
  	unset($ft);
- 	return get_error_message('There are no FAQ in this category.<br>
- 	<a href="javascript:history.back()" class="faqStyle">Click here to go back</a>
+ 	return get_error_message($tags['T.NO_FAQ'].'<br>
+ 	<a href="javascript:history.back()" class="faqStyle">'.$tags['T.CLICK'].'</a>
  	
  	');
  }
