@@ -1,0 +1,62 @@
+	<div id="content" class="siteContent dashboard scrolledList">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<a class="moreBtn floatRgt" href="index.php?pag=profile_edit_password"><span>Change Password</span></a>
+			<a class="moreBtn floatRgt" href="index.php?pag=profile_edit_email"><span>Change Email Address</span></a>
+			<span class="pageTitle">Your Account</span>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="contactInfo floatLft">
+			<h2>Contact Information</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="member-add_profile">
+						<input type="hidden" name="pag" value="profile">
+						
+						<label class="label" for="company_name">Company Name:</label>
+						<input class="textField" type="text" id="company_name" name="company_name" value="{COMPANY_NAME}" />
+							
+						<label class="label" for="first_name">First Name<span style="color:red;">*</span>:</label>
+						<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+							
+						<label class="label" for="surname">Surname<span style="color:red;">*</span>:</label>
+						<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
+								
+						<label class="label" for="address">Address<span style="color:red;">*</span>:</label>
+						<textarea class="textArea" id="address" name="address" >{ADDRESS}</textarea>
+							
+						<label class="label" for="city">City<span style="color:red;">*</span>:</label>
+						<input class="textField" type="text" id="city" name="city" value="{CITY}" />
+							
+						<label class="label" for="post_code">Post Code<span style="color:red;">*</span>:</label>
+						<input class="textField" type="text" id="post_code" name="post_code" value="{POST_CODE}" />
+								
+						<label class="label" for="website">Website:</label>
+						<input class="textField" type="text" id="website" name="website" value="{WEBSITE}" />
+								
+						<label class="label" for="phone">Phone:</label>
+						<input class="textField" type="text" id="phone" name="phone" value="{PHONE}" />
+								
+						<label class="label" for="mobile">Mobile:</label>
+						<input class="textField" type="text" id="mobile" name="mobile" value="{MOBILE}" />
+														
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Add Contact Information</span></button></div>
+					</form>
+		</div>
+		<!--<div class="contactHeadedInfo floatLft">
+			{HEADER_PAPER_SECTION}
+		</div>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+		<div class="floatLft" style="width: 460px;">
+			<p>Default Additional Notes:</p>
+			<form action="index.php" method="post">
+				<input type="hidden" name="act" value="member-update_profile_notes">
+				<input type="hidden" name="pag" value="profile">
+				{EXERCISE_NOTES}
+				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save</span></button></div>
+			</form>		
+		</div>-->
+		<div class="clearAll"></div>
+	</div>

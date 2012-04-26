@@ -1,0 +1,147 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  {S_EDIT_MODE}
+  <tr>
+    <td align="right"><div class="RedBorder"><div class="FastMenu"><a href="page_type_preview.php?page_type_id={PAGE_TYPE_ID}" class="RedBoldLink" target="_blank">Preview</a> | <a href="#default_data" class="RedBoldLink">Default Data for Content Zones</a>&nbsp;&nbsp;</div> 
+    </div></td>
+  </tr>{E_EDIT_MODE}
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="page_type_add">
+  <input type="hidden" name="page_type_id" value="{PAGE_TYPE_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Name *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="name" value="{NAME}" maxLength="255" size="30" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  {S_ADD_MODE}
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td align="left" valign="top" colspan="2">
+	<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td width="23%" align="left" valign="top"><strong>Chose Template *</strong></td>
+		<td width="77%" align="left" valign="top" class="verdanaSmall"><strong>Note:</strong><br> 
+		  You can chose the Web Page Template for Page Type only in 'Add' mode.<br>
+		  You will not be able to change this option for a certain Page Type in 'Edit' Mode, so chose the corect one from the begining.</td>
+	  </tr>
+	</table>
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td align="left" valign="top" colspan="2">
+	<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td width="15" align="left" valign="top">&nbsp;</td>
+		<td align="left" valign="top">{TEMPLATE_LIST}</td>
+	  </tr>
+	</table>
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  {E_ADD_MODE} {S_EDIT_MODE}
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" class="verdanaSmall"><strong>Web Page Template:</strong></td>
+    <td width="385" align="left" valign="top" class="verdanaSmall">Name: <strong>{TEMPLATE_NAME}</strong><br> File: <strong>{FILE_NAME}</strong></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  
+  {E_EDIT_MODE}
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Description * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><textarea name="description" cols="50" rows="8" class="txtField">{DESCRIPTION}</textarea></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">&nbsp;</td>
+    <td width="385" align="left" valign="top"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>
+
+{S_EDIT_MODE}
+<a name="default_data"></a>
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+    <tr>
+    <td align="left"><div class="GrayBorder"><div class="MenuTitle">
+		<table width="610"  border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td class="verdana10" align="left"><strong>Content Zones</strong></td>
+		<td align="right"> 
+		&nbsp;&nbsp;
+		</td>
+	  </tr>
+	</table>
+
+	
+	</div></div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td class="verdanaSmall"><div class="distance4px">
+	<strong>Note:</strong><br>
+	White Background - Default Data not defined for Content Zone<br>
+	Yellow Background - Default Data defined for Content Zone</div>
+	</td>
+  </tr>
+</table>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="5" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="160" height="20" bgcolor="#E8E8E8"><strong>Tag</strong></td>
+			<td width="292" align="left" bgcolor="#E8E8E8"><strong>Name</strong></td>
+			<td width="133" align="center" bgcolor="#E8E8E8"><strong>Action</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: tag_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="5" height="20">&nbsp;</td>
+			<td width="160" height="20">{TAG}</td>
+			<td width="292" align="left" class="verdanaSmall">{TAG_NAME} <a href="javascript:po3('index_blank.php?pag=czone_details&template_czone_id={TEMPLATE_CZONE_ID}')"><img src="../img/b_help.gif" width="11" height="11" border="0"></a></td>
+			<td width="133" align="center" class="verdanaSmall">
+			  <a href="{EDIT_LINK}" class="verdanaSlimLinkRed">Set Default Data</a> / <a href="{EMPTY_LINK}" class="verdanaSlimLinkRed">Empty</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: tag_row -->
+</table>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="590" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+  </tr>
+</table>
+{E_EDIT_MODE}

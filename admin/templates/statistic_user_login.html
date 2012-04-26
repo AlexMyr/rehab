@@ -1,0 +1,35 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="679"><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11" bgcolor="#E8E8E8">{MESSAGE}</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td height="20" bgcolor="#E8E8E8" width="122" align="center"><strong>First Name</strong></td>
+			<td height="20" bgcolor="#E8E8E8" width="100" align="center"><strong>Surname</strong></td>
+			<td height="20" bgcolor="#E8E8E8" width="77" align="center"><strong>User Name</strong></td>						
+			<td height="20" bgcolor="#E8E8E8" width="110" align="center"><strong>Last Login Date</strong></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: member_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td height="20" align="center">{FIRST_NAME}</td>	
+			<td height="20" align="center">{SURNAME}</td>	
+			<td height="20" align="center">{USER}</td>	
+			<td height="20" align="center">{LOGIN_DATE}</td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: member_row -->
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr bgcolor="#E8E8E8">
+    <td width="202" height="20" align="right" valign="middle">{BACKLINK}</td>
+    <td width="204" height="20" align="center" valign="middle">
+      <form name="pagination" method="post" action="index.php">
+        {PAG_DD}
+    </form></td>
+    <td width="275" height="20" valign="middle">{NEXTLINK}</td>
+  </tr>
+</table>

@@ -1,0 +1,73 @@
+<script language=Javascript>
+<!--
+
+function highlight(field) {
+	field.focus();
+  	field.select();
+}
+
+-->
+</script>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="left"><div class="GrayBorder"><div class="MenuTitle">
+      <form name="search" action="index_blank.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="pag" value="{PAGE}">
+		<table width="590" border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+			<td width="169"><strong>Switch Link Category:</strong></td>
+			<td width="421">
+				<select name="pag" class="DDBox1" onchange="form.submit();">
+				{LINK_TYPE_CATEGORY_LIST}
+				</select>
+			    <input type="submit" name="search1" value="Go" class="button"></td>
+		  </tr>
+		</table>
+      </form>
+    </div> 
+    </div></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11" bgcolor="#E8E8E8">{MESSAGE}</td>
+  </tr>
+</table>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="4" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="207" height="20" bgcolor="#E8E8E8"><strong> Name </strong></td>
+			<td width="379" bgcolor="#E8E8E8" class="verdanaSmall"><strong>URL</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: web_page_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="4" height="20">&nbsp;</td>
+			<td width="207" height="20">{NAME}</td>
+			<td width="379" class="verdanaSmall">
+			  
+			     <input type=text name="url" value="{URL}" maxLength="255" size="70" class="verdanaSmall" onClick='highlight(this);'>
+		    </td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: web_page_row -->
+</table>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#E8E8E8">
+      <td width="202" height="20" align="right" valign="middle">{BACKLINK}</td>
+      <td width="204" height="20" align="center" valign="middle" class="verdanaBlackSlim11">
+        <form name="pagination" method="post" action="index_blank.php">
+      		{PAG_DD}
+	  	</form> </td>
+      <td width="183" height="20" valign="middle">{NEXTLINK}</td>
+    </tr>
+</table>

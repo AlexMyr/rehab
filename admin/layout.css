@@ -1,0 +1,278 @@
+body {
+	background-color: #E7EAED;
+}
+
+td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 11px;
+	color: #000000;
+}
+
+form{margin-bottom:0px;margin-top:0px;}
+
+.BlackBorder {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border: 1px solid #000000;
+}
+
+.txtField {
+	background-color: #FFFFCC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 11px;
+	color: #000000;
+}
+
+.button {
+	background-color: #91A1B0;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 11px;
+	color: #000000;
+}
+
+.verdanaWhiteBold14 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #FFFFFF;
+}
+.GrayBorder {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	color: #000000;
+	line-height: normal;
+	text-decoration: none;
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	margin-bottom:2px;
+	margin-left:2px;
+	margin-right:2px;
+}
+
+.RedBorder {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	line-height: normal;
+	text-decoration: none;
+	background-color: #FFFFFF;
+	border: 1px solid #FF0000;
+	margin-bottom:2px;
+	margin-left:2px;
+	margin-right:2px;
+}
+.FastMenu {
+	line-height: normal;
+	text-decoration: none;
+	background-color: #CCCCCC;
+	margin-bottom:1px;
+	margin-top:1px;
+	margin-left:1px;
+	margin-right:1px;
+	padding-top: 3px;
+	padding-left: 2px;
+	padding-bottom: 3px;
+}
+
+
+.attribute_list {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	color: #000000;
+	text-decoration: none;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.MenuTitle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	color: #000000;
+	line-height: normal;
+	text-decoration: none;
+	background-color: #E8E8E8;
+	margin-bottom:1px;
+	margin-top:1px;
+	margin-left:1px;
+	margin-right:1px;
+	padding-top: 3px;
+	padding-left: 2px;
+	padding-bottom: 3px;
+}
+
+.MenuTitleSelected {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	line-height: normal;
+	text-decoration: none;
+	background-color: #91A1B0;
+	margin-bottom:1px;
+	margin-top:1px;
+	margin-left:1px;
+	margin-right:1px;
+	padding-top: 3px;
+	padding-left: 2px;
+	padding-bottom: 3px;
+}
+
+.PageTitle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	line-height: normal;
+	text-decoration: none;
+	background-color: #91A1B0;
+	margin-bottom:1px;
+	margin-top:1px;
+	margin-left:1px;
+	margin-right:1px;
+	padding-top: 3px;
+	padding-left: 2px;
+	padding-bottom: 3px;
+}
+
+.RedBoldLink {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #FF0000;
+	text-decoration: none;
+	padding-left: 3px;
+}
+
+.RedBoldLink:Hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #990000;
+	text-decoration: underline;
+	padding-left: 3px;
+}
+
+.RedBoldLink2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #FF0000;
+	text-decoration: none;
+	padding-left: 3px;
+}
+
+.RedBoldLink2:Hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #990000;
+	text-decoration: underline;
+	padding-left: 3px;
+}
+
+
+.MainMenuLink {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #333333;
+	text-decoration: none;
+	padding-left: 3px;
+}
+
+.MainMenuLink:Hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #FF3333;
+	text-decoration: underline;
+	padding-left: 3px;
+}
+
+
+.MenuLink {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #000055;
+	text-decoration: none;
+	padding-left: 3px;
+}
+
+.MenuLink:hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #FF0000;
+	text-decoration: underline;
+	padding-left: 3px;
+}
+
+.verdanaLink {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #000055}
+.verdanaLink:hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+.verdanaSmall {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px; font-weight: normal; color: #000000}
+.verdana10 {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: normal; color: #000000}
+.verdana8 {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8px; font-weight: normal; color: #000000}
+
+.verdanaSlimLink {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: normal; color: #000055}
+.verdanaSlimLink:hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+.verdanaRed11 { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #ff0000; text-decoration: none}
+
+.DDBox1 {
+	width: 250px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	color: #000000;
+	line-height: normal;
+	background-color: #FFFFE6;
+}
+
+.distance4px {
+	padding: 4px;
+}
+
+.TopMenuLink {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #666666; text-decoration: none;}
+.TopMenuLink:hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+.TopMenuLinkSelected {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #990000;
+	text-decoration: underline;
+}

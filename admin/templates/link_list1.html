@@ -1,0 +1,90 @@
+ <table width="620" border="0" cellspacing="0" cellpadding="0"> 
+  <tr> 
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td> 
+  </tr> 
+  <tr> 
+    <td align="left"><div class="GrayBorder"> 
+        <div class="MenuTitle"> 
+          <form name="search" action="index.php" method="post"> 
+            <input type="hidden" name="pag" value="{PAGE}"> 
+            <table width="610" border="0" cellpadding="0" cellspacing="0"> 
+              <tr> 
+                <td width="94">Category :</td> 
+                <td width="516"><select name="link_category_id" class="DDBox1"> 
+                    <option value="">Select One</option> 
+                    
+				  {CATEGORY_DD}
+				 
+                  </select> </td> 
+              </tr> 
+              <tr> 
+                <td>Search Key:</td> 
+                <td><input type=text name="search_key" value="{SEARCH_KEY}" maxLength="255" size="30" class="txtField"></td> 
+              </tr> 
+              <tr> 
+                <td>&nbsp;</td> 
+                <td><input type="submit" name="search1" value="Search" class="button"></td> 
+              </tr> 
+            </table> 
+          </form> 
+        </div> 
+      </div></td> 
+  </tr> 
+  <tr> 
+    <td align="center" class="verdanaRed11" bgcolor="#E8E8E8">{MESSAGE}</td> 
+  </tr> 
+</table>
+<table width="620" border="0" cellspacing="0" cellpadding="0"> 
+  <tr> 
+    <td width="4" height="20" bgcolor="#E8E8E8">&nbsp;</td> 
+    <td width="194" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Links</strong></td> 
+    <td width="147" height="20" bgcolor="#E8E8E8" class="verdanaSmall">&nbsp;</td> 
+    <td width="159" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Category</strong></td> 
+    <td width="43" align="center" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Active</strong></td> 
+    <td width="73" align="center" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Action</strong></td> 
+  </tr> 
+  <tr> 
+    <td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td> 
+  </tr> 
+  <!-- BEGIN DYNAMIC BLOCK: link_row --> 
+  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';"> 
+    <td width="4" height="20">&nbsp;</td> 
+    <td height="20" colspan="3" align="left" valign="middle"><table width="100%"  border="0" cellspacing="0" cellpadding="0"> 
+        <tr> 
+          <td height="20" align="left" valign="middle">Contact : <a href="mailto:{EMAIL}" class="verdanaSlimLink">{NAME}</a></td> 
+          <td width="159" align="left" valign="middle" class="verdanaSmall">{CATEGORY_NAME}</td> 
+        </tr> 
+        <tr> 
+          <td height="20" colspan="2" align="left" valign="middle" class="verdanaSmall"><a href="{WEBSITE}" class="verdanaSlimLink" target="_blank">{TITLE}</a></td> 
+        </tr> 
+        <tr> 
+          <td height="20" colspan="2" align="left" valign="middle" class="verdanaSmall"><font color="#990000">{DESCRIPTION}</font></td> 
+        </tr> 
+    </table></td> 
+    <td width="43" align="center" valign="middle" class="verdanaSmall"><a href="{STATUS_LINK}" onclick="javascript:return confirm('{JAVASCRIPT_MESSAGE}');"><img src="../img/{ICON_STATUS}" alt="{ICON_STATUS_ALT}" width="10" height="10" border="0"></a></td> 
+    <td width="73" align="center" class="verdanaSmall"> <a href="{EDIT_LINK}" class="verdanaSlimLinkRed">Edit</a> / <a href="{DELETE_LINK}" class="verdanaSlimLinkRed" onclick="javascript:return confirm('Are you sure about deleting this Link?');">Delete</a> </td> 
+  </tr> 
+  <tr> 
+    <td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td> 
+    <td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td> 
+  </tr> 
+  <!-- END DYNAMIC BLOCK: link_row --> 
+</table>
+<table width="620" border="0" cellspacing="0" cellpadding="0"> 
+  <tr bgcolor="#E8E8E8"> 
+    <td width="202" height="20" align="right" valign="middle">{BACKLINK}</td> 
+    <td width="204" height="20" align="center" valign="middle" class="verdanaBlackSlim11"> <form name="pagination" method="post" action="index.php">
+         {PAG_DD}
+      </form></td> 
+    <td width="214" height="20" valign="middle">{NEXTLINK}</td> 
+  </tr> 
+</table>

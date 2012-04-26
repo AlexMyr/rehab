@@ -1,0 +1,46 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_PASS};" href="index.php?pag=profile_edit_password"><span>Change Password</span></a>
+			<a class="moreBtn floatRgt" style="display:{HIDE_CHANGE_EMAIL};" href="index.php?pag=profile_edit_email"><span>Change Email Address</span></a>
+			{CANCEL_PAYMENT}
+			<span class="pageTitle">Your Account</span>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="contactInfo floatLft">
+		{HEADER_PAPER_SECTION}
+		</div>
+		<!--<div class="contactInfo floatLft">
+			<h2>Contact Information</h2>
+			<p><b>Company Name:</b><i>{COMPANY_NAME}</i></p>
+			<p><b>First Name:</b><i>{FIRST_NAME}</i></p>
+			<p><b>Surname:</b><i>{SURNAME}</i></p>
+			<p><b>Address:</b><i>{ADDRESS}</i></p>
+			<p><b>City:</b><i>{CITY}</i></p>
+			<p><b>Post Code:</b><i>{POST_CODE}</i></p>
+			<p><b>Website:</b><i>{WEBSITE}</i></p>
+			<p><b>Phone:</b><i>{PHONE}</i></p>
+			<p><b>Mobile:</b><i>{MOBILE}</i></p>
+			
+			<a class="moreBtn" href="index.php?pag=profile_edit"><span>Edit Contact Information</span></a>
+		</div>-->
+		<!--<div class="contactHeadedInfo floatLft">
+			{HEADER_PAPER_SECTION}
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			{AFFILIATES_CODE}
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+		</div>-->
+		<div class="floatLft" style="width: 460px;">
+			<p><strong>Default Additional Notes:</strong></p>
+			<form action="index.php" method="post">
+				<input type="hidden" name="act" value="member-update_profile_notes">
+				<input type="hidden" name="pag" value="profile">
+				<input type="hidden" name="profile_id" value="{PROFILE_ID}">			
+				<textarea class="textArea" id="notes" name="exercise_notes">{EXERCISE_NOTES}</textarea>				
+				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save</span></button></div>
+			</form>
+		</div>
+		<div class="clearAll"></div>
+	</div>

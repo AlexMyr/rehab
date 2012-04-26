@@ -1,0 +1,61 @@
+Array
+(
+    [19] => Array
+        (
+            [msg_uid] => 431
+            [msg_email] => chris@myosteopath.org
+            [exp_date] => 2012-05-19 12:35:17
+            [exp_time] => 2032514
+            [time] => 1335416403
+            [name] => trial_23_days
+            [msg_data] => Array
+                (
+                    [text] => Dear [!NAME!],
+
+Our research shows that the optimal number of exercises to give a patient at any one time is 4. So be careful with putting too many exercises on one exercise programme as your patient compliance may be lower. 
+
+Did you know you can use photos or lineart? Just select which you prefer for each particular patient. Photos look great when you print your exercise sheets in colour and on slightly thicker paper! Here is a <a href="http://youtu.be/955BPMQShPo">video tutorial</a> that will show you how to edit your exercise programme. 
+
+Our best wishes,
+
+
+The Rehab My Patient Team
+href="http://www.rehabmypatient.com/">www.rehabmypatient.com</a>
+                    [from_email] => info@rehabmypatient.com
+                    [from_name] => Rehab My Patient Trial Time
+                    [subject] => Tips for using Rehab My Patient
+                )
+
+        )
+
+    [33] => Array
+        (
+            [msg_uid] => 447
+            [msg_email] => nick@nickcastle.co.uk
+            [exp_date] => 2012-05-25 21:14:01
+            [exp_time] => 2582038
+            [time] => 1335416403
+            [name] => trial_29_days
+            [msg_data] => Array
+                (
+                    [text] => Dear [!NAME!],
+
+Have you used your free trial of Rehab My Patient yet? If you haven't, watch the <a href="http://youtu.be/LXKkbOXieL0">Video tutorial</a> which will show you how to get started.  Watch the <a href="http://youtu.be/nFBFs4l3Pmg">second video tutorial</a> which will show you how easy it is to make your own exercise programme. 
+
+If you are having any trouble, just email me by replying to this email. We'll answer any questions you may have. 
+
+Don't forget to add your clinic details and logo to make your exercise programmes look professional. 
+
+Our best wishes,
+
+
+The Rehab My Patient Team
+href="http://www.rehabmypatient.com/">www.rehabmypatient.com</a>
+                    [from_email] => info@rehabmypatient.com
+                    [from_name] => Rehab My Patient Trial Time
+                    [subject] => How is your free trial coming along?
+                )
+
+        )
+
+)

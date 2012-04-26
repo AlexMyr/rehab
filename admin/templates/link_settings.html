@@ -1,0 +1,44 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">Edit Settings</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="link_settings">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="287" align="left" valign="top" bgcolor="#FFFFFF">Allow New Link Registration from Website</td>
+    <td width="288" align="left" valign="top" bgcolor="#FFFFFF">
+	<select name="link_allow_registration" class="txtField">
+	{LINK_ALLOW_REGISTRATION}
+    </select></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="287" align="left" valign="top" bgcolor="#F5F5F5">Automatically Publish New Links <br> <span class="verdanaSmall">(Automatically new Link Registrations from website without having to aprouve them.)</span></td>
+    <td width="288" align="left" valign="top" bgcolor="#F5F5F5">
+	<select name="link_publish_registration" class="txtField">
+	{LINK_PUBLISH_REGISTRATION}
+    </select></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="287" align="left" valign="top">&nbsp;</td>
+    <td width="288" align="left" valign="top"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>

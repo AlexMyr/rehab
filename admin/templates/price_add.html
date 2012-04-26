@@ -1,0 +1,116 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="price_add">
+  <input type="hidden" name="price_id" value="{PRICE_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+ <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5" ><strong>Licence Name *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="price_plan_name" type="text"  class="txtField" value="{PRICE_PLAN_NAME}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF" >Place logo</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="has_logo" type="checkbox"  class="txtField" {HAS_LOGO} value=""></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5" >Create an Exercise Programme</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="can_create_exercise" type="checkbox"  class="txtField" {CAN_CREATE_EXERCISE} value=""></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF" >Email</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="email" type="checkbox"  class="txtField" {EMAIL} value=""></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5" >Photo and lineart</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="photo_lineart" type="checkbox"  class="txtField" {PHOTO_LINEART} value=""></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF">Number of users at any one time *</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="licence_amount" type="text"  class="txtField" value="{AMOUNT}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+   <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">Licence Period *</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="licence_period" type="text"  class="txtField" value="{PERIOD}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+   <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Value</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="price_value" type="text"  class="txtField" value="{VALUE}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF">&nbsp;</td>
+    <td width="385" align="left" valign="top" bgcolor="#FFFFFF"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+	
+  </tr>
+ 
+ 
+  <!--<tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5" ><strong>Licence Type * <sup>[user OR clinic]</sup></strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="licence_type" type="text"  class="txtField" value="{TYPE}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF">Licence Amount *</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="licence_amount" type="text"  class="txtField" value="{AMOUNT}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+   <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">Licence Period *</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="licence_period" type="text"  class="txtField" value="{PERIOD}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF">Currency <sup>leave blank if no value</sup></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="currency" type="text"  class="txtField" value="{CURRENCY}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Value</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5" ><input name="price_value" type="text"  class="txtField" value="{VALUE}"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF">&nbsp;</td>
+    <td width="385" align="left" valign="top" bgcolor="#FFFFFF"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>-->
+	
+  </tr>
+</table>
+</form>

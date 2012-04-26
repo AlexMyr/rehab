@@ -1,0 +1,72 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine">Create Exercise Plan<span class="pageTitle"> / {CLIENT_NAME}</span></h2>
+		<div class="sidebar">
+			<div class="greyBorderBox">
+				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
+				<div class="greyBorderBoxContent">
+					<h2>Exercise Plan Preview</h2>
+					<form id="exerciseAddForm" action="index.php" method="post" onsubmit="return doSave();">
+						<input type="hidden" name="act" value="client-update_exercise">
+						<input type="hidden" name="pag" value="client_preview_exercise">
+						<input type="hidden" name="client_id" value="{CLIENT_ID}">
+						<input id="exercise_plan_id" type="hidden" name="exercise_plan_id" value="{EXERCISE_PLAN_ID}">
+						<input id="exercise_id" type="hidden" name="exercise_id" value="">
+							<span id="program_list">
+<ul id="sortable" class="ui-sortable">
+<!-- BEGIN DYNAMIC BLOCK: selected_line -->
+<li id="{S_PROGRAM_ID}">
+<img alt="{S_PROGRAM_TITLE}" title="{S_PROGRAM_TITLE}" src="phpthumb/phpThumb.php?src=../{S_PROGRAM_IMAGE}&amp;wl=64&amp;hp=64">
+<a id="drag_{S_PROGRAM_ID}" class="exercise_drag">&nbsp;</a>
+<a id="del_{S_PROGRAM_ID}" class="exercise_del" href="#">&nbsp;</a>
+<span id="title_{S_PROGRAM_ID}" class="exercise_title">{S_PROGRAM_TITLE}</span>
+<span class="exercise_cat">{S_PROGRAM_CATEGORY}</span>
+<a id="details_{S_PROGRAM_ID}" class="exercise_details">details</a>
+<span id="text_{S_PROGRAM_ID}" class="exercise_text">{S_PROGRAM_DESCRIPTION}</span>
+</li>
+<!-- END DYNAMIC BLOCK: selected_line -->
+</ul>
+							</span>
+						<div class="buttons login"><button id="exerciseAdd" type="submit"><b>&nbsp;</b><span>Save &amp; Continue</span></button></div>
+					</form>
+				</div>
+				<img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
+			</div>
+		</div>
+		<div class="programCategoryList floatLft">
+			<ul class="program_menu">
+			{LIST}
+			</ul>
+		</div>
+		<div class="programList floatLft">
+			<div class="breadcrumb">{BREADCRUMB}<span class="buttons">{VIEW_MODE}</span><div class="clearAll"></div></div>
+			{NO_DATA_FOUND}
+<!-- BEGIN DYNAMIC BLOCK: exercise_details_line -->
+			<div class="item">
+				<img alt="{PROGRAM_TITLE}" src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138">
+				<div class="programText">
+					<h2>{PROGRAM_TITLE}</h2>
+					{PROGRAM_DESCRIPTION}
+					<a href="#" id="{PROGRAM_ID}" class="moreBtn"><span>Add exercise</span></a>
+				</div>
+				<div class="clearAll"></div>
+			</div>
+<!-- END DYNAMIC BLOCK: exercise_details_line -->
+<!-- BEGIN DYNAMIC BLOCK: exercise_compact_line -->
+			<div class="itemCompact{LAST_CSS}" id="compactView_{PROGRAM_ID}">
+				<img alt="{PROGRAM_TITLE}" src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138">
+				<span class="programCompact">
+				<a href="#" id="{PROGRAM_ID}" class="moreBtn"><span>Add exercise</span></a>
+				<a id="compactViewDetails_{PROGRAM_ID}" class="exercise_details"><span>Info</span></a>				
+				</span>
+					<h2>{PROGRAM_TITLE}</h2>
+				<div class="programCompactText" id="itemCompactText_{PROGRAM_ID}">
+					{PROGRAM_DESCRIPTION}
+				</div>
+				<div class="clearAll"></div>
+			</div>
+			{CLEAR_BOTH}
+<!-- END DYNAMIC BLOCK: exercise_compact_line -->
+		</div>
+		<div class="clearAll"></div>
+	</div>

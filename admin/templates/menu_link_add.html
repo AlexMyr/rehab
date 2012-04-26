@@ -1,0 +1,78 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="menu_link_add">
+  <input type="hidden" name="menu_link_id" value="{MENU_LINK_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top"><strong>Select Site Menu * </strong></td>
+    <td width="385" align="left" valign="top">
+	<select name="menu_id" class="DDBox1" onchange="act.value=''; form.submit();">
+	<option value="">&nbsp;&nbsp;</option>
+	{MENU_LIST}
+    </select>
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">Select Parent Link</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5">
+	<select name="parent_id" class="DDBox1">
+	<option value="">&nbsp;&nbsp;</option>
+	{MENU_LINK_LIST}
+    </select>
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top"><strong>Name *</strong></td>
+    <td width="385" align="left" valign="top">
+      <input type=text name="name" value="{NAME}" maxLength="255" size="30" class="txtField">	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Sort Order </strong> </td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5">
+      <input type=text name="sort_order" value="{SORT_ORDER}" maxLength="5" size="6" class="txtField">	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top"><strong>Link *</strong> <br> <span class="verdanaSmall">If this menu item shouldn't link to any page, enter '#'</span></td>
+    <td width="385" align="left" valign="top"><a href="javascript:po('index_blank.php?pag=link_select')" class="RedBoldLink">Get Links</a><br>
+      <input type=text name="url" value="{URL}" maxLength="255" size="70" class="verdanaSmall">	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">Target</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5">
+	<select name="target" class="DDBox1">
+	{TARGET}
+    </select>
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">&nbsp;</td>
+    <td width="385" align="left" valign="top"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>

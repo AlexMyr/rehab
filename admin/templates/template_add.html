@@ -1,0 +1,112 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  {S_EDIT_MODE}
+  <tr>
+    <td align="right"><div class="RedBorder"><div class="FastMenu"><a href="index.php?pag=template_czone_add&template_id={TEMPLATE_ID}" class="RedBoldLink">Add Content Zone</a>&nbsp;&nbsp;</div> 
+    </div></td>
+  </tr>{E_EDIT_MODE}
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="template_add">
+  <input type="hidden" name="template_id" value="{TEMPLATE_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Name *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="name" value="{NAME}" maxLength="255" size="30" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top"><strong>File Name *</strong></td>
+    <td width="385" align="left" valign="top"><input type=text name="file_name" value="{FILE_NAME}" maxLength="255" size="30" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Description * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><textarea name="description" cols="50" rows="8" class="txtField">{DESCRIPTION}</textarea></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">&nbsp;</td>
+    <td width="385" align="left" valign="top"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>
+
+{S_EDIT_MODE}
+<a name="tags"></a>
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+    <tr>
+    <td align="left"><div class="GrayBorder"><div class="MenuTitle">
+		<table width="610"  border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td class="verdana10" align="left"><strong>Content Zones</strong></td>
+		<td align="right"> 
+		<a href="index.php?pag=template_czone_add&template_id={TEMPLATE_ID}" class="RedBoldLink">Add Content Zone</a> 
+		&nbsp;&nbsp;
+		</td>
+	  </tr>
+	</table>
+
+	
+	</div></div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+</table>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="5" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="241" height="20" bgcolor="#E8E8E8"><strong>Tag</strong></td>
+			<td width="264" align="left" bgcolor="#E8E8E8"><strong>Name</strong></td>
+			<td width="80" align="center" bgcolor="#E8E8E8"><strong>Action</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: tag_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="5" height="20">&nbsp;</td>
+			<td width="241" height="20">{TAG}</td>
+			<td width="264" align="left" class="verdanaSmall">{TAG_NAME}</td>
+			<td width="80" align="center" class="verdanaSmall">
+			  <a href="{EDIT_LINK}" class="verdanaSlimLinkRed">Edit</a> /
+              <a href="{DELETE_LINK}" class="verdanaSlimLinkRed" onclick="javascript:return confirm('Are you sure about deleting this Content Zone?');">Delete</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: tag_row -->
+</table>
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="590" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+  </tr>
+</table>
+{E_EDIT_MODE}

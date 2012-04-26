@@ -1,0 +1,210 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="menu_add">
+  <input type="hidden" name="menu_id" value="{MENU_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="223" align="left" valign="top" bgcolor="#F5F5F5"><strong>Menu Name *</strong></td>
+    <td width="369" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="name" value="{NAME}" maxLength="255" size="30" class="txtField"></td>
+    <td width="14" height="25">&nbsp;</td>
+  </tr>
+  </table>
+  {S_ADD_MODE}
+	<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+	</table>
+
+  <table width="592" border="0" cellspacing="0" cellpadding="2" align="center" class="GrayBorder">
+  <tr>
+  <td width="592" align="left"  bgcolor="#F5F5F5">
+  	This Menu needs a <strong>Horizontal</strong> Version: <input name="h_version" type="checkbox" value="1" {H_VERSION_CHECKED}>
+  </td>
+  </tr>
+  <tr>
+  <td width="592" align="center"  bgcolor="#F5F5F5">
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Template File</strong></td>
+		<td width="339" align="left" valign="top">
+		<select name="template_file_h" class="DDBox1">
+		<option value="">&nbsp;&nbsp;</option>
+			{TEMPLATE_FILE_H}
+		</select>
+		</td>
+	  </tr>
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Alias Tag</strong></td>
+		<td width="339" align="left" valign="top">
+		<input type=text name="tag_h" value="{TAG_H}" maxLength="255" size="30" class="txtField">
+		</td>
+	  </tr>
+	</table>
+  </td>
+  </tr>
+  </table>
+  
+<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="592" border="0" cellspacing="0" cellpadding="2" align="center" class="GrayBorder">
+  <tr>
+  <td width="592" align="left" bgcolor="#F5F5F5">
+  	This Menu needs a <strong>Vertical</strong> Version: 
+  	<input name="v_version" type="checkbox" value="1" {V_VERSION_CHECKED}>
+  </td>
+  </tr>
+  <tr>
+  <td width="592" align="center" bgcolor="#F5F5F5">
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Template File</strong></td>
+		<td width="339" align="left" valign="top">
+		<select name="template_file_v" class="DDBox1">
+		<option value="">&nbsp;&nbsp;</option>
+			{TEMPLATE_FILE_V}
+		</select>
+		</td>
+	  </tr>
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Alias Tag</strong></td>
+		<td width="339" align="left" valign="top">
+		<input type=text name="tag_v" value="{TAG_V}" maxLength="255" size="30" class="txtField">
+		</td>
+	  </tr>
+	</table>
+  </td>
+  </tr>
+  </table>
+  {E_ADD_MODE}
+  {S_EDIT_MODE}
+	<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+	</table>
+
+  <table width="592" border="0" cellspacing="0" cellpadding="2" align="center" class="GrayBorder">
+  <tr>
+  <td width="592" align="left"  bgcolor="#F5F5F5"><strong>Horizontal</strong> Version Settings:  	  </td>
+  </tr>
+  <tr>
+  <td width="592" align="center"  bgcolor="#F5F5F5">
+  {S_H_V_TRUE}
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Template File</strong></td>
+		<td width="339" align="left" valign="top">
+		{T_FILE_H}
+		</td>
+	  </tr>
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Alias Tag</strong></td>
+		<td width="339" align="left" valign="top">
+		{TAG_H}
+		</td>
+	  </tr>
+	  <tr>
+		<td align="right" valign="top" colspan="2"><strong>Actions:</strong> <a href="index.php?pag=menu_h_version&menu_id={MENU_ID}" class="RedBoldLink">Update</a> | <a href="index.php?pag=menu_add&menu_id={MENU_ID}&act=menu-h_version_remove" class="RedBoldLink">Remove</a>
+		</td>
+	  </tr>
+	</table>
+	{E_H_V_TRUE}
+  {S_H_V_FALSE}
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td align="left" valign="top" colspan="2"><strong>Horizontal Version not available for this Menu</strong></td>
+	  </tr>
+	  <tr>
+		<td align="right" valign="top" colspan="2"><strong>Actions:</strong> <a href="index.php?pag=menu_h_version&menu_id={MENU_ID}" class="RedBoldLink">Set Up Horizontal Version</a>
+		</td>
+	  </tr>
+	</table>
+	{E_H_V_FALSE}
+  </td>
+  </tr>
+  </table>
+  
+<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="592" border="0" cellspacing="0" cellpadding="2" align="center" class="GrayBorder">
+  <tr>
+  <td width="592" align="left" bgcolor="#F5F5F5">  	<strong>Vertical</strong> Version Settings:  	</td>
+  </tr>
+  <tr>
+  <td width="592" align="center" bgcolor="#F5F5F5">
+  {S_V_V_TRUE}
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Template File</strong></td>
+		<td width="339" align="left" valign="top">
+		{T_FILE_V}
+		</td>
+	  </tr>
+	  <tr>
+		<td width="217" align="left" valign="top"><strong>Alias Tag</strong></td>
+		<td width="339" align="left" valign="top">
+		{TAG_V}
+		</td>
+	  </tr>
+	  <tr>
+		<td align="right" valign="top" colspan="2"><strong>Actions:</strong> <a href="index.php?pag=menu_v_version&menu_id={MENU_ID}" class="RedBoldLink">Update</a> | <a href="index.php?pag=menu_add&menu_id={MENU_ID}&act=menu-v_version_remove" class="RedBoldLink">Remove</a>
+		</td>
+	  </tr>
+	</table>
+	{E_V_V_TRUE}
+  {S_V_V_FALSE}
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td align="left" valign="top" colspan="2"><strong>Vertical Version not available for this Menu</strong></td>
+	  </tr>
+	  <tr>
+		<td align="right" valign="top" colspan="2"><strong>Actions:</strong> <a href="index.php?pag=menu_v_version&menu_id={MENU_ID}" class="RedBoldLink">Set Up Vertical Version</a>
+		</td>
+	  </tr>
+	</table>
+	{E_V_V_FALSE}
+  </td>
+  </tr>
+  </table>
+  {E_EDIT_MODE}
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="215" align="left" valign="top">Description</td>
+    <td width="360" align="left" valign="top"><textarea name="description" cols="50" rows="8" class="txtField">{DESCRIPTION}</textarea></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  </table>
+  
+  <table width="592" border="0" cellspacing="0" cellpadding="2" align="center">
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="215" align="left" valign="top" bgcolor="#F5F5F5">&nbsp;</td>
+    <td width="360" align="left" valign="top" bgcolor="#F5F5F5"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>

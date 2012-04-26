@@ -1,0 +1,50 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="679"><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11" bgcolor="#E8E8E8">{MESSAGE}</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="4" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td height="20" bgcolor="#E8E8E8" width="122" align="center"><strong>First Name</strong></td>
+			<td height="20" bgcolor="#E8E8E8" width="100" align="center"><strong>Surname</strong></td>
+			<td height="20" bgcolor="#E8E8E8" width="77" align="center"><strong>User Name</strong></td>						
+			<td height="20" bgcolor="#E8E8E8" width="80" align="center"><strong>Account Status</strong></td>
+			<td height="20" bgcolor="#E8E8E8" width="99" align="center"><strong>Email</strong></td>
+			<td height="20" bgcolor="#E8E8E8" width="40" align="center"><strong>Clinic</strong></td>
+			<td width="157" align="center" bgcolor="#E8E8E8"><strong>Action</strong></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: member_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="4" height="20">&nbsp;</td>	
+			<td height="20" align="center">{FIRST_NAME}</td>	
+			<td height="20" align="center">{SURNAME}</td>	
+			<td height="20" align="center">{USER}</td>	
+			<td height="20" align="center">{IS_TRIAL}</td>
+			<td height="20" align="center">{EMAIL}</td>	
+			<td height="20" ><div align="center">{IS_CLINIC}</div></td>		
+			<td width="157" align="center" class="verdanaSmall">
+			  <a href="{EDIT_LINK}" class="verdanaSlimLinkRed">Edit</a> /
+              <a href="{DELETE_LINK}" class="verdanaSlimLinkRed" onclick="javascript:return confirm('Are you sure you want to delete this entry?');">Delete</a> /
+<br />
+			  <a href="{BANN_LINK}" class="verdanaSlimLinkRed">{BANN_NAME}</a> /
+<br />
+			  <a href="{FULLRIGHTS_LINK}" class="verdanaSlimLinkRed">{FULLRIGHTS_NAME}</a> 
+			</td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: member_row -->
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr bgcolor="#E8E8E8">
+    <td width="202" height="20" align="right" valign="middle">{BACKLINK}</td>
+    <td width="204" height="20" align="center" valign="middle">
+      <form name="pagination" method="post" action="index.php">
+        {PAG_DD}
+    </form></td>
+    <td width="275" height="20" valign="middle">{NEXTLINK}</td>
+  </tr>
+</table>

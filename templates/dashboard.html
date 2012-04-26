@@ -1,0 +1,77 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine"><span class="pageTitle">My Patients</span></h2>
+		<div class="sidebar">
+			<!-- div class="blueBox">
+				<div class="blueBoxContent">
+					<h2>Quick tip</h2>
+					<p>To create a patient exercise plan, click the <span class="add_ico">&nbsp;</span> Add New icon next to the appropriate client record</p>
+				</div>
+				<img src="img/sidebarLightBlueBottom.jpg" class="blueBoxBottom">
+			</div -->
+			<div class="greyBorderBox">
+				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
+				<div class="greyBorderBoxContent">
+					<h2>Add New Patient</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="client-add_client">
+						<input type="hidden" name="pag" value="dashboard">
+						<input type="hidden" name="client_id" value="">
+						
+						<label class="label" for="first_name">First Name<sup>*</sup>:</label>
+						<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+							
+						<label class="label" for="surname">Surname<sup>*</sup>:</label>
+						<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
+								
+						<label class="label" for="email">Email<sup>*</sup>:</label>
+						<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />	
+													
+						<label class="label" for="print_image_type">Image type:</label>
+						<select id="print_image_type" class="textField" name="print_image_type">
+							{IMAGE_TYPE}
+						</select>
+						
+						<label class="label" for="client_note">Description of Programme:</label>
+						<textarea class="textArea" id="client_note" name="client_note" >{CLIENT_NOTE}</textarea>
+							
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Add Patient</span></button></div>
+					</form>
+				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
+			</div>
+		</div>
+		<div class="clientList">
+			<div class="clientListTitle">
+				<span class="add_exercise">&nbsp;</span>
+				<span class="name">Name</span>
+				<span class="count">No. Plans</span>
+				<span class="dateTime">Account Activity</span>
+			</div>
+<!-- BEGIN DYNAMIC BLOCK: client_line -->
+			<div class="clientListRow">
+				<span class="add_exercise"><a title="Add/Edit Exercise Programme" class="add_client {SHOW_LIMIT_ERROR}" href="index.php?pag=client_add_exercise&client_id={CLIENT_ID}">&nbsp;</a></span>
+				<span class="name"><a class="add_client" href="index.php?pag=client&client_id={CLIENT_ID}">{CLIENT_NAME}</a></span>
+				<span class="count">{EXERCISES_NR}</span>
+				<span class="dateTime">{ACTIVITY_DATE}</span>
+			</div>
+<!-- END DYNAMIC BLOCK: client_line -->
+<ul class="paginate {HIDE_NAV}">
+<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; Previous</span></a></li>
+{PAGG}
+<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>Next &gt;</span></a></li>
+<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>Last</span></a></li>
+</ul>
+<!--			<div class="paginate">
+				<a class="moreBtn" href="#"><span>&lt; Previous</span></a>
+				<a class="moreBtn inactive"><span>1</span></a>
+				<a class="moreBtn" href="#"><span>2</span></a>
+				<a class="moreBtn" href="#"><span>3</span></a>
+				<a class="moreBtn" href="#"><span>4</span></a>
+				<a class="moreBtn" href="#"><span>5</span></a>
+				<a class="moreBtn" href="#"><span>Next &gt;</span></a>
+			</div>
+-->
+		</div>
+		<div class="clearAll"></div>
+	</div>
+	

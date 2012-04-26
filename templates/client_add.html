@@ -1,0 +1,52 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine"><span class="pageTitle">{CLIENT_NAME} /</span> Patient Record</h2>
+		<div class="sidebar">
+			<form action="index.php" method="post">
+				<!-- input type="hidden" name="act" value="client-add_exercise" -->
+				<input type="hidden" name="pag" value="client_add_exercise">
+				<input type="hidden" name="client_id" value="{CLIENT_ID}">
+						
+				<div class="buttons deleteClient"><button type="submit"><b>&nbsp;</b><span>Add new Exercise</span></button></div>
+			</form>
+			<div class="greyBorderBox">
+				<img src="img/exercises_top.png" class="greyBorderBoxTop">
+				<div class="greyBorderBoxContent">
+					<h2>Patient Info</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="client-add_client">
+						<input type="hidden" name="pag" value="dashboard">
+						<input type="hidden" name="client_id" value="{CLIENT_ID}">
+						
+						<label class="label" for="first_name">First Name<sup>*</sup>:</label>
+						<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+							
+						<label class="label" for="surname">Surname<sup>*</sup>:</label>
+						<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
+								
+						<label class="label" for="email">Email:</label>
+						<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />
+								
+						<label class="label" for="print_image_type">Image type:</label>
+						<select id="print_image_type" class="textField" name="print_image_type">
+							{IMAGE_TYPE}
+						</select>
+						
+						<label class="label" for="client_note">Description of Programme:</label>
+						<textarea class="textArea" id="client_note" name="client_note" >{CLIENT_NOTE}</textarea>
+							
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save Changes</span></button></div>
+					</form>
+				</div>
+				<img src="img/exercises_bottom.png" class="greyBorderBoxBottom">
+			</div>
+			<form action="index.php" method="post">
+				<input type="hidden" name="act" value="client-delete">
+				<input type="hidden" name="pag" value="client">
+				<input type="hidden" name="client_id" value="{CLIENT_ID}">
+						
+				<div class="buttons deleteClient"><button class="del" type="submit"><b>&nbsp;</b><span>x Delete this Patient</span></button></div>
+			</form>
+		</div>
+		<div class="clearAll"></div>
+	</div>

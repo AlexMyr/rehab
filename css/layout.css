@@ -1,0 +1,64 @@
+/* CSS Document */
+
+/* Style 1 */
+
+.headline1{
+	background-color:#FFFFFF;
+	padding: 0px;
+	margin: 0px;
+}
+.headline1 h1{
+	font-family:Arial,Verdana, Helvetica, sans-serif;
+	font-weight:normal;
+	color: #6F92CA;
+	font-size: 22px;
+	margin: 10px;
+}
+.content1 {
+	font-family: Arial,Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	text-align:left;
+	padding: 8px;
+}
+
+/* Style 2 */
+
+.headline2{
+	background-color:#FFFFFF;
+	padding: 0px;
+	margin: 0px;
+}
+.headline2 h1{
+	font-family:Arial,Verdana, Helvetica, sans-serif;
+	font-weight:normal;
+	color: #DC3C1C;
+	font-size: 22px;
+	margin: 10px;
+}
+.content2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	text-align:left;
+	padding: 8px 2px 8px 2px;
+}
+
+/* Style 3 */
+
+.headline3{
+	background-color:#FFFFFF;
+	padding: 0px;
+	margin: 0px;
+}
+.headline3 h1{
+	font-family:Arial,Verdana, Helvetica, sans-serif;
+	font-weight:normal;
+	color: #DC3C1C;
+	font-size: 22px;
+	margin: 10px;
+}
+.content3 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	text-align:left;
+	padding: 8px 2px 8px 2px;
+}

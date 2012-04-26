@@ -1,0 +1,33 @@
+<div id="content" class="faq">
+	{MESSAGE}
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<!-- BEGIN DYNAMIC BLOCK: faq_short_row -->
+  <tr>
+    <td height="15"><a class="faqStyle" href="#{FAQ_ID}">{QUESTION}</a></td>
+  </tr>
+<!-- END DYNAMIC BLOCK: faq_short_row -->
+</table>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="20"><img src="img/spacer.gif" width="1" height="1"></td>
+  </tr>
+</table>
+
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<!-- BEGIN DYNAMIC BLOCK: faq_detailed_row -->
+  <tr>
+    <td><a name="{FAQ_ID}"></a><img src="img/spacer.gif" width="5" height="5"></td>
+  </tr>
+  <tr>
+    <td><h3>{QUESTION}</h3></td>
+  </tr>
+  <tr>
+    <td>{ANSWER}</td>
+  </tr>
+  <tr>
+    <td height="10"><img src="img/spacer.gif" width="1" height="1"></td>
+  </tr>
+<!-- END DYNAMIC BLOCK: faq_detailed_row -->
+</table>
+	<div class="clearAll"></div>
+</div>

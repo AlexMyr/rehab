@@ -1,0 +1,47 @@
+			<FORM action=index.php method=post>
+              <input type="hidden" name="pag" value="{PAGE}">
+              <input type="hidden" name="act" value="contact-add">
+              <input type="hidden" name="id" value="{ID}">
+              <table width="500" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td colspan="3" height="1"><font color="#FF0000">{MESSAGE}</font></td>
+                </tr>
+                <tr>
+                  <td width="5" align="left">&nbsp;</td>
+                  <td width="87" align="left"><strong>Name* :</strong></td>
+                  <td width="217" height="22" align="left">
+                  <INPUT type="text" imaxLength="80" size="30" name="name" value="{NAME}" class="txtform"></td>
+                </tr>
+                <tr>
+                  <td align="left">&nbsp;</td>
+                  <td align="left"><strong>Email* :</strong></td>
+                  <td height="22" align="left">
+                    <INPUT type="text" imaxLength="80" size="30" name="email" value="{EMAIL}" class="txtform"></td>
+                </tr>
+                <tr>
+                  <td align="left">&nbsp;</td>
+                  <td align="left">Phone :</td>
+                  <td height="22" align="left" valign="top">
+                    <INPUT type="text" imaxLength="80" size="30" name="phone" value="{PHONE}" class="txtform">                  </td>
+                </tr>
+                <tr>
+                  <td align="left">&nbsp;</td>
+                  <td align="left"><strong>Subject* :</strong></td>
+                  <td height="22" align="left">
+                    <INPUT type="text" maxLength="80" size="30" name="subject" value="{SUBJECT}" class="txtform"></td>
+                </tr>
+                <tr>
+                  <td align="left" valign="top">&nbsp;</td>
+                  <td align="left" valign="top"><strong> Message* :</strong></td>
+                  <td align="left"><TEXTAREA name="comments" rows="10" wrap="physical" cols="28" class="textArea">{COMMENTS}</TEXTAREA></td>
+                </tr>
+                <tr>
+                  <td align="left" valign="top">&nbsp;</td>
+                  <td align="left" valign="top">&nbsp;</td>
+                  <td height="30" valign="middle">
+					<div class="buttons"><button style="margin: auto; width: 135px;" type="submit"><b>&nbsp;</b><span>Send</span></button></div>
+				                </td>
+                </tr>
+  </table>
+		      <p>&nbsp;</p>
+</form>

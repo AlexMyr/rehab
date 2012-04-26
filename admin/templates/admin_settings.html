@@ -1,0 +1,98 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">Edit Settings</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="admin_settings">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5" ><strong>Admin Email *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5">	<input type=text name="email" value="{EMAIL}" maxLength="100" size="30" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top"><strong>Admin Username *</strong></td>
+    <td width="385" align="left" valign="top"><input type=text name="username" value="{USERNAME}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Password * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=password name="password" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF"><strong>Confirm Password * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#FFFFFF"><input type=password name="password1" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Rows Per Page  * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="row_per_page" value="{ROW_PER_PAGE}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>SMTP mail HOST * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="smtp_host" value="{SMTP_HOST}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>SMTP mail PORT * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="smtp_port" value="{SMTP_PORT}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>SMTP mail USER * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="smtp_username" value="{SMTP_USERNAME}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>SMTP mail PASSWORD  * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=password name="smtp_password" value="{SMTP_PASSWORD}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Paypal Usrename  * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="paypal_username" value="{PAYPAL_USERNAME}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Paypal Password  * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type="text" name="paypal_password" value="{PAYPAL_PASSWORD}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Paypal Signature  * </strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="paypal_sign" value="{PAYPAL_SIGN}" maxLength="100" size="30"  class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">&nbsp;</td>
+    <td width="385" align="left" valign="top"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>

@@ -1,0 +1,67 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine"><span class="pageTitle">My Programmes</span></h2>
+		<div class="sidebar">
+			<!-- div class="blueBox">
+				<div class="blueBoxContent">
+					<h2>Quick tip</h2>
+					<p>To create a patient exercise plan, click the <span class="add_ico">&nbsp;</span> Add New icon next to the appropriate client record</p>
+				</div>
+				<img src="img/sidebarLightBlueBottom.jpg" class="blueBoxBottom">
+			</div -->
+			<div class="greyBorderBox">
+				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
+				<div class="greyBorderBoxContent">
+					<h2>Add New Programme</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="client-add_program_plan">
+						<input type="hidden" name="pag" value="programs">
+						<input type="hidden" name="program_id" value="">
+						
+						<label class="label" for="first_name">Name<sup>*</sup>:</label>
+						<input class="textField" type="text" id="program_name" name="program_name" value="{PROGRAM_NAME}" />
+													
+						<label class="label" for="print_image_type">Image type:</label>
+						<select id="print_image_type" class="textField" name="print_image_type">
+							{IMAGE_TYPE}
+						</select>
+						
+						<label class="label" for="client_note">Description of Programme:</label>
+						<textarea class="textArea" id="client_note" name="client_note" >{CLIENT_NOTE}</textarea>
+							
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Add Programme</span></button></div>
+					</form>
+				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
+			</div>
+		</div>
+		<div class="clientList">
+			<div class="clientListTitle">
+				<!--<span class="add_exercise">&nbsp;</span>-->
+				<span class="name_program">Name</span>
+				<span class="description">Description</span>
+				<span class="actions">Actions</span>
+			</div>
+<!-- BEGIN DYNAMIC BLOCK: client_line -->
+			<div class="clientListRow">
+				<!--<span class="add_exercise"><a title="Add Patient" class="add_client" href="index.php?pag=program_add_patient&program_id={PROGRAM_ID}">&nbsp;</a></span>-->
+				<span class="name_program"><span class="add_program">{PROGRAM_NAME}</span></span>
+				<span class="description">{PROGRAM_DESC}</span>
+				<span class="actions">
+					<a title="Edit" href="index.php?pag=program_update_exercise&program_id={PROGRAM_ID}" class="edit"><span>edit</span></a>
+					<a title="Email" href="index.php?pag=program_add_patient&program_id={PROGRAM_ID}&mode=email" class="mail"><span>mail</span></a>
+					<a title="Print" href="index.php?pag=program_add_patient&program_id={PROGRAM_ID}&mode=print" class="print"><span>print</span></a>
+					<a title="Delete" href="index.php?pag=programs&program_id={PROGRAM_ID}&act=client-delete_program_plan" class="delete programDelete"><span>delete</span></a>
+				</span>
+			</div>
+<!-- END DYNAMIC BLOCK: client_line -->
+<ul class="paginate {HIDE_NAV}">
+<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; Previous</span></a></li>
+{PAGG}
+<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>Next &gt;</span></a></li>
+<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>Last</span></a></li>
+</ul>
+
+		</div>
+		<div class="clearAll"></div>
+	</div>
+	

@@ -1,0 +1,169 @@
+<script language=Javascript>
+<!--
+
+function highlight(field) {
+	field.focus();
+  	field.select();
+}
+
+-->
+</script>
+
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="right"><div class="RedBorder"><div class="FastMenu"><a href="#tags" class="RedBoldLink">Content</a> | {ADVANCED_LINK} | <a href="index.php?pag=menu_link_add&web_page_id={WEB_PAGE_ID}&p={PAGE_FILE_NAME}" class="RedBoldLink">Link in Menu</a> | <a href="{PREVIEW_LINK}" class="RedBoldLink" target="_blank">Preview</a> &nbsp;&nbsp;</div> 
+    </div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<table width="592" border="0" cellspacing="0" cellpadding="2" align="center" class="GrayBorder">
+  <tr>
+  <td width="159" align="left"  bgcolor="#CCCCCC"><strong>
+  	General Info</strong> </td>
+  <td width="425" align="right"  bgcolor="#CCCCCC"><a href="{EDIT_INFO_LINK}" class="RedBoldLink">Edit</a>&nbsp;&nbsp;</td>
+  </tr>
+  <tr> 
+  <td width="159" align="left"  bgcolor="#F5F5F5" class="verdanaSmall"><strong>
+  	&nbsp;&nbsp;Permanent Link to this Page:</strong></td>
+  <td width="425" align="left"  bgcolor="#F5F5F5">
+  <form action="index.php" method="post" name="plink" id="plink">
+  <input type=text name="permanent_link" value="{PERMANENT_LINK}" maxLength="255" size="80" class="verdanaSmall" onClick='highlight(this);'>
+  </form>  </td>
+  </tr>
+  <tr>
+  <td width="159" align="left"  bgcolor="#F5F5F5"><strong>
+  	&nbsp;&nbsp;Web Page Name:</strong> </td>
+  <td width="425" align="left"  bgcolor="#F5F5F5">{NAME}</td>
+  </tr>
+  <tr>
+    <td width="159" align="left"  bgcolor="#F5F5F5"><strong>
+  	&nbsp;&nbsp;Selected Page Type:</strong> </td>
+    <td width="425" align="left"  bgcolor="#F5F5F5">{PAGE_TYPE}</td>
+  </tr>
+  <tr>
+    <td width="159" align="left" valign="top"  bgcolor="#F5F5F5"><strong>
+  	&nbsp;&nbsp;Template:</strong> </td>
+    <td width="425" align="left"  bgcolor="#F5F5F5">{TEMPLATE_NAME}<br>{TEMPLATE_FILE_NAME}</td>
+  </tr>
+  <tr>
+    <td width="159" align="left"  bgcolor="#F5F5F5"><strong>
+  	&nbsp;&nbsp;Meta Settings</strong></td>
+    <td width="425" align="left"  bgcolor="#F5F5F5">&nbsp;</td>
+  </tr>
+  <tr>
+  <td align="center"  bgcolor="#F5F5F5" colspan="2">
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td width="79" align="left" valign="top">Title</td>
+		<td width="469" align="left" valign="top" class="verdanaSmall">{TITLE}
+		</td>
+	  </tr>
+	  <tr>
+		<td width="79" align="left" valign="top">Keywords</td>
+		<td width="469" align="left" valign="top" class="verdanaSmall">
+		  {KEYWORDS}
+		</td>
+	  </tr>
+	  <tr>
+		<td width="79" align="left" valign="top">Description</td>
+		<td width="469" align="left" valign="top" class="verdanaSmall">
+		{DESCRIPTION}
+		</td>
+	  </tr>
+	</table>
+  </td>
+  </tr>
+</table>
+  
+<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<a name="tags"></a>
+<!-- BEGIN DYNAMIC BLOCK: tag_row -->
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+    <tr>
+    <td align="left"><div class="GrayBorder"><div class="MenuTitle">
+		<table width="610"  border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td width="457" align="left" class="verdana10"><strong>Zone: </strong> {TAG_NAME} - {TAG}</td>
+		<td width="153" align="right"> 
+		<a href="{ADD_C_LINK}" class="RedBoldLink">Add Content Article</a> 
+		&nbsp;&nbsp;
+		</td>
+	  </tr>
+	</table>
+
+	
+	</div></div></td>
+  </tr>
+</table>
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="web_page_update">
+  <input type="hidden" name="web_page_id" value="{WEB_PAGE_ID}">
+  <input type="hidden" name="template_czone_id" value="{TEMPLATE_CZONE_ID}">
+  <input type="hidden" name="umode" value="{UMODE}">
+  <input type="hidden" name="act" value="web_page_content-sort_order_update">
+
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="6" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="430" height="20" bgcolor="#E8E8E8"><strong>Title</strong></td>
+			<td width="76" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Sort&nbsp;Order&nbsp;</strong></td>
+			<td width="78" align="center" bgcolor="#E8E8E8"><strong>Action</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: content_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="6" height="20">&nbsp;</td>
+			<td width="430" height="20">{C_TITLE}</td>
+			<td width="76" align="center"><input type=text name="sort_order[{WEB_PAGE_CONTENT_ID}]" value="{SORT_ORDER}" maxLength="4" size="5" class="txtField"></td>
+			<td width="78" align="center" class="verdanaSmall">
+			  <a href="{EDIT_C_LINK}" class="verdanaSlimLinkRed">Edit</a> /
+              <a href="{DELETE_C_LINK}" class="verdanaSlimLinkRed" onclick="javascript:return confirm('Are you sure about deleting this Content Article?');">Delete</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	   <!-- END DYNAMIC BLOCK: content_row -->
+		  <tr bgcolor="#E8E8E8">
+			<td width="6" height="20">&nbsp;</td>
+			<td width="430" height="20">&nbsp;</td>
+			<td width="76" align="center"><span class="verdanaSmall">
+			  <input type="submit" name="update" value="Update" class="button">
+			</span></td>
+			<td width="78" align="center" class="verdanaSmall">&nbsp;
+			</td>
+		  </tr>
+	   
+</table>
+</form>
+ <!-- END DYNAMIC BLOCK: tag_row -->
+<table width="590" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="590" height="20">&nbsp;</td>
+  </tr>
+</table>
+

@@ -1,0 +1,54 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="link_category_add">
+  <input type="hidden" name="link_category_id" value="{LINK_CATEGORY_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Active</strong></td>
+    <td width="385" align="left" valign="top" class="verdanaSmall" bgcolor="#F5F5F5">
+	<input name="active" type="checkbox" value="1" {ACTIVE_CHECKED}>&nbsp;Check to show on website.
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#FFFFFF" ><strong>Select Parent Category *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#FFFFFF">
+	<select name="parent_id" class="DDBox1"><option value="">&nbsp;&nbsp;</option>
+	{CATEGORY}
+    </select></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Name *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="name" value="{NAME}" maxLength="255" size="30" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">Sort Order</td>
+    <td width="385" align="left" valign="top"><input type=text name="sort_order" value="{SORT_ORDER}" maxLength="4" size="5" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">&nbsp;</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+</table>
+</form>

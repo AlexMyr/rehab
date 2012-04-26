@@ -1,0 +1,94 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="web_page_edit">
+  <input type="hidden" name="web_page_id" value="{WEB_PAGE_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5"><strong>Web Page Name *</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type=text name="name" value="{NAME}" maxLength="255" size="30" class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">Selected Page Type</td>
+    <td width="385" align="left" valign="top">
+			{PAGE_TYPE}
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">Template</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5">
+			{TEMPLATE_NAME}<br>{TEMPLATE_FILE_NAME}
+	</td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  </table>
+  
+<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="592" border="0" cellspacing="0" cellpadding="2" align="center" class="GrayBorder">
+  <tr>
+  <td width="592" align="left"  bgcolor="#F5F5F5">
+  	Meta Settings</td>
+  </tr>
+  <tr>
+  <td width="592" align="center"  bgcolor="#F5F5F5">
+  	<table width="556" border="0" cellspacing="0" cellpadding="2">
+	  <tr>
+		<td width="111" align="left" valign="top"><strong>Title</strong></td>
+		<td width="437" align="left" valign="top"><input type=text name="title" value="{TITLE}" maxLength="255" size="70" class="txtField">
+		</td>
+	  </tr>
+	  <tr>
+		<td width="111" align="left" valign="top"><strong>Keywords</strong></td>
+		<td width="437" align="left" valign="top">
+		  <textarea name="keywords" cols="65" rows="5" class="txtField">{KEYWORDS}</textarea>
+		</td>
+	  </tr>
+	  <tr>
+		<td width="111" align="left" valign="top"><strong>Description</strong></td>
+		<td width="437" align="left" valign="top">
+		<textarea name="description" cols="65" rows="5" class="txtField">{DESCRIPTION}</textarea>
+		</td>
+	  </tr>
+	</table>
+  </td>
+  </tr>
+  </table>
+  
+<table width="592" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="620" border="0" cellspacing="0" cellpadding="2">
+    <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5">&nbsp;</td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>
+

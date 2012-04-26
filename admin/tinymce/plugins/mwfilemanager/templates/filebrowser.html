@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>File Browser</title>
+<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+<script language="javascript" type="text/javascript" src="../../utils/mctabs.js"></script>
+<script type="text/javascript" src="jscripts/functions.js"></script>
+<style type="text/css">
+.file_wrapper div.panel {
+	display: none;
+}
+
+.file_wrapper div.current {
+	display: block;
+	width: 100%;
+	height: 120px;
+	overflow: visible; /* Should be auto but that breaks Safari */
+}
+
+.file_wrapper {
+	border: 1px solid #919B9C;
+	border-top: 0px;
+	padding: 10px;
+	padding-top: 5px;
+	clear: both;
+	background-color: white;
+}
+/*asda*/
+.file2_wrapper div.panel {
+	display: none;
+}
+
+.file2_wrapper div.current {
+	display: block;
+	width: 100%;
+	height: 300px;
+	overflow: visible; /* Should be auto but that breaks Safari */
+}
+
+.file2_wrapper {
+	border: 1px solid #919B9C;
+	border-top: 0px;
+	padding: 10px;
+	padding-top: 5px;
+	clear: both;
+	background-color: white;
+}
+.error{
+	font-weight:bold;
+	font-size:11px;
+	color:#CC0000;
+}
+</style>
+</head>
+<body>
+<div class="file2_wrapper" style="border-top:1px solid #CCCCCC">
+  <div id="general_panel" class="file2 current">
+    <fieldset>
+    <legend>{$lang_file_browser}</legend>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="31%" valign="top" style="border-right:1px solid #CCCCCC;padding-right:8px"> {$lang_browser_location}:<br /> 
+          {LOC}
+          <div style="overflow:auto;height:252px;">
+            <!-- BEGIN DYNAMIC BLOCK: folders_row -->
+            <div><img src="img/folder.gif" alt="" width="18" height="18" hspace="2" align="absmiddle" /><a href="index.php?type=file&amp;path={PATH}">{FOLDER}</a></div>
+            <!-- END DYNAMIC BLOCK: folders_row -->
+        </div></td>
+        <td width="69%" valign="top" style="padding-left:8px;"><div style="overflow:auto;height:278px;">
+            <!-- BEGIN DYNAMIC BLOCK: files_row -->
+<div style="padding:5px;color:#333333;border-top:1px solid #000000" id="file{IMG_ID}" onclick="selectFile('file{IMG_ID}','{IMG}')">
+            <div style="float:left;width:70%"><img src="img/page.png" alt="" width="16" height="16" hspace="4" align="absmiddle" /><a href="javascript:void(0)" onclick="selectFile('file{IMG_ID}','{IMG}')">{CAPTION}</a></div>			
+			<div  style="text-align:right"><a href="index.php?type=file&amp;act=del&amp;location={DIR}&amp;file={FILE}" onclick="return delFile()"><img src="img/cross.png" alt="Delete File" width="16" height="16" hspace="4" border="0" align="absmiddle" /></a><img src="img/magnifier.png" alt="Preview File" width="16" height="16" hspace="4" border="0" align="absmiddle" onclick="show('{IMG}')" /></div>
+			</div>
+            <!-- END DYNAMIC BLOCK: files_row -->
+        </div></td>
+      </tr>
+    </table>
+    </fieldset>
+  </div>
+</div>
+<div class="tabs" style="margin-top:3px;">
+  <ul>
+    <li id="upload_tab" class="current"><span><a href="javascript:mcTabs.displayTab('upload_tab','upload_panel');" onMouseDown="return false;">{$lang_file_upload}</a></span></li>
+    <li id="folder_tab"><span><a href="javascript:mcTabs.displayTab('folder_tab','folder_panel');" onMouseDown="return false;">{$lang_file_folder}</a></span></li>
+  </ul>
+</div>
+<div class="file_wrapper" style="height:120px;">
+  <div id="upload_panel" class="file current">
+    <fieldset>
+    <legend>{$lang_file_upload}</legend>
+    <form action="index.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="type" value="file"  />
+      <input type="hidden" name="location" value="{LOC}" />
+      <input type="hidden" name="act" value="upload"  />
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+	  <tr>
+	  <td colspan="3" align="center" class="error">{ERROR_UPLOAD}</td>
+	  </tr>
+        <tr>
+          <td width="23%">{$lang_upload_to}</td>
+          <td width="57%">{LOC}<br /></td>
+          <td width="20%" rowspan="3"><img src="img/medeea_logo.gif" alt="" width="179" height="80" border="0" align="absmiddle" /></td>
+        </tr>
+        <tr>
+          <td><label id="upload" for="filename">{$lang_file}</label></td>
+          <td><input type="file" name="filename"  size="40" style="border:1px solid #CCCCCC" /></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><input type="submit" value="{$lang_upload}" name="submit" /></td>
+        </tr>
+      </table>
+    </form>
+    </fieldset>
+  </div>
+  <div id="folder_panel" class="panel">
+    <fieldset>
+    <legend>{$lang_image_folder}</legend>
+    <form action="index.php" method="post">
+      <input type="hidden" name="type" value="file"  />
+      <input type="hidden" name="location" value="{LOC}" />
+      <input type="hidden" name="act" value="create"  />
+      <table width="100%" border="0" cellspacing="5" cellpadding="0">
+	   <tr>
+	  <td colspan="3" align="center" class="error">{ERROR_CREATE}</td>
+	  </tr>
+        <tr>
+          <td width="33%">{$lang_file_create}</td>
+          <td width="47%">{LOC}<br /></td>
+          <td width="20%" rowspan="3"><img src="img/medeea_logo.gif" alt="" width="179" height="80" border="0" align="absmiddle" /></td>
+        </tr>
+        <tr>
+          <td><label id="upload" for="folder">{$lang_folder_name} </label></td>
+          <td><input type="text" name="folder"  size="40" style="border:1px solid #CCCCCC" /></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><input type="submit" value="{$lang_create_folder}" name="submit" /></td>
+        </tr>
+      </table>
+    </form>
+    </fieldset>
+  </div>
+</div>
+<div class="mceActionPanel">
+  <div style="float: left">
+    <input type="button" id="insert" name="insert" value="{$lang_ok}" onClick="insertAction();" />
+  </div>
+  <div style="float: right">
+    <input type="button" id="cancel" name="cancel" value="{$lang_cancel}" onClick="cancelAction();" />
+  </div>
+</div>
+</body>
+</html>

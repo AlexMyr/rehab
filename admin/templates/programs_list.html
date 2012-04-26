@@ -1,0 +1,60 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><div class="PageTitle">{PAGE_TITLE}</div></td>
+	</tr>
+	<tr>
+		 <td align="left">
+		 	<div class="GrayBorder">
+				<div class="MenuTitle">
+					<form method="post" action="index.php">
+						<span style="font-size:12px; font-weight:normal">Search:</span>
+						<input type="hidden" name="pag" value="{PAG}" />
+						<input type="text" name="search_key" value="{SEARCH}" maxLength="255" size="30" class="txtField" />
+						<input type="submit" name="search" class="button" value="Search" />
+					</form>
+					<form method="post">
+					<input type="submit" value="Change sort order" />
+					<input type="hidden" name="pag" value="{PAG}" />
+					<input type="hidden" name="act" value="programs-change_sort_order" />
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+{MESSAGE}
+
+<table width="620"  cellspacing="0" cellpadding="0">
+	<tr bgcolor="#E8E8E8">
+		<td width="6" height="20">&nbsp;</td>
+		<td><strong>Sort</strong></td>
+		<td><strong>Program Code</strong></td>
+		<td><strong>Program Title</strong></td>
+		<td><strong>LineArt</strong></td>
+		<td><strong>Image</strong></td>
+		<td><strong>Description</strong></td>
+		<td><strong>Category</strong></td>
+		<td style="text-align:right; padding-right:25px;"><strong>Action :</strong></td>
+	</tr>
+	<!-- BEGIN DYNAMIC BLOCK: programs_list -->
+	<tr>
+		<td height="1" colspan="8" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"><img src="../img/spacer.gif" height="1" width="1"></td>
+	</tr>
+	<tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';" >
+		<td width="6" height="20">&nbsp;</td>
+		<td>{S_ORDER}</td>
+		<td>{PROGRAMS_CODE}</td>
+		<td>{PROGRAMS_TITLE}</td>
+		<td>{LINEART}</td>
+		<td>{IMAGE}</td>
+		<td>{DESCRIPTION}</td>
+		<td>{CATEGORY}</td>
+		<td align="center" class="verdanaSmall" width="100px">
+			<a class="verdanaSlimLinkRed" href="{EDIT_LINK}">Edit</a> / 
+			<a class="verdanaSlimLinkRed" href="{DELETE_LINK}">Delete</a>
+		</td>
+	</tr>
+	<!-- END DYNAMIC BLOCK: programs_list -->
+	<tr>
+		<td colspan="8" style="text-align:right; padding-right:15px; background-color:#E8E8E8; height:20px;"></form></td>
+	</tr>
+</table>

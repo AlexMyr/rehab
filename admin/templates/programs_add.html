@@ -1,0 +1,101 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><div class="PageTitle">{PAGE_TITLE}</div></td>
+	</tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+<form action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="pag" value="{PAG}" />
+<input type="hidden" name="act" value="{ACT}" />
+<input type="hidden" name="programs_id" value="{PROGRAMS_ID}" />
+<br />
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="14">&nbsp;</td>
+		<td bgcolor="#F5F5F5" align="left" valign="top">
+			<strong>Active</strong>
+		</td>
+		<td bgcolor="#F5F5F5" colspan="2" align="left" valign="top" class="verdanaSmall">
+			<input name="active" type="checkbox" value="1" {ACTIVE_CHECKED}>
+			&nbsp;Click to show on site 
+		</td>
+		<td width="15">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><strong>Category :</strong></td>
+		<td colspan="2">
+			<select name="category_id" class="DDBox1">
+				<option value="">Select the Category</option>
+				{CATEGORY}
+			</select>
+		</td>
+		<td>&nbsp;</td>
+	</tr>
+  <tr>
+		<td>&nbsp;</td>
+		<td align="center" colspan="3">
+			<div class="RedBorder">
+				<div class="FastMenu"><a href="{CATEGORIES_LINK}" class="RedBoldLink2">Copy to Category</a>&nbsp;</div>
+			</div>
+		</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="#F5F5F5"><strong>Program Code :</strong></td>
+		<td bgcolor="#F5F5F5" colspan="2"><input type="text" name="programs_code" value="{PROGRAMS_CODE}" class="txtField" size="38" /></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="#F5F5F5"><strong>Program Title :</strong></td>
+		<td bgcolor="#F5F5F5" colspan="2"><input type="text" name="programs_title" value="{PROGRAMS_TITLE}" class="txtField" size="38" /></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><strong>Browse for lineart image : </strong></td>
+		<td><input type="file" name="lineart" maxlength="255" size="30"  class="txtField" /></td>
+		<td align="right">{THUMB_LINEART}</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="#F5F5F5"><strong>Browse for exercise image : </strong></td>
+		<td bgcolor="#F5F5F5"><input type="file" name="image" maxlength="255" size="30"  class="txtField" /></td>
+		<td bgcolor="#F5F5F5" align="right">{THUMB_IMAGE}</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td align="left" valign="top"><strong>Sort Order</strong></td>
+		<td align="left" valign="top" colspan="2" >
+			<input type=text name="sort_order" value="{SORT_ORDER}" maxLength="4" size="5" class="txtField">
+		</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="#F5F5F5" colspan="3" height="5">&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan="3"><strong>Program Text : </strong></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan="3">{DESCRIPTION_TEXTAREA}</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="#F5F5F5" colspan="3"><input type="submit" name="send" value="add new program" class="button" /></td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+</form>

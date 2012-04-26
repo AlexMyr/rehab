@@ -1,0 +1,85 @@
+	<div id="content" class="siteContent dashboard scrolledList">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<span class="pageTitle">{PAGE_TITLE}</span>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="contactInfo floatLft">
+			<h2>Register</h2>
+			<p>We do NOT store your credit card details, this requirement is used by PayPal for secure reoccurring bill payments.</p>
+<form class="main_form" action="index.php" method="POST" style="margin:10px 0px 0px 10px;">
+  <input type="hidden" name="act" value="member-pay">
+  <input type="hidden" name="pag" value="profile_do_payment">
+  <input type="hidden" name="price_id" value="{PRICE_ID}">
+  <fieldset>
+    <!-- p>
+      <label for="billingperiod" ><strong>BILLINGPERIOD*:</strong></label>
+       <select name="billingperiod">
+            <option value="d">day</option>
+            <option value="m">month</option>
+            <option value="y">year</option>            
+       </select>
+    </p -->
+    <!-- p class="redBold">If your Credit Card has other details on it please change the following, else you can add just the Credit Card details to proceed!</p -->
+    <p>
+      <label for="first_name" class="label"><strong>First Name*:</strong></label>
+      <input id="first_name" name="first_name" value="{FIRST_NAME}" type="text" class="textField">
+    </p>
+     <p>
+      <label for="surname" class="label"><strong>Surname*:</strong></label>
+      <input id="surname" name="surname" value="{SURNAME}" type="text" class="textField">
+    </p>
+     <p>
+      <label for="email" class="label"><strong>Email*:</strong></label>
+      <input id="email" name="email" value="{EMAIL}" type="text" class="textField">
+    </p>
+     <p>
+      <label for="country_id" class="label"><strong>Country*:</strong></label>
+       <select id="country_id" name="country_id" class="selectField">
+            <option value="0">Select</option>
+            
+      {COUNTRY_DD}	    
+        
+          </select>
+    </p>
+     <p>
+      <label for="credit_card_type" class="label"><strong>Credit Card Type*:</strong></label>
+       <select id="credit_card_type" name="credit_card_type" class="selectField">
+            <option value="Visa">Visa</option>
+            <option value="MasterCard">MasterCard</option>
+            <option value="Discover">Maestro</option>
+            
+       </select>
+    </p>
+     <p>
+      <label for="credit_card_no" class="label"><strong>Credit Card Number.*:</strong></label>
+      <input id="credit_card_no" name="credit_card_no" value="{CREDIT_CARD_NO}" type="text" class="textField">
+    </p>
+    <p>
+      <label for="cvv2" class="label"><strong>CVV2 Number*:</strong></label>
+      <input id="cvv2" name="cvv2" value="{CVV2}" type="text" class="textField">
+    </p>
+    <p>
+      <label for="expire_date" class="label"><strong>Expire Date*:</strong></label>
+       <select name="e_month" class="selectMonthField"> 
+          {E_MONTH}                            
+                           
+        </select> 
+         <select name="e_year" class="selectYearField"> 
+          {E_YEAR}                            
+                           
+        </select> 
+     
+    </p>
+    <div class="buttons login">
+      <button type="submit"><b>&nbsp;</b><span>Register</span></button>
+    </div>
+  </fieldset>
+</form>
+</div>
+		<!--div class="contactHeadedInfo floatLft">
+			<h2>Personalise your Headed Paper</h2>
+			<a class="moreBtn" href="index.php?pag=profile_header_paper"><span>Edit Header Paper</span></a>
+		</div-->
+		<div class="clearAll"></div>
+	</div>

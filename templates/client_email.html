@@ -1,0 +1,77 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine"><span class="pageTitle">{CLIENT_NAME}</span> / Client Record</h2>
+		<div class="sidebar">
+			<form action="index.php" method="post">
+				<!-- input type="hidden" name="act" value="client-add_exercise" -->
+				<input type="hidden" name="pag" value="client_add_exercise">
+				<input type="hidden" name="client_id" value="{CLIENT_ID}">
+						
+				<div class="buttons deleteClient"><button type="submit"><b>&nbsp;</b><span>Add new Exercise</span></button></div>
+			</form>
+			<div class="greyBorderBox">
+				<img src="img/exercises_top.png" class="greyBorderBoxTop">
+				<div class="greyBorderBoxContent">
+					<h2>Client Info</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="client-update_client">
+						<input type="hidden" name="pag" value="client">
+						<input type="hidden" name="client_id" value="{CLIENT_ID}">
+						
+						<label class="label" for="first_name">First Name<sup>*</sup>:</label>
+						<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+							
+						<label class="label" for="surname">Surname<sup>*</sup>:</label>
+						<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
+								
+						<label class="label" for="email">Email:</label>
+						<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />
+								
+						<label class="label" for="client_note">Description of Programme:</label>
+						<textarea class="textArea" id="client_note" name="client_note" >{CLIENT_NOTE}</textarea>
+							
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save Changes</span></button></div>
+					</form>
+				</div>
+				<img src="img/exercises_bottom.png" class="greyBorderBoxBottom">
+			</div>
+			<form action="index.php" method="post">
+				<input type="hidden" name="act" value="client-delete_client">
+				<input type="hidden" name="pag" value="client_delete">
+				<input type="hidden" name="client_id" value="{CLIENT_ID}">
+				<input type="hidden" name="client_name" value="{CLIENT_NAME}">
+						
+				<div class="buttons deleteClient"><button class="del" type="submit"><b>&nbsp;</b><span>x Delete this Client</span></button></div>
+			</form>
+		</div>
+		<div class="clientList">
+			<div class="clientListTitle">
+				<span class="creationDate">Date Created</span>
+				<span class="notes">Notes</span>
+				<span class="actions">Actions</span>
+			</div>
+<!-- BEGIN DYNAMIC BLOCK: client_record_line -->
+			<div class="clientListRow clientRecord" id="{EXERCISE_ID}">
+				<span class="creationDate">
+					<h2>{CREATE_DATE}</h2>
+					<p>Last Modified: {MODIFY_DATE}</p>
+				</span>
+				<span class="notes">{CLIENT_NOTE}</span>
+				<span class="actions">
+					<a href="index.php?pag=client_update_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="edit">edit</a>
+					<a href="index.php?pag=client&act=client-mail_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="mail">mail</a>
+					<a href="index.php?pag=exercisepdf&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="print">print</a>
+					<a href="index.php?pag=client&act=client-delete_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="delete">delete</a>
+				</span>
+			</div>
+<!-- END DYNAMIC BLOCK: client_record_line -->
+<ul class="paginate {HIDE_NAV}">
+<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; Previous</span></a></li>
+{PAGG}
+<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>Next &gt;</span></a></li>
+<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>Last</span></a></li>
+</ul>
+
+		</div>
+		<div class="clearAll"></div>
+	</div>

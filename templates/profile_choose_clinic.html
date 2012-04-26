@@ -1,0 +1,31 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<span class="pageTitle">Setup Your Account - Choose your licence</span>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="contactInfo floatLft">
+			<h2>Single user licence</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="member-update_licence">
+						<input type="hidden" name="pag" value="profile">
+						<input type="hidden" name="is_clinic" value="0">
+								
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save Single user licence</span></button></div>
+					</form>
+		</div>
+		<div class="contactHeadedInfo floatLft">
+			<h2>Clinic licence</h2>
+					<form action="index.php" method="post">
+						<input type="hidden" name="act" value="member-update_licence">
+						<input type="hidden" name="pag" value="profile">
+						<input type="hidden" name="is_clinic" value="1">
+						
+						<label class="label" for="clinic_name">Clinic Name:</label>
+						<input class="textField" type="text" id="clinic_name" name="clinic_name" value="" />
+								
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save Clinic licence</span></button></div>
+					</form>
+		</div>
+		<div class="clearAll"></div>
+	</div>

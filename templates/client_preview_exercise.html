@@ -1,0 +1,99 @@
+<div id="content" class="siteContent dashboard_exercise "> 
+		{MESSAGE}
+  <div class="preview">
+    <form action="index.php" method="post" style="width: 652px;" id="exercise_form">
+      <input type="hidden" name="act" value="{ACT}" />
+      <input type="hidden" name="pag" value="{PAG}" />
+      <input type="hidden" name="client_id" value="{CLIENT_ID}" />
+      <input type="hidden" name="exercise_id" value="{EXERCISE_ID}" />
+      <input type="hidden" name="exercise_plan_id" value="{EXERCISE_PLAN_ID}">
+      <input type="hidden" name="mode" value="{MODE}">
+      <span class="preview_buttons"> 
+			<a class="moreBtn" id="2" href="{ADD_EXERCISE}"><span>{LINK_TEXT_3}</span></a>
+			<a class="moreBtn" id="2" href="{MAKE_MORE_CHANGES}" style="display:{VIS};" ><span>{LINK_MAKE MORE_CHANGES}</span></a>			
+			<div class="buttons" {VISIBILITY}>
+				<button type="submit"><b>&nbsp;</b><span>Save & Preview</span></button>
+			</div>
+			<a class="moreBtn discardBtn" id="2" href={DISCARD} target="{TARGET}"><span>{LINK_TEXT}</span></a>
+			<a class="moreBtn" href="{EMAIL_URL}" style="display:{VIS}{HIDE_EMAIL};" ><span>Email to Client</span></a>
+			<a class="moreBtn" href="index.php?pag=dashboard" style="display:{VIS};" ><span>Finish</span></a>
+			<div class="clearAll"></div>
+      </span>
+	  <span class="header_infos"> 
+		<div class="contact-wrapper">
+	  {THE_IMG}
+			<div class="contact">
+				{COMPANY}
+				{ADDRESS}
+				{CITY}
+				{POST_CODE}
+				<br>
+			</div>
+			<div class="tel">
+				{PHONE}
+				{MOBILE}
+				{FAX}
+				{EMAIL}
+				{WEBSITE}
+				<br>
+			</div>
+			<div class="clearAll"></div>
+			<div class="contact1">
+				{CLIENT_NAME}
+			</div>
+			<div class="tel">
+				{CURRENT_DATE}
+			</div>
+			<div class="clearAll"></div>
+		</div>
+      </span>
+      <!-- BEGIN DYNAMIC BLOCK: exercise_line -->
+      <div class="exercise" id="exercise_preview_{PROGRAM_ID}"> 
+      <img src="upload/{IMG}" alt="exercise image" width="256" height="256" align="left" class="displayBlock"/> 
+      {EXERCISE_TITLE}
+      {EXERCISE_DESC}
+	  <div class="spacing">
+        <label for="sets">Sets</label>
+        <input type="text" name="sets{PROGRAM_ID}" value="{SETS}" class="input_exercise"  {VISIBILITY} />
+        <span {SPAN_VISIBILITY}>{SETS}</span>
+        <label for="repetitions">Repetitions</label>
+        <input type="text" name="repetitions{PROGRAM_ID}" value="{REPETITIONS}" class="input_exercise" {VISIBILITY} />
+        <span {SPAN_VISIBILITY}>{REPETITIONS}</span>
+        <label for="time">Time</label>
+        <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" {VISIBILITY} />
+        <span {SPAN_VISIBILITY}>{TIME}</span> </div>
+	  </div>
+      <!-- END DYNAMIC BLOCK: exercise_line -->
+	  <p>Aditional Notes</p>
+      {EXERCISE_NOTES}
+    </form>
+  </div>
+  <div class="clearAll"></div>
+  </div>
+<script type="text/javascript">
+	jQuery('#exercise_form').validate({
+		errorClass: "error_validate"
+	});
+	jQuery.validator.addMethod("maxCustom", function(value, element) {
+	    return this.optional(element) || (parseInt(value) <= 999);
+	}, "*");	
+	jQuery('.input_exercise').each(function(){
+        $(this).rules("add", {
+            maxCustom : true
+        });
+    });
+    
+    jQuery('.discardBtn').click(function(event){
+    	if(jQuery(this).text() == 'Discard')
+    	{
+    		event.preventDefault();
+			var url = jQuery(this).attr('href');
+			jQuery.msgBox.confirm(
+	            "You sure, you want to discard?",
+	            function(){window.location = url},
+	            true,
+	            {"title": "Are you sure?","width": 200}
+	        );
+    	}
+	});
+</script>

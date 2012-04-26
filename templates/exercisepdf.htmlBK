@@ -1,0 +1,105 @@
+<style>
+.list {
+    margin-top: 10px;
+    width: auto;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 25px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    color: #898989;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+}
+
+.list .th {
+    background-color:#ebebeb;
+    border-bottom: 1px solid #D7D7D7;
+    color: #474747;
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.list td {
+    border: 1px solid #D7D7D7;
+    padding: 10px 10px 10px 10px;
+   	vertical-align:middle;
+}
+
+.list .even {
+	  background-color: #F5F5F5;
+}
+
+h1 {
+    color: #111111;
+    font-size: 30px;
+    font-weight: bold;
+}
+h2 {
+	color: #3D3D3D;
+    font-size: 30px;
+    font-weight: bold;
+}
+</style>
+{TEST}
+<h1>Title: {TITLE}</h1>
+<h1>User(Machine) / Group: {USER_DEPARTMENT_NAME}</h1>
+<h2>Time period: {TIME_PERIOD}</h2>
+<h2>Summary of the times of the day</h2>
+<table cellspacing="0" class="list" cellpadding="4">
+    <tr>
+      <td class="th" style="width:200px"><strong>Hour</strong></td>
+      <td class="th" style="width:200px;"><strong>Active %</strong></td>
+      <td class="th" style="width:237.5px;"><strong>Idle %</strong></td>
+    </tr>
+    <!-- BEGIN DYNAMIC BLOCK: day_summary_row -->
+    <tr class="{DAY_CLASS}">
+      <td>{HOUR}</td>
+	  <td>{ACTIVE}</td>
+	  <td>{IDLE}</td>
+    </tr>
+    <!-- END DYNAMIC BLOCK: day_summary_row -->
+</table>
+<h2></h2>
+<h2>Summary of the weekdays</h2>
+<table cellspacing="0" class="list" cellpadding="4">
+    <tr>
+      <td class="th" style="width:200px"><strong>Day</strong></td>
+      <td class="th" style="width:200px;"><strong>Active(h)</strong></td>
+      <td class="th" style="width:237.5px;"><strong>Idle(h)</strong></td>
+    </tr>
+    <!-- BEGIN DYNAMIC BLOCK: week_summary_row -->
+    <tr class="{WEEK_CLASS}">
+      <td>{DAY}</td>
+	  <td>{WEEK_ACTIVE}</td>
+	  <td>{WEEK_IDLE}</td>
+    </tr>
+    <!-- END DYNAMIC BLOCK: week_summary_row -->
+</table>
+<h2></h2>
+<h2>Application Usage</h2>
+<table cellspacing="0" class="list" cellpadding="4">
+    <tr>
+      <td class="th" style="width:387.5px"><strong>Applications</strong></td>
+      <td class="th" style="width:100px;"><strong>%</strong></td>
+      <td class="th" style="width:50px;"><strong>Time(h)</strong></td>
+	  <td class="th" style="width:50px;"><strong>Time(m)</strong></td>
+      <td class="th" style="width:50px;"><strong>Time(s)</strong></td>
+    </tr>
+    <!-- BEGIN DYNAMIC BLOCK: application_summary_row -->
+    <tr class="{APPLICATION_CLASS}">
+      <td>{APPLICATION}</td>
+	  <td>{PROCENTAGE}</td>
+	  <td>{TIME_H}</td>
+	  <td>{TIME_M}</td>
+	  <td>{TIME_S}</td>
+    </tr>
+    <!-- END DYNAMIC BLOCK: application_summary_row -->
+</table>

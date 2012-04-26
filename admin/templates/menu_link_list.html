@@ -1,0 +1,84 @@
+
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td align="left"><div class="GrayBorder"><div class="MenuTitle">
+      <form name="search" action="index.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="pag" value="{PAGE}">
+		<table width="610" border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+			<td width="94">Switch Menu:</td>
+			<td width="516">
+			    <select name="menu_id" class="DDBox1" onchange="form.submit();">
+				  {MENU_LIST}
+				</select>
+			  <input type="submit" name="search1" value="Go" class="button">
+			</td>
+		  </tr>
+		</table>
+      </form>
+    </div> 
+    </div></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11" bgcolor="#E8E8E8">{MESSAGE}</td>
+  </tr>
+</table>
+<form name="order_update" action="index.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="pag" value="{PAGE}">
+<input type="hidden" name="act" value="menu_link-sort_order_update">
+<input type="hidden" name="menu_id" value="{MENU_ID}">
+<input type="hidden" name="offset" value="{OFFSET}">
+
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="4" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="464" height="20" bgcolor="#E8E8E8"><strong>Name</strong></td>
+			<td width="81" align="center" bgcolor="#E8E8E8" class="verdanaSmall"><strong>Sort&nbsp;Order&nbsp;</strong></td>
+			<td width="71" align="center" bgcolor="#E8E8E8"><strong>Action</strong></td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td height="1" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#CCCCCC"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- BEGIN DYNAMIC BLOCK: menu_link_row -->
+		  <tr bgcolor="{BG_COLOR}"  onMouseOver="this.bgColor='#CCCCCC';" onMouseOut="this.bgColor='{BG_COLOR}';">
+			<td width="4" height="20">&nbsp;</td>
+			<td width="464" height="20" align="left" valign="top">{SPACER}<a href="{EDIT_LINK}" class="verdanaLink">{NAME}</a></td>
+			<td width="81" align="center" valign="middle" class="verdanaSmall"><input type=text name="sort_order[{MENU_LINK_ID}]" value="{SORT_ORDER}" maxLength="4" size="5" class="txtField"></td>
+			<td width="71" align="center" class="verdanaSmall">
+			  <a href="{EDIT_LINK}" class="verdanaSlimLinkRed">Edit</a> /
+              <a href="{DELETE_LINK}" class="verdanaSlimLinkRed" onclick="javascript:return confirm('Are you sure about deleting this Menu Link?');">Delete</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td height="1" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+			<td align="center" bgcolor="#EEEEEE"><img src="../img/spacer.gif" height="1" width="1"></td>
+		  </tr>
+	    <!-- END DYNAMIC BLOCK: menu_link_row -->
+		  <tr>
+			<td width="4" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="464" height="20" bgcolor="#E8E8E8">&nbsp;</td>
+			<td width="81" align="center" bgcolor="#E8E8E8" class="verdanaSmall"><input type="submit" name="update" value="Update" class="button"></td>
+			<td width="71" align="center" bgcolor="#E8E8E8">&nbsp;</td>
+		  </tr>
+</table>
+</form>
+
+
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr bgcolor="#E8E8E8">
+    <td width="202" height="20" align="right" valign="middle">{BACKLINK}</td>
+    <td width="204" height="20" align="center" valign="middle" class="verdanaBlackSlim11">
+      <form name="pagination" method="post" action="index.php">
+        {PAG_DD}
+    </form></td>
+    <td width="214" height="20" valign="middle">{NEXTLINK}</td>
+  </tr>
+</table>

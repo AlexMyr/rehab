@@ -1,0 +1,65 @@
+[11-Apr-2012 10:29:29] PHP Fatal error:  Call to undefined method mysql_db::next() in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 10
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: tmpRes in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  fwrite(): supplied argument is not a valid stream resource in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 12
+[11-Apr-2012 10:29:46] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/rehabmyp/public_html/admin/php/statistic_export_users.php:12) in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 19
+[11-Apr-2012 10:29:46] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/rehabmyp/public_html/admin/php/statistic_export_users.php:12) in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 20
+[11-Apr-2012 10:29:46] PHP Notice:  Use of undefined constant FILE_NAME - assumed 'FILE_NAME' in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 23
+[11-Apr-2012 10:29:46] PHP Warning:  readfile(/home/rehabmyp/public_html/FILE_NAME) [<a href='function.readfile'>function.readfile</a>]: failed to open stream: No such file or directory in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 23
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  pr in /home/rehabmyp/public_html/admin/index.php on line 86
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  menu in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 45
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 54
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[11-Apr-2012 10:29:46] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[11-Apr-2012 10:30:19] PHP Notice:  Use of undefined constant FILE_NAME - assumed 'FILE_NAME' in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 23
+[11-Apr-2012 10:30:19] PHP Warning:  readfile(/home/rehabmyp/public_html/FILE_NAME) [<a href='function.readfile'>function.readfile</a>]: failed to open stream: No such file or directory in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 23
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  pr in /home/rehabmyp/public_html/admin/index.php on line 86
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  menu in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 45
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 47
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined index:  tag in /home/rehabmyp/public_html/admin/php/gen/menu.php on line 54
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[11-Apr-2012 10:30:19] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[11-Apr-2012 10:31:08] PHP Warning:  readfile(/home/rehabmyp/public_html/user_info.txt) [<a href='function.readfile'>function.readfile</a>]: failed to open stream: No such file or directory in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 23
+[11-Apr-2012 10:34:09] PHP Warning:  readfile() expects parameter 1 to be string, array given in /home/rehabmyp/public_html/admin/php/statistic_export_users.php on line 23

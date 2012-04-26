@@ -1,0 +1,88 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">{PAGE_TITLE}</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="member_add">
+  <input type="hidden" name="trainer_id" value="{MEMBER_ID}">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+  <table width="620" border="0" cellspacing="0" cellpadding="2">
+  
+    <tr height="25">
+      <td  align="left"  ><strong>email as Username</strong></td>
+      <td  align="left"  ><input type=text name="username" value="{USERNAME}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+  
+    <tr height="25">
+      <td  align="left"  ><strong>First Name</strong></td>
+      <td  align="left"  ><input type=text name="first_name" value="{FIRST_NAME}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    <tr height="25">
+      <td  align="left"  ><strong>Surname</strong></td>
+      <td  align="left"  ><input type=text name="surname" value="{SURNAME}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    
+    <tr height="25">
+      <td  align="left"  ><strong>Password</strong></td>
+      <td  align="left"  ><input type=password name="password" value="{PASSWORD}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    <tr height="25">
+      <td  align="left"  ><strong>Confirm Password</strong></td>
+      <td  align="left"  ><input type=password name="confirm_password" value="{CONFIRM_PASSWORD}" maxLength="255" size="30" class="txtform"></td>
+    </tr>        
+    <tr height="25">
+      <td align="left"  ><strong>Clinic Name <br>[leave blank if single user]</strong></td>
+      <td align="left"  ><input type=text name="clinic_name" value="{CLINIC_NAME}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    <tr height="25">
+      <td align="left"  ><strong>Email</strong></td>
+      <td  align="left"  ><input type=text name="email" value="{EMAIL}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    
+    <tr height="25">
+      <td align="left"  ><strong>Address</strong></td>
+      <td  align="left"  ><input type=text name="address" value="{ADDRESS}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    
+    <tr height="25">
+      <td align="left"  ><strong>City</strong></td>
+      <td  align="left"  ><input type=text name="city" value="{CITY}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    
+    <tr height="25">
+      <td align="left"  ><strong>Post Code</strong></td>
+      <td  align="left"  ><input type=text name="post_code" value="{POST_CODE}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    <tr height="25">
+      <td align="left"  ><strong>Website</strong></td>
+      <td  align="left"  ><input type=text name="website" value="{WEBSITE}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    <tr height="25">
+      <td align="left"  ><strong>Phone</strong></td>
+      <td  align="left"  ><input type=text name="phone" value="{PHONE}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    <tr height="25">
+      <td align="left"  ><strong>Mobile</strong></td>
+      <td  align="left"  ><input type=text name="mobile" value="{MOBILE}" maxLength="255" size="30" class="txtform"></td>
+    </tr>
+    
+    <tr style="display:{DISPLAY};">
+      <td align="left"  ><strong>User is logged In</strong></td>
+      <td  align="left"  ><input name="is_login" type="checkbox" value="1" {LOGGEDIN}></td>
+    </tr>
+    <tr>
+      <td width="224" height="25">&nbsp;</td>
+      <td width="210" align="left" valign="top"><input type="submit" name="save" value="Save" class="button" /></td>
+      <td width="160" align="left" valign="top">&nbsp;</td>
+      <td width="10" height="25">&nbsp;</td>
+    </tr>
+    </tr>
+  </table>
+</form>
