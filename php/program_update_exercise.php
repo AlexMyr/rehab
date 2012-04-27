@@ -187,7 +187,7 @@ if($glob['catID']&&$glob['program_id'])
 							WHERE
 								programs_in_category.category_id=".$glob['catID']." 
 								AND programs.active = 1
-							GROUP BY programs_id
+							GROUP BY programs.programs_id
 							ORDER BY programs.sort_order ASC
 							");
 	$i=0;

@@ -55,32 +55,33 @@ if($user)
 	if(isset($_COOKIE['test']))
 	{
 		
-	//check existing
-	$dbu->query("select * from trainer where fb_id = ".$user);
-	if($dbu->move_next())
-	{
-		header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
-		exit;
-		//$dbu->query("select * from trainer where fb_id = ".$user_profile['id']);
-	}
-	else
-	{
-			$dbu->query("
-									INSERT INTO 
-												trainer 
-									SET 
-												username='".$user_profile['email']."', 
-												email='".$user_profile['email']."',
-												password='', 
-												create_date=NOW(), 
-												is_trial='1', 
-												expire_date='', 
-												active = '1',
-												fb_id = '".$user_profile['id']."'
-									");
-		header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
-		exit;
-	}
+        //check existing
+        $dbu->query("select * from trainer where fb_id = ".$user);
+        if($dbu->move_next())
+        {
+            header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
+            exit;
+            //$dbu->query("select * from trainer where fb_id = ".$user_profile['id']);
+        }
+        else
+        {
+                $dbu->query("
+                                        INSERT INTO 
+                                                    trainer 
+                                        SET 
+                                                    username='".$user_profile['email']."', 
+                                                    email='".$user_profile['email']."',
+                                                    password='', 
+                                                    create_date=NOW(), 
+                                                    is_trial='1', 
+                                                    expire_date='', 
+                                                    active = '1',
+                                                    fb_id = '".$user_profile['id']."'
+                                        ");
+            header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
+            exit;
+        }
+    }
 }
 else
 {
@@ -120,5 +121,4 @@ foreach($tags as $name => $row){
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');
 return $ft->fetch('CONTENT');
-
 ?>

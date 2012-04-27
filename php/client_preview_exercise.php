@@ -3,7 +3,7 @@
 * @Author: Tinu Coman                                                   *
 ************************************************************************/
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
-$ft->define( array(main => "client_preview_exercise.html"));
+$ft->define( array('main' => "client_preview_exercise.html"));
 $ft->define_dynamic('exercise_line','main');
 
 $dbu = new mysql_db;

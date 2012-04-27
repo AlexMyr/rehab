@@ -1,0 +1,363 @@
+/*
+dump = function(string)
+	{
+		console.log(string);
+	}
+*/
+doExerciseErr = function(textString)
+	{
+		var error = $('<span/>')
+			.attr('id','error')
+			.css('padding', '5px 10px')
+			.css('display', 'inline-block');
+		if($("#exercise_id").attr('value')=="") 
+			{
+				if($("#error").length === 0)
+					{
+						if($("#program_list").length > 0)
+						{
+							error.prependTo($('#program_list'));
+							$('#error').text(textString);
+							$('#error').fadeOut(5000,function(){$('#error').remove()});
+						}
+					}
+				else 
+					{
+						$('#error').text(textString); 			
+							$('#error').fadeOut(5000,function(){$('#error').remove()});
+					}
+				return false
+			}
+		$('#error').fadeOut(5000,function(){$('#error').remove()});
+	}
+doSave = function()
+	{
+		if($("#sortable").length > 0)
+			{
+				var exercises="";
+				$("#sortable li").each(function(i, item) 
+					{
+						if($(this).attr('id')!="") exercises += parseInt($(this).attr('id'))+",";
+					});
+				$("#exercise_id").attr('value',exercises);
+			}
+		if($("#exercise_id").attr('value')=="") 
+			{
+				doExerciseErr('you need to add exercises before trying to save!');
+			}
+		else if($("#exercise_id").attr('value')!="") $("form#exerciseAddForm")[0].submit();
+	}
+makeSortable = function()
+	{
+		if($("#sortable").length > 0)
+			{
+				$( "#sortable" ).sortable({
+					revert: true,
+					axis: 'y',
+					containment: '.sidebar',
+					start: function(event, ui)
+							{
+								$('span .exercise_text').removeClass('displayBlock');
+							}
+				});
+			}		
+	}
+makeDelete = function()
+	{
+		if($("#sortable").length > 0)
+			{
+				$( "li a.exercise_del" ).each(function(i, item) 
+					{
+						if($(this).attr('id')!="")
+							{
+								$(this).bind('click',function(e)
+									{ 
+										e.preventDefault(); 
+										e.stopPropagation(); 
+										$(this).unbind("click");
+										id = parseInt($(this).attr('id').split('del_')[1]);
+										rmExercise(id);
+									}); 
+							}	
+					});
+			}		
+	}
+rmExercise = function(rm_pid)
+	{
+		$.post("index_ajax.php", { pag: "xgetexercise", rm_pid: rm_pid }, function(data){ 
+		var obj = $.evalJSON(data);
+		if(obj.failure==true) 
+			{
+				doExerciseErr('an error ocured. No data to show!');
+			}	
+		else 
+			{
+				// if error block exist - remove it first
+				if($("#program_list #error").length > 0)
+					{
+						$('#error').fadeOut(5000,function(){$('#error').remove()});
+					}
+				if(obj.innerHTML.err=='404')
+					{
+						doExerciseErr('an error ocured while removing the exercise');
+					}
+				else if(obj.innerHTML.err=='200')
+					{
+						$("#program_list li#"+rm_pid).remove();
+						$("#program_list span#text_"+rm_pid).remove();
+						doExerciseErr('exercise removed');
+					}
+				}
+			 });
+	}
+
+doExerciseDetails = function()
+	{
+		if($("#program_list li .exercise_details").length > 0)
+			{
+				$('#program_list li .exercise_details').each(function(i, item)
+					{
+						var details = parseInt($(this).attr('id').split('details_')[1]);
+						if($(this).parent().find('#text_'+details).length > 0)
+						{
+						var obj = $('#text_'+details);
+						obj.remove();
+						obj.appendTo($(this).parent().parent().parent());
+						$(this).bind('click',function(e)
+							{
+								var details = parseInt($(this).attr('id').split('details_')[1]);
+								e.stopPropagation();
+								e.preventDefault();
+						var body = $(document).width();
+						var content = $('.siteBody').width();
+						var margins = body-content;
+						var size = $(this).offset();
+						var thetop = size.top-79;
+						var theleft = size.left-220;
+						obj.css({
+							'top':thetop,
+							'right':'11px'
+						});
+								$('#text_'+details).toggleClass('displayBlock');
+							});	
+						}
+					});
+			}
+	}
+
+doExerciseCompactViewDetails = function()
+	{
+		if($(".itemCompact .programCompact").length > 0)
+			{
+				$('.itemCompact .programCompact .exercise_details').each(function(i, item)
+					{
+						var details = parseInt($(this).attr('id').split('compactViewDetails_')[1]);
+						if($(this).parent().parent().find('#itemCompactText_'+details).length > 0)
+						{
+						var obj = $('#itemCompactText_'+details);
+						obj.remove();
+//						obj.appendTo($(this).parent().parent().parent());
+						obj.appendTo($(this).parent().parent().parent());
+						$(this).bind('click',function(e)
+							{
+								var details = parseInt($(this).attr('id').split('compactViewDetails_')[1]);
+								e.stopPropagation();
+								e.preventDefault();
+						var body = $(document).width();
+						var content = $('.siteBody').width();
+						var margins = body-content;
+						var size = $(this).offset();
+						var thetop = size.top-165;
+						var theleft = size.left-(margins/2)-355;
+						obj.css({
+							'top':thetop,
+							'left':theleft
+						});
+								$('#itemCompactText_'+details).toggleClass('displayBlock');
+							});	
+						}
+					});
+			}
+	}
+
+doExercise = function(jSON)
+	{
+		// eval json data
+		var obj = $.evalJSON(jSON);
+//		var obj = $.parseJSON(jSON);
+//		 dump(jSON); // WARNING, this function craches the JS in Internet Exploder, use it carefully
+		
+		// check if container exist, if not create it
+		if($("#sortable").length === 0)
+			{
+				if($("#program_list").length > 0)
+					{
+						var exBlockUL = $('<ul/>')
+							.attr('id', 'sortable')
+							.attr('class', 'ui-sortable')
+							.css('position', 'relative');
+						exBlockUL.appendTo($("#program_list"));
+						$("#program_list")
+							.css('position', 'relative');
+					}
+			}
+		if(obj.failure==true) 
+			{
+				doErrMess('an error ocured. No data to show!');
+			}	
+		else 
+			{
+				// if error block exist - remove it first
+				if($("#program_list #error").length > 0)
+					{
+						$('#error').fadeOut(5000,function(){$('#error').remove()});
+					}
+				if(obj.innerHTML.err=='404')
+					{
+						doExerciseErr('exercise already exist');
+					}
+				else if(obj.innerHTML.err=='200')
+					{
+						/* HERE WE GO AGAIN WITH A LONG PART OF CREATING NEW HTML ELEMENTS FOR THE SORTABLE */
+				
+						/* THIS ARE THE JSON RETURNED DATA FOR SORTABLE */
+						
+						/*
+							1.	PROGRAM_ID
+							2.	PROGRAM_TITLE
+							3.	PROGRAM_DESCRIPTION
+							4.	PROGRAM_IMAGE
+						*/
+						// define all blocks and data
+						var thumbpath = "phpthumb/phpThumb.php?src=../";
+//						var thumbsize = "&amp;wl=50&amp;hp=50"; // this crashes
+						var thumbsize = "&wl=64&hp=64";
+						var exUL = $("#sortable");
+						var exLI = $('<li/>')
+							.attr('id', obj.innerHTML.PROGRAM_ID);
+						var exLI_img = $('<img/>')
+							.attr('alt', obj.innerHTML.PROGRAM_TITLE)
+							.attr('title', obj.innerHTML.PROGRAM_TITLE)
+							.attr('width', 64)
+							.attr('height', 64)
+							.attr('src',thumbpath + obj.innerHTML.PROGRAM_IMAGE + thumbsize);
+//							.attr('src',obj.innerHTML.PROGRAM_IMAGE);
+						var exLI_title = $('<span/>')
+							.attr('id', 'title_'+obj.innerHTML.PROGRAM_ID)
+							.attr('class','exercise_title');
+						var exLI_titleNode = $(document.createTextNode(obj.innerHTML.PROGRAM_TITLE));
+						var exLI_text = $('<span/>')
+							.attr('id', 'text_'+obj.innerHTML.PROGRAM_ID)
+							.attr('class','exercise_text');
+						var exLI_textNode = $(document.createTextNode(obj.innerHTML.PROGRAM_DESCRIPTION));
+						var exLI_cat = $('<span/>')
+							.attr('class','exercise_cat');
+//						var exLI_catNode = $(document.createTextNode(obj.innerHTML.PROGRAM_CATEGORY));
+						var exLI_catNode = obj.innerHTML.PROGRAM_CATEGORY;
+						var exLI_delete = $('<a/>')
+							.attr('id', 'del_'+obj.innerHTML.PROGRAM_ID)
+							.attr('class','exercise_del')
+							.attr('href','#');
+						var exLI_details = $('<a/>')
+							.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
+							.attr('class','exercise_details');
+						var exLI_drag = $('<a/>')
+							.attr('id', 'drag_'+obj.innerHTML.PROGRAM_ID)
+							.attr('class','exercise_drag')
+							.attr('href','#');
+						var exDIV_clear = $('<div/>')
+							.attr('class','clearAll');
+					
+						// append all childs
+						exLI_img.appendTo(exLI);
+						exLI_delete.appendTo(exLI);
+						exLI_delete.html('&nbsp;');
+						exLI_drag.appendTo(exLI);
+						exLI_drag.html('&nbsp;');
+						exLI_title.appendTo(exLI);
+						exLI_titleNode.appendTo(exLI_title);
+						exLI_cat.appendTo(exLI);
+//						exLI_catNode.appendTo(exLI_cat);
+						exLI_cat.html(exLI_catNode);
+						exLI_details.appendTo(exLI);
+						exLI_details.html('details');
+						exLI_text.appendTo(exLI);
+						exLI_textNode.appendTo(exLI_text);
+						exDIV_clear.appendTo(exLI);
+						exLI.appendTo(exUL);
+
+						exLI_delete.bind('click',function(e)
+							{ 
+								e.preventDefault(); 
+								e.stopPropagation(); 
+								rmExercise(obj.innerHTML.PROGRAM_ID); 
+							});
+					}
+			}
+		makeSortable();
+//		makeDelete();
+		doExerciseDetails();
+	}
+
+// START THE DOCUMENT READY
+$(document).ready(function() 
+	{
+		// error messages box
+		$(".info a,.success a,.warning a,.error a").live('click',function(e)
+			{
+				$(this).parent().fadeOut("slow");
+				e.preventDefault();
+				e.stopPropagation();
+			});
+
+		// make the category / subcategory list menu for the ADD CLIENT EXERCISE PAGE
+		if($(".programCategoryList").length > 0)
+			{
+				$('.programCategoryList ul li.parent').live('click',function(e){
+					$(this).find('ul').toggle("slow");
+					$(this).toggleClass("on");
+				//	e.preventDefault();
+					e.stopPropagation();
+				});
+				if($('.programCategoryList ul li.parent ul').length > 0)
+					$('.programCategoryList ul li.parent ul').parent().toggleClass("on");
+			}
+
+		// PREPARE to add program to client
+		if($(".programText").length > 0)
+			{
+			   $('.moreBtn').live('click',function(e)
+					{
+						var pid = $(this).attr('id');
+						var cid = $(this).attr('cid');
+						e.stopPropagation();	
+					    e.preventDefault();
+						$.post("index_ajax.php", { pag: "xgetexercise", pid: pid, cid: cid }, function(data){ doExercise(data); });
+
+						//	$.getJSON('index_ajax.php?pag=xgetexercise&pid='+pid, function(data) { doExercise(data); });
+					});	
+			}
+		if($(".programCompact").length > 0)
+			{
+			   $('.moreBtn').live('click',function(e)
+					{
+						var pid = $(this).attr('id');
+						var cid = $(this).attr('cid');
+						e.stopPropagation();	
+					    e.preventDefault();
+						$.post("index_ajax.php", { pag: "xgetexercise", pid: pid, cid: cid }, function(data){ doExercise(data); });
+
+						//	$.getJSON('index_ajax.php?pag=xgetexercise&pid='+pid, function(data) { doExercise(data); });
+					});	
+			}
+		$("#exerciseAdd").bind('click',function(e)
+			{
+				e.stopPropagation();	
+				e.preventDefault();
+				doSave();
+			});
+		makeSortable();
+		makeDelete();
+		doExerciseDetails();
+		doExerciseCompactViewDetails();
+	});

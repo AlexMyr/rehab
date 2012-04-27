@@ -1,0 +1,33 @@
+[15-Jul-2011 10:54:54] PHP Parse error:  syntax error, unexpected '.' in /home/rehabmyp/public_html/classes/cls_client.php on line 424
+[19-Mar-2012 13:34:03] PHP Notice:  Undefined variable: txt in /home/rehabmyp/public_html/php/exercisepdf.php on line 79
+[19-Mar-2012 13:34:03] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/rehabmyp/public_html/php/exercisepdf.php:79) in /home/rehabmyp/public_html/tcpdf/tcpdf.php on line 8541
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined index:  module in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined index:   in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined variable: template_tags in /home/rehabmyp/public_html/index.php on line 146
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined variable: site_meta_title in /home/rehabmyp/public_html/index.php on line 162
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined variable: site_meta_keywords in /home/rehabmyp/public_html/index.php on line 163
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined variable: site_meta_description in /home/rehabmyp/public_html/index.php on line 164
+[19-Mar-2012 13:35:06] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined index:  module in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined index:   in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined variable: template_tags in /home/rehabmyp/public_html/index.php on line 146
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined variable: site_meta_title in /home/rehabmyp/public_html/index.php on line 162
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined variable: site_meta_keywords in /home/rehabmyp/public_html/index.php on line 163
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined variable: site_meta_description in /home/rehabmyp/public_html/index.php on line 164
+[19-Mar-2012 13:40:14] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined index:  module in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined index:   in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined variable: template_tags in /home/rehabmyp/public_html/index.php on line 146
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined variable: site_meta_title in /home/rehabmyp/public_html/index.php on line 162
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined variable: site_meta_keywords in /home/rehabmyp/public_html/index.php on line 163
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined variable: site_meta_description in /home/rehabmyp/public_html/index.php on line 164
+[19-Mar-2012 13:47:04] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined index:  module in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined index:   in /home/rehabmyp/public_html/index.php on line 123
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined variable: template_tags in /home/rehabmyp/public_html/index.php on line 146
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined variable: site_meta_title in /home/rehabmyp/public_html/index.php on line 162
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined variable: site_meta_keywords in /home/rehabmyp/public_html/index.php on line 163
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined variable: site_meta_description in /home/rehabmyp/public_html/index.php on line 164
+[19-Mar-2012 13:47:23] PHP Notice:  Undefined variable: append in /home/rehabmyp/public_html/misc/cls_ft.php on line 237
+[02-Apr-2012 05:51:24] PHP Parse error:  syntax error, unexpected T_EXIT in /home/rehabmyp/public_html/index.php on line 150
+[02-Apr-2012 05:51:25] PHP Parse error:  syntax error, unexpected T_EXIT in /home/rehabmyp/public_html/index.php on line 150
