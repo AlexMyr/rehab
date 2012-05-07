@@ -394,7 +394,7 @@ $(document).ready(function()
 			$(obj).addClass('topForSubMenu');
             var parOffset = $(obj).offset();
             var parHeight = $(obj).css('height');
-            $('#submenuList').css('top', parOffset.top+parHeight+2+'px');
+            $('#submenuList').css('top', parOffset.top+parseInt(parHeight)+2+'px');
             $('#submenuList').css('left', parOffset.left+'px');
 			$('#submenuList').css('display', 'block');
 		}
@@ -435,6 +435,7 @@ $(document).ready(function()
 		if($(this).attr('href').indexOf('index.php?pag=login&act=auth-logout')>-1)
 		{
 			FB.logout();
+			//console.log("logout");
 		}
 	});
 	
@@ -499,7 +500,7 @@ $(document).ready(function()
 		e.preventDefault();
 		if($(this).data('planChosen')!=true)
 		{
-			alert('Please, choose plan.');
+			alert('You already has trial price plan.');
 			return false;
 		}
 		else
@@ -598,4 +599,9 @@ $(document).ready(function()
 		makeDelete();
 		doExerciseDetails();
 		doExerciseCompactViewDetails();
+		
+		$('.lang a').click(function(){
+			var lang = $(this).attr('value');
+			document.cookie = 'language' + "=" + escape(lang) + "; expires=" + new Date( 2020, 1, 1 ) +  "; path=/";
+		})
 	});

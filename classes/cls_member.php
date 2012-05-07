@@ -56,113 +56,112 @@ class member
 						");
 	    /* CHECK IF EMAIL EXIST IN DB, IF NOT, GENERATE A RANDOM PASSWORD, SAVE IT IN DB AND SEND MAIL TO THAT ADDRESS */
 		if($this->dbu->move_next())
-			{
-				$ld['error'] = get_template_tag('affiliate', $ld['lang'], 'T.USER_EXIST');
-				return false;
-			}
+        {
+            $ld['error'] = get_template_tag('affiliate', $ld['lang'], 'T.USER_EXIST');
+            return false;
+        }
 		else 
-			{ 
-			/*	require_once ('misc/PapApi.class.php');
-				// login (as merchant)
-				
-				$session = new Gpf_Api_Session(AFFILIATES_API_M_URL);
-				if(!$session->login(AFFILIATES_API_M_USERNAME, AFFILIATES_API_M_PASSWORD))
-					{
-						die("Cannot login. Message: ".$session->getMessage());
-					}
-				$clickTracker = new Pap_Api_ClickTracker($session);
-				try
-					{
-						$clickTracker->track();
-					}
-				catch (Exception $e)
-					{
-						die("Click tracker: ".$e->getMessage());
-					}
-				if ($clickTracker->getAffiliate() != null && $clickTracker->getAffiliate()->getValue('userid') != null)
-				{
-					$refferer_UID = $clickTracker->getAffiliate()->getValue('userid'); // prints affiliate userid
-				}*/
-				global $site_url, $site_name;
-				$passwd = $ld['join_pass'];
-				
-				$this->dbu->query("
-									INSERT INTO 
-												trainer 
-									SET 
-												username='".$ld['join_email']."', 
-												email='".$ld['join_email']."',
-												password='".$passwd."', 
-												create_date=NOW(), 
-												is_trial='1', 
-												expire_date='', 
-												active = '1',
-												affiliate_refferer_id = '".$refferer_UID."'
-									");
-				$this->dbu->query("INSERT INTO  trainer_header_paper 
-									SET lang = '".$ld['join_language']."'");
-				// mail here
-                $message_data=get_sys_message('nmjoin');
-                $ordermail = $ld['join_email'];
-                $fromMail = $message_data['from_email'];
-                $replyMail = $message_data['from_email'];
+        { 
+        /*	require_once ('misc/PapApi.class.php');
+            // login (as merchant)
+            
+            $session = new Gpf_Api_Session(AFFILIATES_API_M_URL);
+            if(!$session->login(AFFILIATES_API_M_USERNAME, AFFILIATES_API_M_PASSWORD))
+                {
+                    die("Cannot login. Message: ".$session->getMessage());
+                }
+            $clickTracker = new Pap_Api_ClickTracker($session);
+            try
+                {
+                    $clickTracker->track();
+                }
+            catch (Exception $e)
+                {
+                    die("Click tracker: ".$e->getMessage());
+                }
+            if ($clickTracker->getAffiliate() != null && $clickTracker->getAffiliate()->getValue('userid') != null)
+            {
+                $refferer_UID = $clickTracker->getAffiliate()->getValue('userid'); // prints affiliate userid
+            }*/
+            global $site_url, $site_name;
+            $passwd = $ld['join_pass'];
+            
+            $this->dbu->query("
+                                INSERT INTO 
+                                            trainer 
+                                SET 
+                                            username='".$ld['join_email']."', 
+                                            email='".$ld['join_email']."',
+                                            password='".$passwd."', 
+                                            create_date=NOW(), 
+                                            is_trial='1', 
+                                            expire_date='', 
+                                            active = '1',
+                                            affiliate_refferer_id = '".$refferer_UID."',
+                                            lang = '".$ld['join_language']."'
+                                ");
+            // mail here
+            $message_data=get_sys_message('nmjoin');
+            $ordermail = $ld['join_email'];
+            $fromMail = $message_data['from_email'];
+            $replyMail = $message_data['from_email'];
+
+            $body=$message_data['text'];
     
-                $body=$message_data['text'];
-        
-                $body=str_replace('[!SITE_NAME!]', $site_name, $body );
-                $body=str_replace('[!SITE_URL!]', $site_url, $body );
-                $body=str_replace('[!USER_NAME!]', $ld['join_email'], $body );
-                $body=str_replace('[!PASSWORD!]', $ld['join_pass'], $body );
-                $body=str_replace('[!ADMIN_MAIL!]', $fromMail, $body );
-                $body = nl2br($body);
-                
-                require_once ('class.phpmailer.php');        
-                include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
-        
-                $mail = new PHPMailer();
-                //$body             = file_get_contents('contents.html');
-                //$body             = eregi_replace("[\]",'',$body);
-                $mail->IsSMTP(); // telling the class to use SMTP
-                $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
-                // 1 = errors and messages
-                // 2 = messages only
-                $mail->SMTPAuth = true; // enable SMTP authentication
-                $mail->Host = SMTP_HOST; // sets the SMTP server
-                $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
-                $mail->Username = SMTP_USERNAME; // SMTP account username
-                $mail->Password = SMTP_PASSWORD; // SMTP account password
-                $mail->SetFrom($replyMail, $replyMail);
-                $mail->AddReplyTo($replyMail, $replyMail);
-                $mail->Subject = $message_data['subject'];
-                
-                //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
-                 
-                $mail->MsgHTML($body);
-                
-                //$address = $receiver_email;
-                $mail->AddAddress($ordermail, '');
-                $mail->Send();
+            $body=str_replace('[!SITE_NAME!]', $site_name, $body );
+            $body=str_replace('[!SITE_URL!]', $site_url, $body );
+            $body=str_replace('[!USER_NAME!]', $ld['join_email'], $body );
+            $body=str_replace('[!PASSWORD!]', $ld['join_pass'], $body );
+            $body=str_replace('[!ADMIN_MAIL!]', $fromMail, $body );
+            $body = nl2br($body);
+            
+            require_once ('class.phpmailer.php');        
+            include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
+    
+            $mail = new PHPMailer();
+            //$body             = file_get_contents('contents.html');
+            //$body             = eregi_replace("[\]",'',$body);
+            $mail->IsSMTP(); // telling the class to use SMTP
+            $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
+            // 1 = errors and messages
+            // 2 = messages only
+            $mail->SMTPAuth = true; // enable SMTP authentication
+            $mail->Host = SMTP_HOST; // sets the SMTP server
+            $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
+            $mail->Username = SMTP_USERNAME; // SMTP account username
+            $mail->Password = SMTP_PASSWORD; // SMTP account password
+            $mail->SetFrom($replyMail, $replyMail);
+            $mail->AddReplyTo($replyMail, $replyMail);
+            $mail->Subject = $message_data['subject'];
+            
+            //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+             
+            $mail->MsgHTML($body);
+            
+            //$address = $receiver_email;
+            $mail->AddAddress($ordermail, '');
+            $mail->Send();
 			$ld['error'] = get_template_tag('affiliate', $ld['lang'], 'T.CHECK_EMAIL');
 		
-		$registerEmail = 'info@rehabmypatient.com';
-		//$registerEmail = 'ole_gi@miralex.com.ua';
-		$mail1 = new PHPMailer();
-		$mail1->IsSMTP(); // telling the class to use SMTP
-		$mail1->SMTPDebug = 1; // enables SMTP debug information (for testing)
-		$mail1->SMTPAuth = true; // enable SMTP authentication
-		$mail1->Host = SMTP_HOST; // sets the SMTP server
-		$mail1->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
-		$mail1->Username = SMTP_USERNAME; // SMTP account username
-		$mail1->Password = SMTP_PASSWORD; // SMTP account password
-		$body = 'User '.$ld['join_email'].' has been registered. Check admin panel.';
-		$mail1->SetFrom($registerEmail, $registerEmail);
-		$mail1->Subject = 'New user registered.';
-		$mail1->MsgHTML($body);
-		$mail1->AddAddress($registerEmail, '');
-		$mail1->Send();
+            $registerEmail = 'info@rehabmypatient.com';
+            //$registerEmail = 'ole_gi@miralex.com.ua';
+            $mail1 = new PHPMailer();
+            $mail1->IsSMTP(); // telling the class to use SMTP
+            $mail1->SMTPDebug = 1; // enables SMTP debug information (for testing)
+            $mail1->SMTPAuth = true; // enable SMTP authentication
+            $mail1->Host = SMTP_HOST; // sets the SMTP server
+            $mail1->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
+            $mail1->Username = SMTP_USERNAME; // SMTP account username
+            $mail1->Password = SMTP_PASSWORD; // SMTP account password
+            $body = 'User '.$ld['join_email'].' has been registered. Check admin panel.';
+            $mail1->SetFrom($registerEmail, $registerEmail);
+            $mail1->Subject = 'New user registered.';
+            $mail1->MsgHTML($body);
+            $mail1->AddAddress($registerEmail, '');
+            $mail1->Send();
 	
-                return true;
-			}
+            return true;
+		}
 
 	 }
 
@@ -320,28 +319,29 @@ class member
 /* MEMBER PROFILE SECTION */
 
 	function update_licence(&$ld)
-		{
-			if(!$this->validate_update_licence($ld))
-				{
-					$ld['pag']= "profile_choose_clinic"; 
-					return false;
-				}
-			if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."'";
-			else if($ld['is_clinic']==1) $update = "is_clinic='".$ld['is_clinic']."', clinic_name='".$ld['clinic_name']."'";
-			
-			$this->dbu->query("
-								UPDATE 
-									trainer 
-								SET 
-									".$update." 
-								WHERE 
-									trainer_id=".$_SESSION[U_ID]." 
-							");
-		
-			$ld['error']="Licence Succesfully Saved.";
+    {
+        if(!$this->validate_update_licence($ld))
+        {
+            $ld['pag']= "profile_choose_clinic"; 
+            return false;
+        }
 
-	    	return true;
-		}
+        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."', first_name='".$ld['first_name']."', surname='".$ld['last_name']."'";
+        else if($ld['is_clinic']==1) $update = "is_clinic='".$ld['is_clinic']."', clinic_name='".$ld['clinic_name']."'";
+        
+        $this->dbu->query("
+                            UPDATE 
+                                trainer 
+                            SET 
+                                ".$update." 
+                            WHERE 
+                                trainer_id=".$_SESSION[U_ID]." 
+                        ");
+    
+        $ld['error']="Licence Succesfully Saved.";
+
+        return true;
+    }
 		
 	function validate_update_licence(&$ld)
 		{
@@ -473,61 +473,67 @@ class member
 		}
 
 	function update_email(&$ld)
-		{
-			if(!$this->validate_update_email($ld))
-				{
-					$ld['pag']= "profile_edit_email"; 
-					return false;
-				}
-
-			$this->dbu->query("UPDATE trainer SET email='".$ld['email']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
-			$get_profile_id = $this->dbu->field("SELECT profile_id FROM trainer WHERE 1=1 AND trainer_id = ".$_SESSION[U_ID]);
-
-			$this->dbu->query("UPDATE trainer_profile SET email='".$ld['email']."' WHERE 1=1 AND trainer_id=".$_SESSION[U_ID]." AND profile_id=".$get_profile_id." ");
+	{
+		$changed_email = $this->dbu->field("SELECT email FROM trainer WHERE trainer_id=".$_SESSION[U_ID]." ");
+		$ld['changed_email'] = $changed_email;
 		
-			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_EMAIL');
+		if(!$this->validate_update_email($ld))
+			{
+				$ld['pag']= "profile_edit_email"; 
+				return false;
+			}
 
-			return true;
-		}
+		$this->dbu->query("UPDATE trainer SET email='".$ld['email']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
+		$get_profile_id = $this->dbu->field("SELECT profile_id FROM trainer WHERE 1=1 AND trainer_id = ".$_SESSION[U_ID]);
+
+		$this->dbu->query("UPDATE trainer_profile SET email='".$ld['email']."' WHERE 1=1 AND trainer_id=".$_SESSION[U_ID]." AND profile_id=".$get_profile_id." ");
+	
+		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_EMAIL');
+
+		return true;
+	}
 	
 	function validate_update_email(&$ld)
-		{
-			$is_ok=true;
-	
-			if(!$ld['email'])
-				{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
-					$is_ok=false;
-				}
+	{
+		$is_ok=true;
 
-			if($ld['email'] && !secure_email($ld['email']))
-				{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.PROVIDE_EMAIL')."<br>";
-					$is_ok=false;
-				}
+		//if($ld['changed_email'] && !$ld['email'])
+		//	{
+		//		$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
+		//		$is_ok=false;
+		//	}
 
-			return $is_ok;
-		}
+		if($ld['email'] && !secure_email($ld['email']))
+			{
+				$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.PROVIDE_EMAIL')."<br>";
+				$is_ok=false;
+			}
+
+		return $is_ok;
+	}
 
 	function update_pass(&$ld)
+	{
+		$changed_pass = $this->dbu->field("SELECT password FROM trainer WHERE trainer_id=".$_SESSION[U_ID]." ");
+		$ld['changed_pass'] = $changed_pass;
+		
+		if(!$this->validate_update_pass($ld))
 		{
-			if(!$this->validate_update_pass($ld))
-				{
-					$ld['pag']= "profile_edit_password"; 
-					return false;
-				}
+			$ld['pag']= "profile_edit_password"; 
+			return false;
+		}
 
 		$this->dbu->query("UPDATE trainer SET password='".$ld['pass']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
 		
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_PASS');
-
-	    return true;
-		}
+	
+		return true;
+	}
 		
 	function validate_update_pass(&$ld)
 		{
 			$is_ok=true;
-			if(!$ld['old_pass'])
+			if($ld['changed_pass'] && !$ld['old_pass'])
 			{
 					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_OLD')."<br>";
 					$is_ok=false;			
@@ -978,11 +984,13 @@ function pay(&$ld){
 	
 	include_once('classes/cls_paypal_new.php');
 	paypal_init();
+    
 	$this->dbu->query("select * from price_plan_new where price_id='".$ld['price_id']."' ");
 	
 	$this->dbu->move_next();
 	$_SESSION['price_id'] = $ld['price_id'];
 	$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));;
+    
 	//$paymentAmount = $_SESSION['Payment_Amount'] = 1;
 	$_SESSION['days'] = 365;
 	$currencyCodeType = $this->dbu->f('currency');
@@ -991,7 +999,7 @@ function pay(&$ld){
 	$returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
 	$cancelURL = 'http://rehabmypatient.com/index.php';
 	
-	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL);
+	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount);
 
 	$ack = strtoupper($resArray["ACK"]);
 	if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
@@ -1100,11 +1108,11 @@ function confirm_pay()
 								trainer_id=".$_SESSION[U_ID]."
 												");
 			
-			header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=1");
+			header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
 		} 
 		else  
 		{
-			header("Location: http://rehabmyp.loc/index.php?pag=profile_payment&paym=0");
+			header("Location: http://rehabmyp.loc/index.php?pag=profile&paym=0");
 			
 			//Display a user friendly Error on the page using any of the following error information returned by PayPal
 			//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);

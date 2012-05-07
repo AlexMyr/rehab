@@ -15,8 +15,8 @@ $dbu->query("select * from trainer where trainer_id=".$_SESSION[U_ID]." ");
 
 $dbu->move_next();
 
-if(!$dbu->f('email')) $ft->assign('HIDE_CHANGE_EMAIL','none');
-if(!$dbu->f('password')) $ft->assign('HIDE_CHANGE_PASS','none');
+//if(!$dbu->f('email')) $ft->assign('HIDE_CHANGE_EMAIL','none');
+//if(!$dbu->f('password')) $ft->assign('HIDE_CHANGE_PASS','none');
 
 $ft->assign('HEADER_PAPER_SECTION',build_header_paper_button(true, $glob['lang']));
 
@@ -48,6 +48,19 @@ $ft->assign('HEADER_PAPER_SECTION',build_header_paper_button(true, $glob['lang']
 	$affiliate .= '<input class="textField" id="affiliate" type="text" readonly="readonly" value="'.$site_url.'/affiliate/scripts/click.php?a_aid='.$refferer_id.'">';
 	$ft->assign('AFFILIATES_CODE',$affiliate);*/
 //}
+if(isset($glob['paym']))
+{
+	if($glob['paym'])
+	{
+		$glob['error'] = 'Thank you for paying.';
+		$glob['success'] = true;
+	}
+	else
+	{
+		$glob['error'] = 'Error. Please try again or contact administration.';
+		$glob['success'] = false;
+	}
+}
 
 if($dbu->gf('is_trial')==0 && $dbu->gf('price_plan_id')!=0)
 	{

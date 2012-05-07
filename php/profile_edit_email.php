@@ -26,8 +26,8 @@ else if($dbu->f('is_trial')==0)
 	$ft->assign('HEADER_PAPER_SECTION',build_header_paper_button(true));
 }
 
-if(!$dbu->f('email')) $ft->assign('HIDE_CHANGE_EMAIL','none');
-if(!$dbu->f('password')) $ft->assign('HIDE_CHANGE_PASS','none');
+//if(!$dbu->f('email')) $ft->assign('HIDE_CHANGE_EMAIL','none');
+//if(!$dbu->f('password')) $ft->assign('HIDE_CHANGE_PASS','none');
 
 if($dbu->f('is_trial')==0 && $dbu->f('price_plan_id')!=0)
 	{
