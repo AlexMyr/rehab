@@ -432,10 +432,11 @@ $(document).ready(function()
 	);
 		
 	$('.navMenu .item1, .footer .item1').click(function(e){
-		if($(this).attr('href').indexOf('index.php?pag=login&act=auth-logout')>-1)
+		if(($(this).attr('href').indexOf('index.php?pag=login')>-1))
 		{
+			e.preventDefault();
 			FB.logout();
-			//console.log("logout");
+			window.location = $(this).attr('href');
 		}
 	});
 	

@@ -18,7 +18,11 @@ class member
 							WHERE constant_name='PAYPAL_USERNAME' OR constant_name='PAYPAL_PASSWORD' OR constant_name='PAYPAL_SIGN'
 							
 						");
-			while($this->dbu->move_next())
+			
+			define('API_USERNAME', 'oleg_g_1291193039_biz_api1.mail.ru');
+			define('API_PASSWORD', '1291193052');
+			define('API_SIGN', 'A83lKGFYhcUgZ0ktSkwH3B0.KTEHAYo4yVcP8eQ.f2NBxKvLgVXndbQa');
+			/*while($this->dbu->move_next())
 			{
 				if($this->dbu->f('constant_name') == 'PAYPAL_USERNAME')
 				{
@@ -32,7 +36,7 @@ class member
 				{
 					define('API_SIGN', $this->dbu->f('value'));
 				}
-			}
+			}*/
 		}
 		
 	/****************************************************************
@@ -981,7 +985,7 @@ class member
 	}
 
 function pay(&$ld){
-	
+
 	include_once('classes/cls_paypal_new.php');
 	paypal_init();
     
@@ -991,7 +995,7 @@ function pay(&$ld){
 	$_SESSION['price_id'] = $ld['price_id'];
 	$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));;
     
-	//$paymentAmount = $_SESSION['Payment_Amount'] = 1;
+	$paymentAmount = $_SESSION['Payment_Amount'] = 1;
 	$_SESSION['days'] = 365;
 	$currencyCodeType = $this->dbu->f('currency');
 	$paymentType = "Sale";
@@ -1000,7 +1004,7 @@ function pay(&$ld){
 	$cancelURL = 'http://rehabmypatient.com/index.php';
 	
 	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount);
-
+var_dump($resArray);exit;
 	$ack = strtoupper($resArray["ACK"]);
 	if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
 	{
@@ -1078,6 +1082,8 @@ function confirm_pay()
 			$_SESSION['payer_id'] = $payerId;
 			
 			$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
+var_dump($resArray);exit;
+			
 			$ack = strtoupper($resArray["ACK"]);
 			
 			$daysToAdd = 0;
@@ -1108,7 +1114,9 @@ function confirm_pay()
 								trainer_id=".$_SESSION[U_ID]."
 												");
 			
-			header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
+	
+			
+			//header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
 		} 
 		else  
 		{

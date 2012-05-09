@@ -11,7 +11,7 @@ function paypal_init()
 	$PROXY_HOST = '127.0.0.1';
 	$PROXY_PORT = '808';
 
-	$SandboxFlag = false;
+	$SandboxFlag = true;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -248,6 +248,8 @@ function paypal_init()
 		return $resArray;
 	}
 	
+	
+	
 	/*
 	'-------------------------------------------------------------------------------------------------------------------------------------------
 	' Purpose: 	This function makes a DoDirectPayment API call
@@ -321,7 +323,7 @@ function paypal_init()
 	$PROXY_PORT = '808';
 
 	
-	$SandboxFlag = false;
+	$SandboxFlag = true;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -423,8 +425,8 @@ function paypal_init()
 	function RedirectToPayPal ( $token )
 	{
 		//global $PAYPAL_URL;
-		//test
-		$SandboxFlag = false;
+		
+		$SandboxFlag = true;
 		if ($SandboxFlag == true) 
         {
             $API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";

@@ -95,9 +95,9 @@ else
 						FB.Event.subscribe('auth.login', function(response) {
 						  window.location.reload();
 						});
-						FB.Event.subscribe('auth.logout', function(response) {
+						/*FB.Event.subscribe('auth.logout', function(response) {
 						  window.location.reload();
-						});
+						});*/
 					  };
 					  (function() {
 						var e = document.createElement('script'); e.async = true;
@@ -106,8 +106,9 @@ else
 						document.getElementById('fb-root').appendChild(e);
 					  }());
 					</script>";
+	$ft->assign('FB_LOGIN', $fb_button);
 }
-$ft->assign('FB_LOGIN', $fb_button);
+
 /*fb section */
 
 $tags = get_template_tag($glob['pag'], $glob['lang']);
