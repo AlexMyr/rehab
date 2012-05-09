@@ -191,7 +191,7 @@ $program = $dbu->query("
                 INNER JOIN
                     programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs_in_category.programs_id)
 				WHERE
-					programs_in_category.category_id=".$glob['catID']." 
+					".$where." 
 					AND programs.active = 1
 				ORDER BY programs.sort_order ASC
 					");

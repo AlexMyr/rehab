@@ -175,7 +175,7 @@ if($glob['catID']&&$glob['program_id'])
 	else
 		$where = "programs_in_category.category_id=".$glob['catID'];
 
-	$program = $dbu->query("
+  $program = $dbu->query("
 							SELECT 
 								programs.*, programs_in_category.category_id, translate.*
 							FROM
@@ -185,11 +185,12 @@ if($glob['catID']&&$glob['program_id'])
                             INNER JOIN
                                 programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs_in_category.programs_id)
 							WHERE
-								programs_in_category.category_id=".$glob['catID']." 
+								".$where." 
 								AND programs.active = 1
 							GROUP BY programs.programs_id
 							ORDER BY programs.sort_order ASC
 							");
+
 	$i=0;
 
 	while ($program->next())
