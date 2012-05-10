@@ -50,7 +50,7 @@ switch($curr_lang){
 }
 $ftm=new ft("");
 
-$exercise_session_pages = array("client_add_exercise","client_update_exercise");
+$exercise_session_pages = array("client_add_exercise","client_update_exercise","program_update_exercise");
 
 if(!empty($_SESSION['pids']) && !in_array($glob['pag'],$exercise_session_pages)) unset($_SESSION['pids']);
 $glob['success']=false;
