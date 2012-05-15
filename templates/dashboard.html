@@ -47,20 +47,18 @@
 				<span class="count">{T.N_PLANS}</span>
 				<span class="dateTime">{T.ACC_ACTIVITY}</span>
 			</div>
+			<div class="clientListDynamic">
 <!-- BEGIN DYNAMIC BLOCK: client_line -->
-			<div class="clientListRow">
-				<span class="add_exercise"><a title="Add/Edit Exercise Programme" class="add_client {SHOW_LIMIT_ERROR}" href="index.php?pag=client_add_exercise&client_id={CLIENT_ID}">&nbsp;</a></span>
-				<span class="name"><a class="add_client" href="index.php?pag=client&client_id={CLIENT_ID}">{CLIENT_NAME}</a></span>
-				<span class="count">{EXERCISES_NR}</span>
-				<span class="dateTime">{ACTIVITY_DATE}</span>
-			</div>
+			
+				<div class="clientListRow">
+					<span class="add_exercise"><a title="Add/Edit Exercise Programme" class="add_client {SHOW_LIMIT_ERROR}" href="index.php?pag=client_add_exercise&client_id={CLIENT_ID}">&nbsp;</a></span>
+					<span class="name"><a class="add_client" href="index.php?pag=client&client_id={CLIENT_ID}">{CLIENT_NAME}</a></span>
+					<span class="count">{EXERCISES_NR}</span>
+					<span class="dateTime">{ACTIVITY_DATE}</span>
+				</div>
+
 <!-- END DYNAMIC BLOCK: client_line -->
-<ul class="paginate {HIDE_NAV}">
-<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
-{PAGG}
-<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
-<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
-</ul>
+			</div>
 <!--			<div class="paginate">
 				<a class="moreBtn" href="#"><span>&lt; Previous</span></a>
 				<a class="moreBtn inactive"><span>1</span></a>
@@ -71,6 +69,14 @@
 				<a class="moreBtn" href="#"><span>Next &gt;</span></a>
 			</div>
 -->
+		</div>
+		<div>
+			<ul class="paginate {HIDE_NAV}">
+			<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
+			{PAGG}
+			<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
+			<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
+			</ul>
 		</div>
 		<div class="clearAll"></div>
 	</div>
