@@ -41,7 +41,7 @@ else
 		$ft->define(array('main' => "profile_payment.html"));
         
         $pag = isset($glob['pag']) ? $glob['pag'] : pathinfo(__FILE__, PATHINFO_FILENAME);
-        $tags = get_template_tag($pag, $curr_lang);
+        $tags = get_template_tag($glob['pag'], $glob['lang']);
         
 		$ft->assign('CSS_PAGE', $glob['pag']);
 		if($dbu->f('active')==0)
@@ -158,7 +158,9 @@ else
 		for($i=0;$i<$payment_count;$i++)
 		{
 			if(substr_count($price_value[$i],'POA'))
-				$payment_table .= '<td>'.$tags['T.CONTACT'].'</td>';
+				$payment_table .= '<td><a class="moreBtn" id="contactus" style="margin-left:25px; width:85px;" href="index.php?pag=cms&p=contact_us">
+											<span>'.$tags['T.CONTACT'].'</span>
+										</a></td>';
 			else
 			{
 				$payment_table .= '<td>

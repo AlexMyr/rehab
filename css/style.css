@@ -1,4 +1,4 @@
-/* CSS Document */
+﻿/* CSS Document */
 @font-face {
     font-family: 'MergeRegular';
     src: url('../font/merge/merge-webfont.eot');
@@ -11,12 +11,17 @@
 
 }
 @font-face {
-    font-family: 'avgardn';
-    src: url('../font/avgardn.ttf');
-    font-weight: normal;
-    font-style: normal;
-
+ font-family: 'avgardn';
+ src: url('../font/avgardn/AVGARDN.eot');
+ src: url('../font/avgardn/AVGARDN.eot?') format('eot'), 
+		/*url('../font/avgardn/AVGARDN.woff') format('woff'), */
+		url('../font/avgardn/AVGARDN.ttf') format('truetype'), 
+		url('../font/avgardn/AVGARDN.svg') format('svg');
+ font-weight: normal;
+ font-style: normal;
 }
+
+
 html { margin:0px; padding:0px; border:0px; zoom: 1; }
 
 * { margin:0px; padding:0px; border:0px; }
@@ -25,7 +30,7 @@ body { margin: 0px; padding: 0px; border: 0px;
     /*background-color: #3A6AA8;#4F84CD*/
     background-color:#4F84CD;
     /*background: url(../img/background_wave.png);*/
-    background-image: url(../img/background_wave.png);
+    /*background-image: url('../img/background_wave.png');*/
     background-repeat: repeat-x;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3A6AA8), to(#5085CE));
     background: -webkit-linear-gradient(top, #3A6AA8, #5085CE);
@@ -69,11 +74,14 @@ a { cursor:pointer; color:#ffffff; }
 .contentContainerBox .text h2 { padding-bottom:10px; }
 .contentContainerBox h3 { color:#6099e7; font-size: 18px; padding-top:16px; color:#3868AA; /*font-weight:bold;*/ }
 .contentContainerBox .text h3 { color:#acacac; padding-top:0px; padding-bottom:7px; color:#898989;  }
-.contentContainerBox .text h4 { color:#acacac; padding-top:0px; padding-bottom:7px; color:#898989; color:#343434; font-family: avgardn, Arial,Helvetica,sans-serif; font-size: 17px; }
-.contentContainerBox p { margin: 0px; padding: 5px 0px; border: 0px; color:#666666; color:#343434; font-size: 13px; font-family: avgardn, Arial, Helvetica, sans-serif; line-height:18px; }
+.contentContainerBox .text h4 { color:#acacac; padding-top:0px; padding-bottom:7px; color:#898989; color:#343434; font-family: avgardn, Arial,Helvetica,sans-serif; font-size: 14px; line-height: 21px;}
+.contentContainerBox .text .homepage h4 { color:white;}
+.contentContainerBox .text .homepage h4  a{ color:blue;}
+.contentContainerBox p { margin: 0px; padding: 5px 0px; border: 0px; color:#666666; color:#343434; font-size: 14px; font-family: avgardn, Arial, Helvetica, sans-serif; line-height:18px; }
 #innercontentwrapper{padding-top:10px;}
 .moreBtn, .changeViewBtn { line-height:30px; background: url(../img/moreBtnLft.png) no-repeat top left; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:block; text-decoration:none; padding-left:12px; width:auto; font-family: Arial, Helvetica, sans-serif;}
 .moreBtn span, .changeViewBtn span { line-height:30px; background: url(../img/moreBtn.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; }
+.pricePlanTable .moreBtn span{width:100%;}
 .changeViewBtn { margin-top:5px; }
 #exerciseAddForm  .changeViewBtn {width:125px; margin: 5px auto 0;}
 #exerciseAddForm .login {padding-right:5px;}
@@ -237,7 +245,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListTitle { background: url("../img/bar_blue.png") no-repeat left top transparent; width:700px; font-size:18px; font-family: "MergeRegular"; text-shadow:#fff 1px 1px 0px; color:#c2c2c2; background-color: transparent; line-height:33px; color:#000000; }
 .clientList .clientListTitle .add_exercise { display:inline-block; width:37px; }
 .clientList .clientListTitle .name { display:inline-block; width:273px; }
-.clientList .clientListTitle .name_program { display:inline-block; width:250px; }
+.clientList .clientListTitle .name_program { padding-left:10px; display:inline-block; width:250px; }
 .clientList .clientListTitle .count { display:inline-block; width:110px; }
 .clientList .clientListTitle .dateTime { display:inline-block; width:174px; }
 .clientList .clientListTitle .creationDate { padding-left:10px; display:inline-block; width:221px; padding-right:10px; }
@@ -262,7 +270,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:80px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:16px; height:16px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }*/
 .clientList .clientListRow .notes { padding-right:10px; display:inline-block; width:286px; color:#666666; color:#343434; vertical-align: top; }
-.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:110px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:112px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:24px; height:24px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }
 .clientList .clientListRow .actions a span { display:none; }
 
@@ -465,6 +473,7 @@ label.error_validate{
 	 padding: 5px;
 	 border: 1px solid;
 	 text-align: center;
+	 font-size: 14px;
 }
 
 .pricePlanTable .priceTableHead

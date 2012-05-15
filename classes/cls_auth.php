@@ -23,7 +23,7 @@ class auth
 		{
 			$query->query("
 						SELECT 
-							trainer_id,username,password,access_level,active,profile_id,is_clinic
+							trainer_id,username,password,access_level,active,profile_id,is_clinic,email
 						FROM 
 							trainer 
 						WHERE 
@@ -33,7 +33,7 @@ class auth
 		else{
 			$query->query("
 						SELECT 
-							trainer_id,username,password,access_level,active,profile_id,is_clinic
+							trainer_id,username,password,access_level,active,profile_id,is_clinic,email
 						FROM 
 							trainer 
 						WHERE 
@@ -57,6 +57,12 @@ class auth
 				$_SESSION[UID]=1;
 				$_SESSION[U_ID] = $query->f('trainer_id');
 				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
+				$_SESSION[USER_EMAIL] = $query->f('email');
+                
+                $this->dbu->query("SELECT * FROM trainer WHERE trainer_id=".$trainer_id);
+                $this->dbu->move_next();
+                $lang = $this->dbu->f('lang');
+                setcookie('language', $lang, 0, '/');
 				//$_SESSION[ACCESS_LEVEL] = '3';							
 				global $user_level;
 
@@ -118,6 +124,16 @@ class auth
 										WHERE 
 											trainer_id = ".$trainer_id." 
 									");
+				
+				if(isset($ld['fb_id']))
+				{
+					$userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
+					if(!$userEmail)
+					{
+						header("Location: /index.php?pag=profile_edit_email&success=false&error=".urlencode("You have not email address, please fill this field."));
+						exit;
+					}
+				}
 				
 				return true;
 			}

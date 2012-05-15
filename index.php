@@ -41,10 +41,19 @@ if($_SESSION[U_ID])
 		$glob['pag'] = 'cms';
 	}
 }
-$curr_lang = (isset($_GET['lang']) && $_GET['lang'] != '') ? mysql_real_escape_string(strtolower(trim($_GET['lang']))) : 'en';
-$glob['lang'] = $curr_lang;
+if($_SESSION[U_ID] && ($glob['pag']!='profile_edit_email' && $glob['pag']!='login') && !$glob['email'] && !$_SESSION[USER_EMAIL])
+{
+	header("Location: /index.php?pag=profile_edit_email&success=false&error=".urlencode("You have not email address, please fill this field."));
+	exit;
+}
+if(isset($_COOKIE['language']) && $_COOKIE['language']){
+    $glob['lang'] = $_COOKIE['language'];
+}
+else{
+    $glob['lang'] = (isset($glob['lang']) && $glob['lang'] != '') ? mysql_real_escape_string(strtolower(trim($glob['lang']))) : 'en';
+}
 
-switch($curr_lang){
+switch($glob['lang']){
     case 'us': $currency = 'USD'; break;
     default: $currency = 'GBP';
 }
@@ -53,7 +62,7 @@ $ftm=new ft("");
 $exercise_session_pages = array("client_add_exercise","client_update_exercise","program_update_exercise");
 
 if(!empty($_SESSION['pids']) && !in_array($glob['pag'],$exercise_session_pages)) unset($_SESSION['pids']);
-$glob['success']=false;
+if(!isset($glob['success']))$glob['success']=false;
 
 if($glob['act'] && !$glob['skip_action'])
 {
@@ -130,7 +139,7 @@ if($site_module[$page_access[$glob['pag']]['module']])
 	$current_module=$page_access[$glob['pag']]['module'];
 	
 	$dbu = new mysql_db();
-	$dbu->query("select * from ".$current_module."_template_czone WHERE lang='".$curr_lang."'");
+	$dbu->query("select * from ".$current_module."_template_czone WHERE lang='".$glob['lang']."'");
 	while($dbu->move_next())
 	{
 		$template_tags[$dbu->f('template_czone_id')]=$dbu->f('tag');
@@ -165,7 +174,7 @@ $ftm->assign('META_TITLE',$site_meta_title);
 $ftm->assign('META_KEYWORDS',$site_meta_keywords);
 $ftm->assign('META_DESCRIPTION',$site_meta_description);
 
-$q = mysql_query("SELECT * FROM tmpl_translate_".$curr_lang." WHERE template_file ='".pathinfo($template_file, PATHINFO_FILENAME)."'");
+$q = mysql_query("SELECT * FROM tmpl_translate_".$glob['lang']." WHERE template_file ='".pathinfo($template_file, PATHINFO_FILENAME)."'");
 while($row = mysql_fetch_assoc($q)){
   $ftm->assign($row['tag'], $row['tag_text']);
 }

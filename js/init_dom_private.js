@@ -336,7 +336,7 @@ $(document).ready(function()
 				jQuery(this).attr('href', 'index.php?pag=profile');
 			});
 		}
-	})
+	});
 	
 	$(document).bind('mousemove', function(e){
 		if (typeof e == 'undefined')
@@ -432,11 +432,13 @@ $(document).ready(function()
 	);
 		
 	$('.navMenu .item1, .footer .item1').click(function(e){
-		if(($(this).attr('href').indexOf('index.php?pag=login')>-1))
+		if(($(this).attr('href').indexOf('index.php?pag=login&act=auth-logout')>-1))
 		{
 			e.preventDefault();
-			FB.logout();
-			window.location = $(this).attr('href');
+			if(FB._userStatus == 'unknown')
+				window.location = 'index.php?pag=login&act=auth-logout';
+			else
+				FB.logout();
 		}
 	});
 	

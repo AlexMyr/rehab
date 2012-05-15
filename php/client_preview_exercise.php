@@ -109,7 +109,7 @@ global $script_path;
 	
 	if($glob['mode']== 'edit'){
 		$ft->assign(array(
-			'DISCARD' 					=> '"index.php?pag=dashboard"',
+			'DISCARD' 					=> '"index.php?pag=client&client_id='.$glob['client_id'].'"',
 			'LINK_TEXT' 				=> 'Discard',
 			'LINK_TEXT_3' 				=> '<< Change Exercise',
 			'ADD_EXERCISE' 				=> 'index.php?pag=client_update_exercise&client_id='.$glob['client_id'].'&exercise_plan_id='.$glob['exercise_plan_id'],
@@ -136,6 +136,7 @@ global $script_path;
 			'EMAIL_URL' 				=> 'index.php?pag=client_email&act=client-mail_exercise&client_id='.$glob['client_id'].'&exercise_plan_id='.$glob['exercise_plan_id'],
 			'TARGET'					=> '_blank',
 			'HIDE_EMAIL'				=> $has_email ? '' : 'none',
+			'FINISH'					=> 'index.php?pag=client&client_id='.$glob['client_id'],
 			
 		));
 		$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.$exercise_notes.'</strong></span>', ));

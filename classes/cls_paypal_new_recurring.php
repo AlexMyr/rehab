@@ -11,7 +11,7 @@ function paypal_init()
 	$PROXY_HOST = '127.0.0.1';
 	$PROXY_PORT = '808';
 
-	$SandboxFlag = false;
+	$SandboxFlag = true;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -72,24 +72,28 @@ function paypal_init()
 	'		cancelURL:			the page where buyers return to when they cancel the payment review on PayPal
 	'--------------------------------------------------------------------------------------------------------------------------------------------	
 	*/
-	function CallShortcutExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $total, $userEmail = '') 
+	function CallShortcutExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $is_recurring = false) 
 	{
 		//------------------------------------------------------------------------------------------------------------------------------------
 		// Construct the parameter string that describes the SetExpressCheckout API call in the shortcut implementation
-		$nvpstr="&PAYMENTREQUEST_0_AMT=". $paymentAmount;
+		
+		$nvpstr = '';
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_PAYMENTACTION=" . $paymentType;
 		$nvpstr = $nvpstr . "&RETURNURL=" . $returnURL;
 		$nvpstr = $nvpstr . "&CANCELURL=" . $cancelURL;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_CURRENCYCODE=" . $currencyCodeType;
-		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME0=Annual subscription&L_PAYMENTREQUEST_0_AMT0=".$total."
-                            &L_PAYMENTREQUEST_0_QTY0=1
-                            &PAYMENTREQUEST_0_ITEMAMT=".$total."
-                            &PAYMENTREQUEST_0_AMT=".$total."
-                            &ALLOWNOTE=1";
+		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME1=TEst";
+		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_DESC1=Desc";
 		
-		if($userEmail)
-			$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_DESC0=$userEmail";
-
+		if($is_recurring)
+		{
+			$nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
+			$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=Time Magazine subscription";
+			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=0";
+		}
+		else
+			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=". $paymentAmount;
+		
 		$_SESSION["currencyCodeType"] = $currencyCodeType;	  
 		$_SESSION["PaymentType"] = $paymentType;
 
@@ -99,15 +103,41 @@ function paypal_init()
 		//' If an error occured, show the resulting errors
 		//'---------------------------------------------------------------------------------------------------------------
 	    $resArray=hash_call("SetExpressCheckout", $nvpstr);
-
 		$ack = strtoupper($resArray["ACK"]);
 		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
 		{
 			$token = urldecode($resArray["TOKEN"]);
-			$_SESSION['TOKEN']=$token;
+			$_SESSION['TOKEN']=$_SESSION['PREV_TOKEN']=$token;
 		}
 	    return $resArray;
 	}
+	
+	function CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $AMT, $CURRENCYCODE, $EMAIL,
+												$L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0, $L_PAYMENTREQUEST_0_QTY0)
+	{
+//var_dump($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $AMT, $CURRENCYCODE, $EMAIL,
+//												$L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0, $L_PAYMENTREQUEST_0_QTY0);exit;
+		$nvpstr="&TOKEN=". $TOKEN;
+		$nvpstr.="&PROFILESTARTDATE=". $PROFILESTARTDATE;
+		$nvpstr.="&DESC=". $DESC;
+		$nvpstr.="&BILLINGPERIOD=". $BILLINGPERIOD;
+		$nvpstr.="&BILLINGFREQUENCY=". $BILLINGFREQUENCY;
+		$nvpstr.="&AMT=". $AMT;
+		$nvpstr.="&CURRENCYCODE=". $CURRENCYCODE;
+		$nvpstr.="&EMAIL=". $EMAIL;
+		$nvpstr.="&L_PAYMENTREQUEST_0_ITEMCATEGORY0=". $L_PAYMENTREQUEST_0_ITEMCATEGORY0;
+		$nvpstr.="&L_PAYMENTREQUEST_0_NAME0=". $L_PAYMENTREQUEST_0_NAME0;
+		$nvpstr.="&L_PAYMENTREQUEST_0_AMT0=". $L_PAYMENTREQUEST_0_AMT0;
+		$nvpstr.="&L_PAYMENTREQUEST_0_QTY0=". $L_PAYMENTREQUEST_0_QTY0;
+		
+		$resArray=hash_call("CreateRecurringPaymentsProfile", $nvpstr);
+var_dump($resArray);exit;
+		
+	    return $resArray;
+	}
+	
+	/*
+
 
 	/*   
 	'-------------------------------------------------------------------------------------------------------------------------------------------
@@ -130,7 +160,8 @@ function paypal_init()
 	*/
 	function CallMarkExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, 
 									  $cancelURL, $shipToName, $shipToStreet, $shipToCity, $shipToState,
-									  $shipToCountryCode, $shipToZip, $shipToStreet2, $phoneNum
+									  $shipToCountryCode, $shipToZip, $shipToStreet2, $phoneNum,
+									  $is_recurring = true
 									) 
 	{
 		//------------------------------------------------------------------------------------------------------------------------------------
@@ -150,6 +181,8 @@ function paypal_init()
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE=" . $shipToCountryCode;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_SHIPTOZIP=" . $shipToZip;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_SHIPTOPHONENUM=" . $phoneNum;
+		if($is_recurring)
+			$nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
 		
 		$_SESSION["currencyCodeType"] = $currencyCodeType;	  
 		$_SESSION["PaymentType"] = $paymentType;
@@ -256,6 +289,8 @@ function paypal_init()
 		return $resArray;
 	}
 	
+	
+	
 	/*
 	'-------------------------------------------------------------------------------------------------------------------------------------------
 	' Purpose: 	This function makes a DoDirectPayment API call
@@ -329,7 +364,7 @@ function paypal_init()
 	$PROXY_PORT = '808';
 
 	
-	$SandboxFlag = false;
+	$SandboxFlag = true;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -366,7 +401,7 @@ function paypal_init()
 	}
 
 	$USE_PROXY = false;
-	$version="76";//64
+	$version="64";
     if (session_id() == "") 
 		session_start();
 		//declaring of global variables
@@ -393,7 +428,8 @@ function paypal_init()
 
 		//NVPRequest for submitting to server
 		$nvpreq="METHOD=" . urlencode($methodName) . "&VERSION=" . urlencode($version) . "&PWD=" . urlencode($API_Password) . "&USER=" . urlencode($API_UserName) . "&SIGNATURE=" . urlencode($API_Signature) . $nvpStr . "&BUTTONSOURCE=" . urlencode($sBNCode);
-
+//if($methodName == 'CreateRecurringPaymentsProfile')
+//{var_dump($nvpreq);exit;}
 		//setting the nvpreq as POST FIELD to curl
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
 
@@ -431,8 +467,8 @@ function paypal_init()
 	function RedirectToPayPal ( $token )
 	{
 		//global $PAYPAL_URL;
-		//test
-		$SandboxFlag = false;
+		
+		$SandboxFlag = true;
 		if ($SandboxFlag == true) 
         {
             $API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";

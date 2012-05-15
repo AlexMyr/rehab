@@ -18,7 +18,11 @@ class member
 							WHERE constant_name='PAYPAL_USERNAME' OR constant_name='PAYPAL_PASSWORD' OR constant_name='PAYPAL_SIGN'
 							
 						");
-			while($this->dbu->move_next())
+			
+			define('API_USERNAME', 'oleg_g_1291193039_biz_api1.mail.ru');
+			define('API_PASSWORD', '1291193052');
+			define('API_SIGN', 'A83lKGFYhcUgZ0ktSkwH3B0.KTEHAYo4yVcP8eQ.f2NBxKvLgVXndbQa');
+			/*while($this->dbu->move_next())
 			{
 				if($this->dbu->f('constant_name') == 'PAYPAL_USERNAME')
 				{
@@ -32,7 +36,7 @@ class member
 				{
 					define('API_SIGN', $this->dbu->f('value'));
 				}
-			}
+			}*/
 		}
 		
 	/****************************************************************
@@ -483,19 +487,13 @@ class member
 				return false;
 			}
 
-		//check has profile username
-		$username = $this->dbu->field("SELECT username FROM trainer WHERE 1=1 AND trainer_id = ".$_SESSION[U_ID]);
-		if(!$username)
-			$this->dbu->query("UPDATE trainer SET username='".$ld['email']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
-
 		$this->dbu->query("UPDATE trainer SET email='".$ld['email']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
 		$get_profile_id = $this->dbu->field("SELECT profile_id FROM trainer WHERE 1=1 AND trainer_id = ".$_SESSION[U_ID]);
 
 		$this->dbu->query("UPDATE trainer_profile SET email='".$ld['email']."' WHERE 1=1 AND trainer_id=".$_SESSION[U_ID]." AND profile_id=".$get_profile_id." ");
 	
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_EMAIL');
-		$_SESSION[USER_EMAIL] = $ld['email'];
-		
+
 		return true;
 	}
 	
@@ -503,11 +501,11 @@ class member
 	{
 		$is_ok=true;
 
-		if(!$ld['email'])
-			{
-				$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
-				$is_ok=false;
-			}
+		//if($ld['changed_email'] && !$ld['email'])
+		//	{
+		//		$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
+		//		$is_ok=false;
+		//	}
 
 		if($ld['email'] && !secure_email($ld['email']))
 			{
@@ -987,9 +985,7 @@ class member
 	}
 
 function pay(&$ld){
-	
-	$userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
-	
+
 	include_once('classes/cls_paypal_new.php');
 	paypal_init();
     
@@ -999,16 +995,19 @@ function pay(&$ld){
 	$_SESSION['price_id'] = $ld['price_id'];
 	$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));;
     
-	//$paymentAmount = $_SESSION['Payment_Amount'] = 1;
+	$paymentAmount = $_SESSION['Payment_Amount'] = 1;
 	$_SESSION['days'] = 365;
 	$currencyCodeType = $this->dbu->f('currency');
 	$paymentType = "Sale";
 	
-	$returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
-	$cancelURL = 'http://rehabmypatient.com/index.php';
+	//$domain_name = 'http://rehabmypatient.com/';
+	$domain_name = 'http://rehab.loc/';
 	
-	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount, $userEmail);
-
+	$returnURL = $domain_name.'index.php?act=member-confirm_pay';
+	$cancelURL = $domain_name.'index.php';
+	
+	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount);
+//var_dump($resArray);exit;
 	$ack = strtoupper($resArray["ACK"]);
 	if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
 	{
@@ -1037,6 +1036,8 @@ function pay(&$ld){
 
 function confirm_pay()
 {
+	$domain_name = 'http://rehab.loc/';
+	
 	include_once('classes/cls_paypal_new.php');
 	$token = "";
 	if (isset($_REQUEST['token']))
@@ -1086,41 +1087,56 @@ function confirm_pay()
 			$_SESSION['payer_id'] = $payerId;
 			
 			$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
-			$ack = strtoupper($resArray["ACK"]);
+//var_dump($resArray);exit;			
+			$ack = strtoupper($resArray["PAYMENTINFO_0_ACK"]);
 			
-			$daysToAdd = 0;
-			switch($this->dbu->f('licence_period'))
+			if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
 			{
-				case 'year':
-					{
-						$daysToAdd = 365;
-						break;
-					}
-				case 'month':
-					{
-						$daysToAdd = 30;
-						break;
-					}
+//var_dump($_SESSION['PREV_TOKEN'], $resArray['TOKEN']);exit;
+//				$resArray = CreateRecurringPaymentsProfile($_SESSION['TOKEN'], date("c"), "Pay for rehab", "Month", "12", "1.00", $resArray['PAYMENTINFO_0_CURRENCYCODE'], "oleg_gladchenko@mail.ru",
+//															"Digital", "Rehab payment plan", "1.00", "1");
+//var_dump($resArray);exit;			
+				$daysToAdd = 0;
+				switch($this->dbu->f('licence_period'))
+				{
+					case 'year':
+						{
+							$daysToAdd = 365;
+							break;
+						}
+					case 'month':
+						{
+							$daysToAdd = 30;
+							break;
+						}
+				}
+				$curTime = time();
+				$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
+				
+				$this->dbu->query("UPDATE trainer 
+								SET 
+									paypal_profile_id = '".$payerId."',
+									country_id 	    = '".$ld['country_id']."',
+									price_plan_id 	= '".$ld['price_id']."',
+									is_trial		= '0',
+									expire_date		= '$expireTime'
+								WHERE 
+									trainer_id=".$_SESSION[U_ID]."
+													");
+				
+		
+				
+				//header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
 			}
-			$curTime = time();
-			$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
+			else
+			{
+				header("Location: ".$domain_name."index.php?pag=profile&paym=0");
+			}
 			
-			$this->dbu->query("UPDATE trainer 
-	   	 					SET 
-								paypal_profile_id = '".$payerId."',
-								country_id 	    = '".$ld['country_id']."',
-								price_plan_id 	= '".$ld['price_id']."',
-								is_trial		= '0',
-								expire_date		= '$expireTime'
-							WHERE 
-								trainer_id=".$_SESSION[U_ID]."
-												");
-			
-			header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
 		} 
 		else  
 		{
-			header("Location: http://rehabmyp.loc/index.php?pag=profile&paym=0");
+			header("Location: ".$domain_name."index.php?pag=profile&paym=0");
 			
 			//Display a user friendly Error on the page using any of the following error information returned by PayPal
 			//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);

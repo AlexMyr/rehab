@@ -67,7 +67,7 @@ class client
 			$ld['client_note']='';
 			
 			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
-			
+			header("location: /index.php?pag=client&client_id=".$ld['client_id']."&success=true&error=".$ld['error']);exit;
 		    return true;
 		}
 	}

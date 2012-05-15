@@ -35,8 +35,8 @@
 			<h1 class="logo"><a href="index.php"><span>rehab my patient</span></a></h1>
 			<div class="navMenu">
 				<div class="lang">
-					<a id="lang_en" href="/index.php"><img src="/img/gb.gif"/></a>
-					<a id="lang_us" href="/us/index.php"><img src="/img/us.gif"/></a>
+					<a id="lang_en" href="/index.php" value="en"><img src="/img/gb.gif"/></a>
+					<a id="lang_us" href="/us/index.php" value="us"><img src="/img/us.gif"/></a>
 					<script>
 					$(document).ready(function(){
 						var regExpr = /\/..\/.*/i;					
@@ -102,9 +102,9 @@ PostAffTracker.track();
 	FB.Event.subscribe('auth.login', function(response) {
 	  window.location.reload();
 	});
-	/*FB.Event.subscribe('auth.logout', function(response) {
-	  window.location.reload();
-	});*/
+	FB.Event.subscribe('auth.logout', function(response) {
+	  window.location = "index.php?pag=login&act=auth-logout";
+	});
   };
   (function() {
 	var e = document.createElement('script'); e.async = true;

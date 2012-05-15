@@ -95,9 +95,9 @@ else
 						FB.Event.subscribe('auth.login', function(response) {
 						  window.location.reload();
 						});
-						/*FB.Event.subscribe('auth.logout', function(response) {
-						  window.location.reload();
-						});*/
+						FB.Event.subscribe('auth.logout', function(response) {
+						  window.location = 'index.php?pag=login&act=auth-logout';
+						});
 					  };
 					  (function() {
 						var e = document.createElement('script'); e.async = true;

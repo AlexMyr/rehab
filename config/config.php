@@ -41,11 +41,11 @@ foreach($conf_data as $c_key => $c_val)
         
 $is_live=1; 
         
-define('API_USERNAME', 'tibi_1305030086_biz_api1.medeeaweb.com');
-define('API_PASSWORD', '1305030103');
-define('API_SIGNATURE', 'AEvJTLkAETZrJl7.q.Vxym.DXhMGAXGqrN0MIWrjSgjm-qrAN1LdctDt');
-define('API_ENDPOINT', 'https://api-3t.sandbox.paypal.com/nvp');
-define('VERSION', '51.0');
+//define('API_USERNAME', 'tibi_1305030086_biz_api1.medeeaweb.com');
+//define('API_PASSWORD', '1305030103');
+//define('API_SIGNATURE', 'AEvJTLkAETZrJl7.q.Vxym.DXhMGAXGqrN0MIWrjSgjm-qrAN1LdctDt');
+//define('API_ENDPOINT', 'https://api-3t.sandbox.paypal.com/nvp');
+//define('VERSION', '51.0');
 
 define('AFFILIATES_API_M_USERNAME', 'dbeach@daxic.com');
 define('AFFILIATES_API_M_PASSWORD', '123456');

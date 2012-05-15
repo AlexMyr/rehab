@@ -147,6 +147,11 @@ while($i<count($exercise))
 	{
 		$programs_title = str_replace('’', '\'', $get_data->gf('programs_title'));
 		$plan_description = str_replace('’', '\'', $get_data->gf('plan_description'));
+		
+		$programs_title = mb_eregi_replace('“', '"', $programs_title);
+		$programs_title = mb_eregi_replace('”', '"', $programs_title);
+		$plan_description = mb_eregi_replace('“', '"', $plan_description);
+		$plan_description = mb_eregi_replace('”', '"', $plan_description);
 		//$programs_title = $get_data->gf('programs_title');
 		//$plan_description = $get_data->gf('plan_description');
 		
@@ -157,6 +162,11 @@ while($i<count($exercise))
 	{
 		$programs_title = str_replace('’', '\'', $get_program->gf('programs_title'));
 		$plan_description = str_replace('’', '\'', $get_program->gf('plan_description'));
+		
+		$programs_title = mb_eregi_replace('“', '"', $programs_title);
+		$programs_title = mb_eregi_replace('”', '"', $programs_title);
+		$plan_description = mb_eregi_replace('“', '"', $plan_description);
+		$plan_description = mb_eregi_replace('”', '"', $plan_description);
 		
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_program->gf('programs_title') ? $programs_title : '', ));
 		$ft->assign(array( 'EXERCISE_DESC'=> $get_program->gf('plan_description') ? $plan_description : '', ));

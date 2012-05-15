@@ -73,53 +73,75 @@ $end = ceil($max_rows/$l_r);
 $link = '';
 if($end>1)
 {
-if($end<=5){
-    //if there are less then 5 pages then we go about building a normal pagination
-    for ($i = 0; $i < $end; $i++){
-        $page = $i+1;
-        $class = $page == $start+1 ? 'class="moreBtn current"' : 'class="moreBtn"';
-        $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page}</span></a></li>
-HTML;
-    }
-}else{
-    if($start == 0 || $start <3){
-        for ($i = 0; $i < 5; $i++){
-            $page = $i+1;
+    $dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." ORDER BY surname ASC ");
+   
+    if($end<=5){
+        //if there are less then 5 pages then we go about building a normal pagination
+        for ($i = 0; $i < $end; $i++){
+            //$page = $i+1;
+            $dbu->move_to($i*$l_r);
+            $dbu->move_next();
+            $page = $dbu->f('surname');
             $class = $page == $start+1 ? 'class="moreBtn current"' : 'class="moreBtn"';
             $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page}</span></a></li>
-HTML;
-        }
-    }elseif ($start+2 >= $end-1){
-        //we are close to the end
-        for ($i = $end-5; $i < $end; $i++){
-            $page = $i+1;
-            $class = $page == $start+1 ? 'class="moreBtn current"' : 'class="moreBtn"';
-            $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page}</span></a></li>
+<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page[0]}</span></a></li>
 HTML;
         }
     }else{
-        for ($i = $start-2; $i < $start; $i++){
-            $page = $i+1;
+        if($start == 0 || $start <3){
+            for ($i = 0; $i < 5; $i++){
+                //$page = $i+1;
+                $dbu->move_to($i*$l_r);
+                $dbu->move_next();
+                $page = $dbu->f('surname');
+                $class = $i == $offset ? 'class="moreBtn current"' : 'class="moreBtn"';
+                $link .= <<<HTML
+<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page[0]}</span></a></li>
+HTML;
+            }
+        }elseif ($start+2 >= $end-1){
+            //we are close to the end
+            for ($i = $end-5; $i < $end; $i++){
+                //$page = $i+1;
+                $dbu->move_to($i*$l_r);
+                $dbu->move_next();
+                $page = $dbu->f('surname');
+                $class = $i == $offset ? 'class="moreBtn current"' : 'class="moreBtn"';
+                $link .= <<<HTML
+<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page[0]}</span></a></li>
+HTML;
+            }
+        }else{
+            for ($i = $start-2; $i < $start; $i++){
+                //$page = $i+1;
+                $dbu->move_to($i*$l_r);
+                $dbu->move_next();
+                $page = $dbu->f('surname');
+                $class = $i == $offset ? 'class="moreBtn current"' : 'class="moreBtn"';
+                $link .= <<<HTML
+<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page[0]}</span></a></li>
+HTML;
+            }
+            //$page = $start+1;
+            $dbu->move_to($i*$l_r);
+            $dbu->move_next();
+            $page = $dbu->f('surname');
+            $class = $i == $offset ? 'class="moreBtn current"' : 'class="moreBtn"';
             $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}"><span>{$page}</span></a></li>
+<li><a href="index.php?pag={$glob['pag']}&offset={$start}{$arguments}" {$class}><span>{$page[0]}</span></a></li>
 HTML;
-        }
-        $page = $start+1;
-        $class = $page == $start+1 ? 'class="moreBtn current"' : 'class="moreBtn"';
-        $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&offset={$start}{$arguments}" {$class}><span>{$page}</span></a></li>
+            for ($i = $start+1; $i < $start+3; $i++){
+                //$page = $i+1;
+                $dbu->move_to($i*$l_r);
+                $dbu->move_next();
+                $page = $dbu->f('surname');
+                $class = $i == $offset ? 'class="moreBtn current"' : 'class="moreBtn"';
+                $link .= <<<HTML
+<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}" {$class}><span>{$page[0]}</span></a></li>
 HTML;
-        for ($i = $start+1; $i < $start+3; $i++){
-            $page = $i+1;
-            $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&offset={$i}{$arguments}"><span>{$page}</span></a></li>
-HTML;
+            }
         }
     }
-}
 }
 $ft->assign(array(
     'PAGG' => $link,

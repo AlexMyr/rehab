@@ -13,12 +13,10 @@ session_register(UID);
 if(isset($_POST['test']))
 {
 	$dbu = new mysql_db();
-	$dbu->query("select trainer.*, trainer_profile.* from trainer 
-				INNER JOIN trainer_profile ON trainer.profile_id=trainer_profile.profile_id
-			where trainer.trainer_id=".$_SESSION[U_ID]." ");
-	
+	$dbu->query("select trainer.* from trainer where trainer.trainer_id=".$_SESSION[U_ID]." ");
 	$dbu->move_next();
-	$profile_id = $dbu->f('profile_id');
+	$profile_id = $dbu->f('trainer_id');
+	var_dump($profile_id);exit;
 	if(!$profile_id) $profile_id = 'error';
 	print_r($profile_id);exit;
 }
