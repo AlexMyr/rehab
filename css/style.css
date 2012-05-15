@@ -303,7 +303,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .dashboard .paginate { width:700px; margin-top:10px; }
 .dashboard .paginate li { width:auto; display:inline-block; }
 .dashboard .paginate li.displayNone { display:none; }
-.dashboard .paginate .moreBtn { width:auto; margin-right:10px; display:inline-block; }
+.dashboard .paginate .moreBtn { width:auto; margin-right:2px; display:inline-block; }
 .moreBtn.current { background: url(../img/moreGreyBtnLft.jpg) no-repeat top left; color:#999999; text-shadow:#fff 1px 1px 0px; }
 .moreBtn.current span { background: url(../img/moreGreyBtn.jpg) no-repeat top right; color:#999999; text-shadow:#fff 1px 1px 0px; }
 .moreBtn.inactive { background: url(../img/moreGreyBtnLft.jpg) no-repeat top left; color:#999999; text-shadow:#fff 1px 1px 0px; }
@@ -558,4 +558,9 @@ label.error_validate{
 }
 .lang a:hover{
 	background: none;
+}
+
+.clientListDynamic
+{
+	height: 550px;
 }
