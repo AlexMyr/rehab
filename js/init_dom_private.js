@@ -320,6 +320,9 @@ doExercise = function(jSON)
 $(document).ready(function() 
 {
 	
+	//add scroll
+	$('.clientListDynamic').jScrollPane();
+	
 	$('.changeVideoUrl').click(function(){
 		var newUrl = "http://www.youtube.com/v/"+$(this).attr('url')+"?version=3&f=videos&app=youtube_gdata&autoplay=0";
 		$('#currentVideo').attr('src', newUrl);
@@ -608,3 +611,5 @@ $(document).ready(function()
 			document.cookie = 'language' + "=" + escape(lang) + "; expires=" + new Date( 2020, 1, 1 ) +  "; path=/";
 		})
 	});
+
+	
