@@ -30,15 +30,23 @@ $ft->assign('IMAGE_TYPE',build_print_image_type_list(1));
 
 $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 
-if(isset($glob['fchar']) && $glob['fchar'] != 'all')
+if(isset($glob['query']))
 {
-		//var_dump("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' ORDER BY surname ASC ");exit;
-		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' ORDER BY surname ASC ");
+		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".$glob['query']."%' or first_name like '%".$glob['query']."%') ORDER BY surname ASC ");
 }
 else
 {
-		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." ORDER BY surname ASC ");
+		if(isset($glob['fchar']) && $glob['fchar'] != 'all')
+		{
+				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' ORDER BY surname ASC ");
+		}
+		else
+		{
+				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." ORDER BY surname ASC ");
+		}
 }
+
+
 
 
 /*
@@ -213,6 +221,10 @@ $ft->assign('CSS_LAST_LINK', 'last displayNone');
 $ft->assign('CSS_NEXTLINK', 'next displayNone');
 
 /// end paginate
+
+$ft->assign('FILTER_LINK', "index.php?pag=".$glob['pag']."");
+$ft->assign('FILTER_VALUE', (isset($glob['query']) ? $glob['query'] : ''));
+
 
 $ft->assign('CSS_PAGE', $glob['pag']);
 

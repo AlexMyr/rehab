@@ -323,6 +323,11 @@ $(document).ready(function()
 	//add scroll
 	$('.clientListDynamic').jScrollPane();
 	
+	$('#filterPatientsUrl').click(function(e){
+		e.preventDefault();
+		window.location = $(this).attr('href') + '&query=' + $('#filterPatientsValue').val();
+	});
+	
 	$('.changeVideoUrl').click(function(){
 		var newUrl = "http://www.youtube.com/v/"+$(this).attr('url')+"?version=3&f=videos&app=youtube_gdata&autoplay=0";
 		$('#currentVideo').attr('src', newUrl);
