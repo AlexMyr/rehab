@@ -321,7 +321,8 @@ $(document).ready(function()
 {
 	
 	//add scroll
-	$('.clientListDynamic').jScrollPane();
+	if(typeof(jScrollPane) != 'undefined')
+		$('.clientListDynamic').jScrollPane();
 	
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
