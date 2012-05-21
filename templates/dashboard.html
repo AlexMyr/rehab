@@ -40,13 +40,13 @@
 				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
 			</div>
 		</div>
-		<div class="filterSection">&nbsp;&nbsp;<input id="filterPatientsValue" type="text" value={FILTER_VALUE} /><a class="moreBtn" id="filterPatientsUrl" href="{FILTER_LINK}"><span>Filter</span></a></div>
+		<div class="filterSection">&nbsp;&nbsp;<input id="filterPatientsValue" type="text" value="{FILTER_VALUE}" /><a class="moreBtn" id="filterPatientsUrl" href="{FILTER_LINK}"><span>Filter</span></a></div>
 		<div class="clientList">
 			<div class="clientListTitle">
 				<span class="add_exercise">&nbsp;</span>
-				<span class="name">{T.NAME}</span>
+				<span class="name"><a href="{ORDER_BY_NAME}">{T.NAME}{NAME_SORT_ARROW}</a></span>
 				<span class="count">{T.N_PLANS}</span>
-				<span class="dateTime">{T.ACC_ACTIVITY}</span>
+				<span class="dateTime"><a href="{ORDER_BY_DATE}">{T.ACC_ACTIVITY}{DATE_SORT_ARROW}</a></span>
 			</div>
 			<div class="clientListDynamic">
 <!-- BEGIN DYNAMIC BLOCK: client_line -->

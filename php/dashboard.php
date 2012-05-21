@@ -30,19 +30,34 @@ $ft->assign('IMAGE_TYPE',build_print_image_type_list(1));
 
 $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 
+$order_by = ' ORDER BY surname ASC';
+if(isset($glob['orderf']))
+{
+		if($glob['orderf'] == 'name')
+		{
+				$order_by = 'ORDER BY surname';
+		}
+		elseif($glob['orderf'] == 'date')
+		{
+				$order_by = 'ORDER BY modify_date';
+		}
+		
+		$order_by .= ' '.strtoupper($glob['orderd']);
+}
+
 if(isset($glob['query']))
 {
-		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".$glob['query']."%' or first_name like '%".$glob['query']."%') ORDER BY surname ASC ");
+		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".$glob['query']."%' or first_name like '%".$glob['query']."%') $order_by ");
 }
 else
 {
 		if(isset($glob['fchar']) && $glob['fchar'] != 'all')
 		{
-				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' ORDER BY surname ASC ");
+				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' $order_by ");
 		}
 		else
 		{
-				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." ORDER BY surname ASC ");
+				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." $order_by");
 		}
 }
 
@@ -80,12 +95,8 @@ while ($dbu->move_next()/*&&$i<$l_r*/)
 	$ft->parse('CLIENT_LINE_OUT','.client_line');
 	$i++;
 }
-if ($i==0) {
-//	return '';
-//	$glob['error'] = 'You don\'t have any client yet. Please add a new client first.';
-}
 
-/// paginate here
+// paginate here
 
 //get first chars
 $firstCharArray = array();
@@ -102,7 +113,7 @@ foreach($firstCharArray as $fChar)
 		$page = $dbu->f('surname');
                 $class = 'class="moreBtn"';
                 $link .= <<<HTML
-<li><a href="index.php?pag={$glob['pag']}&fchar={$fChar}" {$class}><span>{$fChar}</span></a></li>
+<li><a href="index.php?pag={$glob['pag']}&fchar={$fChar}&orderf=name&orderd=asc" {$class}><span>{$fChar}</span></a></li>
 HTML;
 }
 
@@ -184,6 +195,65 @@ HTML;
 //    }
 //}
 
+
+//build sort link
+$sort_link = '';
+if(isset($glob['query']))
+		$sort_link .= "index.php?pag={$glob['pag']}&query={$glob['query']}";
+elseif(isset($glob['fchar']))
+		$sort_link .= "index.php?pag={$glob['pag']}&fchar={$glob['fchar']}";
+else
+		$sort_link .= "index.php?pag={$glob['pag']}";
+
+$sort_by_name_link = $sort_link.'&orderf=name';
+if(isset($glob['orderf']) && $glob['orderf'] == 'name')
+{
+		if($glob['orderd'] == 'asc')
+		{
+				$sort_by_name_link .= '&orderd=desc';
+				$name_sort_arrow = '&uarr;';
+		}
+		else
+		{
+				$sort_by_name_link .= '&orderd=asc';
+				$name_sort_arrow = '&darr;';
+		}
+}
+else
+{
+		$sort_by_name_link .= '&orderd=asc';
+		$name_sort_arrow = '&uarr;';
+}
+
+$sort_by_date_link = $sort_link.'&orderf=date';
+if(isset($glob['orderf']) && $glob['orderf'] == 'date')
+{
+		if($glob['orderd'] == 'asc')
+		{
+				$sort_by_date_link .= '&orderd=desc';
+				$date_sort_arrow = '&uarr;';
+		}
+		else
+		{
+				$sort_by_date_link .= '&orderd=asc';
+				$date_sort_arrow = '&darr;';
+		}
+}
+else
+{
+		$sort_by_date_link .= '&orderd=asc';
+		$date_sort_arrow = '&uarr;';
+}
+		
+$ft->assign(array(
+    'ORDER_BY_NAME' => $sort_by_name_link,
+    'ORDER_BY_DATE' => $sort_by_date_link,
+		'NAME_SORT_ARROW'=> $name_sort_arrow,
+		'DATE_SORT_ARROW' => $date_sort_arrow,
+));
+//build sort link
+
+
 $ft->assign(array(
     'PAGG' => $link,
     'PAG' => $glob['pag'],
@@ -221,9 +291,8 @@ $ft->assign('CSS_LAST_LINK', 'last displayNone');
 $ft->assign('CSS_NEXTLINK', 'next displayNone');
 
 /// end paginate
-
 $ft->assign('FILTER_LINK', "index.php?pag=".$glob['pag']."");
-$ft->assign('FILTER_VALUE', (isset($glob['query']) ? $glob['query'] : ''));
+$ft->assign('FILTER_VALUE', ((isset($glob['query']) && $glob['query']) ? $glob['query'] : ''));
 
 
 $ft->assign('CSS_PAGE', $glob['pag']);
