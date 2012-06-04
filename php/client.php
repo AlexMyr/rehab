@@ -86,7 +86,7 @@ while ($programs->next()&&$i<$l_r)
 		$ft->assign(array(
 		    'HIDE_EMAIL'=>$has_email ? '' : 'none',
 			'EXERCISE_PLAN_ID'=>$programs->f('exercise_plan_id'),
-			'CREATE_DATE'=>date('D jS M Y, h.ia',strtotime($programs->f('date_created'))),
+			'CREATE_DATE'=>date('D jS M Y',strtotime($programs->f('date_created'))),
 			'MODIFY_DATE'=>date('D jS M Y, h.ia',strtotime($programs->f('date_modified'))),
 		));
 	$ft->parse('CLIENT_RECORD_LINE_OUT','.client_record_line');
