@@ -734,6 +734,7 @@ class member
 			//$ld['error']='checked';
 		}
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
+		$ld['pag'] = 'dashboard';
 		return true;
 	}
 		

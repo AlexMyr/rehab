@@ -65,8 +65,8 @@ $site_meta_title=$meta_title." - Profile Header Paper";
 $site_meta_keywords=$meta_keywords.", Profile Header Paper";
 $site_meta_description=$meta_description." Profile Header Paper";
 
-
 $ft->assign('CSS_PAGE', $glob['pag']);
+$ft->assign('PAG', $glob['pag']);
 
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');
