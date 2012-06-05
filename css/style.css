@@ -112,6 +112,7 @@ button#exerciseAdd {margin:auto; width: 135px;}
 .branditTop { width:220px; height:4px; display:block; margin:0px auto; }
 .branditBottom { width:220px; height:4px; display:block; margin:0px auto; margin-bottom:15px; }*/
 .brandit { background:url(../img/brand_plan_new.png) top left repeat-x transparent; /*width:192px; padding:7px 11px;*/ margin:0px auto;}
+.brandit.us { background:url(../img/brand_plan_new_US.png) top left repeat-x transparent; /*width:192px; padding:7px 11px;*/ margin:0px auto;}
 .brandit .moreBtn { margin:5px 0px 10px 0px; }
 .brandit h2 { color: #898989; font-size:18px; text-shadow:#fff 1px 1px 0px; }
 .brandit h3 { color: #6099e7; font-size:17px; text-shadow:#fff 1px 1px 0px; padding-top:0px; }
