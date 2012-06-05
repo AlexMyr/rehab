@@ -48,6 +48,7 @@ else
         'SURNAME'=>$dbu->f('surname'),
         'COMPANY_NAME'=>$dbu->f('company_name'),
         'ADDRESS'=>$dbu->f('address'),
+		'STATE_ZIP'=>$dbu->f('state_zip'),
         'POST_CODE'=>$dbu->f('post_code'),
         'WEBSITE'=>$dbu->f('website'),
         'PHONE'=>$dbu->f('phone'),
@@ -60,6 +61,11 @@ else
         'LANG_EN' => $dbu->f('lang') == 'en' ? 'selected' : '',
         'LANG_US' => $dbu->f('lang') == 'us' ? 'selected' : ''
     ));
+
+if($glob['lang']=='en')
+{
+  $ft->assign('DISPLAY_ZIP','none');
+}
 
 $site_meta_title=$meta_title." - Profile Header Paper";
 $site_meta_keywords=$meta_keywords.", Profile Header Paper";

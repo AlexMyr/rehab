@@ -718,7 +718,8 @@ class member
 								mobile='".$ld['mobile']."',
 								email='".$ld['email']."',
 								city='".$ld['city']."',
-								fax='".$ld['fax']."'
+								fax='".$ld['fax']."',
+								state_zip='".$ld['state_zip']."'
 							WHERE 
 								trainer_id='".$_SESSION[U_ID]."'");
 		
