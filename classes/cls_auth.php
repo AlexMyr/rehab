@@ -15,6 +15,7 @@ class auth
 	****************************************************************/
 	function login(&$ld)
 	{
+//var_dump($ld);exit;
 		global $user_level;
 
 		$query = $this->dbu;
@@ -58,6 +59,15 @@ class auth
 				$_SESSION[U_ID] = $query->f('trainer_id');
 				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
 				$_SESSION[USER_EMAIL] = $query->f('email');
+				
+				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
+				{
+					setcookie('UID', 1, 0, '/');
+					setcookie('U_ID', $query->f('trainer_id'), 0, '/');
+					setcookie('ACCESS_LEVEL', $query->f('access_level'), 0, '/');
+					setcookie('USER_EMAIL', $query->f('email'), 0, '/');
+				}
+				
                 
                 $this->dbu->query("SELECT * FROM trainer WHERE trainer_id=".$trainer_id);
                 $this->dbu->move_next();
@@ -173,6 +183,12 @@ class auth
 			}
 		}
 		session_destroy();
+		
+		setcookie('UID', "", time() - 3600, '/');
+		setcookie('U_ID', "", time() - 3600, '/');
+		setcookie('ACCESS_LEVEL', "", time() - 3600, '/');
+		setcookie('USER_EMAIL', "", time() - 3600, '/');
+		
 		$ld['pag'] = 'cms';
 		
 		return true;

@@ -3,8 +3,18 @@
 * @Author: Tinu Coman
 ***********************************************************************/
 session_start();
+
 include_once("module_config.php");
 include_once("php/gen/startup.php");
+
+if($_COOKIE['UID'] && (!isset($glob['act']) && $glob['act']!='auth-logout'))
+{
+	$_SESSION[UID]=$_COOKIE['UID'];
+	$_SESSION[U_ID] = $_COOKIE['U_ID'];
+	$_SESSION[ACCESS_LEVEL] = $_COOKIE['ACCESS_LEVEL'];
+	$_SESSION[USER_EMAIL] = $_COOKIE['USER_EMAIL'];
+}
+
 
 if(!$debug)
 {
@@ -26,6 +36,7 @@ if($page_access[$glob['pag']]['session'])
 {
 	session_register(UID);
 }
+
 if($_SESSION[UID])
 {
 	$user_level=$_SESSION[ACCESS_LEVEL];
@@ -34,6 +45,7 @@ else
 {
 	$user_level=4;
 }
+
 if($_SESSION[U_ID])
 {
 //	check_ip($_SERVER['REMOTE_ADDR'],$_SESSION[U_ID]);
@@ -62,7 +74,6 @@ $ftm=new ft("");
 $exercise_session_pages = array("client_add_exercise","client_update_exercise","program_update_exercise");
 
 if(!empty($_SESSION['pids']) && !in_array($glob['pag'],$exercise_session_pages)) unset($_SESSION['pids']);
-
 
 if($glob['act'] && !$glob['skip_action'])
 {
