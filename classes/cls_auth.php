@@ -15,7 +15,6 @@ class auth
 	****************************************************************/
 	function login(&$ld)
 	{
-//var_dump($ld);exit;
 		global $user_level;
 
 		$query = $this->dbu;
@@ -59,7 +58,7 @@ class auth
 				$_SESSION[U_ID] = $query->f('trainer_id');
 				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
 				$_SESSION[USER_EMAIL] = $query->f('email');
-				
+			
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
 				{
 					setcookie('UID', 1, 0, '/');
@@ -189,9 +188,45 @@ class auth
 		setcookie('ACCESS_LEVEL', "", time() - 3600, '/');
 		setcookie('USER_EMAIL', "", time() - 3600, '/');
 		
+		if(isset($_SESSION['fb_login_rmp']))
+			$_SESSION['fb_login_rmp'] = 0;
+		
 		$ld['pag'] = 'cms';
 		
 		return true;
+	}
+	
+	function login_fb()
+	{
+		require 'fb/facebook.php';
+
+		$facebook = new Facebook(array(
+		  'appId'  => '140136112789193',
+		  'secret' => 'dfa5828ecca71050bfd974f659003a66',
+		));
+		
+		// See if there is a user from a cookie
+		$user = $facebook->getUser();
+
+		if ($user) {
+		  try {
+			// Proceed knowing you have a logged in user who's authenticated.
+			$user_profile = $facebook->api('/me');
+		  } catch (FacebookApiException $e) {
+			$user = null;
+		  }
+		}
+		
+		if($user)
+		{
+			$_SESSION['fb_login_rmp'] = 1;
+			header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
+		}
+		else
+		{
+			header("Location: ".$facebook->getLoginUrl());
+		}
+
 	}
 	
 }//end class

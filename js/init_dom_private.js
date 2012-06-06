@@ -440,17 +440,6 @@ $(document).ready(function()
 		}
 	);
 		
-	$('.navMenu .item1, .footer .item1').click(function(e){
-		if(($(this).attr('href').indexOf('index.php?pag=login&act=auth-logout')>-1))
-		{
-			e.preventDefault();
-			if(FB._userStatus == 'unknown')
-				window.location = 'index.php?pag=login&act=auth-logout';
-			else
-				FB.logout();
-		}
-	});
-	
 	//save minimized li to cookies
 	$('.program_menu li span').click(function(){
 		var cokieId = $(this).parent().attr('id');

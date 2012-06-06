@@ -31,14 +31,12 @@ $site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], '
 require 'fb/facebook.php';
 
 $facebook = new Facebook(array(
-  'appId'  => '264894086933472',
-  'secret' => '9e61aeb9b7632060cc834d6ad4b106a3',
+  'appId'  => '140136112789193',
+  'secret' => 'dfa5828ecca71050bfd974f659003a66',
 ));
 
 // See if there is a user from a cookie
-	$user = $facebook->getUser();
-
-
+$user = $facebook->getUser();
 
 if ($user) {
   try {
@@ -49,15 +47,15 @@ if ($user) {
   }
 }
 
-if($user)
+if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 {
-		
+	
 	//check existing
 	$dbu->query("select * from trainer where fb_id = ".$user);
 	if($dbu->move_next())
 	{
 		
-		header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
+		header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
 		exit;
 		//$dbu->query("select * from trainer where fb_id = ".$user_profile['id']);
 	}
@@ -76,36 +74,13 @@ if($user)
 												active = '1',
 												fb_id = '".$user_profile['id']."'
 									");
-		header("Location: http://rehabmypatient.com/index.php?act=auth-login&pag=login&fb_id=".$user);
+		header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
 		exit;
 	}
 }
 else
 {
-	$fb_button = "<fb:login-button></fb:login-button>
-					<div id='fb-root'></div>
-					<script>
-					  window.fbAsyncInit = function() {
-						FB.init({
-						  appId: '".$facebook->getAppID()."',
-						  cookie: true,
-						  xfbml: true,
-						  oauth: true
-						});
-						FB.Event.subscribe('auth.login', function(response) {
-						  window.location.reload();
-						});
-						FB.Event.subscribe('auth.logout', function(response) {
-						  window.location = 'index.php?pag=login&act=auth-logout';
-						});
-					  };
-					  (function() {
-						var e = document.createElement('script'); e.async = true;
-						e.src = document.location.protocol +
-						  '//connect.facebook.net/en_US/all.js';
-						document.getElementById('fb-root').appendChild(e);
-					  }());
-					</script>";
+	$fb_button = "<a href='index.php?act=auth-login_fb&pag=login'><img src='/img/fb_login_button.png' alt='fb login' /></a>";
 	$ft->assign('FB_LOGIN', $fb_button);
 }
 

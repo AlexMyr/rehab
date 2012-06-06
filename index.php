@@ -3,7 +3,7 @@
 * @Author: Tinu Coman
 ***********************************************************************/
 session_start();
-
+//session_unset();exit;
 include_once("module_config.php");
 include_once("php/gen/startup.php");
 

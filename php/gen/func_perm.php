@@ -9,6 +9,7 @@ $func_access = array
 										'add'=> 4,
 									),
 					'auth' => array(
+                                    'login_fb' => 4,
 									'login' => 4,
 									'logout' => 4,
 								),
