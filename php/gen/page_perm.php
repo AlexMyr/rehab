@@ -159,6 +159,11 @@
 									'module' => 'trainer_dashboard',
 									'session' => 1
 									),
+                        'getclients' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
 //--------------------------- Logged in Member PDF -----------------------------
 						'exercisepdf' => array(
 									'perm' => 3,
