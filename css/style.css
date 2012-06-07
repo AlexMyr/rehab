@@ -272,7 +272,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:80px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:16px; height:16px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }*/
 .clientList .clientListRow .notes { padding-right:10px; display:inline-block; width:286px; color:#666666; color:#343434; vertical-align: top; }
-.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:112px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:160px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:24px; height:24px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }
 .clientList .clientListRow .actions a span { display:none; }
 
@@ -291,6 +291,8 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListRow .actions a.print:hover { background: url("../img/client_print_large_ico2.png") no-repeat 0px 0px; }
 .clientList .clientListRow .actions a.mail { background: url("../img/client_mail_large_ico1.png") no-repeat 0px 0px; }
 .clientList .clientListRow .actions a.mail:hover { background: url("../img/client_mail_large_ico2.png") no-repeat 0px 0px; }
+.clientList .clientListRow .actions a.program { background: url("../img/client_program_large_ico1.png") no-repeat 0px 0px; }
+.clientList .clientListRow .actions a.program:hover { background: url("../img/client_program_large_ico2.png") no-repeat 0px 0px; }
 .clientList .clientListRow .actions a.delete { background: url("../img/client_delete_large_ico1.png") no-repeat 0px 0px; }
 .clientList .clientListRow .actions a.delete:hover { background: url("../img/client_delete_large_ico2.png") no-repeat 0px 0px; }
 
@@ -462,6 +464,13 @@ label.error_validate{
 .ui-dialog-content .ui-widget-content{
     padding: 0;
 }
+
+.ui-widget-content a {
+    color: #333333;
+    font-size: 9pt;
+    text-decoration: none;
+}
+
 
 .pricePlanTable
 {
