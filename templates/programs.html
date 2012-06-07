@@ -50,6 +50,8 @@
 					<a title="Edit" href="index.php?pag=program_update_exercise&program_id={PROGRAM_ID}" class="edit"><span>edit</span></a>
 					<a title="Email" href="index.php?pag=program_add_patient&program_id={PROGRAM_ID}&mode=email" class="mail"><span>mail</span></a>
 					<a title="Print" href="index.php?pag=program_add_patient&program_id={PROGRAM_ID}&mode=print" class="print"><span>print</span></a>
+					<!--<a title="Program" href="index.php?pag=program_add_patient&program_id={PROGRAM_ID}&mode=program" class="program"><span>program</span></a>-->
+					<a title="Program" href="javascript: void(0);" pid="{PROGRAM_ID}" class="program"><span>program</span></a>
 					<a title="Delete" href="index.php?pag=programs&program_id={PROGRAM_ID}&act=client-delete_program_plan" class="delete programDelete"><span>delete</span></a>
 				</span>
 			</div>
@@ -63,5 +65,9 @@
 
 		</div>
 		<div class="clearAll"></div>
+	</div>
+	
+	<div id="clientsList" style="display:none;">
+		<div></div>
 	</div>
 	
