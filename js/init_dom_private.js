@@ -319,10 +319,35 @@ doExercise = function(jSON)
 // START THE DOCUMENT READY
 $(document).ready(function() 
 {
+	$('#clientsList').dialog({ title:"Choose client", autoOpen: false })
+	
+	$('.clientList .clientListRow .actions a.program').click(function(){
+		var pid = $(this).attr('pid');
+		
+		$.ajax({
+			url: "index_ajax.php",
+			dataType: "json",
+			data: { pag: "getclients", pid: pid},
+			success: function(data){
+				$('#clientsList').css('height', '300px');
+				
+				$('#clientsList div').html(data.innerHTML);
+				if(typeof($('#clientsList').jScrollPane()) != 'undefined')
+					$('#clientsList').jScrollPane();
+				
+				$('#clientsList').css('width', '300px');
+				$('.jspContainer').css('width', '300px');
+			}
+		});
+		
+		$('#clientsList').dialog('open');
+	});
 	
 	//add scroll
 	if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
 		$('.clientListDynamic').jScrollPane();
+		
+	
 	
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
