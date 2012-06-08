@@ -300,6 +300,7 @@ $ft->assign('CSS_PAGE', $glob['pag']);
 $ft->assign('FIRST_NAME', $glob['first_name']);
 $ft->assign('SURNAME', $glob['surname']);
 $ft->assign('EMAIL', $glob['email']);
+$ft->assign('APPEAL', $glob['appeal']);
 //$ft->assign('IMAGE_TYPE', $glob['print_image_type']);
 $ft->assign('CLIENT_NOTE', $glob['client_note']);
 

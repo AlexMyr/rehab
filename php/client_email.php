@@ -50,6 +50,7 @@ while($dbu->move_next())
 		$ft->assign(array(
 			'FIRST_NAME'=>$dbu->f('first_name'),
 			'SURNAME'=>$dbu->f('surname'),
+			'APPEAL'=>$dbu->f('appeal'),
 			'CLIENT_NAME'=>$dbu->f('first_name')." ".$dbu->f('surname'),
 			'EMAIL'=>$dbu->f('email'),
 			'CLIENT_NOTE'=>$dbu->f('client_note'),

@@ -60,6 +60,7 @@ while($dbu->move_next())
 			'FIRST_NAME'=>$dbu->f('first_name'),
 			'SURNAME'=>$dbu->f('surname'),
 			'CLIENT_NAME'=>$dbu->f('first_name')." ".$dbu->f('surname'),
+			'APPEAL'=>$dbu->f('appeal'),
 			'EMAIL'=>$dbu->f('email'),
 			'IMAGE_TYPE'=>build_print_image_type_list($dbu->f('print_image_type')),
 			'CLIENT_NOTE'=>$dbu->f('client_note'),
