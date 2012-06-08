@@ -19,6 +19,7 @@ class client
 
 	function add_client(&$ld)
 		{
+
 			if(!$this->validate_add_client($ld))
 				{
 					return false;
@@ -51,11 +52,12 @@ class client
 								INSERT INTO 
 											client 
 								SET 
-											first_name='".$ld['first_name']."', 
-											surname='".$ld['surname']."', 
-											email='".$ld['email']."', 
-											print_image_type='".$ld['print_image_type']."', 
-											client_note='".$ld['client_note']."', 
+											first_name='".mysql_escape_string($ld['first_name'])."', 
+											surname='".mysql_escape_string($ld['surname'])."',
+											appeal='".mysql_escape_string($ld['appeal'])."',
+											email='".mysql_escape_string($ld['email'])."', 
+											print_image_type='".mysql_escape_string($ld['print_image_type'])."', 
+											client_note='".mysql_escape_string($ld['client_note'])."', 
 											create_date=NOW(),
 											modify_date=NOW(),
 											trainer_id = ".$_SESSION[U_ID]." 
@@ -309,6 +311,7 @@ class client
 	
 			$body=$message_data['text'];
 			
+			$body=str_replace('[!APPEAL!]',$ld['first_name'], $body );
 			//$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
 			$body=str_replace('[!FIRSTNAME!]',$ld['first_name'], $body );
 			$body=str_replace('[!SURNAME!]',$ld['surname'], $body );
@@ -389,7 +392,8 @@ class client
 										client 
 							SET 
 										first_name='".$ld['first_name']."', 
-										surname='".$ld['surname']."', 
+										surname='".$ld['surname']."',
+										appeal='".$ld['appeal']."',
 										email='".$ld['email']."', 
 										print_image_type='".$ld['print_image_type']."', 
 										client_note='".$ld['client_note']."', 
@@ -705,7 +709,12 @@ class client
         $replyMail = $message_data['from_email'];
 
 		$body=$message_data['text'];
-
+		
+		if($this->dbu->f('appeal'))
+			$body=str_replace('[!APPEAL!]',$this->dbu->f('appeal'), $body );
+		else
+			$body=str_replace('[!APPEAL!]','Dear '.$this->dbu->f('first_name'), $body );
+		
 		$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
 		$body=str_replace('[!FIRSTNAME!]',$this->dbu->f('first_name'), $body );
 		$body=str_replace('[!SURNAME!]',$this->dbu->f('last_name'), $body );
