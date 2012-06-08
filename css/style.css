@@ -255,7 +255,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:286px; }
 .clientList .clientListTitle .actions { display:inline-block; width:114px; }
 .clientList .clientListTitle .description { display:inline-block; width:250px; }
-.clientList .clientListTitle a { text-decoration: none;}
+.clientList .clientListTitle a { text-decoration: none; text-shadow: none;}
 
 .clientList .clientListRow { padding-top:12px; height:26px; border-bottom:1px solid #eeeeee; width:700px; }
 .clientList .clientListRow.clientRecord { height:auto; padding-bottom:12px; }
