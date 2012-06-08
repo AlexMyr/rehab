@@ -319,35 +319,44 @@ doExercise = function(jSON)
 // START THE DOCUMENT READY
 $(document).ready(function() 
 {
-	$('#clientsList').dialog({ title:"Choose client", autoOpen: false })
+	$('#clientsList').dialog({  autoOpen: false, resizable: false })
 	
 	$('.clientList .clientListRow .actions a.program').click(function(){
-		var pid = $(this).attr('pid');
 		
-		$.ajax({
-			url: "index_ajax.php",
-			dataType: "json",
-			data: { pag: "getclients", pid: pid},
-			success: function(data){
-				$('#clientsList').css('height', '300px');
-				
-				$('#clientsList div').html(data.innerHTML);
-				if(typeof($('#clientsList').jScrollPane()) != 'undefined')
-					$('#clientsList').jScrollPane();
-				
-				$('#clientsList').css('width', '300px');
-				$('.jspContainer').css('width', '300px');
-			}
-		});
+		if($('#clientsList div').html() == '')
+		{
+			$('#clientsList').dialog( "option" , "title", $(this).attr('ptitle') );
+			
+			var pid = $(this).attr('pid');
+		
+			$.ajax({
+				url: "index_ajax.php",
+				dataType: "json",
+				data: { pag: "getclients", pid: pid},
+				success: function(data){
+					$('#clientsList').css('height', '300px');
+					
+					$('#clientsList div').html(data.innerHTML);
+					
+					if(typeof($('#clientsList').jScrollPane()) != 'undefined')
+						$('#clientsList').jScrollPane();
+					
+					$('#clientsList').css('width', '300px');
+					$('.jspContainer').css('width', '300px');
+				}
+			});
+		}
 		
 		$('#clientsList').dialog('open');
+	});
+	
+	$( "#clientsList div" ).bind( "dialogclose", function(event, ui) {
+		$('#clientsList div').html('');
 	});
 	
 	//add scroll
 	if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
 		$('.clientListDynamic').jScrollPane();
-		
-	
 	
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
@@ -359,9 +368,15 @@ $(document).ready(function()
 		$('#currentVideo').attr('src', newUrl);
 	})
 	
-	posX = null;
-	posY = null;
+	//posX = null;
+	//posY = null;
 	redirect_url = null;
+	
+	window.bodyClicked = false;
+	function restoreBodyClicked()
+	{
+		window.bodyClicked = false;
+	}
 	
 	$.post("index_ajax.php", { test: "test"}, function(data){
 		if(data == 'error' || parseInt(data) == NaN)
@@ -372,19 +387,25 @@ $(document).ready(function()
 		}
 	});
 	
-	$(document).bind('mousemove', function(e){
-		if (typeof e == 'undefined')
-			myEvent = window.event;
-		else
-			myEvent = e;
-		posX = myEvent.clientX;
-		posY = myEvent.clientY;
+	$(window).click(function(){
+		window.bodyClicked = true;
+		setTimeout('restoreBodyClicked()', 500);
 	});
+	
+	//$(document).bind('mousemove', function(e){
+	//	if (typeof e == 'undefined')
+	//		myEvent = window.event;
+	//	else
+	//		myEvent = e;
+	//	posX = myEvent.clientX;
+	//	posY = myEvent.clientY;
+	//});
 
- 	$(window).bind('beforeunload', function() {
+ 	$(window).bind('beforeunload', function(event) {
  	 	if(jQuery('input[name="act"]').val()=='client-update_exercise_plan')
 		{
-			if(posY == null || posY <= 25)
+			//if(posY == null || posY <= 25)
+			if(!window.bodyClicked)
 			{
 				redirect_url = jQuery('.preview_buttons .moreBtn:first').attr('href');
 			}
@@ -393,7 +414,8 @@ $(document).ready(function()
 		}
 		else 	if(jQuery('input[name="act"]').val()=='client-update_exercise')
 		{
-			if(posY == null || posY <= 25)
+			//if(posY == null || posY <= 25)
+			if(!window.bodyClicked)
 			{
 				redirect_url = 'index.php?pag=dashboard';
 			}
@@ -403,6 +425,7 @@ $(document).ready(function()
 	});
 		
 	$(window).bind('unload', function() {
+		
 		if(jQuery('input[name="act"]').val()=='client-update_exercise_plan' && redirect_url != null)
 		{
 			var redirect = redirect_url;
@@ -617,6 +640,7 @@ $(document).ready(function()
 	
 		$("#exerciseAdd").bind('click',function(e)
 		{
+			window.bodyClicked = true;
 			e.stopPropagation();	
 			e.preventDefault();
 			doSave();
