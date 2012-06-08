@@ -87,8 +87,8 @@ while($i<count($exercise))
                                INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
                                WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
+	$print_image = ($get_program->f($image_type) && file_exists($script_path.UPLOAD_PATH.$get_program->f($image_type))) ? $script_path.UPLOAD_PATH.$get_program->f($image_type) : $script_path.UPLOAD_PATH.'noimage.png';
 	
-	$print_image = $get_program->f($image_type) ? $script_path.UPLOAD_PATH.$get_program->f($image_type) : $script_path.UPLOAD_PATH.'noimg256.gif';
 
 	$img = "<img src=\"".$print_image."\" width=\"224\" height=\"224\" align=\"left\" />";
 	$ft->assign(array(

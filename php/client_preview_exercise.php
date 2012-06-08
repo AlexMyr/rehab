@@ -152,8 +152,11 @@ while($i<count($exercise))
                                INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
                                WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
+	
 	$ft->assign(array(
-		'IMG' => $get_program->f($image_type) ? $get_program->f($image_type) : 'noimg256.gif',
+		
+		'IMG' => file_exists('upload/'.$get_program->f($image_type)) ? $get_program->f($image_type) : 'noimage.png',
+		//'IMG' => $get_program->f($image_type) ? $get_program->f($image_type) : 'noimg256.gif',
 		'PROGRAM_ID' => $exercise[$i],
 	));	
 	$get_data = $dbu->query("

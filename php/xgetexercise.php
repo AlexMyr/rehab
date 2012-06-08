@@ -24,7 +24,8 @@ else if($get_exercise_image_type==1) $image_type = "image";
 							");
 		$glo = array();
 		$program->next();
-		$the_image = $program->f($image_type) ? $program->f($image_type) : 'noimg64.gif';
+		//$the_image = $program->f($image_type) ? $program->f($image_type) : 'noimg64.gif';
+		$the_image = file_exists('upload/'.$program->f($image_type)) ? $program->f($image_type) : 'noimage.png';
 
 			$glo['PROGRAM_ID'] = $program->f('programs_id');
 			$glo['PROGRAM_TITLE'] = strip_tags($program->f('programs_title'));
