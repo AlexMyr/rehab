@@ -67,6 +67,8 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 */
                 
         $mail = new PHPMailer();
+		$mail->Mailer = 'sendmail';
+		$mail->IsHTML(true);
         //$body             = file_get_contents('contents.html');
         //$body             = eregi_replace("[\]",'',$body);
         $mail->IsSMTP(); // telling the class to use SMTP
@@ -81,12 +83,12 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 
         $mail->SetFrom($fromMail, $fromMail);
         $mail->AddReplyTo($replyMail, $replyMail);
-        $mail->Subject = $message_data['subject'];
-        
+
+		$subject = $message_data['subject'];
+		$mail->Subject = $subject;
         //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
-         
-//        $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
-        $mail->MsgHTML($body);
+        //$mail->MsgHTML($body);
+		$mail->Body = $body;
 
         $mail->AddAddress($ordermail, $send_to_name);
         $mail->Send();	
@@ -104,7 +106,8 @@ $i = 0;
 $ab = array();
 
 while($dbu->move_next())
-{var_dump($dbu->f('trainer_id'));
+{
+
     if($dbu->f('is_trial')!=0)
     {
 
@@ -113,7 +116,6 @@ while($dbu->move_next())
         $expire_days = intval(intval($expire_time) / (3600 * 24));
         $expire_hours = intval(intval($expire_time) / 3600);
         $expire_minutes = (intval(intval($expire_time) / 60) % 60);
-        
         if($expire_days>0 && $expire_days>1) $time_remained = "in <strong>".$expire_days." days</strong>"; 
         else if($expire_days>0 && $expire_days==1) $time_remained = "in <strong>".$expire_days." day</strong>"; 
         
@@ -124,8 +126,7 @@ while($dbu->move_next())
 
         if($message_data['text']!=null) 
         {
-            send_mail($send_to_email=$dbu->f('email'),$send_to_name=$dbu->f('first_name').' '.$dbu->f('surname'),$message_data);
-
+			send_mail($send_to_email=$dbu->f('email'),$send_to_name=$dbu->f('first_name').' '.$dbu->f('surname'),$message_data);
             /* USED FOR THE CRON LOG FILE */
             $ab[$i]['msg_uid'] = $dbu->f('trainer_id');
             $ab[$i]['msg_email'] = $dbu->f('email');
