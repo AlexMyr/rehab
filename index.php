@@ -3,7 +3,7 @@
 * @Author: Tinu Coman
 ***********************************************************************/
 session_start();
-//session_unset();exit;
+
 include_once("module_config.php");
 include_once("php/gen/startup.php");
 
@@ -60,6 +60,30 @@ if($_SESSION[U_ID] && ($glob['pag']!='profile_edit_email' && $glob['pag']!='logi
 }
 if(isset($_COOKIE['language']) && $_COOKIE['language']){
     $glob['lang'] = $_COOKIE['language'];
+	
+	switch($_COOKIE['language'])
+	{
+		case 'us':
+		{
+			if(!substr_count($_SERVER['REQUEST_URI'], '/us/'))
+			{
+				header("location: /us".$_SERVER['REQUEST_URI']);
+				exit;
+			}
+			break;
+		}
+		case 'en':
+		default:
+		{
+			if(substr_count($_SERVER['REQUEST_URI'], '/us/'))
+			{
+				header("location: ".substr($_SERVER['REQUEST_URI'], 3));
+				exit;
+			}
+			break;
+		}
+	}
+	
 }
 else{
     $glob['lang'] = (isset($glob['lang']) && $glob['lang'] != '') ? mysql_real_escape_string(strtolower(trim($glob['lang']))) : 'en';

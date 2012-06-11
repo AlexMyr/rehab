@@ -626,6 +626,9 @@ class member
 		//	$ld['error']="Please fill your Contact information first.";
 		//	return false;
 		//}
+
+		
+		
 		$this->dbu->query("UPDATE  trainer SET lang='".$ld['language']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
 		//check exists in db
 		$this->dbu->query("SELECT exercise_note_id FROM exercise_notes WHERE trainer_id=".$_SESSION[U_ID]." ");
@@ -637,6 +640,15 @@ class member
 			$this->dbu->query("UPDATE exercise_notes SET exercise_notes = '".$ld['exercise_notes']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
 		}
 		$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_NOTES');
+		if($_COOKIE['language'] != $ld['language'])
+		{
+			setcookie('language', $ld['language'], 0, '/');
+			$lang = ($ld['language'] == 'us') ? 'us/' : '';
+			
+			header("location: /".$lang.'index.php?pag=dashboard&redirect=1');
+			exit;
+		}
+		
 		return true;		
 	}
 		
