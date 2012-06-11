@@ -316,6 +316,17 @@ doExercise = function(jSON)
 		doExerciseDetails();
 	}
 
+function restoreDefaultPageReload()
+{
+	window.pageReload = false;
+}
+
+function restoreDefaultBodyClicked()
+{
+	window.bodyClicked = false;
+}
+
+
 // START THE DOCUMENT READY
 $(document).ready(function() 
 {
@@ -373,10 +384,7 @@ $(document).ready(function()
 	redirect_url = null;
 	
 	window.bodyClicked = false;
-	function restoreBodyClicked()
-	{
-		window.bodyClicked = false;
-	}
+	window.pageReload = false;
 	
 	$.post("index_ajax.php", { test: "test"}, function(data){
 		if(data == 'error' || parseInt(data) == NaN)
@@ -389,9 +397,16 @@ $(document).ready(function()
 	
 	$(window).click(function(){
 		window.bodyClicked = true;
-		setTimeout('restoreBodyClicked()', 500);
+		setTimeout('restoreDefaultBodyClicked', 500);
 	});
 	
+	$(window).keypress(function(event) {
+		if ( event.keyCode == 116 ) {
+			window.pageReload = true;
+			setTimeout('restoreDefaultPageReload', 500);
+		}
+	});
+
 	//$(document).bind('mousemove', function(e){
 	//	if (typeof e == 'undefined')
 	//		myEvent = window.event;
@@ -402,7 +417,7 @@ $(document).ready(function()
 	//});
 
  	$(window).bind('beforeunload', function(event) {
- 	 	if(jQuery('input[name="act"]').val()=='client-update_exercise_plan')
+		if(jQuery('input[name="act"]').val()=='client-update_exercise_plan')
 		{
 			//if(posY == null || posY <= 25)
 			if(!window.bodyClicked)
@@ -425,8 +440,11 @@ $(document).ready(function()
 	});
 		
 	$(window).bind('unload', function() {
-		
-		if(jQuery('input[name="act"]').val()=='client-update_exercise_plan' && redirect_url != null)
+		if(window.pageReload)
+		{
+			window.location.reload;
+		}
+ 	 	else if(jQuery('input[name="act"]').val()=='client-update_exercise_plan' && redirect_url != null)
 		{
 			var redirect = redirect_url;
 			redirect_url = null;
