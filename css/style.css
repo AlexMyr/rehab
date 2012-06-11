@@ -83,7 +83,8 @@ a { cursor:pointer; color:#ffffff; }
 .moreBtn span, .changeViewBtn span { line-height:30px; background: url(../img/moreBtn.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; }
 .pricePlanTable .moreBtn span{width:100%;}
 .changeViewBtn { margin-top:5px; }
-#exerciseAddForm  .changeViewBtn {width:125px; margin: 5px auto 0;}
+#exerciseAddForm  .changeViewBtn {width:125px; margin: 5px auto 0px 35px;}
+#exerciseAddForm  .changeViewBtn span {padding-right: 17px;}
 #exerciseAddForm .login {padding-right:5px;}
 button#exerciseAdd {margin:auto; width: 135px;}
 
@@ -272,7 +273,8 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:80px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:16px; height:16px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }*/
 .clientList .clientListRow .notes { padding-right:10px; display:inline-block; width:286px; color:#666666; color:#343434; vertical-align: top; }
-.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:160px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:130px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .actions.programActions { padding-left:0px; display:inline-block; width:160px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:24px; height:24px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }
 .clientList .clientListRow .actions a span { display:none; }
 
