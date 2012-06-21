@@ -78,7 +78,11 @@ makeDelete = function()
 										$(this).unbind("click");
 										id = parseInt($(this).attr('id').split('del_')[1]);
 								delValue[id] = id;
-										rmExercise(id);
+										//check section program or client
+										if($(this).hasClass('program_del'))
+											rmPExercise(id);
+										else
+											rmExercise(id);
 									}); 
 							}	
 					});
@@ -87,6 +91,36 @@ makeDelete = function()
 rmExercise = function(rm_pid)
 	{
 		$.post("index_ajax.php", { pag: "xgetexercise", rm_pid: rm_pid }, function(data){ 
+		var obj = $.evalJSON(data);
+		if(obj.failure==true) 
+			{
+				doExerciseErr('an error ocured. No data to show!');
+			}	
+		else 
+			{
+				// if error block exist - remove it first
+				if($("#program_list #error").length > 0)
+					{
+						$('#error').fadeOut(5000,function(){$('#error').remove()});
+					}
+				if(obj.innerHTML.err=='404')
+					{
+						doExerciseErr('an error ocured while removing the exercise');
+					}
+				else if(obj.innerHTML.err=='200')
+					{
+						delValue.splice(rm_pid, 1);
+						$("#program_list li#"+rm_pid).remove();
+						$("#program_list span#text_"+rm_pid).remove();
+						doExerciseErr('exercise removed');
+					}
+				}
+			 });
+	}
+	
+rmPExercise = function(rm_pid)
+	{
+		$.post("index_ajax.php", { pag: "pgetexercise", rm_pid: rm_pid }, function(data){ 
 		var obj = $.evalJSON(data);
 		if(obj.failure==true) 
 			{
@@ -268,10 +302,18 @@ doExercise = function(jSON)
 							.attr('class','exercise_cat');
 //						var exLI_catNode = $(document.createTextNode(obj.innerHTML.PROGRAM_CATEGORY));
 						var exLI_catNode = obj.innerHTML.PROGRAM_CATEGORY;
-						var exLI_delete = $('<a/>')
-							.attr('id', 'del_'+obj.innerHTML.PROGRAM_ID)
-							.attr('class','exercise_del')
-							.attr('href','#');
+
+						if(window.location.href.indexOf('program_update_exercise')>0)
+							var exLI_delete = $('<a/>')
+								.attr('id', 'del_'+obj.innerHTML.PROGRAM_ID)
+								.attr('class','exercise_del program_del')
+								.attr('href','#');
+						else
+							var exLI_delete = $('<a/>')
+								.attr('id', 'del_'+obj.innerHTML.PROGRAM_ID)
+								.attr('class','exercise_del')
+								.attr('href','#');
+						
 						var exLI_details = $('<a/>')
 							.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
 							.attr('class','exercise_details');
@@ -305,14 +347,17 @@ doExercise = function(jSON)
 								e.preventDefault(); 
 								e.stopPropagation(); 
 								delValue[obj.innerHTML.PROGRAM_ID] = obj.innerHTML.PROGRAM_ID;
-								rmExercise(obj.innerHTML.PROGRAM_ID); 
+								if(window.location.href.indexOf('program_update_exercise')>0)
+									rmPExercise(obj.innerHTML.PROGRAM_ID); 
+								else
+									rmExercise(obj.innerHTML.PROGRAM_ID); 
 							});
 						
 					}
 			}
 		
 		makeSortable();
-//		makeDelete();
+		//makeDelete();
 		doExerciseDetails();
 	}
 
@@ -395,12 +440,12 @@ $(document).ready(function()
 		}
 	});
 	
-	$(window).click(function(){
+	$('body').click(function(){
 		window.bodyClicked = true;
 		setTimeout('restoreDefaultBodyClicked', 500);
 	});
 	
-	$(window).keypress(function(event) {
+	$('body').keypress(function(event) {
 		if ( event.keyCode == 116 ) {
 			window.pageReload = true;
 			setTimeout('restoreDefaultPageReload', 500);
@@ -481,10 +526,15 @@ $(document).ready(function()
       {
 		$('.item1').removeClass('topForSubMenu');
 		$('#submenuList').css('display', 'none');
+		hovered = false;
       }
 	}
 	
 	$('.navMenu .item1').hover(function(){
+		if(hovered)
+		  {
+			setTimeout(hide_submenu, 100);
+		  }
 		show_submenu(this);
 		}, function(){
 		  if(hovered)
