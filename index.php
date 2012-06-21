@@ -53,9 +53,10 @@ if($_SESSION[U_ID])
 		$glob['pag'] = 'cms';
 	}
 }
+
 if($_SESSION[U_ID] && ($glob['pag']!='profile_edit_email' && $glob['pag']!='login') && !$glob['email'] && !$_SESSION[USER_EMAIL])
 {
-	header("Location: /index.php?pag=profile_edit_email&success=false&error=".urlencode("You have not email address, please fill this field."));
+	header("Location: /index.php?pag=profile_edit_email&error=".urlencode("You have not email address, please fill this field."));
 	exit;
 }
 if(isset($_COOKIE['language']) && $_COOKIE['language']){
@@ -98,6 +99,7 @@ $ftm=new ft("");
 $exercise_session_pages = array("client_add_exercise","client_update_exercise","program_update_exercise");
 
 if(!empty($_SESSION['pids']) && !in_array($glob['pag'],$exercise_session_pages)) unset($_SESSION['pids']);
+if(!empty($_SESSION['ppids']) && !in_array($glob['pag'],$exercise_session_pages)) unset($_SESSION['ppids']);
 
 if($glob['act'] && !$glob['skip_action'])
 {
