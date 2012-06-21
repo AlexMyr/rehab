@@ -669,65 +669,61 @@ class client
 		}
 		
 	function mail_exercise(&$ld)
+	{
+		$is_appeal_first_name = true;
+		$appeal_settings = $this->dbu->field("SELECT title_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
+		if($appeal_settings)
 		{
-				//$this->dbu->query("SELECT client.*, trainer_profile.company_name, trainer_profile.email AS trainer_email, trainer_profile.website, trainer_profile.phone
-				//					FROM 
-				//						client 
-				//					INNER JOIN 
-				//						trainer_profile 
-				//							ON 
-				//								client.trainer_id=trainer_profile.trainer_id
-				//					WHERE 
-				//						client.trainer_id = '".$_SESSION[U_ID]."' 
-				//					AND
-				//						client_id = '".$ld['client_id']."' 
-				//		 ");
-				
-				$this->dbu->query("SELECT client.*, trainer_header_paper.company_name, trainer_header_paper.email AS trainer_email, trainer_header_paper.website, trainer_header_paper.phone
-									FROM 
-										client 
-									INNER JOIN 
-										trainer_header_paper 
-											ON 
-												client.trainer_id=trainer_header_paper.trainer_id
-									WHERE 
-										client.trainer_id = '".$_SESSION[U_ID]."' 
-									AND
-										client_id = '".$ld['client_id']."' 
-						 ");
-				if($this->dbu->move_next())
-				{
-				//echo "veva";
-        		//die();	
-//        global $site_url, $contact_thankyou_page_id;
-//        $ordermail = 'claudiu@medeeaweb.com';
+			$is_appeal_first_name = false;
+		}
 		
-		$this->generate_pdf($ld);
-		$message_data=get_sys_message('sendpdf');
-        $ordermail = $this->dbu->gf('email');
-        $fromMail = $this->dbu->gf('trainer_email'); 
-        $replyMail = $message_data['from_email'];
+		$this->dbu->query("SELECT client.*, trainer_header_paper.company_name, trainer_header_paper.email AS trainer_email, trainer_header_paper.website, trainer_header_paper.phone
+							FROM 
+								client 
+							INNER JOIN 
+								trainer_header_paper 
+									ON 
+										client.trainer_id=trainer_header_paper.trainer_id
+							WHERE 
+								client.trainer_id = '".$_SESSION[U_ID]."' 
+							AND
+								client_id = '".$ld['client_id']."' 
+				 ");
+		if($this->dbu->move_next())
+		{
+			$this->generate_pdf($ld);
+			$message_data=get_sys_message('sendpdf');
+			$ordermail = $this->dbu->gf('email');
+			$fromMail = $this->dbu->gf('trainer_email'); 
+			$replyMail = $message_data['from_email'];
+	
+			$body=$message_data['text'];
 
-		$body=$message_data['text'];
-		
-		if($this->dbu->f('appeal'))
-			$body=str_replace('[!APPEAL!]',$this->dbu->f('appeal'), $body );
-		else
-			$body=str_replace('[!APPEAL!]','Dear '.$this->dbu->f('first_name'), $body );
-		
-		$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
-		$body=str_replace('[!FIRSTNAME!]',$this->dbu->f('first_name'), $body );
-		$body=str_replace('[!SURNAME!]',$this->dbu->f('last_name'), $body );
-		$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
-		$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
-		$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
+			if($is_appeal_first_name)
+			{
+				$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('first_name'), $body );
+			}
+			else
+			{
+				$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('appeal').' '.$this->dbu->f('surname'), $body );
+			}
+			//
+			//if($this->dbu->f('appeal'))
+			//	$body=str_replace('[!APPEAL!]',$this->dbu->f('appeal'), $body );
+			//else
+			//	$body=str_replace('[!APPEAL!]','Dear '.$this->dbu->f('first_name'), $body );
+	
+			$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
+			$body=str_replace('[!FIRSTNAME!]',$this->dbu->f('first_name'), $body );
+			$body=str_replace('[!SURNAME!]',$this->dbu->f('last_name'), $body );
+			$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
+			$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
+			$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
                 
             require_once ('class.phpmailer.php');        
             include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
             
             $mail = new PHPMailer();
-            //$body             = file_get_contents('contents.html');
-            //$body             = eregi_replace("[\]",'',$body);
             $mail->IsSMTP(); // telling the class to use SMTP
             $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
             // 1 = errors and messages
@@ -737,16 +733,11 @@ class client
             $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
             $mail->Username = SMTP_USERNAME; // SMTP account username
             $mail->Password = SMTP_PASSWORD; // SMTP account password
-    /*
-            $mail->SetFrom(ORDER_EMAIL, ORDER_EMAIL);
-            $mail->AddReplyTo(ORDER_EMAIL, ORDER_EMAIL);
-    */
+
             $mail->SetFrom($fromMail, $fromMail);
             //$mail->AddReplyTo($replyMail, $replyMail);
             $mail->Subject = $message_data['subject'];
             
-            //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
-             
             $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
             $mail->MsgHTML($body);
             
@@ -762,9 +753,6 @@ class client
             $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_PROFILE');
             return false;								
         }
-
-//			return true;			
-//			return false;
 	}
 		
 		
