@@ -9,6 +9,7 @@ if(isset($glob['pid']))
 	$dbu->query("SELECT client_id, first_name, surname, email
 				 FROM client
 				 WHERE trainer_id = {$_SESSION[U_ID]}
+				 ORDER BY surname
 				");
 	
 	while($dbu->move_next())
