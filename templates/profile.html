@@ -9,6 +9,13 @@
 		</h2>
 		<div class="contactInfo floatLft">
 		{HEADER_PAPER_SECTION}
+		<br/>
+		<br/>
+		<p><strong>Salutation:</strong></p>
+		<br/>
+		<form action="index.php" method="post">
+		<input type="radio" name="title_set" value="0" {CHECKED_FIRST_TITLE} />&nbsp;Dear First Name<br/>
+		<input type="radio" name="title_set" value="1" {CHECKED_SECOND_TITLE} />&nbsp;Dear Title Surname
 		</div>
 		<!--<div class="contactInfo floatLft">
 			<h2>Contact Information</h2>
@@ -34,7 +41,7 @@
 		</div>-->
 		<div class="floatLft" style="width: 460px;">
 			<p><strong>{T.DEFAULT}:</strong></p>
-			<form action="index.php" method="post">
+			
 				<input type="hidden" name="act" value="member-update_profile_notes">
 				<input type="hidden" name="pag" value="profile">
 				<input type="hidden" name="profile_id" value="{PROFILE_ID}">			
