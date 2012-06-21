@@ -86,7 +86,7 @@ a { cursor:pointer; color:#ffffff; }
 #exerciseAddForm  .changeViewBtn {width:125px; margin: 5px auto 0px 35px;}
 #exerciseAddForm  .changeViewBtn span {padding-right: 17px;}
 #exerciseAddForm .login {padding-right:5px;}
-button#exerciseAdd {margin:auto; width: 135px;}
+button#exerciseAdd {margin:auto; width: 135px; text-align: center;}
 
 .col2lft { margin:20px 0px 0px 20px; width:700px; float:left; display:block; }
 .col2rgt { margin:10px 0px 0px 20px; width:220px; float:left; display:block; }
@@ -166,25 +166,27 @@ p.redBold { color:#f00; font-weight:bold; }
 .siteContent { width: 960px; margin:0px auto; min-height:500px; position:relative; }
 .siteContent.login { height: 500px; padding-top:20px; }
 .siteContent.dashboard { padding:27px 0px 0px 0px; width:940px; }
-.siteContent.dashboard h2.bottomLine { border-bottom:1px solid #eeeeee; padding-bottom:5px; margin-bottom:5px; color:#ffffff; }
+.siteContent.dashboard h2.bottomLine { border-bottom:1px solid #eeeeee; padding-bottom:5px; margin-bottom:15px; color:#ffffff; }
 .siteContent.dashboard h2.bottomLine .moreBtn { margin: 5px 0px 0px 10px; }
 
 .loginForm { margin: 10px 10px 20px 10px; margin:10px 3px 20px 3px; width: 460px; float:left; }
 .loginForm h2 { color:#17ae42; }
 .loginForm label { color: #acacac; font-size: 18px; font-family: "MergeRegular"; padding:7px 0px; display:inline-block; color:#4c4c4c; }
 .loginForm input.textField { border:1px solid #e0e0e0; width: 418px; height: 32px; }
-.buttons.login { margin-top:10px; }
+.buttons.login { margin-top:10px;}
+.buttons.login button{text-align: left;}
 .buttons.new_join { margin-top:10px; }
 .buttons.deleteClient { margin-bottom:10px; }
 .buttons.deleteClient button, .buttons.deleteClient button.del { width:220px; }
 .buttons.deleteClient button span, .buttons.deleteClient button.del span { width:190px; text-align:left; }
 .buttons button { height:auto; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:block; text-decoration:none; width:auto; background:none; font-family: "MergeRegular"; cursor:pointer; }
 .buttons button b { height:30px; line-height:30px; background: url(../img/moreBtnLft.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; width:12px; }
-.buttons button span { height:30px; line-height:30px; background: url(../img/moreBtn.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; }
+.buttons button span { height:30px; line-height:30px; background: url(../img/moreBtn.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; white-space: pre;}
 
 .buttons button.del { height:auto; color:#3868aa; font-size:14px; text-shadow:#666 1px 1px 0px; display:block; text-decoration:none; width:auto; background:none; font-family: "MergeRegular"; text-shadow:none; cursor:pointer; }
 .buttons button.del b { height:30px; line-height:30px; background: url(../img/moreGreyBtnLft.jpg) no-repeat top right; color:#3868aa; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; width:12px; text-shadow:none; }
 .buttons button.del span { height:30px; line-height:30px; background: url(../img/moreGreyBtn.jpg) no-repeat top right; color:#3868aa; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; text-shadow:none; }
+
 
 .joinForm { margin: 0px 10px 20px 10px; width: 460px; float:left; }
 .joinForm h2 { color:#6099e7; }
@@ -219,7 +221,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .contactInfo p { padding:0px; }
 .contactInfo p b { width:108px; display:inline-block; font-weight:bold; }
 .contactInfo p i { font-style:normal; }
-.contactInfo .moreBtn { margin:20px 0px 0px 0px; font-family: "MergeRegular"; }
+.contactInfo .moreBtn { margin:20px 0px 0px 0px; font-family: "MergeRegular"; width: 125px;}
 
 .contactInfo .label { margin: 7px 0px 5px 0px; display:block; }
 .contactInfo .textField { height:24px; width:196px; border:1px solid #e0e0e0; }
@@ -586,11 +588,20 @@ label.error_validate{
 
 .filterSection a
 {
-	float: right;
+	display: inline-block;
+    margin-left: 20px;
+	vertical-align: top;
+	/* IE7 */
+	*display: inline;
+	*zoom:1;
 }
 
 .filterSection input
 {
 	width: 300px;
 	height: 30px;
+}
+
+.changeURL{
+ height: 21px;
 }
