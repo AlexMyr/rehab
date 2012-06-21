@@ -262,11 +262,12 @@ while ($session_register->next())
 if(!empty($_SESSION['pids']))
 {
 $ft->define_dynamic('selected_line','main');
-
+	
+	$dbu = new mysql_db();
 	foreach($_SESSION['pids'] as $key=>$val)
 		{
-		$dbu = new mysql_db();
 		
+		if(!$val)continue;
 		$program = $dbu->query("
 						SELECT 
 							programs.*

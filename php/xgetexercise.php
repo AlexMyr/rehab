@@ -2,7 +2,6 @@
 /************************************************************************
 * @Author: MedeeaWeb Works                                              *
 ************************************************************************/
-
 if(!$_SESSION['pids']) $_SESSION['pids'] = array();
 
 if(isset($glob['cid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSION['pids']))
@@ -37,7 +36,7 @@ else if($get_exercise_image_type==1) $image_type = "image";
 			$_SESSION['pids'][] = $glob['pid'];
 			unset($glob['pid']);
 	}
-else if(isset($glob['rm_pid']) && in_array($glob['rm_pid'],$_SESSION['pids']))
+	else if(isset($glob['rm_pid']) && in_array($glob['rm_pid'],$_SESSION['pids']))
 	{
 		$glo['err'] = '200';
 //		if(in_array($glob['rm_pid'],$_SESSION['pids'])) $glo['del'] = true;
@@ -49,8 +48,9 @@ else if(isset($glob['rm_pid']) && in_array($glob['rm_pid'],$_SESSION['pids']))
 			}
 		unset($glob['rm_pid']);
 	}
-else
+	else
 	{
 		$glo['err'] = '404';
 	}
+	if(!$_SESSION['pids'] || !count($_SESSION['pids'])) $_SESSION['pids'] = array(false);
 	return $glo;

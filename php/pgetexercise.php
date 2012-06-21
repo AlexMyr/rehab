@@ -2,10 +2,8 @@
 /************************************************************************
 * @Author: MedeeaWeb Works                                              *
 ************************************************************************/
-
-if(!$_SESSION['pids']) $_SESSION['pids'] = array();
-
-if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSION['pids']))
+if(!$_SESSION['ppids']) $_SESSION['ppids'] = array();
+if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSION['ppids']))
 {
 	$dbu = new mysql_db();
 
@@ -31,16 +29,16 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 	$glo['PROGRAM_IMAGE'] = $script_path.UPLOAD_PATH.$the_image;
 	$glo['PROGRAM_CATEGORY'] = strip_tags(get_category_path(get_cat_ID($glob['pid']),0));
 	$glo['err'] = '200';
-	$_SESSION['pids'][] = $glob['pid'];
+	$_SESSION['ppids'][] = $glob['pid'];
 	unset($glob['pid']);
 }
-else if(isset($glob['rm_pid']) && in_array($glob['rm_pid'],$_SESSION['pids']))
+else if(isset($glob['rm_pid']) && in_array($glob['rm_pid'],$_SESSION['ppids']))
 {
 	$glo['err'] = '200';
-	while(in_array($glob['rm_pid'], $_SESSION['pids'])) 
+	while(in_array($glob['rm_pid'], $_SESSION['ppids'])) 
 	{
-		$key = array_search($glob['rm_pid'], $_SESSION['pids']);
-		unset($_SESSION['pids'][$key]);
+		$key = array_search($glob['rm_pid'], $_SESSION['ppids']);
+		unset($_SESSION['ppids'][$key]);
 	}
 	unset($glob['rm_pid']);
 }
@@ -48,4 +46,5 @@ else
 {
 	$glo['err'] = '404';
 }
+if(!$_SESSION['ppids'] || !count($_SESSION['ppids'])) $_SESSION['ppids'] = array(false);
 return $glo;

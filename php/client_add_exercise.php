@@ -254,21 +254,22 @@ else
 if(!empty($_SESSION['pids']))
 {
 $ft->define_dynamic('selected_line','main');
-
+	
+	$dbu = new mysql_db();
 	foreach($_SESSION['pids'] as $key=>$val)
-		{
-		$dbu = new mysql_db();
-		
-		$program = $dbu->query("
-						SELECT 
-							programs.*, translate.*
-						FROM
-							programs
-                        INNER JOIN programs_translate_".$glob['lang']." AS translate USING(programs_id)
-						WHERE
-							programs.programs_id='".$val."' 
-							");
-		$program->next();
+	{
+	  if(!$val)continue;
+	  
+	  $program = $dbu->query("
+					  SELECT 
+						  programs.*, translate.*
+					  FROM
+						  programs
+					  INNER JOIN programs_translate_".$glob['lang']." AS translate USING(programs_id)
+					  WHERE
+						  programs.programs_id='".$val."' 
+						  ");
+	  $program->next();
 		
 		$ft->assign(array(
 			'S_PROGRAM_ID' => $program->f('programs_id'),

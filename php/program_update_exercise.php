@@ -1,7 +1,8 @@
 <?php
 /************************************************************************
 * @Author: MedeeaWeb Works                                              *
-************************************************************************/ 
+************************************************************************/
+
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "program_update_exercise.html"));
 
@@ -101,6 +102,7 @@ if($category_array)
 			if(!isset($glob['catID'])&&$firstSubCat==1)
 			{
 				header("location: index.php?pag=program_update_exercise&catID=".$cat_array['category_id']."&program_id=".$glob['program_id']);
+				exit;
 			}
 			else
 			{
@@ -222,7 +224,6 @@ if($glob['catID']&&$glob['program_id'])
 	
 	if ($i==0) 
 	{
-		//	return '';
 		$glob['error'] = $tags['T.NO_EXERCISE'];
 	}
 // end the VIEW programs data
@@ -231,9 +232,12 @@ else
 {
 	$glob['error'] = $tags['T.SELECT'];
 }
-if(!$_SESSION['pids'] || empty($_SESSION['pids']))
+
+//if(!count($_SESSION['ppids'])) $_SESSION['ppids'] = array('0'=>'0');
+
+if(!$_SESSION['ppids'] || empty($_SESSION['ppids']))
 {
-	$_SESSION['pids'] = array();
+	$_SESSION['ppids'] = array();
 	$session_register = $dbu->query("
 								SELECT 
 									exercise_program_id 
@@ -250,21 +254,22 @@ if(!$_SESSION['pids'] || empty($_SESSION['pids']))
 		$sess_edit = explode(",",$session_register->f('exercise_program_id'));
 		foreach($sess_edit as $sVal)
 		{
-			$_SESSION['pids'][] = $sVal;
+			$_SESSION['ppids'][] = $sVal;
 		}
 		$i++;
 	}
 }
 
-if(!$_SESSION['pids'][0]) $_SESSION['pids'] = array();
-
-if(!empty($_SESSION['pids']))
+if(!empty($_SESSION['ppids']))
 {
 	$ft->define_dynamic('selected_line','main');
-
-	foreach($_SESSION['pids'] as $key=>$val)
+  
+	$dbu = new mysql_db();
+	foreach($_SESSION['ppids'] as $key=>$val)
 	{
-		$dbu = new mysql_db();
+		if(!$val)continue;
+		
+		
 		
 		$program = $dbu->query("
 						SELECT 
