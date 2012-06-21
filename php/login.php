@@ -8,6 +8,8 @@ $ft->define(array('main' => "login.html"));
 //$page_title='Login Member';
 //$next_function ='auth-login';
 
+session_start();
+
 $dbu = new mysql_db();
 
 //$dbu->query("select name from cms_menu where menu_id=".$glob['menu_id']);
@@ -47,36 +49,86 @@ if ($user) {
   }
 }
 
+
+
 if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 {
-	
 	//check existing
 	$dbu->query("select * from trainer where fb_id = ".$user);
-	if($dbu->move_next())
+	$is_user_in_db = $dbu->move_next();
+	if($is_user_in_db && $dbu->f('active')!=0)
 	{
-		
 		header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
 		exit;
-		//$dbu->query("select * from trainer where fb_id = ".$user_profile['id']);
 	}
+	//elseif($is_user_in_db && $dbu->f('active')==0 && (strtotime($dbu->f('expire_time'))-time()>0))
+	//{
+	//	session_unset();
+	//	header("Location: /index.php?&pag=login&success=false&error=".urlencode('Username was banned for a reason. Please contact support for more details!'));
+	//	exit;
+	//}
 	else
 	{
+		if(isset($user_profile['email']) && $user_profile['email'])
+		{
+			$dbu->query("SELECT trainer_id FROM trainer WHERE username = '{$user_profile['email']}' AND fb_id=NULL");
+			if($dbu->move_next())
+			{
+				$dbu->query("
+							UPDATE 
+								trainer 
+							SET 
+								fb_id = '".$user_profile['id']."'
+							WHERE trainer_id = '".$dbu->f('trainer_id')."'
+							");
+				header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user_profile['id']);
+				exit;
+			}
+			else
+			{
+			
+				$dbu->query("
+							INSERT INTO 
+										trainer 
+							SET 
+										username='".$user_profile['email']."', 
+										email='".$user_profile['email']."',
+										first_name='".$user_profile['first_name']."',
+										surname='".$user_profile['last_name']."',
+										password='', 
+										create_date=NOW(), 
+										is_trial='1', 
+										expire_date='', 
+										active = '1',
+										fb_id = '".$user_profile['id']."'
+							");
+			
+				header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user_profile['id']);
+				exit;
+			}
+		}
+		else
+		{
 			$dbu->query("
-									INSERT INTO 
-												trainer 
-									SET 
-												username='".$user_profile['email']."', 
-												email='".$user_profile['email']."',
-												password='', 
-												create_date=NOW(), 
-												is_trial='1', 
-												expire_date='', 
-												active = '1',
-												fb_id = '".$user_profile['id']."'
-									");
-		header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
-		exit;
+						INSERT INTO 
+							trainer 
+						SET 
+							username='', 
+							email='',
+							first_name='".mysql_real_escape_string($user_profile['first_name'])."',
+							surname='".mysql_real_escape_string($user_profile['last_name'])."',
+							password='', 
+							create_date=NOW(), 
+							is_trial='1', 
+							expire_date='', 
+							active = '1',
+							fb_id = '".$user_profile['id']."'
+						");
+			header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user_profile['id']);
+			exit;
+		}
 	}
+	
 }
 else
 {

@@ -23,17 +23,18 @@ class auth
 		{
 			$query->query("
 						SELECT 
-							trainer_id,username,password,access_level,active,profile_id,is_clinic,email
+							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date
 						FROM 
 							trainer 
 						WHERE 
 							fb_id = '".$ld['fb_id']."'
 						");
 		}
-		else{
+		else
+		{
 			$query->query("
 						SELECT 
-							trainer_id,username,password,access_level,active,profile_id,is_clinic,email
+							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date
 						FROM 
 							trainer 
 						WHERE 
@@ -44,13 +45,19 @@ class auth
 		if($query->move_next())
 		{
 			$trainer_id = $query->f('trainer_id');
-			
-			if($query->f('active')==0)
+
+			if($query->f('active')==0 && strtotime($query->f('expire_date'))-time()>0)
 			{
-				$ld['error'] = 'Username was banned for a reason. Please contact support for more details!';
-				return false;							
+				
+				
+				session_unset();
+				header("Location: /index.php?pag=login&error=".urlencode("Username was banned for a reason. Please contact support for more details!"));
+				exit;
+				
+				//$ld['error'] = 'Username was banned for a reason. Please contact support for more details!';
+				//return false;
 			}
-			else if(($ld['password'] == $query->f('password') || $ld['fb_id'] == $query->f('fb_id')) && $query->f('is_login')==0 && $query->f('active')!=0)
+			else if(($ld['password'] == $query->f('password') || $ld['fb_id'] == $query->f('fb_id')) && $query->f('is_login')==0/* && $query->f('active')!=0*/)
 			{
 				//session_cache_limiter('private');
 				session_start();
@@ -58,6 +65,7 @@ class auth
 				$_SESSION[U_ID] = $query->f('trainer_id');
 				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
 				$_SESSION[USER_EMAIL] = $query->f('email');
+				$_SESSION[EXPIRE_DATE] = $query->f('expire_date');
 			
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
 				{
@@ -112,7 +120,6 @@ class auth
 				}
 				else if($query->f('active')!=0)
 				{
-					
 					$this->dbu->query("
 										UPDATE 
 											trainer 
@@ -134,16 +141,21 @@ class auth
 											trainer_id = ".$trainer_id." 
 									");
 				
+				if(strtotime($query->f('expire_date'))-time()<0)
+				{
+					header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
+					exit;
+				}
+				
 				if(isset($ld['fb_id']))
 				{
 					$userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
 					if(!$userEmail)
 					{
-						header("Location: /index.php?pag=profile_edit_email&success=false&error=".urlencode("You have not email address, please fill this field."));
+						header("Location: /index.php?pag=profile_edit_email&error=".urlencode("You have not email address, please fill this field."));
 						exit;
 					}
 				}
-				
 				return true;
 			}
 			/*else if($query->f('is_login')==1)
@@ -190,7 +202,7 @@ class auth
 		
 		if(isset($_SESSION['fb_login_rmp']))
 			$_SESSION['fb_login_rmp'] = 0;
-		
+		$_SESSION['set_fb_login'] = 0;
 		$ld['pag'] = 'cms';
 		
 		return true;
@@ -216,7 +228,6 @@ class auth
 			$user = null;
 		  }
 		}
-		
 		if($user)
 		{
 			$_SESSION['fb_login_rmp'] = 1;
@@ -224,7 +235,17 @@ class auth
 		}
 		else
 		{
-			header("Location: ".$facebook->getLoginUrl());
+			if(!$_SESSION['set_fb_login'])
+			{
+				$_SESSION['set_fb_login'] = 1;
+				header("Location: ".$facebook->getLoginUrl(array("scope" => "email")));
+			}
+			else
+			{
+				$_SESSION['fb_login_rmp'] = 1;
+				$user = $facebook->getUser();
+				header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
+			}
 		}
 
 	}

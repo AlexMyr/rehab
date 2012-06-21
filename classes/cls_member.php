@@ -326,7 +326,7 @@ class member
             return false;
         }
 
-        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."', first_name='".$ld['first_name']."', surname='".$ld['last_name']."'";
+        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."'";
         else if($ld['is_clinic']==1) $update = "is_clinic='".$ld['is_clinic']."', clinic_name='".$ld['clinic_name']."'";
         
         $this->dbu->query("
@@ -337,6 +337,10 @@ class member
                             WHERE 
                                 trainer_id=".$_SESSION[U_ID]." 
                         ");
+		
+		$this->dbu->query("SELECT first_name, surname, username FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
+		$this->dbu->move_next();
+		$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('surname')."', email='".$this->dbu->f('username')."' ");
     
         $ld['error']="Licence Succesfully Saved.";
 
@@ -496,6 +500,11 @@ class member
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_EMAIL');
 		$_SESSION[USER_EMAIL] = $ld['email'];
 		
+		if($this->dbu->field("SELECT is_clinic FROM trainer WHERE trainer_id = ".$_SESSION[U_ID]) == 2)
+		{
+			$ld['pag']= "profile_choose_clinic"; 
+		}
+		
 		return true;
 	}
 	
@@ -621,13 +630,8 @@ class member
 	}
 		
 	function update_profile_notes(&$ld){
-		//$this->dbu->query("SELECT trainer_id FROM trainer_profile WHERE trainer_id=".$_SESSION[U_ID]." ");
-		//if(!$this->dbu->move_next()){
-		//	$ld['error']="Please fill your Contact information first.";
-		//	return false;
-		//}
 
-		
+		$this->dbu->query("UPDATE trainer SET title_set='".$ld['title_set']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
 		
 		$this->dbu->query("UPDATE  trainer SET lang='".$ld['language']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
 		//check exists in db
@@ -681,39 +685,11 @@ class member
 				$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_POST')."<br>";
 				$is_ok=false;
 			}
-/*				
-		if(!$ld['mobile'])
-			{
-				$ld['error'].="Please fill in the 'Mobile' field."."<br>";
-				$is_ok=false;
-			}
-		if(!$ld['phone'])
-			{
-				$ld['error'].="Please fill in the 'Phone' field."."<br>";
-				$is_ok=false;
-			}
-		if($ld['phone'] && !secure_phone($ld['phone']))
-			{
-				$ld['error'].="Please provide a valid phone."."<br>";
-				$is_ok=false;
-			}
-		if($ld['mobile'] && !secure_phone($ld['mobile']))
-			{
-				$ld['error'].="Please provide a valid mobile."."<br>";
-				$is_ok=false;
-			}
-*/				
 		return $is_ok;
 	}
 	
 	function update_custom_header(&$ld)
 	{
-		//if(!$this->validate_update_custom_header($ld))
-		//	{
-		//		$ld['pag']= "profile_header_paper"; 
-		//		return false;
-		//	}
-		
 		$this->check_header_paper_exists();
 		
 		$this->dbu->query("
@@ -757,7 +733,11 @@ class member
 		$this->dbu->move_next();
 		if(!$this->dbu->f('header_id'))
 		{
-			$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."' ");
+			$this->dbu->query("SELECT first_name, surname FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
+			$this->dbu->move_next();
+			
+			$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('last_name')."' ");
+			
 		}
 	}
 
@@ -920,8 +900,17 @@ class member
         }
         else
         {
-//        	$this->resize($_FILES['upload_image']['tmp_name'], 276, 0, $f_title);
-            $this->resize($_FILES['upload_image']['tmp_name'], 200, 0, $f_title);
+			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_title;
+			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
+
+			$cur_image = ImageCreateFromJPEG($img_path);
+			if(imagesy($cur_image)>180)
+			  $this->resize($img_path, 0, 180, $f_title);
+			  
+			$cur_image = ImageCreateFromJPEG($img_path);
+			if(imagesx($cur_image)>200)
+			  $this->resize($img_path, 200, 0, $f_title);
+            
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
                                logo_image='".$f_title."'
@@ -977,7 +966,9 @@ class member
 	function resize($original_image, $new_width, $new_height, $image_title) 
 	{
 		global $script_path;
+
 		$original_image=ImageCreateFromJPEG($original_image);
+
 		$aspect_ratio = imagesx($original_image) / imagesy($original_image); 
 		if (empty($new_width)) 
 		{ 
@@ -997,7 +988,7 @@ class member
 		} 
 		// copy the original image onto the smaller blank 
 		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
-		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving"); 
+		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
 	}
 
 function pay(&$ld){
@@ -1119,22 +1110,31 @@ function confirm_pay()
 			$curTime = time();
 			$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
 			
+			
+			switch($_COOKIE['language']){
+				case 'us': $dbCountryCode = 'US'; break;
+				default: $dbCountryCode = 'GB';
+			}
+			$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
+			$this->dbu->move_next();
+			$country_id = $this->dbu->f('country_id');
+		
 			$this->dbu->query("UPDATE trainer 
 	   	 					SET 
 								paypal_profile_id = '".$payerId."',
-								country_id 	    = '".$ld['country_id']."',
-								price_plan_id 	= '".$ld['price_id']."',
+								country_id 	    = '".$country_id."',
+								price_plan_id 	= '".$_SESSION['price_id']."',
 								is_trial		= '0',
 								expire_date		= '$expireTime'
 							WHERE 
 								trainer_id=".$_SESSION[U_ID]."
 												");
 			
-			header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
+			header("Location: /index.php?pag=profile&paym=1");
 		} 
 		else  
 		{
-			header("Location: http://rehabmyp.loc/index.php?pag=profile&paym=0");
+			header("Location: /index.php?pag=profile&paym=0");
 			
 			//Display a user friendly Error on the page using any of the following error information returned by PayPal
 			//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
