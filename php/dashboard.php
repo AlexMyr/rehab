@@ -55,7 +55,7 @@ while ($dbu->move_next())
 {
 		$ft->assign(array(
 			'CLIENT_ID'=>$dbu->f('client_id'),
-			'CLIENT_NAME'=>$dbu->f('surname').", ".$dbu->f('first_name'),
+			'CLIENT_NAME'=>stripcslashes($dbu->f('surname').", ".$dbu->f('first_name')),
 			'EXERCISES_NR'=>count_exercise($_SESSION[U_ID],$dbu->f('client_id')),
 			'ACTIVITY_DATE'=>date('D jS M Y',strtotime($dbu->f('modify_date'))),
 			'SHOW_LIMIT_ERROR'=>(count_exercise($_SESSION[U_ID],$dbu->f('client_id'))>4 && $chk_trial) ? 'showLimitError' : '',
@@ -194,11 +194,11 @@ $ft->assign('FILTER_VALUE', ((isset($glob['query']) && $glob['query']) ? stripcs
 
 $ft->assign('CSS_PAGE', $glob['pag']);
 
-$ft->assign('FIRST_NAME', $glob['first_name']);
-$ft->assign('SURNAME', $glob['surname']);
-$ft->assign('EMAIL', $glob['email']);
-$ft->assign('APPEAL', $glob['appeal']);
-$ft->assign('CLIENT_NOTE', $glob['client_note']);
+$ft->assign('FIRST_NAME', stripcslashes($glob['first_name']));
+$ft->assign('SURNAME', stripcslashes($glob['surname']));
+$ft->assign('EMAIL', stripcslashes($glob['email']));
+$ft->assign('APPEAL', stripcslashes($glob['appeal']));
+$ft->assign('CLIENT_NOTE', stripcslashes($glob['client_note']));
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
