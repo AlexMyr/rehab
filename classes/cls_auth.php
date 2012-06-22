@@ -141,7 +141,7 @@ class auth
 											trainer_id = ".$trainer_id." 
 									");
 				
-				if(strtotime($query->f('expire_date'))-time()<0)
+				if(strtotime($query->f('expire_date'))-time()<0 && $query->f('active')==0)
 				{
 					header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
 					exit;
