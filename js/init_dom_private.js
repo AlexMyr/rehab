@@ -151,35 +151,41 @@ rmPExercise = function(rm_pid)
 doExerciseDetails = function()
 	{
 		if($("#program_list li .exercise_details").length > 0)
+		{
+			$('#program_list li .exercise_details').each(function(i, item)
 			{
-				$('#program_list li .exercise_details').each(function(i, item)
+				var details = parseInt($(this).attr('id').split('details_')[1]);
+				if($(this).parent().find('#text_'+details).length > 0)
+				{
+					var obj = $('#text_'+details);
+					obj.remove();
+					obj.appendTo($(this).parent().parent().parent());
+					$(this).bind('click',function(e)
 					{
+						var scrolledSize = $('#content').scrollTop();
+						
 						var details = parseInt($(this).attr('id').split('details_')[1]);
-						if($(this).parent().find('#text_'+details).length > 0)
-						{
-						var obj = $('#text_'+details);
-						obj.remove();
-						obj.appendTo($(this).parent().parent().parent());
-						$(this).bind('click',function(e)
-							{
-								var details = parseInt($(this).attr('id').split('details_')[1]);
-								e.stopPropagation();
-								e.preventDefault();
+						e.stopPropagation();
+						e.preventDefault();
 						var body = $(document).width();
 						var content = $('.siteBody').width();
 						var margins = body-content;
 						var size = $(this).offset();
-						var thetop = size.top-79;
+						var thetop = size.top-79 + scrolledSize;
 						var theleft = size.left-220;
 						obj.css({
 							'top':thetop,
 							'right':'11px'
 						});
-								$('#text_'+details).toggleClass('displayBlock');
-							});	
-						}
-					});
-			}
+					
+						if(!$('#text_'+details).hasClass('displayBlock'))
+							$('.exercise_text').removeClass('displayBlock');
+						$('#text_'+details).toggleClass('displayBlock');
+					
+					});	
+				}
+			});
+		}
 	}
 
 doExerciseCompactViewDetails = function()

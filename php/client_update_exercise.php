@@ -27,7 +27,7 @@ $ft->assign('CLIENT_ID', $glob['client_id']);
 
 $query = $dbu->query("select client.* from client where client.client_id=".$glob['client_id']." ");
 
-if($query->next()) $ft->assign('CLIENT_NAME',$query->f('first_name')." ".$query->f('surname'));
+if($query->next()) $ft->assign('CLIENT_NAME',stripcslashes($query->f('first_name')." ".$query->f('surname')));
 
 /* make the category / subcategory menu */
 
@@ -264,15 +264,18 @@ if(!empty($_SESSION['pids']))
 $ft->define_dynamic('selected_line','main');
 	
 	$dbu = new mysql_db();
+	
+	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
 	foreach($_SESSION['pids'] as $key=>$val)
-		{
+	{
 		
 		if(!$val)continue;
 		$program = $dbu->query("
 						SELECT 
-							programs.*
+							programs.*, programs_loc.programs_title, programs_loc.description
 						FROM
-								programs 
+							programs
+						$left_join
 						WHERE
 							programs.programs_id='".$val."' 
 							");
@@ -286,8 +289,8 @@ $ft->define_dynamic('selected_line','main');
 			'S_PROGRAM_IMAGE' => file_exists('upload/'.$program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimage_small.png',
 			'S_PROGRAM_CATEGORY' => strip_tags(get_category_path(get_cat_ID($val),0)),
 		));
-	$ft->parse('SELECTED_LINE_OUT','.selected_line');
-		}
+		$ft->parse('SELECTED_LINE_OUT','.selected_line');
+	}
 }
 
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);

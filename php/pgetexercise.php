@@ -10,12 +10,15 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 	$get_exercise_image_type = $dbu->field("SELECT print_image_type FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['epid']." ");
 	if($get_exercise_image_type==0) $image_type = "lineart";
 	else if($get_exercise_image_type==1) $image_type = "image";
-
+	
+	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
+	
 	$program = $dbu->query("
 							SELECT 
-								programs.*
+								programs.*, programs_loc.programs_title, programs_loc.description
 							FROM
-									programs 
+								programs
+							$left_join
 							WHERE
 								programs.programs_id='".$glob['pid']."' 
 							");

@@ -49,7 +49,7 @@ $ft->assign('CLIENT_ID', $glob['client_id']);
 
 $query = $dbu->query("select client.* from client where client.client_id=".$glob['client_id']." ");
 
-if($query->next()) $ft->assign('CLIENT_NAME',$query->f('first_name')." ".$query->f('surname'));
+if($query->next()) $ft->assign('CLIENT_NAME',stripcslashes($query->f('first_name')." ".$query->f('surname')));
 
 /* make the category / subcategory menu */
 
@@ -248,14 +248,16 @@ if ($i==0)
 // end the VIEW programs data
 }
 else 
-	{
-		$glob['error'] = $tags['T.SELECT_CAT'];
-	}
+{
+	$glob['error'] = $tags['T.SELECT_CAT'];
+}
 if(!empty($_SESSION['pids']))
 {
-$ft->define_dynamic('selected_line','main');
+  $ft->define_dynamic('selected_line','main');
 	
 	$dbu = new mysql_db();
+	
+	//$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
 	foreach($_SESSION['pids'] as $key=>$val)
 	{
 	  if(!$val)continue;

@@ -265,17 +265,18 @@ if(!empty($_SESSION['ppids']))
 	$ft->define_dynamic('selected_line','main');
   
 	$dbu = new mysql_db();
+	
+	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
 	foreach($_SESSION['ppids'] as $key=>$val)
 	{
 		if(!$val)continue;
-		
-		
-		
+
 		$program = $dbu->query("
 						SELECT 
-							programs.*
+							programs.*, programs_loc.programs_title, programs_loc.description
 						FROM
-								programs 
+								programs
+						$left_join
 						WHERE
 							programs.programs_id='".$val."' 
 							");
@@ -285,7 +286,6 @@ if(!empty($_SESSION['ppids']))
 			'S_PROGRAM_ID' => $program->f('programs_id'),
 			'S_PROGRAM_TITLE' => strip_tags($program->f('programs_title')),
 			'S_PROGRAM_DESCRIPTION' => strip_tags($program->f('description')),
-			//'S_PROGRAM_IMAGE' => $program->f($image_type) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimg64.gif',
 			'S_PROGRAM_IMAGE' => file_exists('upload/'.$program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimage_small.png',
 			'S_PROGRAM_CATEGORY' => strip_tags(get_category_path(get_cat_ID($val),0)),
 		));
