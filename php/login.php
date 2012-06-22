@@ -71,7 +71,7 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 	{
 		if(isset($user_profile['email']) && $user_profile['email'])
 		{
-			$dbu->query("SELECT trainer_id FROM trainer WHERE username = '{$user_profile['email']}' AND fb_id=NULL");
+			$dbu->query("SELECT trainer_id FROM trainer WHERE username = '{$user_profile['email']}' AND (fb_id=NULL OR fb_id='')");
 			if($dbu->move_next())
 			{
 				$dbu->query("
