@@ -1,0 +1,55 @@
+	<div id="content" class="siteContent dashboard scrolledList">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<span class="pageTitle">Add new exercise</span>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="addExercise floatLft">
+					<form action="index.php" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="act" value="member-exercise_add">
+						<input type="hidden" name="pag" value="profile">
+						
+						<h2>Exercise name</h2>
+						<label class="label" for="name_en">GB:&nbsp;</label><input class="textField" type="text" id="name_en" name="name_en" value="{name_en}" />
+						<label class="label" for="name_us">US:&nbsp;</label><input class="textField" type="text" id="name_us" name="name_us" value="{name_us}" />	
+						
+						<h2>Description</h2>
+						<label class="label" for="description_en">GB:&nbsp;</label><textarea class="textField" id="description_en" name="description_en" >{description_en}</textarea>
+						<label class="label" for="description_us">US:&nbsp;</label><textarea class="textField" id="description_us" name="description_us" >{description_us}</textarea>
+						
+						<h2>Upload image</h2>
+						<label class="label" for="image">Select photo:&nbsp;</label><input class="fileUpload" type="file" id="upload_photo" name="image" /> 
+						<label class="label" for="lineart">Select lineart:&nbsp;</label><input class="fileUpload" type="file" id="upload_lineart" name="lineart" /> 
+						
+						<h2>Category</h2>
+						<label class="label" for="category">Select category:&nbsp;</label>
+						<select name="category" id="category">{CAT_OPTIONS}</select> 
+						<br />
+						<label class="label" for="subcategory">and subcategory:&nbsp;</label>
+						<select name="subcategory" id="subcategory">
+						  <option value="volvo">Volvo</option>
+						  <option value="saab">Saab</option>
+						  <option value="mercedes">Mercedes</option>
+						  <option value="audi">Audi</option>
+						</select> 
+						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save</span></button></div>
+					</form>
+		</div>
+		<!--<div class="contactHeadedInfo floatLft">
+			{HEADER_PAPER_SECTION}
+		</div>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+		<div class="floatLft" style="width: 460px;">
+			<p>Default Additional Notes:</p>
+			<form action="index.php" method="post">
+				<input type="hidden" name="act" value="member-update_profile_notes">
+				<input type="hidden" name="pag" value="profile">
+				{EXERCISE_NOTES}
+				<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save</span></button></div>
+			</form>		
+		</div>-->
+		<div class="clearAll"></div>
+	</div>
