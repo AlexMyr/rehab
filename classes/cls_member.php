@@ -1245,5 +1245,96 @@ function cancel_payment(&$ld)
 			$ld['error']="Not implemented yet.";
 		    return true;
 		}
+    function exercise_add(&$ld){
+        // we'll use some functions from admin lib to avoid code doubling 
+        include_once('admin/classes/cls_programs.php');
+        $programs = new programs();
+        
 
+        // generate program code
+        $this->dbu->query("SELECT * FROM programs WHERE owner=".$_SESSION['m_id']." AND programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
+        $this->dbu->move_next();
+        $last_code = $this->dbu->f('programs_code');
+$last_code = 'USR091';
+        
+        if($last_code)
+            $num = substr($last_code, strspn($last_code, 'USR'));
+        else $num = 0;
+
+        $num = str_pad(++$num, 3, '0', STR_PAD_LEFT);
+        $code = 'USR'.$num;
+
+        if(!$this->validate_exercise_add(&$ld))
+        {
+            $ld['pag'] = 'profile_exercise_add';
+/** TO-DO: delete */
+echo '$ld<br><pre>';
+print_r($ld['error']);
+echo '<br>$ld_end</pre>';
+exit;
+            return false;
+        }
+
+        $ld['programs_id']=$this->dbu->query_get_id("INSERT INTO programs SET 
+																programs_code='".$code."', 
+																sort_order='".($this->dbu->f('sort_order')+10)."',
+																active = 1,
+                                                                owner = ".$_SESSION['m_id']);
+        foreach(array('en', 'us') as $lang){
+            $this->dbu->query("INSERT INTO programs_translate_".$lang." SET 
+																programs_id='".$ld['programs_id']."', 
+																programs_title='".$ld['name_'.$lang]."',
+																description = '".$ld['description_'.$lang]."' ");
+        }
+		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
+                									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
+        
+        if($programs->image_validate()){
+            var_dump($programs->upload_file($ld));
+echo '$ld<br><pre>';
+print_r($ld['error']);
+echo '<br>$ld_end</pre>';
+exit;
+        }
+        else {
+            exit;
+            return false;
+        }
+    }
+    function validate_exercise_add(&$ld)
+	{
+		$is_ok=true;
+
+		if(!$ld['name_en'] || !$ld['name_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
+$ld['error'].="name<br>";
+            $is_ok=false;
+        }
+		if(!$ld['description_en'] || !$ld['description_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
+$ld['error'].="descr<br>";
+            $is_ok=false;
+        }
+		if($ld['category'] == 'none')
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
+$ld['error'].="cat<br>";
+            $is_ok=false;
+        }
+		if($ld['subcategory'] == 'none')
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
+$ld['error'].="subcat<br>";
+            $is_ok=false;
+        }
+        if(!$_FILES['image']['name'] || !$_FILES['lineart']['name'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
+$ld['error'].="image<br>";
+            $is_ok=false;
+        }
+		return $is_ok;
+	}
 }//end class

@@ -17,29 +17,30 @@ $ft->assign('IMAGE_TYPE',build_print_image_type_list(1));
 
 $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 
+$order_by = ' ORDER BY surname ASC';
 if(isset($glob['orderf']))
 {
-		if($glob['orderf'] == 'date')
-		{
-				$order_by = 'ORDER BY modify_date';
-		}
-		else
+		if($glob['orderf'] == 'name')
 		{
 				$order_by = 'ORDER BY CONCAT(surname, first_name)';
 		}
+		elseif($glob['orderf'] == 'date')
+		{
+				$order_by = 'ORDER BY modify_date';
+		}
 		
-		$order_by .= ' '.($glob['orderd'] == 'desc' ? 'DESC' : 'ASC');
+		$order_by .= ' '.strtoupper($glob['orderd']);
 }
 
 if(isset($glob['query']))
 {
-		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".mysql_real_escape_string($glob['query'])."%' or first_name like '%".mysql_real_escape_string($glob['query'])."%') $order_by ");
+		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".$glob['query']."%' or first_name like '%".$glob['query']."%') $order_by ");
 }
 else
 {
 		if(isset($glob['fchar']) && $glob['fchar'] != 'all')
 		{
-				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".mysql_real_escape_string($glob['fchar'])."' $order_by ");
+				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' $order_by ");
 		}
 		else
 		{
@@ -49,13 +50,13 @@ else
 
 $i=0;
 
-//$max_rows=$dbu->records_count();
-//$dbu->move_to($offset*$l_r);
+$max_rows=$dbu->records_count();
+$dbu->move_to($offset*$l_r);
 while ($dbu->move_next())
 {
 		$ft->assign(array(
 			'CLIENT_ID'=>$dbu->f('client_id'),
-			'CLIENT_NAME'=>stripcslashes($dbu->f('surname').", ".$dbu->f('first_name')),
+			'CLIENT_NAME'=>$dbu->f('surname').", ".$dbu->f('first_name'),
 			'EXERCISES_NR'=>count_exercise($_SESSION[U_ID],$dbu->f('client_id')),
 			'ACTIVITY_DATE'=>date('D jS M Y',strtotime($dbu->f('modify_date'))),
 			'SHOW_LIMIT_ERROR'=>(count_exercise($_SESSION[U_ID],$dbu->f('client_id'))>4 && $chk_trial) ? 'showLimitError' : '',
@@ -189,16 +190,16 @@ $ft->assign('CSS_NEXTLINK', 'next displayNone');
 
 /// end paginate
 $ft->assign('FILTER_LINK', "index.php?pag=".$glob['pag']."");
-$ft->assign('FILTER_VALUE', ((isset($glob['query']) && $glob['query']) ? stripcslashes($glob['query']) : ''));
+$ft->assign('FILTER_VALUE', ((isset($glob['query']) && $glob['query']) ? $glob['query'] : ''));
 
 
 $ft->assign('CSS_PAGE', $glob['pag']);
 
-$ft->assign('FIRST_NAME', stripcslashes($glob['first_name']));
-$ft->assign('SURNAME', stripcslashes($glob['surname']));
-$ft->assign('EMAIL', stripcslashes($glob['email']));
-$ft->assign('APPEAL', stripcslashes($glob['appeal']));
-$ft->assign('CLIENT_NOTE', stripcslashes($glob['client_note']));
+$ft->assign('FIRST_NAME', $glob['first_name']);
+$ft->assign('SURNAME', $glob['surname']);
+$ft->assign('EMAIL', $glob['email']);
+$ft->assign('APPEAL', $glob['appeal']);
+$ft->assign('CLIENT_NOTE', $glob['client_note']);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');

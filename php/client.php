@@ -57,13 +57,13 @@ while($dbu->move_next())
 				$has_email = true;
 
 		$ft->assign(array(
-			'FIRST_NAME'=>stripcslashes($dbu->f('first_name')),
-			'SURNAME'=>stripcslashes($dbu->f('surname')),
-			'CLIENT_NAME'=>stripcslashes($dbu->f('first_name')." ".$dbu->f('surname')),
-			'APPEAL'=>stripcslashes($dbu->f('appeal')),
-			'EMAIL'=>stripcslashes($dbu->f('email')),
+			'FIRST_NAME'=>$dbu->f('first_name'),
+			'SURNAME'=>$dbu->f('surname'),
+			'CLIENT_NAME'=>$dbu->f('first_name')." ".$dbu->f('surname'),
+			'APPEAL'=>$dbu->f('appeal'),
+			'EMAIL'=>$dbu->f('email'),
 			'IMAGE_TYPE'=>build_print_image_type_list($dbu->f('print_image_type')),
-			'CLIENT_NOTE'=>stripcslashes($dbu->f('client_note')),
+			'CLIENT_NOTE'=>$dbu->f('client_note'),
 		));
 		$i++;
 }
