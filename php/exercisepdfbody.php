@@ -8,7 +8,6 @@ $ft->define( array(main => "exercisepdf.html"));
 $ft->define_dynamic('exercise_line','main');
 
 $dbu=new mysql_db();
-//$get_exercise_image_type = $dbu->field("SELECT print_image_type FROM trainer_profile WHERE trainer_id='".$_SESSION[U_ID]."'");
 $get_exercise_image_type = $dbu->field("SELECT print_image_type FROM client WHERE trainer_id='".$_SESSION[U_ID]."' AND client.client_id=".$glob['client_id']." ");
 if($get_exercise_image_type==0) $image_type = "lineart";
 else if($get_exercise_image_type==1) $image_type = "image";
@@ -19,10 +18,7 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 
 	$chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 
-	//if($chk_trial)
-	//	$dbu->query("SELECT * FROM trainer_profile WHERE trainer_id='".$_SESSION[U_ID]."'");
-	//else
-		$dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
+	$dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
 
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
 	if($dbu->move_next())
@@ -33,36 +29,18 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').'</div>'; 
 		else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>';
 		
-		//if($chk_trial=='1')
-		//{			
-		//	$ft->assign(array(
-		//		'THE_IMG'=> $default_image,
-		//		'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : 'Company Name here.',
-		//		'NAME' => $theName ? $theName : 'Your name here',
-		//		'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : 'Your address here.',
-		//		'CITY' => $dbu->f('city') ? $dbu->f('city') : 'Your city here.',
-		//		'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : 'Your post code here.',
-		//		'PHONE' => $dbu->f('phone') ? 'Tel: '.$dbu->f('phone') : 'Your phone number here.',
-		//		'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : 'Your mobile number here.',
-		//		'EMAIL' => $dbu->f('email') ? $dbu->f('email') : 'Your e-mail address here.',
-		//		'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : 'Your website here.',
-		//	));
-		//}
-		//else{
-
-			$ft->assign(array(
-				'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
-				'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : ($theName ? $theName : ''),
-				'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : '',
-				'CITY' => $dbu->f('city') ? $dbu->f('city') : '',
-				'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : '',
-				'PHONE' => $dbu->f('phone') ? $dbu->f('phone') : '',
-				'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : $dbu->f('fax'),
-				'FAX' => $dbu->f('mobile') ? '<tr><td>&nbsp;</td><td align="right">'.$dbu->f('fax').'</td></tr>' : '',
-				'EMAIL' => $dbu->f('email') ? $dbu->f('email') : '',
-				'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : '',
-			));
-		//}
+		$ft->assign(array(
+			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
+			'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : ($theName ? $theName : ''),
+			'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : '',
+			'CITY' => $dbu->f('city') ? $dbu->f('city') : '',
+			'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : '',
+			'PHONE' => $dbu->f('phone') ? $dbu->f('phone') : '',
+			'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : $dbu->f('fax'),
+			'FAX' => $dbu->f('mobile') ? '<tr><td>&nbsp;</td><td align="right">'.$dbu->f('fax').'</td></tr>' : '',
+			'EMAIL' => $dbu->f('email') ? $dbu->f('email') : '',
+			'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : '',
+		));
 	}
 	else {
 		$ft->assign(array(
@@ -141,27 +119,24 @@ while($i<count($exercise))
 								is_program_plan = 0
 							");
 	$get_data->next();
-	/*if($get_data->gf('plan_description')) $ft->assign(array( 'EXERCISE_DESC'=> $get_data->gf('plan_description') ? '<strong>'.$get_data->gf('plan_description').'</strong>' : '', ));	
-	else $ft->assign(array( 'EXERCISE_DESC'=> $get_program->gf('plan_description') ? '<strong>'.$get_program->gf('plan_description').'</strong>' : '', ));	*/
+
 	if($get_data->gf('plan_description'))
 	{
-		$programs_title = str_replace('’', '\'', $get_data->gf('programs_title'));
-		$plan_description = str_replace('’', '\'', $get_data->gf('plan_description'));
+		$programs_title = str_replace('’', '\'', htmlentities($get_data->gf('programs_title')));
+		$plan_description = str_replace('’', '\'', htmlentities($get_data->gf('plan_description')));
 		
 		$programs_title = mb_eregi_replace('“', '"', $programs_title);
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
 		$plan_description = mb_eregi_replace('“', '"', $plan_description);
 		$plan_description = mb_eregi_replace('”', '"', $plan_description);
-		//$programs_title = $get_data->gf('programs_title');
-		//$plan_description = $get_data->gf('plan_description');
 		
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_data->gf('programs_title') ? $programs_title : '', ));
 		$ft->assign(array( 'EXERCISE_DESC'=> $get_data->gf('plan_description') ? $plan_description : '', ));
 	}
 	else
 	{
-		$programs_title = str_replace('’', '\'', $get_program->gf('programs_title'));
-		$plan_description = str_replace('’', '\'', $get_program->gf('plan_description'));
+		$programs_title = str_replace('’', '\'', htmlentities($get_program->gf('programs_title')));
+		$plan_description = str_replace('’', '\'', htmlentities($get_program->gf('plan_description')));
 		
 		$programs_title = mb_eregi_replace('“', '"', $programs_title);
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
@@ -171,8 +146,8 @@ while($i<count($exercise))
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_program->gf('programs_title') ? $programs_title : '', ));
 		$ft->assign(array( 'EXERCISE_DESC'=> $get_program->gf('plan_description') ? $plan_description : '', ));
 	}
-	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".$get_data->gf('plan_set_no') : "");
-	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".$get_data->gf('plan_repetitions') : "");
+	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".htmlentities($get_data->gf('plan_set_no')) : "");
+	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".htmlentities($get_data->gf('plan_repetitions')) : "");
 	$ft->assign('TIME' , $get_data->gf('plan_time') ? "Time: ".$get_data->gf('plan_time') : "");
     $ft->parse('EXERCISE_LINE_OUT','.exercise_line');
     

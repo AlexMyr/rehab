@@ -115,8 +115,8 @@ while($i<count($exercise))
 	$get_data->next();
 	if($get_data->gf('plan_description'))
 	{
-		$programs_title = str_replace('’', '\'', $get_data->gf('programs_title'));
-		$plan_description = str_replace('’', '\'', $get_data->gf('plan_description'));
+		$programs_title = str_replace('’', '\'', htmlentities($get_data->gf('programs_title')));
+		$plan_description = str_replace('’', '\'', htmlentities($get_data->gf('plan_description')));
 		
 		$programs_title = mb_eregi_replace('“', '"', $programs_title);
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
@@ -128,8 +128,8 @@ while($i<count($exercise))
 	}
 	else
 	{
-		$programs_title = str_replace('’', '\'', $get_program->gf('programs_title'));
-		$plan_description = str_replace('’', '\'', $get_program->gf('plan_description'));
+		$programs_title = str_replace('’', '\'', htmlentities($get_program->gf('programs_title')));
+		$plan_description = str_replace('’', '\'', htmlentities($get_program->gf('plan_description')));
 		
 		$programs_title = mb_eregi_replace('“', '"', $programs_title);
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
@@ -139,8 +139,8 @@ while($i<count($exercise))
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_program->gf('programs_title') ? $programs_title : '', ));
 		$ft->assign(array( 'EXERCISE_DESC'=> $get_program->gf('plan_description') ? $plan_description : '', ));
 	}
-	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".$get_data->gf('plan_set_no') : "");
-	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".$get_data->gf('plan_repetitions') : "");
+	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".htmlentities($get_data->gf('plan_set_no')) : "");
+	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".htmlentities($get_data->gf('plan_repetitions')) : "");
 	$ft->assign('TIME' , $get_data->gf('plan_time') ? "Time: ".$get_data->gf('plan_time') : "");
     $ft->parse('EXERCISE_LINE_OUT','.exercise_line');
     
