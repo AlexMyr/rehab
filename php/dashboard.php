@@ -17,30 +17,29 @@ $ft->assign('IMAGE_TYPE',build_print_image_type_list(1));
 
 $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 
-$order_by = ' ORDER BY surname ASC';
 if(isset($glob['orderf']))
 {
-		if($glob['orderf'] == 'name')
-		{
-				$order_by = 'ORDER BY CONCAT(surname, first_name)';
-		}
-		elseif($glob['orderf'] == 'date')
+		if($glob['orderf'] == 'date')
 		{
 				$order_by = 'ORDER BY modify_date';
 		}
+		else
+		{
+				$order_by = 'ORDER BY CONCAT(surname, first_name)';
+		}
 		
-		$order_by .= ' '.strtoupper($glob['orderd']);
+		$order_by .= ' '.($glob['orderd'] == 'desc' ? 'DESC' : 'ASC');
 }
 
 if(isset($glob['query']))
 {
-		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".$glob['query']."%' or first_name like '%".$glob['query']."%') $order_by ");
+		$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and (surname like '%".mysql_real_escape_string($glob['query'])."%' or first_name like '%".mysql_real_escape_string($glob['query'])."%') $order_by ");
 }
 else
 {
 		if(isset($glob['fchar']) && $glob['fchar'] != 'all')
 		{
-				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".$glob['fchar']."' $order_by ");
+				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".mysql_real_escape_string($glob['fchar'])."' $order_by ");
 		}
 		else
 		{
@@ -50,8 +49,8 @@ else
 
 $i=0;
 
-$max_rows=$dbu->records_count();
-$dbu->move_to($offset*$l_r);
+//$max_rows=$dbu->records_count();
+//$dbu->move_to($offset*$l_r);
 while ($dbu->move_next())
 {
 		$ft->assign(array(
@@ -190,7 +189,7 @@ $ft->assign('CSS_NEXTLINK', 'next displayNone');
 
 /// end paginate
 $ft->assign('FILTER_LINK', "index.php?pag=".$glob['pag']."");
-$ft->assign('FILTER_VALUE', ((isset($glob['query']) && $glob['query']) ? $glob['query'] : ''));
+$ft->assign('FILTER_VALUE', ((isset($glob['query']) && $glob['query']) ? stripcslashes($glob['query']) : ''));
 
 
 $ft->assign('CSS_PAGE', $glob['pag']);
