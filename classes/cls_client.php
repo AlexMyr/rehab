@@ -34,10 +34,10 @@ class client
 							WHERE 
 								1=1 
 								AND trainer_id = ".$_SESSION[U_ID]." 
-								AND first_name = '".$ld['first_name']."'
-								AND surname = '".$ld['surname']."'
-								AND email = '".$ld['email']."'
-								AND print_image_type = '".$ld['print_image_type']."'
+								AND first_name = '".mysql_real_escape_string($ld['first_name'])."'
+								AND surname = '".mysql_real_escape_string($ld['surname'])."'
+								AND email = '".mysql_real_escape_string($ld['email'])."'
+								AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
 						");
 	    /* CHECK IF Client EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
@@ -126,8 +126,8 @@ class client
 							WHERE 
 								1=1 
 								AND trainer_id = ".$_SESSION[U_ID]." 
-								AND program_name = '".$ld['program_name']."'
-								AND print_image_type = '".$ld['print_image_type']."'
+								AND program_name = '".mysql_real_escape_string($ld['program_name'])."'
+								AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
 						");
 		
 		/* CHECK IF Programme EXIST IN DB, IF NOT, SAVE IT IN DB */
@@ -144,8 +144,8 @@ class client
 										exercise_program_plan 
 							SET 
 										program_name='".mysql_escape_string($ld['program_name'])."', 
-										print_image_type='".$ld['print_image_type']."', 
-										client_note='".$ld['client_note']."', 
+										print_image_type='".mysql_real_escape_string($ld['print_image_type'])."', 
+										client_note='".mysql_real_escape_string($ld['client_note'])."', 
 										date_created=NOW(),
 										date_modified=NOW(),
 										trainer_id = ".$_SESSION[U_ID]." 
@@ -257,7 +257,7 @@ class client
 		
 		$this->dbu->query("UPDATE exercise_program_plan 
 							SET 
-								exercise_notes = '".$ld['exercise_notes']."',
+								exercise_notes = '".mysql_real_escape_string($ld['exercise_notes'])."',
 								date_modified = NOW()
 							WHERE
 								trainer_id = '".$_SESSION[U_ID]."' AND
@@ -391,15 +391,15 @@ class client
 							UPDATE
 										client 
 							SET 
-										first_name='".$ld['first_name']."', 
-										surname='".$ld['surname']."',
-										appeal='".$ld['appeal']."',
-										email='".$ld['email']."', 
-										print_image_type='".$ld['print_image_type']."', 
-										client_note='".$ld['client_note']."', 
+										first_name='".mysql_real_escape_string($ld['first_name'])."', 
+										surname='".mysql_real_escape_string($ld['surname'])."',
+										appeal='".mysql_real_escape_string($ld['appeal'])."',
+										email='".mysql_real_escape_string($ld['email'])."', 
+										print_image_type='".mysql_real_escape_string($ld['print_image_type'])."', 
+										client_note='".mysql_real_escape_string($ld['client_note'])."', 
 										modify_date=NOW()
 							WHERE 
-										client_id = ".$ld['client_id']."
+										client_id = ".mysql_real_escape_string($ld['client_id'])."
 								AND
 										trainer_id = ".$_SESSION[U_ID]." 
 							");
