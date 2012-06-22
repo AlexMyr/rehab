@@ -17,6 +17,7 @@ $ft->assign('IMAGE_TYPE',build_print_image_type_list(1));
 
 $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 
+$order_by = 'ORDER BY CONCAT(surname, first_name) ASC';
 if(isset($glob['orderf']))
 {
 		if($glob['orderf'] == 'date')
@@ -30,6 +31,8 @@ if(isset($glob['orderf']))
 		
 		$order_by .= ' '.($glob['orderd'] == 'desc' ? 'DESC' : 'ASC');
 }
+
+
 
 if(isset($glob['query']))
 {
