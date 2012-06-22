@@ -81,7 +81,7 @@
 									'module' => 'trainer_dashboard',
 									'session' => 1
 									),                 
-						'profile_add' => array(
+						'profile_exercise_add' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
 									'session' => 1

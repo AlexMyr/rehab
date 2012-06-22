@@ -27,6 +27,8 @@ $func_access = array
 										'pay' => 3,
 										'cancel_payment' => 3,
                                         'confirm_pay' => 3,
+                                        'ipn_confirm' => 3,
+                                        'exercise_add' => 3
 //										'payment' => 3,
 									),
 					'client' => array(

@@ -326,7 +326,7 @@ class member
             return false;
         }
 
-        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."'";
+        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."', first_name='".$ld['first_name']."', surname='".$ld['last_name']."'";
         else if($ld['is_clinic']==1) $update = "is_clinic='".$ld['is_clinic']."', clinic_name='".$ld['clinic_name']."'";
         
         $this->dbu->query("
@@ -337,10 +337,6 @@ class member
                             WHERE 
                                 trainer_id=".$_SESSION[U_ID]." 
                         ");
-		
-		$this->dbu->query("SELECT first_name, surname, username FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
-		$this->dbu->move_next();
-		$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('surname')."', email='".$this->dbu->f('username')."' ");
     
         $ld['error']="Licence Succesfully Saved.";
 
@@ -500,11 +496,6 @@ class member
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_EMAIL');
 		$_SESSION[USER_EMAIL] = $ld['email'];
 		
-		if($this->dbu->field("SELECT is_clinic FROM trainer WHERE trainer_id = ".$_SESSION[U_ID]) == 2)
-		{
-			$ld['pag']= "profile_choose_clinic"; 
-		}
-		
 		return true;
 	}
 	
@@ -630,29 +621,22 @@ class member
 	}
 		
 	function update_profile_notes(&$ld){
-
-		$this->dbu->query("UPDATE trainer SET title_set='".$ld['title_set']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
-		
+		//$this->dbu->query("SELECT trainer_id FROM trainer_profile WHERE trainer_id=".$_SESSION[U_ID]." ");
+		//if(!$this->dbu->move_next()){
+		//	$ld['error']="Please fill your Contact information first.";
+		//	return false;
+		//}
 		$this->dbu->query("UPDATE  trainer SET lang='".$ld['language']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
 		//check exists in db
 		$this->dbu->query("SELECT exercise_note_id FROM exercise_notes WHERE trainer_id=".$_SESSION[U_ID]." ");
 		if(!$this->dbu->move_next()){
-			$this->dbu->query("INSERT INTO exercise_notes SET exercise_notes = '".$ld['exercise_notes']."', trainer_id=".$_SESSION[U_ID]." ");
+			$this->dbu->query("INSERT INTO exercise_notes SET exercise_notes = '".mysql_real_escape_string($ld['exercise_notes'])."', trainer_id=".$_SESSION[U_ID]." ");
 		}
 		else
 		{
-			$this->dbu->query("UPDATE exercise_notes SET exercise_notes = '".$ld['exercise_notes']."' WHERE trainer_id=".$_SESSION[U_ID]." ");
+			$this->dbu->query("UPDATE exercise_notes SET exercise_notes = '".mysql_real_escape_string($ld['exercise_notes'])."' WHERE trainer_id=".$_SESSION[U_ID]." ");
 		}
 		$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_NOTES');
-		if($_COOKIE['language'] != $ld['language'])
-		{
-			setcookie('language', $ld['language'], 0, '/');
-			$lang = ($ld['language'] == 'us') ? 'us/' : '';
-			
-			header("location: /".$lang.'index.php?pag=dashboard&redirect=1');
-			exit;
-		}
-		
 		return true;		
 	}
 		
@@ -685,11 +669,39 @@ class member
 				$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_POST')."<br>";
 				$is_ok=false;
 			}
+/*				
+		if(!$ld['mobile'])
+			{
+				$ld['error'].="Please fill in the 'Mobile' field."."<br>";
+				$is_ok=false;
+			}
+		if(!$ld['phone'])
+			{
+				$ld['error'].="Please fill in the 'Phone' field."."<br>";
+				$is_ok=false;
+			}
+		if($ld['phone'] && !secure_phone($ld['phone']))
+			{
+				$ld['error'].="Please provide a valid phone."."<br>";
+				$is_ok=false;
+			}
+		if($ld['mobile'] && !secure_phone($ld['mobile']))
+			{
+				$ld['error'].="Please provide a valid mobile."."<br>";
+				$is_ok=false;
+			}
+*/				
 		return $is_ok;
 	}
 	
 	function update_custom_header(&$ld)
 	{
+		//if(!$this->validate_update_custom_header($ld))
+		//	{
+		//		$ld['pag']= "profile_header_paper"; 
+		//		return false;
+		//	}
+		
 		$this->check_header_paper_exists();
 		
 		$this->dbu->query("
@@ -733,11 +745,7 @@ class member
 		$this->dbu->move_next();
 		if(!$this->dbu->f('header_id'))
 		{
-			$this->dbu->query("SELECT first_name, surname FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
-			$this->dbu->move_next();
-			
-			$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('last_name')."' ");
-			
+			$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."' ");
 		}
 	}
 
@@ -900,17 +908,8 @@ class member
         }
         else
         {
-			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_title;
-			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
-
-			$cur_image = ImageCreateFromJPEG($img_path);
-			if(imagesy($cur_image)>180)
-			  $this->resize($img_path, 0, 180, $f_title);
-			  
-			$cur_image = ImageCreateFromJPEG($img_path);
-			if(imagesx($cur_image)>200)
-			  $this->resize($img_path, 200, 0, $f_title);
-            
+//        	$this->resize($_FILES['upload_image']['tmp_name'], 276, 0, $f_title);
+            $this->resize($_FILES['upload_image']['tmp_name'], 200, 0, $f_title);
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
                                logo_image='".$f_title."'
@@ -966,9 +965,7 @@ class member
 	function resize($original_image, $new_width, $new_height, $image_title) 
 	{
 		global $script_path;
-
 		$original_image=ImageCreateFromJPEG($original_image);
-
 		$aspect_ratio = imagesx($original_image) / imagesy($original_image); 
 		if (empty($new_width)) 
 		{ 
@@ -988,61 +985,57 @@ class member
 		} 
 		// copy the original image onto the smaller blank 
 		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
-		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
+		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving"); 
 	}
 
 function pay(&$ld){
+	$_SESSION['userEmail'] = $userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
 	
-	$userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
+    switch($ld['pay_type']){
+        case 'monthly': $is_recurring = $_SESSION['is_recurring'] = true; break;
+        case 'per_year': $is_recurring = $_SESSION['is_recurring'] = false; break;
+        //case 'yearly': $is_recurring = true; /*some param*/ break;
+        default: header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=0"); exit;
+    }
 	
-	include_once('classes/cls_paypal_new.php');
+	//include_once('classes/cls_paypal_new.php');
+    include_once('classes/cls_paypal_new_recurring.php');
 	paypal_init();
     
 	$this->dbu->query("select * from price_plan_new where price_id='".$ld['price_id']."' ");
-	
 	$this->dbu->move_next();
-	$_SESSION['price_id'] = $ld['price_id'];
-	$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));;
     
-	//$paymentAmount = $_SESSION['Payment_Amount'] = 1;
-	$_SESSION['days'] = 365;
+	$_SESSION['price_id'] = $ld['price_id'];
+	$paymentAmount = $_SESSION['Payment_Amount'] = $is_recurring ? round(urlencode($this->dbu->f('price_value'))/12, 2) : urlencode($this->dbu->f('price_value'));
 	$currencyCodeType = $this->dbu->f('currency');
 	$paymentType = "Sale";
-	
+    
 	$returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
 	$cancelURL = 'http://rehabmypatient.com/index.php';
-	
-	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount, $userEmail);
+    $NOTIFYURL = 'http://rehabmypatient.com/ipn.php';
+    
+    if($is_recurring)
+        $description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
+    else
+        $description = $_SESSION['description'] = 'Yearly payment';
+    
+    $resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $NOTIFYURL, $description, $userEmail, $is_recurring);
 
 	$ack = strtoupper($resArray["ACK"]);
 	if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
-	{
+	{    
 		RedirectToPayPal ( $resArray["TOKEN"] );
-		
 	} 
 	else  
 	{
 		header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=0");
-		////Display a user friendly Error on the page using any of the following error information returned by PayPal
-		//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
-		//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
-		//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
-		//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
-		//
-		//echo "SetExpressCheckout API call failed. ";
-		//echo "Detailed Error Message: " . $ErrorLongMsg;
-		//echo "Short Error Message: " . $ErrorShortMsg;
-		//echo "Error Code: " . $ErrorCode;
-		//echo "Error Severity Code: " . $ErrorSeverityCode;
 	}
-	
-	
-	
 }
 
 function confirm_pay()
 {
-	include_once('classes/cls_paypal_new.php');
+    global $glob;
+	include_once('classes/cls_paypal_new_recurring.php');
 	$token = "";
 	if (isset($_REQUEST['token']))
 	{
@@ -1056,97 +1049,80 @@ function confirm_pay()
 		$ack = strtoupper($resArray["ACK"]);
 		if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
 		{
-			/*
-			' The information that is returned by the GetExpressCheckoutDetails call should be integrated by the partner into his Order Review 
-			' page		
-			*/
-			$token 				= $resArray["TOKEN"];
-			$email 				= $resArray["EMAIL"]; // ' Email address of payer.
-			$payerId 			= $resArray["PAYERID"]; // ' Unique PayPal customer account identification number.
-			$payerStatus		= $resArray["PAYERSTATUS"]; // ' Status of payer. Character length and limitations: 10 single-byte alphabetic characters.
-			$salutation			= $resArray["SALUTATION"]; // ' Payer's salutation.
-			$firstName			= $resArray["FIRSTNAME"]; // ' Payer's first name.
-			$middleName			= $resArray["MIDDLENAME"]; // ' Payer's middle name.
-			$lastName			= $resArray["LASTNAME"]; // ' Payer's last name.
-			$suffix				= $resArray["SUFFIX"]; // ' Payer's suffix.
-			$cntryCode			= $resArray["COUNTRYCODE"]; // ' Payer's country of residence in the form of ISO standard 3166 two-character country codes.
-			$business			= $resArray["BUSINESS"]; // ' Payer's business name.
-			$shipToName			= $resArray["SHIPTONAME"]; // ' Person's name associated with this address.
-			$shipToStreet		= $resArray["SHIPTOSTREET"]; // ' First street address.
-			$shipToStreet2		= $resArray["SHIPTOSTREET2"]; // ' Second street address.
-			$shipToCity			= $resArray["SHIPTOCITY"]; // ' Name of city.
-			$shipToState		= $resArray["SHIPTOSTATE"]; // ' State or province
-			$shipToCntryCode	= $resArray["SHIPTOCOUNTRYCODE"]; // ' Country code. 
-			$shipToZip			= $resArray["SHIPTOZIP"]; // ' U.S. Zip code or other country-specific postal code.
-			$addressStatus 		= $resArray["ADDRESSSTATUS"]; // ' Status of street address on file with PayPal   
-			$invoiceNumber		= $resArray["INVNUM"]; // ' Your own invoice or tracking number, as set by you in the element of the same name in SetExpressCheckout request .
-			$phonNumber			= $resArray["PHONENUM"]; // ' Payer's contact telephone number. Note:  PayPal returns a contact telephone number only if your Merchant account profile settings require that the buyer enter one.
-			
 			$this->dbu->query("select * from price_plan_new where price_id='".$_SESSION['price_id']."' ");
 			$this->dbu->move_next();
 			
 			$_SESSION['TOKEN'] = $token;
 			$_SESSION['PaymentType'] = 'Sale';
-			$_SESSION['currencyCodeType'] = $this->dbu->f('currency');
-			$_SESSION['payer_id'] = $payerId;
-			
-			$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
+			$_SESSION['payer_id'] = $resArray["PAYERID"];
+           
+            if($_SESSION['is_recurring']){
+                $curTime = time();
+                /* parameter reference: https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_nvp_r_CreateRecurringPayments */
+                $TOKEN = $_SESSION['TOKEN'];
+                $PROFILESTARTDATE = date("c", ($curTime + (1 * 24 * 3600)));
+                $DESC = $_SESSION['description'];
+                $BILLINGPERIOD = 'Month';
+                $BILLINGFREQUENCY = 1;
+                $TOTALBILLINGCYCLES = '12';
+                $AUTOBILLOUTAMT = 'AddToNextBilling';
+                $AMT = $_SESSION['Payment_Amount'];
+                $CURRENCYCODE = $_SESSION['currencyCodeType'];
+                $EMAIL = $_SESSION['userEmail'];
+                $L_PAYMENTREQUEST_0_ITEMCATEGORY0 = 'Physical';
+                $L_PAYMENTREQUEST_0_NAME0 = 'License';
+                $L_PAYMENTREQUEST_0_AMT0 = $_SESSION['Payment_Amount'];
+                $L_PAYMENTREQUEST_0_QTY0 = 1;
+                //$INITAMT = $_SESSION['Payment_Amount'];
+                //$FAILEDINITAMTACTION = 'CancelOnFailure';
+                $MAXFAILEDPAYMENTS = 2;
+
+                $resArray = CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $TOTALBILLINGCYCLES, $AUTOBILLOUTAMT,
+                                                           $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
+                                                           $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT,$FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS);
+               
+                $resArray = GetRecurringPaymentsProfileDetails($resArray['PROFILEID']);
+            }
+            else
+                $resArray = ConfirmPayment($_SESSION['Payment_Amount']);
+            
 			$ack = strtoupper($resArray["ACK"]);
-			
-			$daysToAdd = 0;
-			switch($this->dbu->f('licence_period'))
-			{
-				case 'year':
-					{
-						$daysToAdd = 365;
-						break;
-					}
-				case 'month':
-					{
-						$daysToAdd = 30;
-						break;
-					}
-			}
-			$curTime = time();
-			$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
-			
-			
-			switch($_COOKIE['language']){
-				case 'us': $dbCountryCode = 'US'; break;
-				default: $dbCountryCode = 'GB';
-			}
-			$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
-			$this->dbu->move_next();
-			$country_id = $this->dbu->f('country_id');
-		
-			$this->dbu->query("UPDATE trainer 
-	   	 					SET 
-								paypal_profile_id = '".$payerId."',
-								country_id 	    = '".$country_id."',
-								price_plan_id 	= '".$_SESSION['price_id']."',
-								is_trial		= '0',
-								expire_date		= '$expireTime'
-							WHERE 
-								trainer_id=".$_SESSION[U_ID]."
-												");
-			
-			header("Location: /index.php?pag=profile&paym=1");
-		} 
+            if( $ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING" )
+            {
+                $daysToAdd = 0;
+                switch($this->dbu->f('licence_period')){
+                    case '1 year':{}
+                    default: {$daysToAdd = 365;}
+                }
+                $expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
+    
+                switch($glob['lang']){
+                    case 'us': $dbCountryCode = 'US'; break;
+                    default: $dbCountryCode = 'GB';
+                }
+                $this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
+                $this->dbu->move_next();
+                $country_id = $this->dbu->f('country_id');
+
+                $this->dbu->query("UPDATE trainer 
+                                SET 
+                                    paypal_profile_id = '".$payerId."',
+                                    country_id 	    = '".$country_id."',
+                                    price_plan_id 	= '".$_SESSION['price_id']."',
+                                    is_trial		= '0',
+                                    expire_date		= '$expireTime'
+                                WHERE 
+                                    trainer_id=".$_SESSION[U_ID]." ");
+
+                header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
+            }
+            else{
+                header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=0");
+            }
+		}
 		else  
 		{
-			header("Location: /index.php?pag=profile&paym=0");
-			
-			//Display a user friendly Error on the page using any of the following error information returned by PayPal
-			//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
-			//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
-			//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
-			//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
-			//
-			//echo "GetExpressCheckoutDetails API call failed. ";
-			//echo "Detailed Error Message: " . $ErrorLongMsg;
-			//echo "Short Error Message: " . $ErrorShortMsg;
-			//echo "Error Code: " . $ErrorCode;
-			//echo "Error Severity Code: " . $ErrorSeverityCode;
+            header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=0");
 		}
 	
 	}
@@ -1196,54 +1172,51 @@ function validate_pay(&$ld)
     return $is_ok;
 }
 
-function cancel_payment(&$ld)
-	{
-		if(!$ld['pp_del_key']){
-			return false;
-		}elseif ($ld['pp_del_key']!='123delkey321'){
-			return false;
-		}
-		$this->dbu->query("SELECT * FROM trainer WHERE trainer_id=".$_SESSION[U_ID]." ");
-		if(!$this->dbu->move_next()){
-			return false;
-		}
-		else
-		{
-		include_once('misc/CreateRecurringPaymentsProfile.php');
-		$nvpStr = "&PROFILEID=".urlencode($this->dbu->f('paypal_profile_id'))."&ACTION=Cancel";
-
-	    $httpParsedResponseAr = PPHttpPost('ManageRecurringPaymentsProfileStatus', $nvpStr);
-	    
-   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-
-   	 $this->dbu->query("UPDATE trainer 
-   	 					SET 
-							paypal_profile_id = '',
-							country_id 	    = '0',
-							price_plan_id 	= '0'
-						WHERE 
-							trainer_id=".$_SESSION[U_ID]."
-											");
-   	 
-		$ld['error'] =get_template_tag($ld['pag'], $ld['lang'], 'T.CANCEL').'<br />';
-    return true;
-	} else{
-	  $ld['error'] .= urldecode($httpParsedResponseAr['L_LONGMESSAGE0']);
-/*		echo '<pre>';
-	    print_r($httpParsedResponseAr);
-	    echo '</pre>';
-		echo '<pre>';
-	    print_r($nvpStr);
-	    echo '</pre>';
-*/	    return false;
-	 	}	
-		}
+    function cancel_payment(&$ld)
+    {
+        if(!$ld['pp_del_key']){
+            return false;
+        }elseif ($ld['pp_del_key']!='123delkey321'){
+            return false;
+        }
+        $this->dbu->query("SELECT * FROM trainer WHERE trainer_id=".$_SESSION[U_ID]." ");
+        if(!$this->dbu->move_next()){
+            return false;
+        }
+        else
+        {
+            include_once('misc/CreateRecurringPaymentsProfile.php');
+            $nvpStr = "&PROFILEID=".urlencode($this->dbu->f('paypal_profile_id'))."&ACTION=Cancel";
+        
+            $httpParsedResponseAr = PPHttpPost('ManageRecurringPaymentsProfileStatus', $nvpStr);
+            
+           if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+        
+             $this->dbu->query("UPDATE trainer 
+                                SET 
+                                    paypal_profile_id = '',
+                                    country_id 	    = '0',
+                                    price_plan_id 	= '0'
+                                WHERE 
+                                    trainer_id=".$_SESSION[U_ID]."
+                                                    ");
+             
+                $ld['error'] =get_template_tag($ld['pag'], $ld['lang'], 'T.CANCEL').'<br />';
+            return true;
+            } else{
+                $ld['error'] .= urldecode($httpParsedResponseAr['L_LONGMESSAGE0']);
+                return false;
+            }	
+        }
 	}
-
+    function ipn_confirm(&$ld){
+        $this->dbu->query("INSERT INTO `paypal_transactions`
+                                (`name`)
+                         VALUES('Paypal has been here')");
+    }
 	function delete_profile(&$ld)
 		{
 			$ld['error']="Not implemented yet.";
 		    return true;
 		}
-
 }//end class

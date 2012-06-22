@@ -531,10 +531,6 @@ $(document).ready(function()
 	}
 	
 	$('.navMenu .item1').hover(function(){
-		if(hovered)
-		  {
-			setTimeout(hide_submenu, 100);
-		  }
 		show_submenu(this);
 		}, function(){
 		  if(hovered)
@@ -617,7 +613,7 @@ $(document).ready(function()
 		e.preventDefault();
 		if($(this).data('planChosen')!=true)
 		{
-			alert('You already has trial price plan.');
+			alert('Your trial has expired. Please select another plan.');
 			return false;
 		}
 		else
