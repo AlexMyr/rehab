@@ -623,7 +623,7 @@ $(document).ready(function()
 		e.preventDefault();
 		if($(this).data('planChosen')!=true)
 		{
-			alert('You already has trial price plan.');
+			alert('Your trial has expired. Please select another plan.');
 			return false;
 		}
 		else

@@ -257,7 +257,6 @@ if(!empty($_SESSION['pids']))
 	
 	$dbu = new mysql_db();
 	
-	//$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
 	foreach($_SESSION['pids'] as $key=>$val)
 	{
 	  if(!$val)continue;
