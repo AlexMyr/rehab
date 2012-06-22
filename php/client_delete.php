@@ -4,12 +4,6 @@
 ************************************************************************/ 
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client_delete.html"));
-//$ft->assign('MESSAGE', get_error($glob['error']));
-
-//$page_title='Login Member';
-//$next_function ='auth-login';
-
-//$dbu = new mysql_db();
 
 $tags = get_template_tag($glob['pag'], $glob['lang']);
 foreach($tags as $name => $row){
