@@ -18,12 +18,12 @@ class client
 	****************************************************************/
 
 	function add_client(&$ld)
-		{
+	{
 
-			if(!$this->validate_add_client($ld))
-				{
-					return false;
-				}
+		if(!$this->validate_add_client($ld))
+		{
+			return false;
+		}
 		global $user_level;
 	    
 	    $this->dbu->query("
@@ -43,11 +43,10 @@ class client
 		if($this->dbu->move_next())
 		{
             $ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.EXIST');
-            return true;
+            return false;
 		}
 		else 
 		{
-//			$this->dbu->query("
 			$ld['client_id']=$this->dbu->query_get_id("
 								INSERT INTO 
 											client 
@@ -75,40 +74,26 @@ class client
 	}
 		
 	function validate_add_client(&$ld)
-		{
-			$is_ok=true;
-	
-			if(!$ld['first_name'])
-				{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
-					$is_ok=false;
-				}
-			if(!$ld['surname'])
-				{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
-					$is_ok=false;
-				}
-				
-			//if(!$ld['email'])
-			//	{
-			//		$ld['error'].="Please fill in the 'Email' field."."<br>";
-			//		$is_ok=false;
-			//	}
-			if($ld['email'] && !secure_email($ld['email']))
-				{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.VALID_EMAIL')."<br>";
-					$is_ok=false;
-				}
+	{
+		$is_ok=true;
 
-/*				
-			if(!$ld['client_note'])
-				{
-					$ld['error'].="Please fill in the 'website' field."."<br>";
-					$is_ok=false;
-				}
-*/
-			return $is_ok;
+		if(!$ld['first_name'])
+		{
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
+			$is_ok=false;
 		}
+		if(!$ld['surname'])
+		{
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
+			$is_ok=false;
+		}
+		if($ld['email'] && !secure_email($ld['email']))
+		{
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.VALID_EMAIL')."<br>";
+			$is_ok=false;
+		}
+		return $is_ok;
+	}
 
 	function add_program_plan(&$ld)
 	{
@@ -191,18 +176,6 @@ class client
 			if(!in_array($get_exercises->gf('exercise_program_id'),$del_id))
 				$this->dbu->query("DELETE FROM exercise_plan_set WHERE exercise_program_id=".$get_exercises->gf('exercise_program_id')." AND exercise_plan_id='".$ld['program_id']."' AND client_id= ".$ld['program_id']." AND is_program_plan=1 ");
 		}
-					
-		//$this->dbu->query("
-		//					UPDATE
-		//								client 
-		//					SET 
-		//								modify_date=NOW()
-		//					WHERE 
-		//								client_id = ".$ld['client_id']."
-		//						AND
-		//								trainer_id = ".$_SESSION[U_ID]." 
-		//					");
-		
 		return true;			
 	}
 	
@@ -386,8 +359,30 @@ class client
 			return false;
 		}
 		global $user_level;
-	
-		$this->dbu->query("
+		
+		 $this->dbu->query("
+							SELECT 
+								client.client_id
+							FROM 
+								client 
+							WHERE 
+								1=1
+								AND client_id <> ".$ld['client_id']."
+								AND trainer_id = ".$_SESSION[U_ID]." 
+								AND first_name = '".mysql_real_escape_string($ld['first_name'])."'
+								AND surname = '".mysql_real_escape_string($ld['surname'])."'
+								AND email = '".mysql_real_escape_string($ld['email'])."'
+								AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
+						");
+	    
+		if($this->dbu->move_next())
+		{
+            $ld['error'] = get_template_tag('dashboard', $ld['lang'], 'T.EXIST');
+            return false;
+		}
+		else
+		{
+			$this->dbu->query("
 							UPDATE
 										client 
 							SET 
@@ -405,8 +400,8 @@ class client
 							");
 		
 			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.CLIENT_UPDATED');
-
-		return true;
+			return true;
+		}
 	}
 		
 	function validate_update_client(&$ld)
@@ -415,26 +410,19 @@ class client
 
 		if(!$ld['first_name'])
 		{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
 			$is_ok=false;
 		}
 		if(!$ld['surname'])
 		{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
 			$is_ok=false;
 		}
-		//if(!$ld['email'])
-		//	{
-		//		$ld['error'].="Please fill in the 'Email' field."."<br>";
-		//		$is_ok=false;
-		//	}
 		if($ld['email'] && !secure_email($ld['email']))
 		{
-					$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.PROVIDE_EMAIL')."<br>";
+			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.PROVIDE_EMAIL')."<br>";
 			$is_ok=false;
 		}
-/*				
-*/
 		return $is_ok;
 	}
 		
@@ -468,75 +456,70 @@ class client
 	/* Exercise SECTION */
 	
 	function add_exercise(&$ld)
-		{
-//			$ld['error']="Add exercise not implemented yet.";
-//			return true;			
-//			return false;
-		    $ld['exercise_id'] = rtrim($ld['exercise_id'],',');
-			$ld['exercise_plan_id']=$this->dbu->query_get_id("
-								INSERT INTO 
-											exercise_plan 
-								SET 
-											exercise_program_id='".$ld['exercise_id']."', 
-											date_created=NOW(), 
-											date_modified=NOW(), 
-											trainer_id='".$_SESSION[U_ID]."', 
-											client_id= ".$ld['client_id']." 
-								");
+	{
+		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
+		$ld['exercise_plan_id']=$this->dbu->query_get_id("
+							INSERT INTO 
+										exercise_plan 
+							SET 
+										exercise_program_id='".$ld['exercise_id']."', 
+										date_created=NOW(), 
+										date_modified=NOW(), 
+										trainer_id='".$_SESSION[U_ID]."', 
+										client_id= ".$ld['client_id']." 
+							");
+	
+		$this->dbu->query("
+							UPDATE
+										client 
+							SET 
+										modify_date=NOW()
+							WHERE 
+										client_id = ".$ld['client_id']."
+								AND
+										trainer_id = ".$_SESSION[U_ID]." 
+							");
 		
-			$this->dbu->query("
-								UPDATE
-											client 
-								SET 
-											modify_date=NOW()
-								WHERE 
-											client_id = ".$ld['client_id']."
-									AND
-											trainer_id = ".$_SESSION[U_ID]." 
-								");
-			
-			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
+		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
 
-		    return true;
-		}
+		return true;
+	}
 
 	function update_exercise(&$ld)
+	{
+		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
+		$this->dbu->query("
+							UPDATE 
+										exercise_plan 
+							SET 
+										exercise_program_id='".$ld['exercise_id']."',
+										date_modified=NOW(), 
+										trainer_id='".$_SESSION[U_ID]."', 
+										client_id= ".$ld['client_id']." 
+							WHERE
+										exercise_plan_id='".$ld['exercise_plan_id']."'
+							");
+		$del_id = explode(',',$ld['exercise_id']);
+		$get_exercises = $this->dbu->query("SELECT exercise_plan_set.* FROM exercise_plan_set WHERE 1=1 AND exercise_plan_id='".$ld['exercise_plan_id']."' AND client_id= ".$ld['client_id']." ");
+		while($get_exercises->next())
 		{
-			$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
-			$this->dbu->query("
-								UPDATE 
-											exercise_plan 
-								SET 
-											exercise_program_id='".$ld['exercise_id']."',
-											date_modified=NOW(), 
-											trainer_id='".$_SESSION[U_ID]."', 
-											client_id= ".$ld['client_id']." 
-								WHERE
-											exercise_plan_id='".$ld['exercise_plan_id']."'
-								");
-			$del_id = explode(',',$ld['exercise_id']);
-			$get_exercises = $this->dbu->query("SELECT exercise_plan_set.* FROM exercise_plan_set WHERE 1=1 AND exercise_plan_id='".$ld['exercise_plan_id']."' AND client_id= ".$ld['client_id']." ");
-			while($get_exercises->next())
-			{
-				if(!in_array($get_exercises->gf('exercise_program_id'),$del_id))
-				 	$this->dbu->query("DELETE FROM exercise_plan_set WHERE exercise_program_id=".$get_exercises->gf('exercise_program_id')." AND exercise_plan_id='".$ld['exercise_plan_id']."' AND client_id= ".$ld['client_id']." ");
-			}
-						
-			$this->dbu->query("
-								UPDATE
-											client 
-								SET 
-											modify_date=NOW()
-								WHERE 
-											client_id = ".$ld['client_id']."
-									AND
-											trainer_id = ".$_SESSION[U_ID]." 
-								");
-			
-//			$ld['error']="Update exercise not implemented yet.";
-			return true;			
-//			return false;
+			if(!in_array($get_exercises->gf('exercise_program_id'),$del_id))
+				$this->dbu->query("DELETE FROM exercise_plan_set WHERE exercise_program_id=".$get_exercises->gf('exercise_program_id')." AND exercise_plan_id='".$ld['exercise_plan_id']."' AND client_id= ".$ld['client_id']." ");
 		}
+					
+		$this->dbu->query("
+							UPDATE
+										client 
+							SET 
+										modify_date=NOW()
+							WHERE 
+										client_id = ".$ld['client_id']."
+								AND
+										trainer_id = ".$_SESSION[U_ID]." 
+							");
+		
+		return true;			
+	}
 	
 	function update_exercise_plan(&$ld)
 	{
@@ -608,60 +591,37 @@ class client
 	}
 	
 	function validate_update_exercise_plan(&$ld)
-		{
-			$is_ok = true;
-/*			
-			$exercise = explode(',',$ld['exercise_id']);
-			$i=0;
-			while($i<count($exercise)-1) 
-				{
-					if(!$ld['sets'.$exercise[$i]])
-						{
-							$ld['error'] = "Please fill all the fields";
-							$is_ok = false;
-						}
-					if(!$ld['repetitions'.$exercise[$i]])
-						{
-							$ld['error'] = "Please fill all the fields";
-							$is_ok = false;
-						}
-					if(!$ld['time'.$exercise[$i]])
-						{
-							$ld['error'] = "Please fill all the fields";
-							$is_ok = false;
-						}
-					$i++;			
-				}
-*/				
-			return $is_ok;		
-		}
+	{
+		$is_ok = true;
+		return $is_ok;		
+	}
 		
 	function delete_exercise(&$ld)
-		{
-			$this->dbu->query("DELETE 
-									FROM 
-										exercise_plan 
-									WHERE 
-											client_id = ".$ld['client_id']."
-										AND
-											trainer_id = ".$_SESSION[U_ID]." 
-										AND
-											exercise_plan_id = ".$ld['exercise_plan_id']."");
-
-			$this->dbu->query("
-								UPDATE
-											client 
-								SET 
-											modify_date=NOW()
+	{
+		$this->dbu->query("DELETE 
+								FROM 
+									exercise_plan 
 								WHERE 
-											client_id = ".$ld['client_id']."
+										client_id = ".$ld['client_id']."
 									AND
-											trainer_id = ".$_SESSION[U_ID]." 
-								");
+										trainer_id = ".$_SESSION[U_ID]." 
+									AND
+										exercise_plan_id = ".$ld['exercise_plan_id']."");
 
-        $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_DELETED');
-			return true;			
-		}
+		$this->dbu->query("
+							UPDATE
+										client 
+							SET 
+										modify_date=NOW()
+							WHERE 
+										client_id = ".$ld['client_id']."
+								AND
+										trainer_id = ".$_SESSION[U_ID]." 
+							");
+
+		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_DELETED');
+		return true;			
+	}
 
 	function generate_pdf(&$ld)
 		{
@@ -707,11 +667,6 @@ class client
 			{
 				$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('appeal').' '.$this->dbu->f('surname'), $body );
 			}
-			//
-			//if($this->dbu->f('appeal'))
-			//	$body=str_replace('[!APPEAL!]',$this->dbu->f('appeal'), $body );
-			//else
-			//	$body=str_replace('[!APPEAL!]','Dear '.$this->dbu->f('first_name'), $body );
 	
 			$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
 			$body=str_replace('[!FIRSTNAME!]',$this->dbu->f('first_name'), $body );
@@ -741,7 +696,6 @@ class client
             $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
             $mail->MsgHTML($body);
             
-            //$address = $receiver_email;
             $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
             
             $mail->Send();
@@ -755,22 +709,18 @@ class client
         }
 	}
 		
-		
-		
 	/* NOT IMPLEMENTED YET */
 
 	function print_exercise(&$ld)
-		{
-			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PRINT_EXERCISE');
-//			return true;			
-			return false;
-		}
+	{
+		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PRINT_EXERCISE');
+		return false;
+	}
 		
 	function pdf_exercise(&$ld)
-		{
-			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PDF_EXERCISE');
-//			return true;			
-			return false;
-		}
+	{
+		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PDF_EXERCISE');
+		return false;
+	}
 		
 }//end class
