@@ -991,212 +991,212 @@ class member
 		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
 	}
 
-function pay(&$ld){
-	
-	$userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
-	
-	include_once('classes/cls_paypal_new.php');
-	paypal_init();
-    
-	$this->dbu->query("select * from price_plan_new where price_id='".$ld['price_id']."' ");
-	
-	$this->dbu->move_next();
-	$_SESSION['price_id'] = $ld['price_id'];
-	$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));;
-    
-	//$paymentAmount = $_SESSION['Payment_Amount'] = 1;
-	$_SESSION['days'] = 365;
-	$currencyCodeType = $this->dbu->f('currency');
-	$paymentType = "Sale";
-	
-	$returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
-	$cancelURL = 'http://rehabmypatient.com/index.php';
-	
-	$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount, $userEmail);
-
-	$ack = strtoupper($resArray["ACK"]);
-	if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
-	{
-		RedirectToPayPal ( $resArray["TOKEN"] );
+	function pay(&$ld){
 		
-	} 
-	else  
-	{
-		header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=0");
-		////Display a user friendly Error on the page using any of the following error information returned by PayPal
-		//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
-		//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
-		//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
-		//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
-		//
-		//echo "SetExpressCheckout API call failed. ";
-		//echo "Detailed Error Message: " . $ErrorLongMsg;
-		//echo "Short Error Message: " . $ErrorShortMsg;
-		//echo "Error Code: " . $ErrorCode;
-		//echo "Error Severity Code: " . $ErrorSeverityCode;
-	}
+		$userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
+		
+		include_once('classes/cls_paypal_new.php');
+		paypal_init();
+		
+		$this->dbu->query("select * from price_plan_new where price_id='".$ld['price_id']."' ");
+		
+		$this->dbu->move_next();
+		$_SESSION['price_id'] = $ld['price_id'];
+		$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));;
+		
+		//$paymentAmount = $_SESSION['Payment_Amount'] = 1;
+		$_SESSION['days'] = 365;
+		$currencyCodeType = $this->dbu->f('currency');
+		$paymentType = "Sale";
+		
+		$returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
+		$cancelURL = 'http://rehabmypatient.com/index.php';
+		
+		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $paymentAmount, $userEmail);
 	
-	
-	
-}
-
-function confirm_pay()
-{
-	include_once('classes/cls_paypal_new.php');
-	$token = "";
-	if (isset($_REQUEST['token']))
-	{
-		$token = $_REQUEST['token'];
-	}
-
-	if ( $token != "" )
-	{
-		$resArray = GetShippingDetails( $token );
-
 		$ack = strtoupper($resArray["ACK"]);
-		if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
+		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
 		{
-			/*
-			' The information that is returned by the GetExpressCheckoutDetails call should be integrated by the partner into his Order Review 
-			' page		
-			*/
-			$token 				= $resArray["TOKEN"];
-			$email 				= $resArray["EMAIL"]; // ' Email address of payer.
-			$payerId 			= $resArray["PAYERID"]; // ' Unique PayPal customer account identification number.
-			$payerStatus		= $resArray["PAYERSTATUS"]; // ' Status of payer. Character length and limitations: 10 single-byte alphabetic characters.
-			$salutation			= $resArray["SALUTATION"]; // ' Payer's salutation.
-			$firstName			= $resArray["FIRSTNAME"]; // ' Payer's first name.
-			$middleName			= $resArray["MIDDLENAME"]; // ' Payer's middle name.
-			$lastName			= $resArray["LASTNAME"]; // ' Payer's last name.
-			$suffix				= $resArray["SUFFIX"]; // ' Payer's suffix.
-			$cntryCode			= $resArray["COUNTRYCODE"]; // ' Payer's country of residence in the form of ISO standard 3166 two-character country codes.
-			$business			= $resArray["BUSINESS"]; // ' Payer's business name.
-			$shipToName			= $resArray["SHIPTONAME"]; // ' Person's name associated with this address.
-			$shipToStreet		= $resArray["SHIPTOSTREET"]; // ' First street address.
-			$shipToStreet2		= $resArray["SHIPTOSTREET2"]; // ' Second street address.
-			$shipToCity			= $resArray["SHIPTOCITY"]; // ' Name of city.
-			$shipToState		= $resArray["SHIPTOSTATE"]; // ' State or province
-			$shipToCntryCode	= $resArray["SHIPTOCOUNTRYCODE"]; // ' Country code. 
-			$shipToZip			= $resArray["SHIPTOZIP"]; // ' U.S. Zip code or other country-specific postal code.
-			$addressStatus 		= $resArray["ADDRESSSTATUS"]; // ' Status of street address on file with PayPal   
-			$invoiceNumber		= $resArray["INVNUM"]; // ' Your own invoice or tracking number, as set by you in the element of the same name in SetExpressCheckout request .
-			$phonNumber			= $resArray["PHONENUM"]; // ' Payer's contact telephone number. Note:  PayPal returns a contact telephone number only if your Merchant account profile settings require that the buyer enter one.
+			RedirectToPayPal ( $resArray["TOKEN"] );
 			
-			$this->dbu->query("select * from price_plan_new where price_id='".$_SESSION['price_id']."' ");
-			$this->dbu->move_next();
-			
-			$_SESSION['TOKEN'] = $token;
-			$_SESSION['PaymentType'] = 'Sale';
-			$_SESSION['currencyCodeType'] = $this->dbu->f('currency');
-			$_SESSION['payer_id'] = $payerId;
-			
-			$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
-			$ack = strtoupper($resArray["ACK"]);
-			
-			$daysToAdd = 0;
-			switch($this->dbu->f('licence_period'))
-			{
-				case 'year':
-					{
-						$daysToAdd = 365;
-						break;
-					}
-				case 'month':
-					{
-						$daysToAdd = 30;
-						break;
-					}
-			}
-			$curTime = time();
-			$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
-			
-			
-			switch($_COOKIE['language']){
-				case 'us': $dbCountryCode = 'US'; break;
-				default: $dbCountryCode = 'GB';
-			}
-			$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
-			$this->dbu->move_next();
-			$country_id = $this->dbu->f('country_id');
-		
-			$this->dbu->query("UPDATE trainer 
-	   	 					SET 
-								paypal_profile_id = '".$payerId."',
-								country_id 	    = '".$country_id."',
-								price_plan_id 	= '".$_SESSION['price_id']."',
-								is_trial		= '0',
-								expire_date		= '$expireTime'
-							WHERE 
-								trainer_id=".$_SESSION[U_ID]."
-												");
-			
-			header("Location: /index.php?pag=profile&paym=1");
 		} 
 		else  
 		{
-			header("Location: /index.php?pag=profile&paym=0");
-			
-			//Display a user friendly Error on the page using any of the following error information returned by PayPal
+			header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=0");
+			////Display a user friendly Error on the page using any of the following error information returned by PayPal
 			//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
 			//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
 			//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
 			//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
 			//
-			//echo "GetExpressCheckoutDetails API call failed. ";
+			//echo "SetExpressCheckout API call failed. ";
 			//echo "Detailed Error Message: " . $ErrorLongMsg;
 			//echo "Short Error Message: " . $ErrorShortMsg;
 			//echo "Error Code: " . $ErrorCode;
 			//echo "Error Severity Code: " . $ErrorSeverityCode;
 		}
-	
+		
+		
+		
 	}
-}
 
-/****************************************************************
-* function add_validate(&$ld)                                   *
-****************************************************************/
-function validate_pay(&$ld)
-{
-	$is_ok = true;
-	if(!$ld['first_name']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
-	   $is_ok = false;
-	}
-	if(!$ld['surname']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
-	   $is_ok = false;
-	}
-	if(!$ld['email']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
-		$is_ok = false;
-	}	
-	elseif(!secure_email($ld['email']))
+	function confirm_pay()
+	{
+		include_once('classes/cls_paypal_new.php');
+		$token = "";
+		if (isset($_REQUEST['token']))
 		{
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.INVALID_EMAIL')."<br>";
-			
-			$is_ok=false;
+			$token = $_REQUEST['token'];
 		}
-	if(!$ld['country_id'])
+	
+		if ( $token != "" )
 		{
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_COUNTRY')."<br>";
+			$resArray = GetShippingDetails( $token );
+	
+			$ack = strtoupper($resArray["ACK"]);
+			if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
+			{
+				/*
+				' The information that is returned by the GetExpressCheckoutDetails call should be integrated by the partner into his Order Review 
+				' page		
+				*/
+				$token 				= $resArray["TOKEN"];
+				$email 				= $resArray["EMAIL"]; // ' Email address of payer.
+				$payerId 			= $resArray["PAYERID"]; // ' Unique PayPal customer account identification number.
+				$payerStatus		= $resArray["PAYERSTATUS"]; // ' Status of payer. Character length and limitations: 10 single-byte alphabetic characters.
+				$salutation			= $resArray["SALUTATION"]; // ' Payer's salutation.
+				$firstName			= $resArray["FIRSTNAME"]; // ' Payer's first name.
+				$middleName			= $resArray["MIDDLENAME"]; // ' Payer's middle name.
+				$lastName			= $resArray["LASTNAME"]; // ' Payer's last name.
+				$suffix				= $resArray["SUFFIX"]; // ' Payer's suffix.
+				$cntryCode			= $resArray["COUNTRYCODE"]; // ' Payer's country of residence in the form of ISO standard 3166 two-character country codes.
+				$business			= $resArray["BUSINESS"]; // ' Payer's business name.
+				$shipToName			= $resArray["SHIPTONAME"]; // ' Person's name associated with this address.
+				$shipToStreet		= $resArray["SHIPTOSTREET"]; // ' First street address.
+				$shipToStreet2		= $resArray["SHIPTOSTREET2"]; // ' Second street address.
+				$shipToCity			= $resArray["SHIPTOCITY"]; // ' Name of city.
+				$shipToState		= $resArray["SHIPTOSTATE"]; // ' State or province
+				$shipToCntryCode	= $resArray["SHIPTOCOUNTRYCODE"]; // ' Country code. 
+				$shipToZip			= $resArray["SHIPTOZIP"]; // ' U.S. Zip code or other country-specific postal code.
+				$addressStatus 		= $resArray["ADDRESSSTATUS"]; // ' Status of street address on file with PayPal   
+				$invoiceNumber		= $resArray["INVNUM"]; // ' Your own invoice or tracking number, as set by you in the element of the same name in SetExpressCheckout request .
+				$phonNumber			= $resArray["PHONENUM"]; // ' Payer's contact telephone number. Note:  PayPal returns a contact telephone number only if your Merchant account profile settings require that the buyer enter one.
+				
+				$this->dbu->query("select * from price_plan_new where price_id='".$_SESSION['price_id']."' ");
+				$this->dbu->move_next();
+				
+				$_SESSION['TOKEN'] = $token;
+				$_SESSION['PaymentType'] = 'Sale';
+				$_SESSION['currencyCodeType'] = $this->dbu->f('currency');
+				$_SESSION['payer_id'] = $payerId;
+				
+				$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
+				$ack = strtoupper($resArray["ACK"]);
+				
+				$daysToAdd = 0;
+				switch($this->dbu->f('licence_period'))
+				{
+					case 'year':
+						{
+							$daysToAdd = 365;
+							break;
+						}
+					case 'month':
+						{
+							$daysToAdd = 30;
+							break;
+						}
+				}
+				$curTime = time();
+				$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
+				
+				
+				switch($_COOKIE['language']){
+					case 'us': $dbCountryCode = 'US'; break;
+					default: $dbCountryCode = 'GB';
+				}
+				$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
+				$this->dbu->move_next();
+				$country_id = $this->dbu->f('country_id');
+			
+				$this->dbu->query("UPDATE trainer 
+								SET 
+									paypal_profile_id = '".$payerId."',
+									country_id 	    = '".$country_id."',
+									price_plan_id 	= '".$_SESSION['price_id']."',
+									is_trial		= '0',
+									expire_date		= '$expireTime'
+								WHERE 
+									trainer_id=".$_SESSION[U_ID]."
+													");
+				
+				header("Location: /index.php?pag=profile&paym=1");
+			} 
+			else  
+			{
+				header("Location: /index.php?pag=profile&paym=0");
+				
+				//Display a user friendly Error on the page using any of the following error information returned by PayPal
+				//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
+				//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
+				//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
+				//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
+				//
+				//echo "GetExpressCheckoutDetails API call failed. ";
+				//echo "Detailed Error Message: " . $ErrorLongMsg;
+				//echo "Short Error Message: " . $ErrorShortMsg;
+				//echo "Error Code: " . $ErrorCode;
+				//echo "Error Severity Code: " . $ErrorSeverityCode;
+			}
 		
-			$is_ok=false;
-		}	
-	
-	
-	if(!$ld['credit_card_type']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_TYPE')."<br>";
-	   $is_ok = false;
+		}
 	}
-	if(!$ld['credit_card_no']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_NUM')."<br>";
-	   $is_ok = false;
-	}	
-		
-    return $is_ok;
-}
 
-function cancel_payment(&$ld)
+	/****************************************************************
+	* function add_validate(&$ld)                                   *
+	****************************************************************/
+	function validate_pay(&$ld)
+	{
+		$is_ok = true;
+		if(!$ld['first_name']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
+		   $is_ok = false;
+		}
+		if(!$ld['surname']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
+		   $is_ok = false;
+		}
+		if(!$ld['email']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
+			$is_ok = false;
+		}	
+		elseif(!secure_email($ld['email']))
+			{
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.INVALID_EMAIL')."<br>";
+				
+				$is_ok=false;
+			}
+		if(!$ld['country_id'])
+			{
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_COUNTRY')."<br>";
+			
+				$is_ok=false;
+			}	
+		
+		
+		if(!$ld['credit_card_type']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_TYPE')."<br>";
+		   $is_ok = false;
+		}
+		if(!$ld['credit_card_no']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_NUM')."<br>";
+		   $is_ok = false;
+		}	
+			
+		return $is_ok;
+	}
+
+	function cancel_payment(&$ld)
 	{
 		if(!$ld['pp_del_key']){
 			return false;
@@ -1211,72 +1211,79 @@ function cancel_payment(&$ld)
 		{
 		include_once('misc/CreateRecurringPaymentsProfile.php');
 		$nvpStr = "&PROFILEID=".urlencode($this->dbu->f('paypal_profile_id'))."&ACTION=Cancel";
-
-	    $httpParsedResponseAr = PPHttpPost('ManageRecurringPaymentsProfileStatus', $nvpStr);
-	    
-   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-
-   	 $this->dbu->query("UPDATE trainer 
-   	 					SET 
+	
+		$httpParsedResponseAr = PPHttpPost('ManageRecurringPaymentsProfileStatus', $nvpStr);
+		
+	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+	
+	 $this->dbu->query("UPDATE trainer 
+						SET 
 							paypal_profile_id = '',
 							country_id 	    = '0',
 							price_plan_id 	= '0'
 						WHERE 
 							trainer_id=".$_SESSION[U_ID]."
 											");
-   	 
+	 
 		$ld['error'] =get_template_tag($ld['pag'], $ld['lang'], 'T.CANCEL').'<br />';
-    return true;
+	return true;
 	} else{
 	  $ld['error'] .= urldecode($httpParsedResponseAr['L_LONGMESSAGE0']);
-/*		echo '<pre>';
-	    print_r($httpParsedResponseAr);
-	    echo '</pre>';
+	/*		echo '<pre>';
+		print_r($httpParsedResponseAr);
+		echo '</pre>';
 		echo '<pre>';
-	    print_r($nvpStr);
-	    echo '</pre>';
-*/	    return false;
-	 	}	
+		print_r($nvpStr);
+		echo '</pre>';
+	*/	    return false;
+		}	
 		}
 	}
 
 	function delete_profile(&$ld)
-		{
-			$ld['error']="Not implemented yet.";
-		    return true;
-		}
-    function exercise_add(&$ld){
+	{
+		$ld['error']="Not implemented yet.";
+		return true;
+	}
+	
+    function exercise_add(&$ld)
+	{
         // we'll use some functions from admin lib to avoid code doubling 
         include_once('admin/classes/cls_programs.php');
         $programs = new programs();
         
 
         // generate program code
-        $this->dbu->query("SELECT * FROM programs WHERE owner=".$_SESSION['m_id']." AND programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
-        $this->dbu->move_next();
-        $last_code = $this->dbu->f('programs_code');
-$last_code = 'USR091';
-        
-        if($last_code)
-            $num = substr($last_code, strspn($last_code, 'USR'));
-        else $num = 0;
+//        $this->dbu->query("SELECT * FROM programs WHERE owner=".$_SESSION['m_id']." AND programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
+//			$this->dbu->move_next();
+//        $last_code = $this->dbu->f('programs_code');
+//		$last_code = 'USR091';
+//        
+//        if($last_code)
+//            $num = substr($last_code, strspn($last_code, 'USR'));
+//        else $num = 0;
+//
+//        $num = str_pad(++$num, 3, '0', STR_PAD_LEFT);
+//        $code = 'USR'.$num;
 
-        $num = str_pad(++$num, 3, '0', STR_PAD_LEFT);
-        $code = 'USR'.$num;
+		$this->dbu->query("SELECT SUBSTR(programs_code, 4) AS last_code FROM programs WHERE programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
+		if($this->dbu->move_next())
+			$last_code = $this->dbu->f('last_code');
+		else
+			$last_code = 0;
+		
+		$last_code++;
+		$count_zeros = (3-strlen($last_code) > 0) ? 3-strlen($last_code) : 0;
+		$last_code = 'USR'.str_repeat('0', $count_zeros).$last_code;
 
         if(!$this->validate_exercise_add(&$ld))
         {
             $ld['pag'] = 'profile_exercise_add';
-/** TO-DO: delete */
-echo '$ld<br><pre>';
-print_r($ld['error']);
-echo '<br>$ld_end</pre>';
-exit;
             return false;
         }
 
         $ld['programs_id']=$this->dbu->query_get_id("INSERT INTO programs SET 
-																programs_code='".$code."', 
+																programs_code='".$last_code."', 
 																sort_order='".($this->dbu->f('sort_order')+10)."',
 																active = 1,
                                                                 owner = ".$_SESSION['m_id']);
@@ -1290,14 +1297,10 @@ exit;
                 									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
         
         if($programs->image_validate()){
-            var_dump($programs->upload_file($ld));
-echo '$ld<br><pre>';
-print_r($ld['error']);
-echo '<br>$ld_end</pre>';
-exit;
+            $programs->upload_file($ld);
+			return true;
         }
         else {
-            exit;
             return false;
         }
     }
@@ -1317,13 +1320,13 @@ $ld['error'].="name<br>";
 $ld['error'].="descr<br>";
             $is_ok=false;
         }
-		if($ld['category'] == 'none')
+		if($ld['category'] == -1)
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
 $ld['error'].="cat<br>";
             $is_ok=false;
         }
-		if($ld['subcategory'] == 'none')
+		if($ld['subcategory'] == -1)
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
 $ld['error'].="subcat<br>";

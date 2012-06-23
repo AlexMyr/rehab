@@ -13,7 +13,7 @@ foreach($tags as $name => $row){
 $dbu = new mysql_db();
 
 $dbu->query("SELECT * FROM `programs_category` WHERE category_level=0");
-$cat_options = '<option value="none">{T.SELECT_CAT}</option>';
+$cat_options = '<option value="-1">{T.SELECT_CAT}</option>';
 while($dbu->move_next()){
     $cat_options .= '<option value="'.$dbu->f('category_id').'">'.$dbu->f('category_name').'</option>';
 }

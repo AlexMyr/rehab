@@ -375,6 +375,25 @@ function restoreDefaultBodyClicked()
 // START THE DOCUMENT READY
 $(document).ready(function() 
 {
+	
+	//get list of subcats for add exercise page
+	$('#categorySelect').change(function(){
+		var catid = $(this).val();
+		
+		if(catid != -1)
+		{
+			$.ajax({
+				url: "index_ajax.php",
+				dataType: "json",
+				data: { pag: "getsubcats", catid: catid},
+				success: function(data){
+					$('#subcategorySelect').html(data.innerHTML);
+				}
+			});
+		}
+		
+	});
+	
 	$('#clientsList').dialog({  autoOpen: false, resizable: false })
 	
 	$('.clientList .clientListRow .actions a.program').click(function(){

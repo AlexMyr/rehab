@@ -189,8 +189,9 @@ if($glob['catID']&&$glob['program_id'])
 							WHERE
 								".$where." 
 								AND programs.active = 1
+								AND programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID]."
 							GROUP BY programs.programs_id
-							ORDER BY programs.sort_order ASC
+							ORDER BY programs.owner, programs.sort_order ASC
 							");
 
 	$i=0;
@@ -222,11 +223,12 @@ if($glob['catID']&&$glob['program_id'])
 		$i++;
 	}
 	
+	
 	if ($i==0) 
 	{
 		$glob['error'] = $tags['T.NO_EXERCISE'];
 	}
-// end the VIEW programs data
+ //end the VIEW programs data
 }
 else 
 {
