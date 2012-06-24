@@ -523,55 +523,83 @@ $(document).ready(function()
 	});
 	
 	//add submenu
+	function show_submenu(obj, selector)
+	{
+		hovered = true;
+		$(obj).addClass('topForSubMenu');
+		var parOffset = $(obj).offset();
+		var parHeight = $(obj).css('height');
+		$(selector).css('top', parOffset.top+parseInt(parHeight)+2+'px');
+		$(selector).css('left', parOffset.left+'px');
+		$(selector).css('display', 'block');
+	}
+	
 	var hovered = false;
-	function show_submenu(obj)
+	function check_submenu(obj)
 	{
       hovered = false;
 		if($(obj).attr('href') == 'index.php?pag=profile')
 		{
-            hovered = true;
-			$(obj).addClass('topForSubMenu');
-            var parOffset = $(obj).offset();
-            var parHeight = $(obj).css('height');
-            $('#submenuList').css('top', parOffset.top+parseInt(parHeight)+2+'px');
-            $('#submenuList').css('left', parOffset.left+'px');
-			$('#submenuList').css('display', 'block');
+			show_submenu(obj, '#submenuList');
+//            hovered = true;
+//			$(obj).addClass('topForSubMenu');
+//            var parOffset = $(obj).offset();
+//            var parHeight = $(obj).css('height');
+//            $('#submenuList').css('top', parOffset.top+parseInt(parHeight)+2+'px');
+//            $('#submenuList').css('left', parOffset.left+'px');
+//			$('#submenuList').css('display', 'block');
+		}
+		else if($(obj).attr('href') == 'index.php?pag=programs')
+		{
+			show_submenu(obj, '#submenuProgramList');
 		}
 	}
 
-	function hide_submenu()
+	function hide_submenu(selector)
 	{
       if(hovered)
       {
 		$('.item1').removeClass('topForSubMenu');
-		$('#submenuList').css('display', 'none');
+		$(selector).css('display', 'none');
 		hovered = false;
       }
 	}
 	
-	$('.navMenu .item1').hover(function(){
-		if(hovered)
-		  {
-			setTimeout(hide_submenu, 100);
-		  }
-		show_submenu(this);
-		}, function(){
-		  if(hovered)
-		  {
+	$('.navMenu .item1').hover(
+		function(){
+			if(hovered)
+			{
+			  setTimeout(hide_submenu, 100);
+			}
+			check_submenu(this);
+			},
+		function(){
+			if(hovered)
+			{
 			//hovered = false;
-			setTimeout(hide_submenu, 100);
-		  }
-		  else
-			hovered = true;
-		});
+				setTimeout(hide_submenu, 100);
+			}
+			else
+				hovered = true;
+	});
 		
-		$('#submenuList').hover(
+	$('#submenuList').hover(
 		function(){
 			hovered = false;
 		},
 		function(){
 			hovered = true;
-			setTimeout(hide_submenu, 100);
+			setTimeout(hide_submenu('#submenuList'), 100);
+		}
+	);
+	
+	$('#submenuProgramList').hover(
+		function(){
+			hovered = false;
+		},
+		function(){
+			hovered = true;
+			setTimeout(hide_submenu('#submenuProgramList'), 100);
 		}
 	);
 		

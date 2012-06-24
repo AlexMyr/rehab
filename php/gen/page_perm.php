@@ -54,6 +54,12 @@
 									'module' => 'trainer_dashboard',
 									'session' => 1
 									),
+                        'programs_user' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        
 
 						'dashboard' => array(
 									'perm' => 3,
@@ -85,7 +91,12 @@
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
 									'session' => 1
-									),                 
+									),
+                        'profile_exercise_update' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
 						'profile_edit' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',

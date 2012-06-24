@@ -1251,21 +1251,6 @@ class member
         // we'll use some functions from admin lib to avoid code doubling 
         include_once('admin/classes/cls_programs.php');
         $programs = new programs();
-        
-
-        // generate program code
-//        $this->dbu->query("SELECT * FROM programs WHERE owner=".$_SESSION['m_id']." AND programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
-//			$this->dbu->move_next();
-//        $last_code = $this->dbu->f('programs_code');
-//		$last_code = 'USR091';
-//        
-//        if($last_code)
-//            $num = substr($last_code, strspn($last_code, 'USR'));
-//        else $num = 0;
-//
-//        $num = str_pad(++$num, 3, '0', STR_PAD_LEFT);
-//        $code = 'USR'.$num;
-
 		$this->dbu->query("SELECT SUBSTR(programs_code, 4) AS last_code FROM programs WHERE programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
 		if($this->dbu->move_next())
 			$last_code = $this->dbu->f('last_code');
@@ -1304,6 +1289,7 @@ class member
             return false;
         }
     }
+	
     function validate_exercise_add(&$ld)
 	{
 		$is_ok=true;
@@ -1336,6 +1322,72 @@ $ld['error'].="subcat<br>";
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
 $ld['error'].="image<br>";
+            $is_ok=false;
+        }
+		return $is_ok;
+	}
+	
+	function exercise_update(&$ld)
+	{
+//var_dump($ld, $_FILES);exit;
+        // we'll use some functions from admin lib to avoid code doubling 
+        include_once('admin/classes/cls_programs.php');
+        $programs = new programs();
+		
+        if(!$this->validate_exercise_update(&$ld))
+        {
+            $ld['pag'] = 'profile_exercise_add';
+            return false;
+        }
+
+        foreach(array('en', 'us') as $lang){
+            $this->dbu->query("UPDATE programs_translate_".$lang." SET 
+								   programs_title='".$ld['name_'.$lang]."',
+								   description = '".$ld['description_'.$lang]."'
+								WHERE programs_id='".$ld['programs_id']."'
+							");
+        }
+		
+		$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id = '".$ld['programs_id']."' ");
+		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
+                									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
+        
+        if($programs->image_validate()){
+            $programs->upload_file($ld);
+			return true;
+        }
+        else {
+            return false;
+        }
+		return true;
+    }
+	
+	function validate_exercise_update(&$ld)
+	{
+		$is_ok=true;
+
+		if(!$ld['name_en'] || !$ld['name_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
+$ld['error'].="name<br>";
+            $is_ok=false;
+        }
+		if(!$ld['description_en'] || !$ld['description_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
+$ld['error'].="descr<br>";
+            $is_ok=false;
+        }
+		if($ld['category'] == -1)
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
+$ld['error'].="cat<br>";
+            $is_ok=false;
+        }
+		if($ld['subcategory'] == -1)
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
+$ld['error'].="subcat<br>";
             $is_ok=false;
         }
 		return $is_ok;

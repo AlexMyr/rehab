@@ -52,6 +52,7 @@ a { cursor:pointer; color:#ffffff; }
 .whirl{background: url('../img/background_wave.png') no-repeat scroll center top transparent; width: 100%; height: 937px; top:0; left:0;}
 
 #submenuList {top: 85px; left:725px; z-index: 9999; }
+#submenuProgramList {top: 85px; left:580px; z-index: 9999; }
 .subMenuLinkSpan { opacity: 0.7; background-color: #1E3658; width: 150px; padding:3px 3px; }
 
 .topForSubMenu { background: url(../img/mainNavHOverLft.jpg) no-repeat top left; }
