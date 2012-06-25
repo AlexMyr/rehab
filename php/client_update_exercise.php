@@ -193,12 +193,24 @@ $program = $dbu->query("
 				WHERE
 					".$where." 
 					AND programs.active = 1
-				ORDER BY programs.sort_order ASC
+					AND programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID]."
+				ORDER BY programs.owner, programs.sort_order ASC
 					");
 $i=0;
 
+$start_user_exercise = false;
 while ($program->next())
 	{
+		if($program->f('owner')!=-1 && !$start_user_exercise)
+		{
+		  $start_user_exercise = true;
+		  $user_break_line = '<div class="clearAllUser">Own exercises</div>';
+		}
+		else
+		{
+		  $user_break_line = '';
+		}
+		
 		if(($i+1)%3==0)
 			{
 				$last_css = ' last';
@@ -213,12 +225,12 @@ while ($program->next())
 			'PROGRAM_ID'=>$program->f('programs_id'),
 			'PROGRAM_TITLE'=>$program->f('programs_title'),
 			'PROGRAM_DESCRIPTION'=>$program->f('description'),
-			//'PROGRAM_IMAGE'=>$program->f($image_type) ? $program->f($image_type) : 'noimg138.gif',
 			'PROGRAM_IMAGE'=>file_exists('upload/'.$program->f($image_type)) ? $program->f($image_type) : 'noimage_middle.png',
 			'CAT_ID'=>$glob['catID'],
 			'CLIENT_ID'=>$glob['client_id'],
 			'LAST_CSS'=> $last_css,
 			'CLEAR_BOTH'=> $clear_both,
+			'USER_BREAK_LINE'=> $user_break_line,
 		));
 		$ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
 		$i++;

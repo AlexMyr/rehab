@@ -30,6 +30,7 @@ $func_access = array
                                         'ipn_confirm' => 3,
                                         'exercise_add' => 3,
                                         'exercise_update' => 3,
+                                        'exercise_delete' => 3,
 //										'payment' => 3,
 									),
 					'client' => array(

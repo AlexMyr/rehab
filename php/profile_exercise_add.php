@@ -10,14 +10,41 @@ foreach($tags as $name => $row){
   $ft->assign($name, $row);
 }
 
+$ft->assign(array(
+    'name_en'=>$glob['name_en'],
+    'name_us'=>$glob['name_us'],
+    'description_en'=>$glob['description_en'],
+    'description_us'=>$glob['description_us'],
+  ));
+
 $dbu = new mysql_db();
 
 $dbu->query("SELECT * FROM `programs_category` WHERE category_level=0");
-$cat_options = '<option value="-1">{T.SELECT_CAT}</option>';
+$cat_options = '<option value="-1">'.get_template_tag($glob['pag'], $glob['lang'], 'T.SELECT_CAT').'</option>';
 while($dbu->move_next()){
-    $cat_options .= '<option value="'.$dbu->f('category_id').'">'.$dbu->f('category_name').'</option>';
+    $cat_options .= '<option value="'.$dbu->f('category_id').'" '.(isset($glob['category']) && $dbu->f('category_id') == $glob['category'] ? 'selected' : '').' >'.$dbu->f('category_name').'</option>';
 }
 $ft->assign('CAT_OPTIONS', $cat_options);
+
+if(isset($glob['category']) && $glob['category'] > -1)
+{
+  $dbu->query("SELECT pc.category_id, pc.category_name
+				 FROM programs_category_subcategory as pcs
+				 LEFT JOIN programs_category as pc ON pc.category_id = pcs.category_id
+				 WHERE pcs.parent_id = {$glob['category']} AND pc.category_level > 0
+				 ORDER BY pc.sort_order
+				");
+	
+  while($dbu->move_next())
+  {
+    $subcat_select .= '<option value="'.$dbu->f('category_id').'" '.($dbu->f('category_id') == $glob['subcategory'] ? 'selected' : '').'>'.$dbu->f('category_name').'</option>';
+  }
+}
+else
+{
+  $subcat_select .= '<option value="-1">Select category first</option>';
+}
+$ft->assign('SUBCAT_OPTIONS', $subcat_select);
 
 $ft->assign('CSS_PAGE', $glob['pag']);
 

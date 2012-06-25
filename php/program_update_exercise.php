@@ -195,9 +195,20 @@ if($glob['catID']&&$glob['program_id'])
 							");
 
 	$i=0;
-
+	
+	$start_user_exercise = false;
 	while ($program->next())
 	{
+		if($program->f('owner')!=-1 && !$start_user_exercise)
+		{
+		  $start_user_exercise = true;
+		  $user_break_line = '<div class="clearAllUser">Own exercises</div>';
+		}
+		else
+		{
+		  $user_break_line = '';
+		}
+		
 		if(($i+1)%3==0)
 		{
 			$last_css = ' last';
@@ -218,6 +229,7 @@ if($glob['catID']&&$glob['program_id'])
 			'PROGRAM_PLAN_ID'=>$glob['program_id'],
 			'LAST_CSS'=> $last_css,
 			'CLEAR_BOTH'=> $clear_both,
+			'USER_BREAK_LINE'=> $user_break_line,
 		));
 		$ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
 		$i++;
