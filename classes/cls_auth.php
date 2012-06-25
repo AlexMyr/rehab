@@ -30,8 +30,7 @@ class auth
 							fb_id = '".$ld['fb_id']."'
 						");
 		}
-		else
-		{
+		else{
 			$query->query("
 						SELECT 
 							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date
@@ -45,7 +44,7 @@ class auth
 		if($query->move_next())
 		{
 			$trainer_id = $query->f('trainer_id');
-
+			
 			if($query->f('active')==0 && strtotime($query->f('expire_date'))-time()>0)
 			{
 				
@@ -57,7 +56,7 @@ class auth
 				//$ld['error'] = 'Username was banned for a reason. Please contact support for more details!';
 				//return false;
 			}
-			else if(($ld['password'] == $query->f('password') || $ld['fb_id'] == $query->f('fb_id')) && $query->f('is_login')==0/* && $query->f('active')!=0*/)
+			else if(($ld['password'] == $query->f('password') || $ld['fb_id'] == $query->f('fb_id')) && $query->f('is_login')==0 && $query->f('active')!=0)
 			{
 				//session_cache_limiter('private');
 				session_start();
@@ -65,7 +64,6 @@ class auth
 				$_SESSION[U_ID] = $query->f('trainer_id');
 				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
 				$_SESSION[USER_EMAIL] = $query->f('email');
-				$_SESSION[EXPIRE_DATE] = $query->f('expire_date');
 			
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
 				{
@@ -120,6 +118,7 @@ class auth
 				}
 				else if($query->f('active')!=0)
 				{
+					
 					$this->dbu->query("
 										UPDATE 
 											trainer 
@@ -156,6 +155,7 @@ class auth
 						exit;
 					}
 				}
+				
 				return true;
 			}
 			/*else if($query->f('is_login')==1)
@@ -202,9 +202,9 @@ class auth
 		
 		if(isset($_SESSION['fb_login_rmp']))
 			$_SESSION['fb_login_rmp'] = 0;
-		$_SESSION['set_fb_login'] = 0;
-		$ld['pag'] = 'cms';
 		
+		$ld['pag'] = 'cms';
+		$_SESSION['set_fb_login'] = 0;
 		return true;
 	}
 	
@@ -213,8 +213,9 @@ class auth
 		require 'fb/facebook.php';
 
 		$facebook = new Facebook(array(
-		  'appId'  => '140136112789193',
-		  'secret' => 'dfa5828ecca71050bfd974f659003a66',
+		  'appId'  => '264894086933472',
+		  'secret' => '9e61aeb9b7632060cc834d6ad4b106a3',
+		  'cookie' => true,
 		));
 		
 		// See if there is a user from a cookie
@@ -228,6 +229,7 @@ class auth
 			$user = null;
 		  }
 		}
+		
 		if($user)
 		{
 			$_SESSION['fb_login_rmp'] = 1;

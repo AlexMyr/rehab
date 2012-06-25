@@ -1129,118 +1129,7 @@ function confirm_pay()
 		}
 	
 	}
-
-	function confirm_pay()
-	{
-		include_once('classes/cls_paypal_new.php');
-		$token = "";
-		if (isset($_REQUEST['token']))
-		{
-			$token = $_REQUEST['token'];
-		}
-	
-		if ( $token != "" )
-		{
-			$resArray = GetShippingDetails( $token );
-	
-			$ack = strtoupper($resArray["ACK"]);
-			if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
-			{
-				/*
-				' The information that is returned by the GetExpressCheckoutDetails call should be integrated by the partner into his Order Review 
-				' page		
-				*/
-				$token 				= $resArray["TOKEN"];
-				$email 				= $resArray["EMAIL"]; // ' Email address of payer.
-				$payerId 			= $resArray["PAYERID"]; // ' Unique PayPal customer account identification number.
-				$payerStatus		= $resArray["PAYERSTATUS"]; // ' Status of payer. Character length and limitations: 10 single-byte alphabetic characters.
-				$salutation			= $resArray["SALUTATION"]; // ' Payer's salutation.
-				$firstName			= $resArray["FIRSTNAME"]; // ' Payer's first name.
-				$middleName			= $resArray["MIDDLENAME"]; // ' Payer's middle name.
-				$lastName			= $resArray["LASTNAME"]; // ' Payer's last name.
-				$suffix				= $resArray["SUFFIX"]; // ' Payer's suffix.
-				$cntryCode			= $resArray["COUNTRYCODE"]; // ' Payer's country of residence in the form of ISO standard 3166 two-character country codes.
-				$business			= $resArray["BUSINESS"]; // ' Payer's business name.
-				$shipToName			= $resArray["SHIPTONAME"]; // ' Person's name associated with this address.
-				$shipToStreet		= $resArray["SHIPTOSTREET"]; // ' First street address.
-				$shipToStreet2		= $resArray["SHIPTOSTREET2"]; // ' Second street address.
-				$shipToCity			= $resArray["SHIPTOCITY"]; // ' Name of city.
-				$shipToState		= $resArray["SHIPTOSTATE"]; // ' State or province
-				$shipToCntryCode	= $resArray["SHIPTOCOUNTRYCODE"]; // ' Country code. 
-				$shipToZip			= $resArray["SHIPTOZIP"]; // ' U.S. Zip code or other country-specific postal code.
-				$addressStatus 		= $resArray["ADDRESSSTATUS"]; // ' Status of street address on file with PayPal   
-				$invoiceNumber		= $resArray["INVNUM"]; // ' Your own invoice or tracking number, as set by you in the element of the same name in SetExpressCheckout request .
-				$phonNumber			= $resArray["PHONENUM"]; // ' Payer's contact telephone number. Note:  PayPal returns a contact telephone number only if your Merchant account profile settings require that the buyer enter one.
-				
-				$this->dbu->query("select * from price_plan_new where price_id='".$_SESSION['price_id']."' ");
-				$this->dbu->move_next();
-				
-				$_SESSION['TOKEN'] = $token;
-				$_SESSION['PaymentType'] = 'Sale';
-				$_SESSION['currencyCodeType'] = $this->dbu->f('currency');
-				$_SESSION['payer_id'] = $payerId;
-				
-				$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
-				$ack = strtoupper($resArray["ACK"]);
-				
-				$daysToAdd = 0;
-				switch($this->dbu->f('licence_period'))
-				{
-					case 'year':
-						{
-							$daysToAdd = 365;
-							break;
-						}
-					case 'month':
-						{
-							$daysToAdd = 30;
-							break;
-						}
-				}
-				$curTime = time();
-				$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
-				
-				
-				switch($_COOKIE['language']){
-					case 'us': $dbCountryCode = 'US'; break;
-					default: $dbCountryCode = 'GB';
-				}
-				$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
-				$this->dbu->move_next();
-				$country_id = $this->dbu->f('country_id');
-			
-				$this->dbu->query("UPDATE trainer 
-								SET 
-									paypal_profile_id = '".$payerId."',
-									country_id 	    = '".$country_id."',
-									price_plan_id 	= '".$_SESSION['price_id']."',
-									is_trial		= '0',
-									expire_date		= '$expireTime'
-								WHERE 
-									trainer_id=".$_SESSION[U_ID]."
-													");
-				
-				header("Location: /index.php?pag=profile&paym=1");
-			} 
-			else  
-			{
-				header("Location: /index.php?pag=profile&paym=0");
-				
-				//Display a user friendly Error on the page using any of the following error information returned by PayPal
-				//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
-				//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
-				//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
-				//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
-				//
-				//echo "GetExpressCheckoutDetails API call failed. ";
-				//echo "Detailed Error Message: " . $ErrorLongMsg;
-				//echo "Short Error Message: " . $ErrorShortMsg;
-				//echo "Error Code: " . $ErrorCode;
-				//echo "Error Severity Code: " . $ErrorSeverityCode;
-			}
-		
-		}
-	}
+}
 
 	/****************************************************************
 	* function add_validate(&$ld)                                   *
@@ -1329,10 +1218,10 @@ function confirm_pay()
                          VALUES('Paypal has been here')");
     }
 	function delete_profile(&$ld)
-		{
-			$ld['error']="Not implemented yet.";
-		    return true;
-		}
+    {
+        $ld['error']="Not implemented yet.";
+        return true;
+    }
 	
     function exercise_add(&$ld)
 	{

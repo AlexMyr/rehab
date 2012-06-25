@@ -111,8 +111,8 @@ if($glob['act'] && !$glob['skip_action'])
     	if($user_level<=$func_access[$cls_name][$func_name])
         {
         	include_once("classes/cls_".$cls_name.".php");
+            
             $cls_name= new $cls_name;
-
             if (!$cls_name->$func_name($glob))
             {
             	if($debug)
