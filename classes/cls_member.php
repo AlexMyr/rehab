@@ -1251,7 +1251,7 @@ class member
         // we'll use some functions from admin lib to avoid code doubling 
         include_once('admin/classes/cls_programs.php');
         $programs = new programs();
-		$this->dbu->query("SELECT SUBSTR(programs_code, 4) AS last_code FROM programs WHERE programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
+		$this->dbu->query("SELECT SUBSTR(programs_code, 4) AS last_code, sort_order FROM programs WHERE programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
 		if($this->dbu->move_next())
 			$last_code = $this->dbu->f('last_code');
 		else
@@ -1275,14 +1275,15 @@ class member
         foreach(array('en', 'us') as $lang){
             $this->dbu->query("INSERT INTO programs_translate_".$lang." SET 
 																programs_id='".$ld['programs_id']."', 
-																programs_title='".$ld['name_'.$lang]."',
-																description = '".$ld['description_'.$lang]."' ");
+																programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
+																description = '".mysql_real_escape_string($ld['description_'.$lang])."' ");
         }
 		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
                 									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
         
         if($programs->image_validate()){
             $programs->upload_file($ld);
+			$ld['error'] = 'Exercise added.';
 			return true;
         }
         else {
@@ -1297,31 +1298,26 @@ class member
 		if(!$ld['name_en'] || !$ld['name_us'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
-$ld['error'].="name<br>";
             $is_ok=false;
         }
 		if(!$ld['description_en'] || !$ld['description_us'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
-$ld['error'].="descr<br>";
             $is_ok=false;
         }
 		if($ld['category'] == -1)
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
-$ld['error'].="cat<br>";
             $is_ok=false;
         }
 		if($ld['subcategory'] == -1)
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
-$ld['error'].="subcat<br>";
             $is_ok=false;
         }
         if(!$_FILES['image']['name'] || !$_FILES['lineart']['name'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
-$ld['error'].="image<br>";
             $is_ok=false;
         }
 		return $is_ok;
@@ -1329,21 +1325,20 @@ $ld['error'].="image<br>";
 	
 	function exercise_update(&$ld)
 	{
-//var_dump($ld, $_FILES);exit;
         // we'll use some functions from admin lib to avoid code doubling 
         include_once('admin/classes/cls_programs.php');
         $programs = new programs();
 		
         if(!$this->validate_exercise_update(&$ld))
         {
-            $ld['pag'] = 'profile_exercise_add';
+            $ld['pag'] = 'profile_exercise_update';
             return false;
         }
 
         foreach(array('en', 'us') as $lang){
             $this->dbu->query("UPDATE programs_translate_".$lang." SET 
-								   programs_title='".$ld['name_'.$lang]."',
-								   description = '".$ld['description_'.$lang]."'
+								   programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
+								   description = '".mysql_real_escape_string($ld['description_'.$lang])."'
 								WHERE programs_id='".$ld['programs_id']."'
 							");
         }
@@ -1354,11 +1349,13 @@ $ld['error'].="image<br>";
         
         if($programs->image_validate()){
             $programs->upload_file($ld);
+			$ld['error'] = 'Exercise updated.';
 			return true;
         }
         else {
             return false;
         }
+		
 		return true;
     }
 	
@@ -1369,25 +1366,82 @@ $ld['error'].="image<br>";
 		if(!$ld['name_en'] || !$ld['name_us'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
-$ld['error'].="name<br>";
             $is_ok=false;
         }
 		if(!$ld['description_en'] || !$ld['description_us'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
-$ld['error'].="descr<br>";
             $is_ok=false;
         }
 		if($ld['category'] == -1)
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
-$ld['error'].="cat<br>";
             $is_ok=false;
         }
 		if($ld['subcategory'] == -1)
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
-$ld['error'].="subcat<br>";
+            $is_ok=false;
+        }
+		return $is_ok;
+	}
+	
+	function exercise_delete(&$ld)
+	{
+		if(!$this->validate_exercise_delete(&$ld))
+        {
+            $ld['pag'] = 'programs_user';
+            return false;
+        }
+		include_once('admin/classes/cls_programs.php');
+        $programs = new programs();
+		
+		$programs->erasepicture($ld);
+		
+		$this->dbu->query("DELETE FROM programs WHERE programs_id='".$ld['programs_id']."'");
+        foreach(array('en', 'us') as $lang)
+			$this->dbu->query("DELETE FROM programs_translate_".$lang." WHERE programs_id='".$ld['programs_id']."'");
+
+		$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id='".$ld['programs_id']."'");
+		
+		//delete program id
+		$query_string = "SELECT * FROM exercise_plan WHERE (exercise_program_id LIKE '%,".$ld['programs_id']."%' OR exercise_program_id LIKE '%,".$ld['programs_id'].",%' OR exercise_program_id LIKE '%".$ld['programs_id']."%' OR exercise_program_id LIKE '%".$ld['programs_id'].",%') AND trainer_id = ".$_SESSION[U_ID];
+		$this->dbu->query($query_string);
+		while($this->dbu->move_next())
+		{
+			$replace_str = $this->dbu->f('exercise_program_id');
+			$replace_str = str_replace(','.$ld['programs_id'].',', ',', $replace_str);
+			$replace_str = str_replace(array($ld['programs_id'].',', ','.$ld['programs_id'], $ld['programs_id']), '', $replace_str);
+			
+			$query_string = "UPDATE exercise_plan SET exercise_program_id='$replace_str' WHERE exercise_plan_id=".$this->dbu->f('exercise_plan_id')." AND trainer_id = ".$_SESSION[U_ID];
+			$this->dbu->query($query_string);
+		}
+		
+		$query_string = "SELECT * FROM exercise_program_plan WHERE (exercise_program_id LIKE '%,".$ld['programs_id']."%' OR exercise_program_id LIKE '%,".$ld['programs_id'].",%' OR exercise_program_id LIKE '%".$ld['programs_id']."%' OR exercise_program_id LIKE '%".$ld['programs_id'].",%') AND trainer_id = ".$_SESSION[U_ID];
+		$this->dbu->query($query_string);
+		while($this->dbu->move_next())
+		{
+			$replace_str = $this->dbu->f('exercise_program_id');
+			$replace_str = str_replace(','.$ld['programs_id'].',', ',', $replace_str);
+			$replace_str = str_replace(array($ld['programs_id'].',', ','.$ld['programs_id'], $ld['programs_id']), '', $replace_str);
+			
+			$query_string = "UPDATE exercise_program_plan SET exercise_program_id='$replace_str' WHERE exercise_program_plan_id=".$this->dbu->f('exercise_program_plan_id')." AND trainer_id = ".$_SESSION[U_ID];
+			$this->dbu->query($query_string);
+		}
+		
+		$query_string = "DELETE FROM exercise_plan_set WHERE exercise_program_id = '".$ld['programs_id']."' AND trainer_id = ".$_SESSION[U_ID];
+		$this->dbu->query($query_string);
+		
+		return true;
+	}
+	
+	function validate_exercise_delete(&$ld)
+	{
+		$is_ok=true;
+
+		if(!$ld['programs_id'] || !$ld['programs_id'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.EMPTY_ID')."<br>";
             $is_ok=false;
         }
 		return $is_ok;
