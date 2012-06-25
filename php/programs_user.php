@@ -1,17 +1,11 @@
 <?php
-/************************************************************************
-* @Author: MedeeaWeb Works                                              *
-************************************************************************/ 
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
-$ft->define(array('main' => "client.html"));
-//$ft->assign('MESSAGE', get_error($glob['error']));
+$ft->define(array('main' => "programs_user.html"));
 
-//$page_title='Login Member';
-//$next_function ='auth-login';
+$ft->define_dynamic('client_line','main');
 
 $max_rows = '';
 $l_r = ROW_PER_PAGE;
-//$l_r = 2;
 
 $dbu = new mysql_db();
 
@@ -29,79 +23,30 @@ else
     $ft->assign('OFFSET',$glob['offset']);
 }
 
-//$dbu->query("select name from cms_menu where menu_id=".$glob['menu_id']);
-$chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
-$dbu->query("select count(exercise_plan_id) as cnt from exercise_plan where trainer_id=".$_SESSION[U_ID]." AND client_id=".$glob['client_id']." ");
-if($dbu->move_next()) $out=$dbu->f('cnt');
-
-if(intval($out)>4 && $chk_trial)
-    $show_limit_error = 'class="showLimitError"';
-else
-    $show_limit_error = '';
-
-$ft->assign('SHOW_LIMIT_ERROR', $show_limit_error);
-
-$select = "select client.* from client where 1=1 ";
-
-if(!empty($glob['client_id']) && is_numeric($glob['client_id'])) $select .= "AND client.client_id=".$glob['client_id']." ";
-
-$ft->assign('CLIENT_ID', $glob['client_id']);
-$has_email = false;
-$dbu->query($select);
-
-$i = 0;
-
-while($dbu->move_next())
-{
-		if($dbu->f('email'))
-				$has_email = true;
-
-		$ft->assign(array(
-			'FIRST_NAME'=>$dbu->f('first_name'),
-			'SURNAME'=>$dbu->f('surname'),
-			'CLIENT_NAME'=>$dbu->f('first_name')." ".$dbu->f('surname'),
-			'APPEAL'=>$dbu->f('appeal'),
-			'EMAIL'=>$dbu->f('email'),
-			'IMAGE_TYPE'=>build_print_image_type_list($dbu->f('print_image_type')),
-			'CLIENT_NOTE'=>$dbu->f('client_note'),
-		));
-		$i++;
-}
-
-$ft->assign('CSS_PAGE', $glob['pag']);
-
-
-
-$ft->define_dynamic('client_record_line','main');
-
-$programs = $dbu->query("select exercise_plan.* from exercise_plan where 1=1 AND exercise_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_plan.client_id=".$glob['client_id']." ");
+$dbu->query("select * from programs as p left join programs_translate_".$_COOKIE['language']." as pt on p.programs_id = pt.programs_id where p.owner=".$_SESSION[U_ID]." ORDER BY p.sort_order ASC ");
 
 $i=0;
 
-$max_rows=$programs->records_count();
-$programs->move_to($offset*$l_r);
-while ($programs->next()&&$i<$l_r)
+$max_rows=$dbu->records_count();
+$dbu->move_to($offset*$l_r);
+while ($dbu->move_next()&&$i<$l_r)
 {
-//	$dbu->query("select count(exercise_plan_id) as cnt from exercise_plan where trainer_id=".$_SESSION[U_ID]." AND client_id=".$dbu->f('client_id')." ");
-//	$dbu->move_next();
 		$ft->assign(array(
-		    'HIDE_EMAIL'=>$has_email ? '' : 'none',
-			'EXERCISE_PLAN_ID'=>$programs->f('exercise_plan_id'),
-			'CREATE_DATE'=>date('D jS M Y',strtotime($programs->f('date_created'))),
-			'MODIFY_DATE'=>date('D jS M Y, h.ia',strtotime($programs->f('date_modified'))),
+			'PROGRAM_ID'=>$dbu->f('programs_id'),
+			'PROGRAM_NAME'=>$dbu->f('programs_title'),
+			'PROGRAM_DESC'=>$dbu->f('description'),
 		));
-	$ft->parse('CLIENT_RECORD_LINE_OUT','.client_record_line');
+	$ft->parse('CLIENT_LINE_OUT','.client_line');
 	$i++;
 }
-if ($i==0) {
-//	return '';
-//	$glob['error'] = 'Exercise records not found for this client. Please add a new exercise first.';
-}
+
+
 /// paginate here
-$arguments = "&client_id=".$glob['client_id'];
 $start = $offset;
 $end = ceil($max_rows/$l_r);
 $link = '';
+if($end>1)
+{
 if($end<=5){
     //if there are less then 5 pages then we go about building a normal pagination
     for ($i = 0; $i < $end; $i++){
@@ -149,6 +94,7 @@ HTML;
         }
     }
 }
+}
 $ft->assign(array(
     'PAGG' => $link,
     'PAG' => $glob['pag'],
@@ -179,6 +125,14 @@ if($offset < $end-1) $ft->assign('CSS_LAST_LINK', 'last');
 else $ft->assign('CSS_LAST_LINK', 'last displayNone');
 $ft->assign('LAST_LINK',"index.php?pag=".$glob['pag']."&last=1&offset=".($end-1).$arguments); 
 /// end paginate
+
+$ft->assign('CSS_PAGE', $glob['pag']);
+
+$ft->assign('FIRST_NAME', $glob['first_name']);
+$ft->assign('SURNAME', $glob['surname']);
+$ft->assign('EMAIL', $glob['email']);
+//$ft->assign('IMAGE_TYPE', $glob['print_image_type']);
+$ft->assign('CLIENT_NOTE', $glob['client_note']);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');

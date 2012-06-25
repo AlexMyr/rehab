@@ -19,7 +19,8 @@ $select_all_programs = "SELECT DISTINCT
                                 INNER JOIN programs_translate_en as translate
                                     ON programs.programs_id=translate.programs_id
 						WHERE 1=1 
-						AND main=1 
+						AND main=1
+						AND owner=-1
 						";
 $order_by = " ORDER BY programs.sort_order ASC";
 if ($glob['search_key']) {

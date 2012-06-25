@@ -54,6 +54,12 @@
 									'module' => 'trainer_dashboard',
 									'session' => 1
 									),
+                        'programs_user' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        
 
 						'dashboard' => array(
 									'perm' => 3,
@@ -81,11 +87,16 @@
 									'module' => 'trainer_dashboard',
 									'session' => 1
 									),                 
-						'profile_add' => array(
+						'profile_exercise_add' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
 									'session' => 1
-									),                 
+									),
+                        'profile_exercise_update' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
 						'profile_edit' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
@@ -160,6 +171,11 @@
 									'session' => 1
 									),
                         'getclients' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        'getsubcats' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
 									'session' => 1
