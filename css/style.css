@@ -54,6 +54,7 @@ a { cursor:pointer; color:#ffffff; }
 #submenuList {top: 85px; left:725px; z-index: 9999; }
 #submenuProgramList {top: 85px; left:580px; z-index: 9999; }
 .subMenuLinkSpan { opacity: 0.7; background-color: #1E3658; width: 150px; padding:3px 3px; }
+.subMenuProgramLinkSpan { opacity: 0.7; background-color: #1E3658; min-width: 110px; padding:3px 3px; }
 
 .topForSubMenu { background: url(../img/mainNavHOverLft.jpg) no-repeat top left; }
 .topForSubMenu span { background: url(../img/mainNavHOver.jpg) no-repeat top right; }
