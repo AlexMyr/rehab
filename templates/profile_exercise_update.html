@@ -1,19 +1,20 @@
 	<div id="content" class="siteContent dashboard scrolledList">
 		{MESSAGE}
 		<h2 class="bottomLine">
-			<span class="pageTitle">Add new exercise</span>
+			<span class="pageTitle">Update exercise</span>
 			<span class="clearAll"></span>
 		</h2>
 		<div class="addExercise floatLft">
 					<form action="index.php" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="act" value="member-exercise_add">
-						<input type="hidden" name="pag" value="programs_user">
+						<input type="hidden" name="act" value="member-exercise_update">
+						<input type="hidden" name="pag" value="profile_exercise_update">
+						<input type="hidden" name="programs_id" value="{PROGRAMS_ID}">
 						
 						<h3>Exercise name</h3><br />
 						<label class="label" for="name_en">GB:&nbsp;</label>
 						<input class="textField" type="text" id="name_en" name="name_en" value="{name_en}" style="width:180px;" />&nbsp;
 						<label class="label" for="name_us">US:&nbsp;</label>
-						<input class="textField" type="text" id="name_us" name="name_us" value="{name_us}" style="width:180px;" />	
+						<input class="textField" type="text" id="name_us" name="name_us" value="{name_us}" style="width:180px;" />
 						
 						<h3>Description</h3><br />
 						<label class="label" for="description_en">GB:&nbsp;</label>
@@ -21,12 +22,18 @@
 						<label class="label" for="description_us">US:&nbsp;</label>
 						<textarea class="textField" id="description_us" name="description_us" style="width:180px;">{description_us}</textarea>
 						
-						<h3>Upload image</h3><br />
-						<label class="label" for="image" style="margin-right:3px;">Select photo:&nbsp;</label>
-						<input class="fileUpload" type="file" id="upload_photo" name="image" /> <br /><br />
-						<label class="label" for="lineart">Select lineart:&nbsp;</label>
-						<input class="fileUpload" type="file" id="upload_lineart" name="lineart" /> 
-						
+						<h3>Upload images</h3><br />
+						<label class="label" for="image" style="margin-right:3px;">Select photo:&nbsp;</label><br />
+						<input class="fileUpload" type="file" id="upload_photo" name="image" />
+						<br /><br />
+						<img src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_PHOTO}&amp;wl=138&amp;hp=138" alt="photo" />
+						<br /><br />
+						<label class="label" for="lineart">Select lineart:&nbsp;</label><br />
+						<input class="fileUpload" type="file" id="upload_lineart" name="lineart" />  
+						<br /><br />
+						<img src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_LINEART}&amp;wl=138&amp;hp=138" alt="leneart" />
+						<br /><br />
+
 						<h3>Category</h3><br />
 						<label class="label" for="category">Select category:&nbsp;</label>
 						<select name="category" id="categorySelect" style="width:150px;">
@@ -35,7 +42,7 @@
 						<label class="label" for="subcategory">and subcategory:&nbsp;</label>
 						<select name="subcategory" id="subcategorySelect" style="width:150px;">
 							{SUBCAT_OPTIONS}
-						</select> 
+						</select>
 						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Save</span></button></div>
 					</form>
 		</div>
