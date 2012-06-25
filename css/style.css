@@ -68,7 +68,7 @@ a { cursor:pointer; color:#ffffff; }
 .navMenu ul li div { display:none; margin:0px 8px 0px 8px; margin:0px 0px 0px 0px; text-align:center; position:absolute; bottom:-24px; }
 .navMenu ul li div a, .navMenu ul li div a:hover, .navMenu ul li div a span, .navMenu ul li div a:hover span { margin:0px 0px 0px 0px; padding:0px; background: none; }
 
-.scrolledList{ height: 700px; overflow-y: auto; }
+.scrolledList{ height: 700px;}
 
 .contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px;}
 .contentContainerBox h2 { color:#6099e7; font-size: 36px; color:#3868aa; }
@@ -138,6 +138,7 @@ button#exerciseAdd {margin:auto; width: 135px; text-align: center;}
 .joinBottom { width:200px; height:4px; display:block; margin:0px auto; margin-bottom:10px; }
 
 .clearAll { margin:0px; padding:0px; border:0px; font-size:0px; line-height:0px; height:0px; clear:both; }
+.clearAllUser { margin:10px 0px 10px 0px; padding:0px; border:0px; font-size:20px; line-height:20px; height:20px; clear:both; color:#4476BA; }
 .clearLft { margin:0px; padding:0px; border:0px; font-size:0px; line-height:0px; height:0px; clear:left; }
 .clearRgt { margin:0px; padding:0px; border:0px; font-size:0px; line-height:0px; height:0px; clear:right; }
 .floatLft { float: left; }
@@ -567,6 +568,7 @@ label.error_validate{
     text-shadow: 1px 1px 0 #666666;
     width: auto;
     height:36px;
+	font-size: 20px;
 }
 .lang{
 	position:relative;
