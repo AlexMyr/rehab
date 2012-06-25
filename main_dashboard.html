@@ -111,6 +111,17 @@ PostAffTracker.track();
 	            {"title": "{T.SURE}","width": 200}
 	        );
 		}
+		else if(jQuery(this).hasClass('exerciseDelete'))
+		{
+			event.preventDefault();
+			var url = jQuery(this).attr('href');
+			jQuery.msgBox.confirm(
+	            "{T.DELETE_EXER}",
+	            function(){window.location = url},
+	            true,
+	            {"title": "{T.SURE}","width": 200}
+	        );
+		}
 		else
 		{
 			event.preventDefault();
