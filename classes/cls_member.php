@@ -1248,6 +1248,7 @@ class member
 	
     function exercise_add(&$ld)
 	{
+		
         // we'll use some functions from admin lib to avoid code doubling 
         include_once('admin/classes/cls_programs.php');
         $programs = new programs();
@@ -1260,10 +1261,10 @@ class member
 		$last_code++;
 		$count_zeros = (3-strlen($last_code) > 0) ? 3-strlen($last_code) : 0;
 		$last_code = 'USR'.str_repeat('0', $count_zeros).$last_code;
-
+		
+		$ld['pag'] = 'profile_exercise_add';
         if(!$this->validate_exercise_add(&$ld))
         {
-            $ld['pag'] = 'profile_exercise_add';
             return false;
         }
 
@@ -1283,10 +1284,12 @@ class member
         
         if($programs->image_validate()){
             $programs->upload_file($ld);
+			$ld['pag'] = 'programs_user';
 			$ld['error'] = 'Exercise added.';
 			return true;
         }
         else {
+			$ld['error'] = 'Some error.';
             return false;
         }
     }
