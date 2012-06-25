@@ -1050,7 +1050,7 @@ function confirm_pay()
 		$resArray = GetShippingDetails( $token );
 
 		$ack = strtoupper($resArray["ACK"]);
-		if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
+		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
 		{
 			$this->dbu->query("select * from price_plan_new where price_id='".$_SESSION['price_id']."' ");
 			$this->dbu->move_next();
@@ -1129,51 +1129,162 @@ function confirm_pay()
 		}
 	
 	}
-}
 
-/****************************************************************
-* function add_validate(&$ld)                                   *
-****************************************************************/
-function validate_pay(&$ld)
-{
-	$is_ok = true;
-	if(!$ld['first_name']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
-	   $is_ok = false;
-	}
-	if(!$ld['surname']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
-	   $is_ok = false;
-	}
-	if(!$ld['email']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
-		$is_ok = false;
-	}	
-	elseif(!secure_email($ld['email']))
+	function confirm_pay()
+	{
+		include_once('classes/cls_paypal_new.php');
+		$token = "";
+		if (isset($_REQUEST['token']))
 		{
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.INVALID_EMAIL')."<br>";
-			
-			$is_ok=false;
+			$token = $_REQUEST['token'];
 		}
-	if(!$ld['country_id'])
+	
+		if ( $token != "" )
 		{
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_COUNTRY')."<br>";
+			$resArray = GetShippingDetails( $token );
+	
+			$ack = strtoupper($resArray["ACK"]);
+			if( $ack == "SUCCESS" || $ack == "SUCESSWITHWARNING") 
+			{
+				/*
+				' The information that is returned by the GetExpressCheckoutDetails call should be integrated by the partner into his Order Review 
+				' page		
+				*/
+				$token 				= $resArray["TOKEN"];
+				$email 				= $resArray["EMAIL"]; // ' Email address of payer.
+				$payerId 			= $resArray["PAYERID"]; // ' Unique PayPal customer account identification number.
+				$payerStatus		= $resArray["PAYERSTATUS"]; // ' Status of payer. Character length and limitations: 10 single-byte alphabetic characters.
+				$salutation			= $resArray["SALUTATION"]; // ' Payer's salutation.
+				$firstName			= $resArray["FIRSTNAME"]; // ' Payer's first name.
+				$middleName			= $resArray["MIDDLENAME"]; // ' Payer's middle name.
+				$lastName			= $resArray["LASTNAME"]; // ' Payer's last name.
+				$suffix				= $resArray["SUFFIX"]; // ' Payer's suffix.
+				$cntryCode			= $resArray["COUNTRYCODE"]; // ' Payer's country of residence in the form of ISO standard 3166 two-character country codes.
+				$business			= $resArray["BUSINESS"]; // ' Payer's business name.
+				$shipToName			= $resArray["SHIPTONAME"]; // ' Person's name associated with this address.
+				$shipToStreet		= $resArray["SHIPTOSTREET"]; // ' First street address.
+				$shipToStreet2		= $resArray["SHIPTOSTREET2"]; // ' Second street address.
+				$shipToCity			= $resArray["SHIPTOCITY"]; // ' Name of city.
+				$shipToState		= $resArray["SHIPTOSTATE"]; // ' State or province
+				$shipToCntryCode	= $resArray["SHIPTOCOUNTRYCODE"]; // ' Country code. 
+				$shipToZip			= $resArray["SHIPTOZIP"]; // ' U.S. Zip code or other country-specific postal code.
+				$addressStatus 		= $resArray["ADDRESSSTATUS"]; // ' Status of street address on file with PayPal   
+				$invoiceNumber		= $resArray["INVNUM"]; // ' Your own invoice or tracking number, as set by you in the element of the same name in SetExpressCheckout request .
+				$phonNumber			= $resArray["PHONENUM"]; // ' Payer's contact telephone number. Note:  PayPal returns a contact telephone number only if your Merchant account profile settings require that the buyer enter one.
+				
+				$this->dbu->query("select * from price_plan_new where price_id='".$_SESSION['price_id']."' ");
+				$this->dbu->move_next();
+				
+				$_SESSION['TOKEN'] = $token;
+				$_SESSION['PaymentType'] = 'Sale';
+				$_SESSION['currencyCodeType'] = $this->dbu->f('currency');
+				$_SESSION['payer_id'] = $payerId;
+				
+				$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
+				$ack = strtoupper($resArray["ACK"]);
+				
+				$daysToAdd = 0;
+				switch($this->dbu->f('licence_period'))
+				{
+					case 'year':
+						{
+							$daysToAdd = 365;
+							break;
+						}
+					case 'month':
+						{
+							$daysToAdd = 30;
+							break;
+						}
+				}
+				$curTime = time();
+				$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
+				
+				
+				switch($_COOKIE['language']){
+					case 'us': $dbCountryCode = 'US'; break;
+					default: $dbCountryCode = 'GB';
+				}
+				$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
+				$this->dbu->move_next();
+				$country_id = $this->dbu->f('country_id');
+			
+				$this->dbu->query("UPDATE trainer 
+								SET 
+									paypal_profile_id = '".$payerId."',
+									country_id 	    = '".$country_id."',
+									price_plan_id 	= '".$_SESSION['price_id']."',
+									is_trial		= '0',
+									expire_date		= '$expireTime'
+								WHERE 
+									trainer_id=".$_SESSION[U_ID]."
+													");
+				
+				header("Location: /index.php?pag=profile&paym=1");
+			} 
+			else  
+			{
+				header("Location: /index.php?pag=profile&paym=0");
+				
+				//Display a user friendly Error on the page using any of the following error information returned by PayPal
+				//$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
+				//$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
+				//$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
+				//$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
+				//
+				//echo "GetExpressCheckoutDetails API call failed. ";
+				//echo "Detailed Error Message: " . $ErrorLongMsg;
+				//echo "Short Error Message: " . $ErrorShortMsg;
+				//echo "Error Code: " . $ErrorCode;
+				//echo "Error Severity Code: " . $ErrorSeverityCode;
+			}
 		
-			$is_ok=false;
-		}	
-	
-	
-	if(!$ld['credit_card_type']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_TYPE')."<br>";
-	   $is_ok = false;
+		}
 	}
-	if(!$ld['credit_card_no']){
-		$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_NUM')."<br>";
-	   $is_ok = false;
-	}	
+
+	/****************************************************************
+	* function add_validate(&$ld)                                   *
+	****************************************************************/
+	function validate_pay(&$ld)
+	{
+		$is_ok = true;
+		if(!$ld['first_name']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_FIRST')."<br>";
+		   $is_ok = false;
+		}
+		if(!$ld['surname']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SURNAME')."<br>";
+		   $is_ok = false;
+		}
+		if(!$ld['email']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_EMAIL')."<br>";
+			$is_ok = false;
+		}	
+		elseif(!secure_email($ld['email']))
+			{
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.INVALID_EMAIL')."<br>";
+			
+				$is_ok=false;
+			}
+		if(!$ld['country_id'])
+			{
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_COUNTRY')."<br>";
 		
-    return $is_ok;
-}
+				$is_ok=false;
+			}	
+	
+	
+		if(!$ld['credit_card_type']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_TYPE')."<br>";
+		   $is_ok = false;
+		}
+		if(!$ld['credit_card_no']){
+			$ld['error'] .= get_template_tag($ld['pag'], $ld['lang'], 'T.SELECT_CARD_NUM')."<br>";
+		   $is_ok = false;
+		}	
+			
+		return $is_ok;
+	}
 
     function cancel_payment(&$ld)
     {
@@ -1222,4 +1333,208 @@ function validate_pay(&$ld)
 			$ld['error']="Not implemented yet.";
 		    return true;
 		}
+	
+    function exercise_add(&$ld)
+	{
+		
+        // we'll use some functions from admin lib to avoid code doubling 
+        include_once('admin/classes/cls_programs.php');
+        $programs = new programs();
+		$this->dbu->query("SELECT SUBSTR(programs_code, 4) AS last_code, sort_order FROM programs WHERE programs_code LIKE 'USR%' ORDER BY programs_code DESC ");
+		if($this->dbu->move_next())
+			$last_code = $this->dbu->f('last_code');
+		else
+			$last_code = 0;
+		
+		$last_code++;
+		$count_zeros = (3-strlen($last_code) > 0) ? 3-strlen($last_code) : 0;
+		$last_code = 'USR'.str_repeat('0', $count_zeros).$last_code;
+		
+		$ld['pag'] = 'profile_exercise_add';
+        if(!$this->validate_exercise_add(&$ld))
+        {
+            return false;
+        }
+
+        $ld['programs_id']=$this->dbu->query_get_id("INSERT INTO programs SET 
+																programs_code='".$last_code."', 
+																sort_order='".($this->dbu->f('sort_order')+10)."',
+																active = 1,
+                                                                owner = ".$_SESSION['m_id']);
+        foreach(array('en', 'us') as $lang){
+            $this->dbu->query("INSERT INTO programs_translate_".$lang." SET 
+																programs_id='".$ld['programs_id']."', 
+																programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
+																description = '".mysql_real_escape_string($ld['description_'.$lang])."' ");
+        }
+		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
+                									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
+        
+        if($programs->image_validate()){
+            $programs->upload_file($ld);
+			$ld['pag'] = 'programs_user';
+			$ld['error'] = 'Exercise added.';
+			return true;
+        }
+        else {
+			$ld['error'] = 'Some error.';
+            return false;
+        }
+    }
+	
+    function validate_exercise_add(&$ld)
+	{
+		$is_ok=true;
+
+		if(!$ld['name_en'] || !$ld['name_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
+            $is_ok=false;
+        }
+		if(!$ld['description_en'] || !$ld['description_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
+            $is_ok=false;
+        }
+		if($ld['category'] == -1)
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
+            $is_ok=false;
+        }
+		if($ld['subcategory'] == -1)
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
+            $is_ok=false;
+        }
+        if(!$_FILES['image']['name'] || !$_FILES['lineart']['name'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
+            $is_ok=false;
+        }
+		return $is_ok;
+	}
+	
+	function exercise_update(&$ld)
+	{
+        // we'll use some functions from admin lib to avoid code doubling 
+        include_once('admin/classes/cls_programs.php');
+        $programs = new programs();
+		
+        if(!$this->validate_exercise_update(&$ld))
+        {
+            $ld['pag'] = 'profile_exercise_update';
+            return false;
+        }
+
+        foreach(array('en', 'us') as $lang){
+            $this->dbu->query("UPDATE programs_translate_".$lang." SET 
+								   programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
+								   description = '".mysql_real_escape_string($ld['description_'.$lang])."'
+								WHERE programs_id='".$ld['programs_id']."'
+							");
+        }
+		
+		$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id = '".$ld['programs_id']."' ");
+		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
+                									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
+        
+        if($programs->image_validate()){
+            $programs->upload_file($ld);
+			$ld['error'] = 'Exercise updated.';
+			return true;
+        }
+        else {
+            return false;
+        }
+		
+		return true;
+    }
+	
+	function validate_exercise_update(&$ld)
+	{
+		$is_ok=true;
+
+		if(!$ld['name_en'] || !$ld['name_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
+            $is_ok=false;
+        }
+		if(!$ld['description_en'] || !$ld['description_us'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
+            $is_ok=false;
+        }
+		if($ld['category'] == -1)
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_CAT')."<br>";
+            $is_ok=false;
+        }
+		if($ld['subcategory'] == -1)
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
+            $is_ok=false;
+        }
+		return $is_ok;
+	}
+	
+	function exercise_delete(&$ld)
+	{
+		if(!$this->validate_exercise_delete(&$ld))
+        {
+            $ld['pag'] = 'programs_user';
+            return false;
+        }
+		include_once('admin/classes/cls_programs.php');
+        $programs = new programs();
+		
+		$programs->erasepicture($ld);
+		
+		$this->dbu->query("DELETE FROM programs WHERE programs_id='".$ld['programs_id']."'");
+        foreach(array('en', 'us') as $lang)
+			$this->dbu->query("DELETE FROM programs_translate_".$lang." WHERE programs_id='".$ld['programs_id']."'");
+
+		$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id='".$ld['programs_id']."'");
+		
+		//delete program id
+		$query_string = "SELECT * FROM exercise_plan WHERE (exercise_program_id LIKE '%,".$ld['programs_id']."%' OR exercise_program_id LIKE '%,".$ld['programs_id'].",%' OR exercise_program_id LIKE '%".$ld['programs_id']."%' OR exercise_program_id LIKE '%".$ld['programs_id'].",%') AND trainer_id = ".$_SESSION[U_ID];
+		$this->dbu->query($query_string);
+		while($this->dbu->move_next())
+		{
+			$replace_str = $this->dbu->f('exercise_program_id');
+			$replace_str = str_replace(','.$ld['programs_id'].',', ',', $replace_str);
+			$replace_str = str_replace(array($ld['programs_id'].',', ','.$ld['programs_id'], $ld['programs_id']), '', $replace_str);
+			
+			$query_string = "UPDATE exercise_plan SET exercise_program_id='$replace_str' WHERE exercise_plan_id=".$this->dbu->f('exercise_plan_id')." AND trainer_id = ".$_SESSION[U_ID];
+			$this->dbu->query($query_string);
+		}
+		
+		$query_string = "SELECT * FROM exercise_program_plan WHERE (exercise_program_id LIKE '%,".$ld['programs_id']."%' OR exercise_program_id LIKE '%,".$ld['programs_id'].",%' OR exercise_program_id LIKE '%".$ld['programs_id']."%' OR exercise_program_id LIKE '%".$ld['programs_id'].",%') AND trainer_id = ".$_SESSION[U_ID];
+		$this->dbu->query($query_string);
+		while($this->dbu->move_next())
+		{
+			$replace_str = $this->dbu->f('exercise_program_id');
+			$replace_str = str_replace(','.$ld['programs_id'].',', ',', $replace_str);
+			$replace_str = str_replace(array($ld['programs_id'].',', ','.$ld['programs_id'], $ld['programs_id']), '', $replace_str);
+			
+			$query_string = "UPDATE exercise_program_plan SET exercise_program_id='$replace_str' WHERE exercise_program_plan_id=".$this->dbu->f('exercise_program_plan_id')." AND trainer_id = ".$_SESSION[U_ID];
+			$this->dbu->query($query_string);
+		}
+		
+		$query_string = "DELETE FROM exercise_plan_set WHERE exercise_program_id = '".$ld['programs_id']."' AND trainer_id = ".$_SESSION[U_ID];
+		$this->dbu->query($query_string);
+		
+		return true;
+	}
+	
+	function validate_exercise_delete(&$ld)
+	{
+		$is_ok=true;
+
+		if(!$ld['programs_id'] || !$ld['programs_id'])
+        {
+            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.EMPTY_ID')."<br>";
+            $is_ok=false;
+        }
+		return $is_ok;
+	}
 }//end class

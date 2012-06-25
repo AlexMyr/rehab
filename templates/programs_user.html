@@ -1,0 +1,34 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine"><span class="pageTitle">{T.MY_PROGRAMMES}</span></h2>
+		
+		<div class="clientList">
+			<div class="clientListTitle">
+				<span class="name_program">{T.NAME}</span>
+				<span class="description">{T.DESCR}</span>
+				<span class="actions">{T.ACTIONS}</span>
+			</div>
+<!-- BEGIN DYNAMIC BLOCK: client_line -->
+			<div class="clientListRow">
+				<span class="name_program"><span class="add_program">{PROGRAM_NAME}</span></span>
+				<span class="description">{PROGRAM_DESC}</span>
+				<span class="actions programActions">
+					<a title="Edit" href="index.php?pag=profile_exercise_update&programs_id={PROGRAM_ID}" class="edit"><span>edit</span></a>
+					<a title="Delete" href="index.php?pag=programs_user&programs_id={PROGRAM_ID}&act=member-exercise_delete" class="delete exerciseDelete"><span>delete</span></a>
+				</span>
+			</div>
+<!-- END DYNAMIC BLOCK: client_line -->
+<ul class="paginate {HIDE_NAV}">
+<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
+{PAGG}
+<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
+<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
+</ul>
+
+		</div>
+		<div class="clearAll"></div>
+	</div>
+	
+	<div id="clientsList" style="display:none;">
+		<div></div>
+	</div>

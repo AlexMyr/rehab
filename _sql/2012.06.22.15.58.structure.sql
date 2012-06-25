@@ -1,0 +1,1 @@
+ALTER TABLE `programs` ADD `owner` INT( 10 ) NOT NULL DEFAULT '-1'

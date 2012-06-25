@@ -32,46 +32,28 @@ global $script_path;
 	$default_image = "<img class=\"header_logo\" src=\"".$script_path."tcpdf/images/pdfheader.jpg\" />";
 	if($dbu->move_next())
 	{
-	
-	$image = "<img class=\"header_logo\" src=\"".$script_path.UPLOAD_PATH.$dbu->gf('logo_image')."\" alt=\"".$dbu->gf('logo_image')."\" />";
-	$theName = "";
-	if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').' '.$dbu->gf('surname').'</div>'; 
-	else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').'</div>'; 
-	else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>'; 
-	
-	//if($chk_trial=='1')
-	//{
-	//$ft->assign(array(
-	//	'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : '<div>Company name here</div>',
-	//	'NAME' => $theName ? $theName : 'Your name here',
-	//	'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.$dbu->gf('address').'</div>' : '<div>Address here</div>',
-	//	'CITY' => $dbu->gf('city') ? '<div>'.$dbu->gf('city').'</div>' : '<div>City here</div>',
-	//	'POST_CODE' => $dbu->gf('post_code') ? '<div>'.$dbu->gf('post_code').'</div>' : '<div>Post code here</div>',
-	//	'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.$dbu->gf('phone').'</div>' : '<div>Phone number here</div>',
-	//	'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.$dbu->gf('mobile').'</div>' : '<div>Mobile number here</div>',
-	//	'EMAIL' => $dbu->gf('email') ? '<div>'.$dbu->gf('email').'</div>' : '<div>Email here</div>',
-	//	'WEBSITE' => $dbu->gf('website') ? '<div>'.$dbu->gf('website').'</div>' : '<div>Website name here</div>',
-	//	'THE_IMG'=> $default_image,
-	//));
-	//}
-	//else
-	//{
-	$ft->assign(array(
-		'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : ($theName ? '<div>'.$theName.'</div>' : '<div>&nbsp;</div>'),
-		'NAME' => $theName,
-		'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.$dbu->gf('address').'</div>' : '<div>&nbsp;</div>',
-		'CITY' => $dbu->gf('city') ? '<div>'.$dbu->gf('city').'</div>' : '<div>&nbsp;</div>',
-		'POST_CODE' => $dbu->gf('post_code') ? '<div>'.$dbu->gf('post_code').'</div>' : '<div>&nbsp;</div>',
-		'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.$dbu->gf('phone').'</div>' : '<div>&nbsp;</div>',
-		'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.$dbu->gf('mobile').'</div>' : '<div>&nbsp;</div>',
-		'FAX' => $dbu->gf('fax') ? '<div>Fax: '.$dbu->gf('fax').'</div>' : '<div>&nbsp;</div>',
-		'EMAIL' => $dbu->gf('email') ? '<div>'.$dbu->gf('email').'</div>' : '<div>&nbsp;</div>',
-		'WEBSITE' => $dbu->gf('website') ? '<div>'.$dbu->gf('website').'</div>' : '<div>&nbsp;</div>',
-		'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
-	));
-	//}
+		$image = "<img class=\"header_logo\" src=\"".$script_path.UPLOAD_PATH.$dbu->gf('logo_image')."\" alt=\"".$dbu->gf('logo_image')."\" />";
+		$theName = "";
+		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').' '.$dbu->gf('surname').'</div>'; 
+		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').'</div>'; 
+		else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>'; 
+		
+		$ft->assign(array(
+			'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : ($theName ? '<div>'.stripcslashes($theName).'</div>' : '<div>&nbsp;</div>'),
+			'NAME' => stripcslashes($theName),
+			'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.stripcslashes($dbu->gf('address')).'</div>' : '<div>&nbsp;</div>',
+			'CITY' => $dbu->gf('city') ? '<div>'.stripcslashes($dbu->gf('city')).'</div>' : '<div>&nbsp;</div>',
+			'POST_CODE' => $dbu->gf('post_code') ? '<div>'.stripcslashes($dbu->gf('post_code')).'</div>' : '<div>&nbsp;</div>',
+			'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.stripcslashes($dbu->gf('phone')).'</div>' : '<div>&nbsp;</div>',
+			'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.stripcslashes($dbu->gf('mobile')).'</div>' : '<div>&nbsp;</div>',
+			'FAX' => $dbu->gf('fax') ? '<div>Fax: '.stripcslashes($dbu->gf('fax')).'</div>' : '<div>&nbsp;</div>',
+			'EMAIL' => $dbu->gf('email') ? '<div>'.stripcslashes($dbu->gf('email')).'</div>' : '<div>&nbsp;</div>',
+			'WEBSITE' => $dbu->gf('website') ? '<div>'.stripcslashes($dbu->gf('website')).'</div>' : '<div>&nbsp;</div>',
+			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
+		));
 	}
-	else{
+	else
+	{
 		$ft->assign(array(
 			'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : '<div>Company name here</div>',
 			'NAME' => $theName ? $theName : 'Your name here',
@@ -93,8 +75,6 @@ global $script_path;
 			'CURRENT_DATE' => '<span id="clientinfo" style="font-size:10pt; font-weight: bold;">'.date('d F Y',time()).'</span>',
 			));
 	
-	
-//var_dump("SELECT exercise_notes FROM exercise_plan WHERE trainer_id='".$_SESSION[U_ID]."'  AND client_id='". $glob['client_id']."' AND exercise_plan_id='". $glob['exercise_plan_id']."' ");exit;	
 	$get_exercise_notes = $dbu->query("SELECT exercise_notes FROM exercise_plan WHERE trainer_id='".$_SESSION[U_ID]."'  AND client_id='". $glob['client_id']."' AND exercise_plan_id='". $glob['exercise_plan_id']."' ");
 
 	if(!$get_exercise_notes->next() || !$get_exercise_notes->gf('exercise_notes'))
@@ -119,9 +99,9 @@ global $script_path;
 			'VIS' 						=> 'none',
 			'TARGET'					=> '_self'
 		));	
-//		$ft->assign(array( 'EXERCISE_NOTES'=> 'aditional notes <br>'.get_content_input_area(1, $get_exercise_notes->gf('exercise_notes'), 'exercise_notes',$params), ));	
+
 		$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, $exercise_notes, 'exercise_notes', ''), ));
-		//$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$get_exercise_notes->gf('exercise_notes').'</strong></span>', ));
+
 	}
 	if($glob['mode'] == 'preview'){
 		$ft->assign(array(
@@ -156,7 +136,6 @@ while($i<count($exercise))
 	$ft->assign(array(
 		
 		'IMG' => file_exists('upload/'.$get_program->f($image_type)) ? $get_program->f($image_type) : 'noimage.png',
-		//'IMG' => $get_program->f($image_type) ? $get_program->f($image_type) : 'noimg256.gif',
 		'PROGRAM_ID' => $exercise[$i],
 	));	
 	$get_data = $dbu->query("
@@ -181,34 +160,34 @@ while($i<count($exercise))
 	{
 		if($get_data->gf('plan_description')) 
 		{
-			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_data->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, $get_data->gf('plan_description'), 'description'.$exercise[$i],$params), ));	
+			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.stripcslashes($get_data->gf('programs_title')).'</b></span>'));	
+			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, stripcslashes($get_data->gf('plan_description')), 'description'.$exercise[$i],$params), ));	
 		}
 		else 
 		{
-			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, $get_program->gf('description'), 'description'.$exercise[$i],$params), ));	
+			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.stripcslashes($get_program->gf('programs_title')).'</b></span>'));	
+			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, stripcslashes($get_program->gf('description')), 'description'.$exercise[$i],$params), ));	
 		}
 	}
 	elseif($glob['mode'] == 'preview')
 	{
 		if($get_data->gf('plan_description'))
 		{
-			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_data->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$get_data->gf('plan_description').'</strong></span>', ));
+			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.stripcslashes($get_data->gf('programs_title')).'</b></span>'));	
+			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.stripcslashes($get_data->gf('plan_description')).'</strong></span>', ));
 		}
 		else 
 		{
-			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$get_program->gf('description').'</strong></span>', ));
+			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.stripcslashes($get_program->gf('programs_title')).'</b></span>'));	
+			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.stripcslashes($get_program->gf('description')).'</strong></span>', ));
 		}
 	}
 	if(!empty($glob['sets'.$exercise[$i]]))	$ft->assign('SETS' , $glob['sets'.$exercise[$i]]);
-	else if(empty($glob['sets'.$exercise[$i]])) $ft->assign('SETS' , $get_data->gf('plan_set_no'));
+	else if(empty($glob['sets'.$exercise[$i]])) $ft->assign('SETS' , stripcslashes($get_data->gf('plan_set_no')));
 	if(!empty($glob['repetitions'.$exercise[$i]])) $ft->assign('REPETITIONS' , $glob['repetitions'.$exercise[$i]]);
-	else if(empty($glob['repetitions'.$exercise[$i]])) $ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions'));
+	else if(empty($glob['repetitions'.$exercise[$i]])) $ft->assign('REPETITIONS' , stripcslashes($get_data->gf('plan_repetitions')));
 	if(!empty($glob['time'.$exercise[$i]])) $ft->assign('TIME' , $glob['time'.$exercise[$i]]);
-	else if(empty($glob['time'.$exercise[$i]])) $ft->assign('TIME' , $get_data->gf('plan_time'));
+	else if(empty($glob['time'.$exercise[$i]])) $ft->assign('TIME' , stripcslashes($get_data->gf('plan_time')));
     $ft->parse('EXERCISE_LINE_OUT','.exercise_line');
     if($glob['mode'] == 'preview' && $glob['sets'.$exercise[$i]] == '0' && $glob['repetitions'.$exercise[$i]] == '0' && $glob['time'.$exercise[$i]] == '0' ){
     	$ft->assign(array(

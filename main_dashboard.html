@@ -60,6 +60,11 @@
 				</div>
 			{LOGGED_IN_MENU}
 			</div>
+			<div style="display:none; position: absolute;" id="submenuProgramList">
+				<ul>
+					<li><a href="index.php?pag=programs_user"><div class="subMenuLinkSpan">User programs</div></a></li>
+				</ul>
+			</div>
 			<div style="display:none; position: absolute;" id="submenuList">
 				<ul>
 					<li class="changeURL"><a href="index.php?pag=profile"><div class="subMenuLinkSpan">{T.SETTINGS}</div></a></li>
@@ -101,6 +106,17 @@ PostAffTracker.track();
 			var url = jQuery(this).attr('href');
 			jQuery.msgBox.confirm(
 	            "{T.DELETE_PROG}",
+	            function(){window.location = url},
+	            true,
+	            {"title": "{T.SURE}","width": 200}
+	        );
+		}
+		else if(jQuery(this).hasClass('exerciseDelete'))
+		{
+			event.preventDefault();
+			var url = jQuery(this).attr('href');
+			jQuery.msgBox.confirm(
+	            "{T.DELETE_EXER}",
 	            function(){window.location = url},
 	            true,
 	            {"title": "{T.SURE}","width": 200}
