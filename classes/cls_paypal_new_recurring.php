@@ -72,7 +72,7 @@ function paypal_init()
 	'		cancelURL:			the page where buyers return to when they cancel the payment review on PayPal
 	'--------------------------------------------------------------------------------------------------------------------------------------------	
 	*/
-	function CallShortcutExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $is_recurring = false) 
+	function CallShortcutExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $NOTIFYURL, $description, $userEmail, $is_recurring = false) 
 	{
 		//------------------------------------------------------------------------------------------------------------------------------------
 		// Construct the parameter string that describes the SetExpressCheckout API call in the shortcut implementation
@@ -81,18 +81,25 @@ function paypal_init()
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_PAYMENTACTION=" . $paymentType;
 		$nvpstr = $nvpstr . "&RETURNURL=" . $returnURL;
 		$nvpstr = $nvpstr . "&CANCELURL=" . $cancelURL;
+        $nvpstr = $nvpstr . "&NOTIFYURL=" . $NOTIFYURL;
+        $nvpstr = $nvpstr . "&EMAIL=".$userEmail;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_CURRENCYCODE=" . $currencyCodeType;
-		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME1=TEst";
-		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_DESC1=Desc";
+		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME0=".$description;
+		//$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_DESC0=".$description;
 		
 		if($is_recurring)
 		{
 			$nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
-			$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=Time Magazine subscription";
+			$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=".$description;
 			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=0";
 		}
-		else
-			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=". $paymentAmount;
+		else{
+            $nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_QTY0=0";
+            $nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_AMT0=".$paymentAmount;
+            $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=".$paymentAmount;
+            $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_ITEMAMT=".$paymentAmount;
+            $nvpstr = $nvpstr . "&ALLOWNOTE=1";           
+		}
 		
 		$_SESSION["currencyCodeType"] = $currencyCodeType;	  
 		$_SESSION["PaymentType"] = $paymentType;
@@ -102,7 +109,10 @@ function paypal_init()
 		//' If the API call succeded, then redirect the buyer to PayPal to begin to authorize payment.  
 		//' If an error occured, show the resulting errors
 		//'---------------------------------------------------------------------------------------------------------------
+
 	    $resArray=hash_call("SetExpressCheckout", $nvpstr);
+        
+        logPayment($nvpstr, $resArray, "SetExpressCheckout");
 		$ack = strtoupper($resArray["ACK"]);
 		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
 		{
@@ -112,30 +122,44 @@ function paypal_init()
 	    return $resArray;
 	}
 	
-	function CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $AMT, $CURRENCYCODE, $EMAIL,
-												$L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0, $L_PAYMENTREQUEST_0_QTY0)
+	function CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $TOTALBILLINGCYCLES, $AUTOBILLOUTAMT,
+                                            $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
+                                            $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT, $FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS)
 	{
-//var_dump($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $AMT, $CURRENCYCODE, $EMAIL,
-//												$L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0, $L_PAYMENTREQUEST_0_QTY0);exit;
 		$nvpstr="&TOKEN=". $TOKEN;
 		$nvpstr.="&PROFILESTARTDATE=". $PROFILESTARTDATE;
 		$nvpstr.="&DESC=". $DESC;
 		$nvpstr.="&BILLINGPERIOD=". $BILLINGPERIOD;
 		$nvpstr.="&BILLINGFREQUENCY=". $BILLINGFREQUENCY;
-		$nvpstr.="&AMT=". $AMT;
+        $nvpstr.="&L_BILLINGTYPE0=". $L_BILLINGTYPE;
+        $nvpstr.="&TOTALBILLINGCYCLES=". $TOTALBILLINGCYCLES;
+        $nvpstr.="&AUTOBILLOUTAMT=". $AUTOBILLOUTAMT;
+		$nvpstr.="&AMT=".$AMT;
 		$nvpstr.="&CURRENCYCODE=". $CURRENCYCODE;
 		$nvpstr.="&EMAIL=". $EMAIL;
 		$nvpstr.="&L_PAYMENTREQUEST_0_ITEMCATEGORY0=". $L_PAYMENTREQUEST_0_ITEMCATEGORY0;
 		$nvpstr.="&L_PAYMENTREQUEST_0_NAME0=". $L_PAYMENTREQUEST_0_NAME0;
 		$nvpstr.="&L_PAYMENTREQUEST_0_AMT0=". $L_PAYMENTREQUEST_0_AMT0;
 		$nvpstr.="&L_PAYMENTREQUEST_0_QTY0=". $L_PAYMENTREQUEST_0_QTY0;
-		
+        //$nvpstr.="&INITAMT=". $INITAMT;
+        //$nvpstr.="&FAILEDINITAMTACTION=". $FAILEDINITAMTACTION;
+		$nvpstr.="&MAXFAILEDPAYMENTS=". $MAXFAILEDPAYMENTS;
+        $nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
+		$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=".$DESC;
+        
 		$resArray=hash_call("CreateRecurringPaymentsProfile", $nvpstr);
-var_dump($resArray);exit;
-		
+		logPayment($nvpstr, $resArray, "CreateRecurringPaymentsProfile");
+        
 	    return $resArray;
 	}
-	
+	function GetRecurringPaymentsProfileDetails($profileID){
+        $nvpstr.="&PROFILEID=". $profileID;
+		$resArray=hash_call("GetRecurringPaymentsProfileDetails", $nvpstr);
+		logPayment($nvpstr, $resArray, "GetRecurringPaymentsProfileDetails");
+        
+	    return $resArray;
+        
+    }
 	/*
 
 
@@ -273,13 +297,16 @@ var_dump($resArray);exit;
 		$serverName 		= urlencode($_SERVER['SERVER_NAME']);
 
 		$nvpstr  = '&TOKEN=' . $token . '&PAYERID=' . $payerID . '&PAYMENTREQUEST_0_PAYMENTACTION=' . $paymentType . '&PAYMENTREQUEST_0_AMT=' . $FinalPaymentAmt;
-		$nvpstr .= '&PAYMENTREQUEST_0_CURRENCYCODE=' . $currencyCodeType . '&IPADDRESS=' . $serverName; 
+		$nvpstr .= '&PAYMENTREQUEST_0_CURRENCYCODE=' . $currencyCodeType . '&IPADDRESS=' . $serverName;
+        
 
 		 /* Make the call to PayPal to finalize payment
 		    If an error occured, show the resulting errors
 		    */
+         
 		$resArray=hash_call("DoExpressCheckoutPayment",$nvpstr);
-
+        
+        logPayment($nvpstr, $resArray, "ConfirmPayment");
 		/* Display the API response back to the browser.
 		   If the response from PayPal was a success, display the response parameters'
 		   If the response was an error, display the errors received using APIError.php.
@@ -401,7 +428,7 @@ var_dump($resArray);exit;
 	}
 
 	$USE_PROXY = false;
-	$version="64";
+	$version="76";//64
     if (session_id() == "") 
 		session_start();
 		//declaring of global variables
@@ -428,12 +455,11 @@ var_dump($resArray);exit;
 
 		//NVPRequest for submitting to server
 		$nvpreq="METHOD=" . urlencode($methodName) . "&VERSION=" . urlencode($version) . "&PWD=" . urlencode($API_Password) . "&USER=" . urlencode($API_UserName) . "&SIGNATURE=" . urlencode($API_Signature) . $nvpStr . "&BUTTONSOURCE=" . urlencode($sBNCode);
-//if($methodName == 'CreateRecurringPaymentsProfile')
-//{var_dump($nvpreq);exit;}
+
 		//setting the nvpreq as POST FIELD to curl
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $nvpreq);
-
 		//getting response from server
+
 		$response = curl_exec($ch);
 
 		//convrting NVPResponse to an Associative Array
@@ -513,5 +539,51 @@ var_dump($resArray);exit;
 	     }
 		return $nvpArray;
 	}
-
+    /**
+    * This example assumes that a token was obtained from the SetExpressCheckout API call.
+    * This example also assumes that a payerID was obtained from the SetExpressCheckout API call
+    * or from the GetExpressCheckoutDetails API call.
+    */
+    function DoExpressCheckoutPayment($payerID, $token, $paymentType, $paymentAmount, $currencyID){
+        
+        // Set request-specific fields.
+        $payerID = urlencode($payerID);
+        $token = urlencode($token);
+        
+        $paymentType = urlencode($paymentType);			// "Authorization" or 'Sale' or 'Order'
+        $paymentAmount = urlencode($paymentAmount);
+        $currencyID = urlencode($currencyID);						// or other currency code ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
+        
+        // Add request-specific fields to the request string.
+        $nvpStr = "&TOKEN=$token&PAYERID=$payerID&PAYMENTACTION=$paymentType&AMT=$paymentAmount&CURRENCYCODE=$currencyID";
+        
+        // Execute the API operation; see the PPHttpPost function above.
+        $resArray = hash_call('DoExpressCheckoutPayment', $nvpStr);
+        
+        return $resArray;
+        
+        //if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+        //exit('Express Checkout Payment Completed Successfully: '.print_r($httpParsedResponseAr, true));
+        //} else  {
+        //exit('DoExpressCheckoutPayment failed: ' . print_r($httpParsedResponseAr, true));
+        //}
+    }
+    function logPayment($request, $answer, $type){
+        $dbu = new mysql_db();
+        parse_str($request);
+        
+        if(!isset($AMT)) $AMT = $answer['AMT']; if(!isset($AMT)) $AMT = $PAYMENTREQUEST_0_AMT;
+        if(!isset($CURRENCYCODE)) $CURRENCYCODE = $answer['CURRENCYCODE'];
+        $STATUS = isset($answer['PROFILESTATUS']) ? $answer['PROFILESTATUS'] : $answer['STATUS'];
+        $ERROR = $answer['L_SEVERITYCODE0'] == 'Error' ? implode(' | ', array($answer['L_ERRORCODE0'],$answer['L_SHORTMESSAGE0'], $answer['L_LONGMESSAGE0'])) : NULL;
+        
+        $trainer_id = $_SESSION['m_id'];
+        foreach($answer as $key=>$val)
+            $naswer_str .= '&'.$key.'='.$val;
+        
+        $dbu->query("INSERT INTO `paypal_transactions`
+                                (`trainer_id`, `name`, `profile_id`, `status`, `type`, `amount`, `currency`, `timestamp`, `ack`, `request`, `correlation_id`, `error`, `answer`)
+                         VALUES ('$trainer_id', '$DESC', '{$answer['PROFILEID']}', '$STATUS', '$type', '$AMT', '$CURRENCYCODE', '{$answer['TIMESTAMP']}', '{$answer['ACK']}', '$request', '{$answer['CORRELATIONID']}',
+                                '$ERROR', '$naswer_str')");
+    }
 ?>
