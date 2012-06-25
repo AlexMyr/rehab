@@ -1245,28 +1245,28 @@ function confirm_pay()
             return false;
         }
 
-        $ld['programs_id']=$this->dbu->query_get_id("INSERT INTO programs SET 
-																programs_code='".$last_code."', 
-																sort_order='".($this->dbu->f('sort_order')+10)."',
-																active = 1,
-                                                                owner = ".$_SESSION['m_id']);
-        foreach(array('en', 'us') as $lang){
-            $this->dbu->query("INSERT INTO programs_translate_".$lang." SET 
-																programs_id='".$ld['programs_id']."', 
-																programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
-																description = '".mysql_real_escape_string($ld['description_'.$lang])."' ");
-        }
-		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
-                									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
-        
         if($programs->image_validate()){
+			$ld['programs_id']=$this->dbu->query_get_id("INSERT INTO programs SET 
+														programs_code='".$last_code."', 
+														sort_order='".($this->dbu->f('sort_order')+10)."',
+														active = 1,
+														owner = ".$_SESSION['m_id']);
+			foreach(array('en', 'us') as $lang){
+				$this->dbu->query("INSERT INTO programs_translate_".$lang." SET 
+																	programs_id='".$ld['programs_id']."', 
+																	programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
+																	description = '".mysql_real_escape_string($ld['description_'.$lang])."' ");
+			}
+			$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
+														values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
+			
             $programs->upload_file($ld);
 			$ld['pag'] = 'programs_user';
 			$ld['error'] = 'Exercise added.';
 			return true;
         }
         else {
-			$ld['error'] = 'Some error.';
+			$ld['error'] = 'Invalid picture.';
             return false;
         }
     }
@@ -1333,6 +1333,7 @@ function confirm_pay()
 			return true;
         }
         else {
+			$ld['error'] = 'Invalid image.';
             return false;
         }
 		
@@ -1363,6 +1364,11 @@ function confirm_pay()
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
             $is_ok=false;
         }
+		if(($_FILES['image']['name'] && !$_FILES['lineart']['name']) || (!$_FILES['image']['name'] && $_FILES['lineart']['name']))
+		{
+			$ld['error'].=get_template_tag('profile_exercise_add', $ld['lang'], 'T.FILL_IMAGE')."<br>";
+            $is_ok=false;
+		}
 		return $is_ok;
 	}
 	
@@ -1412,6 +1418,7 @@ function confirm_pay()
 		$query_string = "DELETE FROM exercise_plan_set WHERE exercise_program_id = '".$ld['programs_id']."' AND trainer_id = ".$_SESSION[U_ID];
 		$this->dbu->query($query_string);
 		
+		$ld['error'] = 'Exercise succesfully deleted.';
 		return true;
 	}
 	

@@ -5,7 +5,7 @@ $ft->define(array('main' => "programs_user.html"));
 $ft->define_dynamic('client_line','main');
 
 $max_rows = '';
-$l_r = ROW_PER_PAGE;
+$l_r = 12;
 
 $dbu = new mysql_db();
 
