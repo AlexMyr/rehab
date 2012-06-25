@@ -432,6 +432,8 @@ $(document).ready(function()
 	//add scroll
 	if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
 		$('.clientListDynamic').jScrollPane();
+	if(typeof($('.scrolledList').jScrollPane()) != 'undefined')
+		$('.scrolledList').jScrollPane();
 	
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
@@ -650,6 +652,8 @@ $(document).ready(function()
 	});
 	
 	$("#scrollToTop").click(function(){
+		$(".jspPane").css('top', 0);
+		$(".jspDrag").css('top', 0);
 		$(".scrolledList").scrollTop(0);
 		$(window).scrollTop(0);
 	});
