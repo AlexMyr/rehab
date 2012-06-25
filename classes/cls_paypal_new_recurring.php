@@ -11,7 +11,7 @@ function paypal_init()
 	$PROXY_HOST = '127.0.0.1';
 	$PROXY_PORT = '808';
 
-	$SandboxFlag = true;
+	$SandboxFlag = false;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -391,7 +391,7 @@ function paypal_init()
 	$PROXY_PORT = '808';
 
 	
-	$SandboxFlag = true;
+	$SandboxFlag = false;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -463,8 +463,9 @@ function paypal_init()
 		$response = curl_exec($ch);
 
 		//convrting NVPResponse to an Associative Array
-		$nvpResArray=deformatNVP($response);
+		$nvpResArray=deformatNVP($response);        
 		$nvpReqArray=deformatNVP($nvpreq);
+
 		$_SESSION['nvpReqArray']=$nvpReqArray;
 
 		if (curl_errno($ch)) 
@@ -494,7 +495,7 @@ function paypal_init()
 	{
 		//global $PAYPAL_URL;
 		
-		$SandboxFlag = true;
+		$SandboxFlag = false;
 		if ($SandboxFlag == true) 
         {
             $API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";
