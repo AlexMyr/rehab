@@ -69,7 +69,7 @@ a { cursor:pointer; color:#ffffff; }
 .navMenu ul li div { display:none; margin:0px 8px 0px 8px; margin:0px 0px 0px 0px; text-align:center; position:absolute; bottom:-24px; }
 .navMenu ul li div a, .navMenu ul li div a:hover, .navMenu ul li div a span, .navMenu ul li div a:hover span { margin:0px 0px 0px 0px; padding:0px; background: none; }
 
-.scrolledList{ height: 700px; overflow-y: scroll;}
+.scrolledList{ height: 700px; overflow-y: auto;}
 .jsScrollDiv{ overflow-y: hidden;}
 
 .contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px;}
