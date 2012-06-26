@@ -162,8 +162,9 @@ doExerciseDetails = function()
 					obj.appendTo($(this).parent().parent().parent());
 					$(this).bind('click',function(e)
 					{
-						var scrolledSize = $('#content').scrollTop();
-						
+						//var scrolledSize = $('#content').scrollTop();
+						var scrolledSize = (-1)*parseInt($('.jspPane').css('top'));
+
 						var details = parseInt($(this).attr('id').split('details_')[1]);
 						e.stopPropagation();
 						e.preventDefault();
@@ -203,7 +204,8 @@ doExerciseCompactViewDetails = function()
 					obj.appendTo($(this).parent().parent().parent());
 					$(this).bind('click',function(e)
 					{
-						var scrolledSize = $('#content').scrollTop();
+						//var scrolledSize = $('#content').scrollTop();
+						var scrolledSize = (-1)*parseInt($('.jspPane').css('top'));
 						
 						var details = parseInt($(this).attr('id').split('compactViewDetails_')[1]);
 						e.stopPropagation();
