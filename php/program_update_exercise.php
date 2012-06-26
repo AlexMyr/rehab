@@ -199,10 +199,13 @@ if($glob['catID']&&$glob['program_id'])
 	$start_user_exercise = false;
 	while ($program->next())
 	{
+        $title = $program->f('programs_title');
+        
 		if($program->f('owner')!=-1 && !$start_user_exercise)
 		{
 		  $start_user_exercise = true;
 		  $user_break_line = '<div class="clearAllUser">Own exercises</div>';
+          $i = 0;
 		}
 		else
 		{
