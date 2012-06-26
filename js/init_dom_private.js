@@ -441,10 +441,8 @@ $(document).ready(function()
 	if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
 		$('.clientListDynamic').jScrollPane();
 		
-	$('.scrolledList').ready(function(){
-		if(typeof($('.scrolledList').jScrollPane()) != 'undefined')
-			$('.scrolledList').jScrollPane();
-	})
+	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
+		$('.jsScrollDiv').jScrollPane();
 	
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
