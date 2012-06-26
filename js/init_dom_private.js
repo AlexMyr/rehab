@@ -440,8 +440,11 @@ $(document).ready(function()
 	//add scroll
 	if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
 		$('.clientListDynamic').jScrollPane();
-	if(typeof($('.scrolledList').jScrollPane()) != 'undefined')
-		$('.scrolledList').jScrollPane();
+		
+	$('.scrolledList').ready(function(){
+		if(typeof($('.scrolledList').jScrollPane()) != 'undefined')
+			$('.scrolledList').jScrollPane();
+	})
 	
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
