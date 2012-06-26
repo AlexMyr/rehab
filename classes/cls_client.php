@@ -242,6 +242,13 @@ class client
 	
 	function send_program_email(&$ld)
 	{
+		$is_appeal_first_name = true;
+		$appeal_settings = $this->dbu->field("SELECT title_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
+		if($appeal_settings)
+		{
+			$is_appeal_first_name = false;
+		}
+		
 		//check is program has exercise
 		$exerciseString = $this->dbu->field("SELECT exercise_program_id
 							FROM 
@@ -284,7 +291,16 @@ class client
 	
 			$body=$message_data['text'];
 			
-			$body=str_replace('[!APPEAL!]',$ld['first_name'], $body );
+			if($is_appeal_first_name)
+			{
+				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['first_name'], $body );
+			}
+			else
+			{
+				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['appeal'].' '.$ld['surname'], $body );
+			}
+			
+			//$body=str_replace('[!APPEAL!]',$ld['first_name'], $body );
 			//$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
 			$body=str_replace('[!FIRSTNAME!]',$ld['first_name'], $body );
 			$body=str_replace('[!SURNAME!]',$ld['surname'], $body );
