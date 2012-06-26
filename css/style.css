@@ -351,7 +351,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .programList .item .programText { float:left; width:300px; margin:0px 0px 0px 0px; font-family: avgardn;}
 .programList .item h2 { font-size:16px; color:#6099e7; font-family: "MergeRegular"; color:#3868aa; margin-bottom:5px; }
 .programList .item p { font-size:11px; color:#666666; color:#343434; }
-.programList .item .moreBtn { font-size:11px; font-weight:bold; margin-top:5px; }
+.programList .item .moreBtn { font-size:11px; font-weight:bold; margin-top:5px; max-width: 110px; }
 
 .programList .itemCompact { padding:0px 0px 0px 0px; display:block; width:140px; float:left; margin:0px 20px 20px 0px; position:relative; }
 .programList .itemCompact.last { margin:0px 0px 0px 0px; }
