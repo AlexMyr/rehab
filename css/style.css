@@ -228,7 +228,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .contactInfo .moreBtn { margin:20px 0px 0px 0px; font-family: "MergeRegular"; width: 125px;}
 
 .contactInfo .label { margin: 7px 0px 5px 0px; display:block; }
-.contactInfo .textField { height:24px; width:196px; border:1px solid #e0e0e0; }
+.contactInfo .textField { height:20px; width:196px; border:1px solid #e0e0e0; }
 .contactInfo .selectField { height:24px; width:196px; border:1px solid #e0e0e0; }
 .contactInfo .selectMonthField { height:24px; width:80px; border:1px solid #e0e0e0; }
 .contactInfo .selectYearField { height:24px; width:100px; border:1px solid #e0e0e0; }
