@@ -6,33 +6,29 @@ class contact
 {
   var $dbu;
   
-function contact()
-        {
-                $this->dbu=new mysql_db;
-        }
+  function contact()
+  {
+    $this->dbu=new mysql_db;
+  }
 
 
-/****************************************************************
-* function add(&$ld)                                            *
-****************************************************************/
-function add(&$ld)
-        {
-                if(!$this->add_validate($ld))
-                {
-                     return false;
-                }
-
-                $this->send_contact_us_notiffication_mail($ld);
+  /****************************************************************
+  * function add(&$ld)                                            *
+  ****************************************************************/
+  function add(&$ld)
+  {
+	if(!$this->add_validate($ld))
+	{
+	 return false;
+	}
+  
+	$this->send_contact_us_notiffication_mail($ld);
 	$ld['error']="Your message has been sent to the support team. We will contact you as soon as possible. Thank you.";
 	$ld['pag']="cms";
-    $ld['id']=130;
-	$ld['p']='contact-us.html';
+	$ld['id']=130;
+	$ld['p']='contact_us';
 	return true;
-//                $ld['pag']="cms";
-//                $ld['id']=101;
-                $ld['pag']="contact_thankyou2";
-				return true;
-        }
+  }
 
 /****************************************************************
 * function send_notiffication_mail(&$ld)                        *
