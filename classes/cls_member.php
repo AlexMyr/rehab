@@ -1365,7 +1365,7 @@ class member
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
             $is_ok=false;
         }
-		if(($_FILES['image']['name'] && !$_FILES['lineart']['name']) || (!$_FILES['image']['name'] && $_FILES['lineart']['name']))
+		if((!$_FILES['image']['name'] && !$_FILES['lineart']['name']))
 		{
 			$ld['error'].=get_template_tag('profile_exercise_add', $ld['lang'], 'T.FILL_IMAGE')."<br>";
             $is_ok=false;
