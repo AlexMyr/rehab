@@ -7,9 +7,7 @@ $ft->define(array('main' => "login.html"));
 
 //$page_title='Login Member';
 //$next_function ='auth-login';
-
 session_start();
-
 $dbu = new mysql_db();
 
 //$dbu->query("select name from cms_menu where menu_id=".$glob['menu_id']);
@@ -33,8 +31,8 @@ $site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], '
 require 'fb/facebook.php';
 
 $facebook = new Facebook(array(
-  'appId'  => '140136112789193',
-  'secret' => 'dfa5828ecca71050bfd974f659003a66',
+  'appId'  => '264894086933472',
+  'secret' => '9e61aeb9b7632060cc834d6ad4b106a3',
 ));
 
 // See if there is a user from a cookie
@@ -49,8 +47,6 @@ if ($user) {
   }
 }
 
-
-
 if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 {
 	//check existing
@@ -61,13 +57,13 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 		header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
 		exit;
 	}
-	//elseif($is_user_in_db && $dbu->f('active')==0 && (strtotime($dbu->f('expire_time'))-time()>0))
+	//elseif($is_user_in_db && $dbu->f('active')==0)
 	//{
-	//	session_unset();
+	//	$_SESSION['fb_login_rmp'] = 0;
 	//	header("Location: /index.php?&pag=login&success=false&error=".urlencode('Username was banned for a reason. Please contact support for more details!'));
 	//	exit;
 	//}
-	else
+	//else
 	{
 		if(isset($user_profile['email']) && $user_profile['email'])
 		{
@@ -76,9 +72,9 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 			{
 				$dbu->query("
 							UPDATE 
-								trainer 
+										trainer 
 							SET 
-								fb_id = '".$user_profile['id']."'
+										fb_id = '".$user_profile['id']."'
 							WHERE trainer_id = '".$dbu->f('trainer_id')."'
 							");
 				header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user_profile['id']);
@@ -88,7 +84,7 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 			{
 			
 				$dbu->query("
-							INSERT INTO 
+								INSERT INTO 
 										trainer 
 							SET 
 										username='".$user_profile['email']."', 
@@ -110,25 +106,24 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 		else
 		{
 			$dbu->query("
-						INSERT INTO 
-							trainer 
+							INSERT INTO 
+									trainer 
 						SET 
-							username='', 
-							email='',
-							first_name='".mysql_real_escape_string($user_profile['first_name'])."',
-							surname='".mysql_real_escape_string($user_profile['last_name'])."',
-							password='', 
-							create_date=NOW(), 
-							is_trial='1', 
-							expire_date='', 
-							active = '1',
-							fb_id = '".$user_profile['id']."'
+									username='', 
+									email='',
+									first_name='".$user_profile['first_name']."',
+									surname='".$user_profile['last_name']."',
+									password='', 
+									create_date=NOW(), 
+									is_trial='1', 
+									expire_date='', 
+									active = '1',
+									fb_id = '".$user_profile['id']."'
 						");
 			header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user_profile['id']);
 			exit;
 		}
 	}
-	
 }
 else
 {

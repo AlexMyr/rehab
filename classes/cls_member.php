@@ -710,19 +710,20 @@ class member
 								state_zip='".$ld['state_zip']."'
 							WHERE 
 								trainer_id='".$_SESSION[U_ID]."'");
-		
+		$success = true;
 		if(!$ld['delete_image']&&!empty($_FILES['upload_image']['name']))
 		{
 			if($_FILES['upload_image']['error'] === 0)
-				$this->upload_custom_file($ld);
+				$success = $this->upload_custom_file($ld);
 			//$ld['error']='unchecked';
 		}
 		elseif($ld['delete_image'])
 		{
-			$this->erasecustompicture($ld);
+			$success &= $this->erasecustompicture($ld);
 			//$ld['error']='checked';
 		}
-        if(!isset($ld['error'])){
+
+        if($success){
             $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
             $ld['pag'] = 'dashboard';
             return true;
