@@ -193,7 +193,7 @@ $program = $dbu->query("
 				WHERE
 					".$where." 
 					AND programs.active = 1
-					AND programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID]."
+					AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
 				ORDER BY programs.owner, programs.sort_order ASC
 					");
 $i=0;

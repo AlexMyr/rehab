@@ -32,7 +32,7 @@ if(isset($glob['client_id']))
   $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
 				  <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
   
-  $dbu->query("select first_name, surname, email
+  $dbu->query("select first_name, surname, email, appeal
 		   FROM client WHERE client_id = {$glob['client_id']} ");
   
   if($dbu->move_next())
@@ -41,6 +41,7 @@ if(isset($glob['client_id']))
 	  'FIRST_NAME'=>$dbu->f('first_name'),
 	  'SURNAME'=>$dbu->f('surname'),
 	  'EMAIL'=>$dbu->f('email'),
+	  'APPEAL'=>$dbu->f('appeal'),
 	));
   }
 }

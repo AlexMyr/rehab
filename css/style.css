@@ -69,7 +69,8 @@ a { cursor:pointer; color:#ffffff; }
 .navMenu ul li div { display:none; margin:0px 8px 0px 8px; margin:0px 0px 0px 0px; text-align:center; position:absolute; bottom:-24px; }
 .navMenu ul li div a, .navMenu ul li div a:hover, .navMenu ul li div a span, .navMenu ul li div a:hover span { margin:0px 0px 0px 0px; padding:0px; background: none; }
 
-.scrolledList{ height: 700px;}
+.scrolledList{ height: 700px; overflow-y: auto;}
+.jsScrollDiv{ overflow-y: hidden;}
 
 .contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px;}
 .contentContainerBox h2 { color:#6099e7; font-size: 36px; color:#3868aa; }
@@ -227,7 +228,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .contactInfo .moreBtn { margin:20px 0px 0px 0px; font-family: "MergeRegular"; width: 125px;}
 
 .contactInfo .label { margin: 7px 0px 5px 0px; display:block; }
-.contactInfo .textField { height:24px; width:196px; border:1px solid #e0e0e0; }
+.contactInfo .textField { height:20px; width:196px; border:1px solid #e0e0e0; }
 .contactInfo .selectField { height:24px; width:196px; border:1px solid #e0e0e0; }
 .contactInfo .selectMonthField { height:24px; width:80px; border:1px solid #e0e0e0; }
 .contactInfo .selectYearField { height:24px; width:100px; border:1px solid #e0e0e0; }
@@ -350,7 +351,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .programList .item .programText { float:left; width:300px; margin:0px 0px 0px 0px; font-family: avgardn;}
 .programList .item h2 { font-size:16px; color:#6099e7; font-family: "MergeRegular"; color:#3868aa; margin-bottom:5px; }
 .programList .item p { font-size:11px; color:#666666; color:#343434; }
-.programList .item .moreBtn { font-size:11px; font-weight:bold; margin-top:5px; }
+.programList .item .moreBtn { font-size:11px; font-weight:bold; margin-top:5px; max-width: 110px; }
 
 .programList .itemCompact { padding:0px 0px 0px 0px; display:block; width:140px; float:left; margin:0px 20px 20px 0px; position:relative; }
 .programList .itemCompact.last { margin:0px 0px 0px 0px; }
