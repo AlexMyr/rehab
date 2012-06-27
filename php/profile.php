@@ -54,7 +54,7 @@ $dbu2->move_next();
 
 $ft->define(array('main' => "profile.html"));
 $ft->assign(array(
-	'EXERCISE_NOTES'=> $dbu2->gf('exercise_notes'),
+	'EXERCISE_NOTES'=> stripcslashes($dbu2->gf('exercise_notes')),
 	'LANG_EN' => $dbu2->f('lang') == 'en' ? 'selected' : '',
 	'LANG_US' => $dbu2->f('lang') == 'us' ? 'selected' : ''
 ));

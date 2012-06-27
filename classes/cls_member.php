@@ -722,9 +722,14 @@ class member
 			$this->erasecustompicture($ld);
 			//$ld['error']='checked';
 		}
-		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
-		$ld['pag'] = 'dashboard';
-		return true;
+        if(!isset($ld['error'])){
+            $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
+            $ld['pag'] = 'dashboard';
+            return true;
+        } else{
+            $ld['pag'] = 'profile_header_paper';
+            return false;
+        }
 	}
 		
 	function check_header_paper_exists()
@@ -847,6 +852,7 @@ class member
         $allowed['.gif']=1;
         $allowed['.jpg']=1;
         $allowed['.jpeg']=1;
+        $allowed['.png']=1;
         $f_ext=substr($_FILES['upload_image']['name'],strrpos($_FILES['upload_image']['name'],"."));
         if(!$allowed[strtolower($f_ext)])
         {
@@ -1226,7 +1232,6 @@ class member
 	
     function exercise_add(&$ld)
 	{
-		
         // we'll use some functions from admin lib to avoid code doubling 
         include_once('admin/classes/cls_programs.php');
         $programs = new programs();
@@ -1255,8 +1260,8 @@ class member
 			foreach(array('en', 'us') as $lang){
 				$this->dbu->query("INSERT INTO programs_translate_".$lang." SET 
 																	programs_id='".$ld['programs_id']."', 
-																	programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
-																	description = '".mysql_real_escape_string($ld['description_'.$lang])."' ");
+																	programs_title='".mysql_real_escape_string($ld['name'])."',
+																	description = '".mysql_real_escape_string($ld['description'])."' ");
 			}
 			$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
 														values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
@@ -1276,12 +1281,12 @@ class member
 	{
 		$is_ok=true;
 
-		if(!$ld['name_en'] || !$ld['name_us'])
+		if(!$ld['name'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
             $is_ok=false;
         }
-		if(!$ld['description_en'] || !$ld['description_us'])
+		if(!$ld['description'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
             $is_ok=false;
@@ -1296,11 +1301,11 @@ class member
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
             $is_ok=false;
         }
-        if(!$_FILES['image']['name'] || !$_FILES['lineart']['name'])
+        /*if(!$_FILES['image']['name'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
             $is_ok=false;
-        }
+        }*/
 		return $is_ok;
 	}
 	
@@ -1318,8 +1323,8 @@ class member
 
         foreach(array('en', 'us') as $lang){
             $this->dbu->query("UPDATE programs_translate_".$lang." SET 
-								   programs_title='".mysql_real_escape_string($ld['name_'.$lang])."',
-								   description = '".mysql_real_escape_string($ld['description_'.$lang])."'
+								   programs_title='".mysql_real_escape_string($ld['name'])."',
+								   description = '".mysql_real_escape_string($ld['description'])."'
 								WHERE programs_id='".$ld['programs_id']."'
 							");
         }
@@ -1345,12 +1350,12 @@ class member
 	{
 		$is_ok=true;
 
-		if(!$ld['name_en'] || !$ld['name_us'])
+		if(!$ld['name'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
             $is_ok=false;
         }
-		if(!$ld['description_en'] || !$ld['description_us'])
+		if(!$ld['description'])
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_DESCR')."<br>";
             $is_ok=false;
@@ -1364,12 +1369,12 @@ class member
         {
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
             $is_ok=false;
-        }
-		if(($_FILES['image']['name'] && !$_FILES['lineart']['name']) || (!$_FILES['image']['name'] && $_FILES['lineart']['name']))
+        }       
+		/*if( !$_FILES['image']['name'] )
 		{
 			$ld['error'].=get_template_tag('profile_exercise_add', $ld['lang'], 'T.FILL_IMAGE')."<br>";
             $is_ok=false;
-		}
+		}*/
 		return $is_ok;
 	}
 	
@@ -1434,4 +1439,12 @@ class member
         }
 		return $is_ok;
 	}
+    function delete_image(&$ld){
+        if($ld['programs_id']){
+            $this->dbu->query("UPDATE `programs` SET lineart = NULL, thumb_lineart = '', image = NULL, thumb_image = '' WHERE programs_id=".$ld['programs_id']);
+            return true;
+        }
+        else
+            return false;
+    }
 }//end class

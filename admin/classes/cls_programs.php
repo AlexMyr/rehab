@@ -106,6 +106,8 @@ class programs
         $allowed['.gif']=1;
         $allowed['.jpg']=1;
         $allowed['.jpeg']=1;
+        $allowed['.png']=1;
+        
         if(!empty($_FILES['lineart']['name']))
         {
 	        $f_lineart_ext=substr($_FILES['lineart']['name'],strrpos($_FILES['lineart']['name'],"."));
@@ -340,6 +342,7 @@ function upload_file(&$ld)
         $allowed['.gif']=1;
         $allowed['.jpg']=1;
         $allowed['.jpeg']=1;
+        $allowed['.png']=1;
         
         if(!is_numeric($_SESSION[U_ID]))
         {
@@ -389,7 +392,7 @@ function upload_file(&$ld)
         $t_image_out=$script_path.UPLOAD_PATH.$t_image_title;
         }
         
-        if(!$is_live || (strtolower($f_lineart_ext) =='.gif'))
+        if(!$is_live || (strtolower($f_lineart_ext) =='.gif') || (strtolower($f_lineart_ext) =='.png'))
         {
         	if(FALSE === move_uploaded_file($_FILES['lineart']['tmp_name'],$f_lineart_out))
 	        {
@@ -406,7 +409,7 @@ function upload_file(&$ld)
         	$ld['error'].="Image Succesfully saved.<br>";
         	return true;
         }
-        if(!$is_live || (strtolower($f_image_ext) =='.gif'))
+        if(!$is_live || (strtolower($f_image_ext) =='.gif') || (strtolower($f_image_ext) =='.png'))
         {
         	if(FALSE === move_uploaded_file($_FILES['image']['tmp_name'],$f_image_out))
 	        {

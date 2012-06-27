@@ -4,24 +4,19 @@
 			<span class="pageTitle">Update exercise</span>
 			<span class="clearAll"></span>
 		</h2>
+
 		<form action="index.php" method="post" enctype="multipart/form-data">
-		<div class="addExercise floatLft">
+				<div class="addExercise floatLft">
 					
 						<input type="hidden" name="act" value="member-exercise_update">
 						<input type="hidden" name="pag" value="profile_exercise_update">
 						<input type="hidden" name="programs_id" value="{PROGRAMS_ID}">
 						
 						<h3>Exercise name</h3><br />
-						<label class="label" for="name_en">GB:&nbsp;</label>
-						<input class="textField" type="text" id="name_en" name="name_en" value="{name_en}" style="width:180px;" />&nbsp;
-						<label class="label" for="name_us">US:&nbsp;</label>
-						<input class="textField" type="text" id="name_us" name="name_us" value="{name_us}" style="width:180px;" />
+						<input class="textField" type="text" id="name" name="name" value="{name}" style="width:180px;" />&nbsp;
 						
 						<h3>Description</h3><br />
-						<label class="label" for="description_en" style="vertical-align:top;">GB:&nbsp;</label>
-						<textarea class="textField" id="description_en" name="description_en" style="width:180px;">{description_en}</textarea>&nbsp;
-						<label class="label" for="description_us" style="vertical-align:top;">US:&nbsp;</label>
-						<textarea class="textField" id="description_us" name="description_us" style="width:180px;">{description_us}</textarea>
+						<textarea class="textField" id="description" name="description" style="width:180px;">{description}</textarea>
 						
 						<h3>Category</h3><br />
 						<label class="label" for="category">Select category:&nbsp;</label>
@@ -36,29 +31,21 @@
 					
 		</div>
 		<div class="floatLft" style="width: 460px; margin-left:40px;">
-			<h3>Upload images</h3><br />
+			<h3>Upload picture</h3><br />
 			<div style="max-width:330px;min-height:70px;">
+				<div style="float:left; margin-left: 20px; height: 100px;position: relative;">
+					{PROGRAM_PHOTO}
+					{PHOTO_DELETE}
+				</div>
 				<div style="float:left; padding-top:20px;">
-					<label class="label" for="image" style="margin-right:3px;">Select photo:&nbsp;</label><br/>
+					<label class="label" for="image" style="margin-right:3px;">Select image (.jpg, .jpeg, .png and .gif only):&nbsp;</label>
 					<input class="fileUpload" type="file" id="upload_photo" name="image" />
 				</div>
-				<div style="float:right;">
-					<img src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_PHOTO}&amp;wl=69&amp;hp=69" alt="photo" />
-				</div>
 				<div style="clear:both;"></div>
 			</div>
-			<br /><br />
-			<div style="max-width:330px;min-height:70px;">
-				<div style="float:left; padding-top:25px;">
-					<label class="label" for="lineart" style="margin-right:3px;">Select lineart:&nbsp;</label><br/>
-					<input class="fileUpload" type="file" id="upload_lineart" name="lineart" />
-				</div>
-				<div style="float:right;">
-					<img src="phpthumb/phpThumb.php?src=../upload/{PROGRAM_LINEART}&amp;wl=69&amp;hp=69" alt="lineart" />
-				</div>
-				<div style="clear:both;"></div>
-			</div>
+			
 		</div>
-	</form>
+		</form>
+	
 		<div class="clearAll"></div>
 	</div>

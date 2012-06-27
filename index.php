@@ -145,7 +145,6 @@ if($glob['act'] && !$glob['skip_action'])
     }
 }
 
-
 //var_dump($glob['pag']);exit;
 include_once("php/gen/page_perm.php");
 
@@ -215,6 +214,9 @@ $q = mysql_query("SELECT * FROM tmpl_translate_".$glob['lang']." WHERE template_
 while($row = mysql_fetch_assoc($q)){
   $ftm->assign($row['tag'], $row['tag_text']);
 }
+
+$my_programs = get_template_tag('programs', $glob['lang'], 'T.MY_PROGRAMMES');
+$ftm->assign('T.MY_PROGRAMMES', $my_programs);
 $ftm->assign('PAGE',$page);
 $ftm->assign('BOTTOM_INCLUDES',$bottom_includes);
 $ftm->parse('CONTENT','main');

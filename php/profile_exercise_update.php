@@ -19,22 +19,12 @@ $ft->assign('PROGRAMS_ID', $glob['programs_id']);
 $dbu->query("select * from programs as p left join programs_translate_en as pte on p.programs_id = pte.programs_id where p.owner=".$_SESSION[U_ID]." AND p.programs_id = {$glob['programs_id']} ");
 if($dbu->move_next())
 {
+    $has_image = ($dbu->f('image')) ? true :false;
   $ft->assign(array(
-    'name_en'=>$dbu->f('programs_title'),
-    'description_en'=>$dbu->f('description'),
-    
-  ));
-}
-
-$dbu->query("select * from programs as p left join programs_translate_us as ptu on p.programs_id = ptu.programs_id where p.owner=".$_SESSION[U_ID]." AND p.programs_id = {$glob['programs_id']} ");
-if($dbu->move_next())
-{
-  $ft->assign(array(
-    'PROGRAM_PHOTO'=>$dbu->f('image'),
-    'PROGRAM_LINEART'=>$dbu->f('lineart'),
-    'name_us'=>$dbu->f('programs_title'),
-    'description_us'=>$dbu->f('description'),
-    
+    'name'=>stripslashes($dbu->f('programs_title')),
+    'description'=>stripslashes($dbu->f('description')),
+    'PROGRAM_PHOTO'=> ($has_image) ? '<img src="phpthumb/phpThumb.php?src=../upload/'.$dbu->f('image').'&amp;wl=69&amp;hp=69" class="image_preview" alt="photo" />' : '',
+    'PHOTO_DELETE' => ($has_image) ? '<img src="img/delete_red.png" class="delete_image" style="position: absolute; right: 0px;" />' : ''
   ));
 }
 

@@ -11,10 +11,8 @@ foreach($tags as $name => $row){
 }
 
 $ft->assign(array(
-    'name_en'=>$glob['name_en'],
-    'name_us'=>$glob['name_us'],
-    'description_en'=>$glob['description_en'],
-    'description_us'=>$glob['description_us'],
+    'name'=>stripslashes($glob['name']),
+    'description'=>stripslashes($glob['description']),
   ));
 
 $dbu = new mysql_db();

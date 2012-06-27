@@ -79,6 +79,9 @@ $ftm->assign('META_TITLE', $page_meta_title);
 $ftm->assign('META_KEYWORDS', $page_meta_keywords);
 $ftm->assign('META_DESCRIPTION', $page_meta_description);
 
+$my_programs = get_template_tag('programs', $glob['lang'], 'T.MY_PROGRAMMES');
+$ftm->assign('T.MY_PROGRAMMES', $my_programs);
+
 $ftm->assign('BOTTOM_INCLUDES', $bottom_includes);
 $ftm->parse('CONTENT','main');
 $ftm->ft_print('CONTENT');
