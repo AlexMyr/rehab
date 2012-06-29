@@ -283,11 +283,13 @@ class client
 						 ");
 		if($this->dbu->move_next())
 		{
+            
 			$this->generate_pdf_for_program($ld);
 			$message_data=get_sys_message('sendpdf');
 			$ordermail = $ld['email'];
 			$fromMail = $this->dbu->gf('trainer_email'); 
 			$replyMail = $message_data['from_email'];
+            $company_name = $this->dbu->gf('company_name');
 	
 			$body=$message_data['text'];
 			
@@ -324,6 +326,7 @@ class client
 			$mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['program_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
 	        $mail->MsgHTML($body);
 			$mail->AddAddress($ordermail, $ld['first_name']." ".$ld['surname']);
+            $mail->AddAddress($fromMail, $company_name);
         
 	        $mail->Send();
 		
@@ -670,9 +673,10 @@ class client
 			$this->generate_pdf($ld);
 			$message_data=get_sys_message('sendpdf');
 			$ordermail = $this->dbu->gf('email');
-			$fromMail = $this->dbu->gf('trainer_email'); 
+			$fromMail = $this->dbu->gf('trainer_email');
 			$replyMail = $message_data['from_email'];
-	
+            $company_name = $this->dbu->gf('company_name');
+    
 			$body=$message_data['text'];
 
 			if($is_appeal_first_name)
@@ -713,6 +717,7 @@ class client
             $mail->MsgHTML($body);
             
             $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
+            $mail->AddAddress($fromMail, $company_name);
             
             $mail->Send();
                 $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_SENT');

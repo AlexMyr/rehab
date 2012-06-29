@@ -630,8 +630,7 @@ class member
 	}
 		
 	function update_profile_notes(&$ld){
-
-		$this->dbu->query("UPDATE trainer SET title_set='".$ld['title_set']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
+		$this->dbu->query("UPDATE trainer SET title_set='".$ld['title_set']."', email_set='".$ld['email_set']."'  WHERE trainer_id='".$_SESSION[U_ID]."'");
 		
 		$this->dbu->query("UPDATE  trainer SET lang='".$ld['language']."' WHERE trainer_id='".$_SESSION[U_ID]."'");
 		//check exists in db

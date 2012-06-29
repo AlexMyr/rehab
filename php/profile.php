@@ -64,6 +64,12 @@ if($dbu2->f('title_set'))
 else
   $ft->assign('CHECKED_FIRST_TITLE', 'checked');
 
+if(!$dbu2->f('email_set'))
+  $ft->assign('CHECKED_FIRST_EMAIL', 'checked');
+else
+  $ft->assign('CHECKED_SECOND_EMAIL', 'checked');  
+  
+
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
 $site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');

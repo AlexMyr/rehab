@@ -11,12 +11,21 @@
 		{HEADER_PAPER_SECTION}
 		<br/>
 		<br/>
-		<p><strong>Salutation:</strong></p>
+		<h2>Email Settings:</h2>
 		<br/>
 		<form action="index.php" method="post">
+		<input type="radio" name="email_set" value="0" {CHECKED_FIRST_EMAIL} />&nbsp;&nbsp;Email exercises to patient<br/>
+		<input type="radio" name="email_set" value="1" {CHECKED_SECOND_EMAIL} />&nbsp;&nbsp;Email exercises to patient and clinic
+		<br/>
+		<br/>
+		<h2>Salutation:</h2>
+		<br/>
 		<input type="radio" name="title_set" value="0" {CHECKED_FIRST_TITLE} />&nbsp;&nbsp;Dear (First Name)<br/>
 		<input type="radio" name="title_set" value="1" {CHECKED_SECOND_TITLE} />&nbsp;&nbsp;Dear (Title Surname)
-		<a class="moreBtn" href="index.php?pag=profile_exercise_add"><span>Add own exercise</span></a>
+		<br/>
+		<br/>
+		<h2>Upload your Own Exercise:</h2>
+		<a class="moreBtn" href="index.php?pag=profile_exercise_add"><span>Add Exercise</span></a>
 		</div>
 		<!--<div class="contactInfo floatLft">
 			<h2>Contact Information</h2>
@@ -41,13 +50,13 @@
 			<p>&nbsp;</p>
 		</div>-->
 		<div class="floatLft" style="width: 460px;">
-			<p><strong>{T.DEFAULT}:</strong></p>
+			<span style='font-size:20px; color: #3868AA; font-family: "MergeRegular"'>{T.DEFAULT}:</span><br /><br />
 			
 				<input type="hidden" name="act" value="member-update_profile_notes">
 				<input type="hidden" name="pag" value="profile">
 				<input type="hidden" name="profile_id" value="{PROFILE_ID}">			
 				<textarea class="textArea" id="notes" name="exercise_notes">{EXERCISE_NOTES}</textarea>
-				<label class="label" for="language">{T.LANGUAGE}:</label>
+				<label class="label" for="language">{T.LANGUAGE}:</label><br /><br />
 				<select id="language" name="language" style="width:120px; display: block;">
 					<option value="en" {LANG_EN}>British</option>
 					<option value="us" {LANG_US}>American</option>

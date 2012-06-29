@@ -33,8 +33,8 @@ while ($dbu->move_next()&&$i<$l_r)
 {
 		$ft->assign(array(
 			'PROGRAM_ID'=>$dbu->f('programs_id'),
-			'PROGRAM_NAME'=>stripslashes($dbu->f('programs_title')),
-			'PROGRAM_DESC'=>stripslashes($dbu->f('description')),
+			'PROGRAM_NAME'=>$dbu->f('programs_title'),
+			'PROGRAM_DESC'=>$dbu->f('description'),
 		));
 	$ft->parse('CLIENT_LINE_OUT','.client_line');
 	$i++;

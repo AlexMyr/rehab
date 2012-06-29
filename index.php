@@ -145,7 +145,7 @@ if($glob['act'] && !$glob['skip_action'])
     }
 }
 
-//var_dump($glob['pag']);exit;
+//echo '<pre />'; var_dump($glob);exit;
 include_once("php/gen/page_perm.php");
 
 if($glob['pag'])

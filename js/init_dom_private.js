@@ -443,7 +443,10 @@ $(document).ready(function()
 		
 	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
 		$('.jsScrollDiv').jScrollPane();
-	
+			
+	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
+		$('.jsScrollDiv').jScrollPane();
+
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
 		window.location = $(this).attr('href') + '&query=' + $('#filterPatientsValue').val();
