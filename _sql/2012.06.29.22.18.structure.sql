@@ -1,0 +1,1 @@
+ALTER TABLE `trainer`  ADD `email_set` TINYINT NOT NULL DEFAULT '0'
