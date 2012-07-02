@@ -40,7 +40,7 @@ if(isset($glob['query']))
 }
 else
 {
-		if(isset($glob['fchar']) && $glob['fchar'] != 'all')
+		if(isset($glob['fchar']) && $glob['fchar'] != 'all' && preg_match('~[a-zA-Z0-9]~', $glob['fchar']))
 		{
 				$dbu->query("select client.* from client where client.trainer_id=".$_SESSION[U_ID]." and SUBSTRING(surname, 1, 1) = '".mysql_real_escape_string($glob['fchar'])."' $order_by ");
 		}
@@ -74,7 +74,8 @@ $firstCharArray = array();
 $dbu->query("select SUBSTRING(surname, 1, 1) as sstr from client where client.trainer_id=".$_SESSION[U_ID]." ORDER BY surname ASC");
 while($dbu->move_next())
 {
-		$firstCharArray[] = strtolower($dbu->f('sstr'));
+    if(preg_match('~[a-zA-Z0-9]~', $l = strtolower($dbu->f('sstr'))))
+		$firstCharArray[] = $l;
 }
 $firstCharArray = array_unique($firstCharArray);
 $firstCharArray[] = 'all';
@@ -153,7 +154,6 @@ $ft->assign(array(
 		'DATE_SORT_ARROW' => $date_sort_arrow,
 ));
 //build sort link
-
 
 $ft->assign(array(
     'PAGG' => $link,
