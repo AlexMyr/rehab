@@ -312,10 +312,11 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .add_exercise a.add_client { background: url("../img/add_ico.jpg") no-repeat 0px 0px; width:16px; height:16px; display:inline-block; color:#6099e7; text-decoration:none; font-size:16px; font-weight:normal; font-family: "MergeRegular"; }
 .add_exercise a.add_client:hover { background: url("../img/add_ico.jpg") no-repeat 0px -16px; color:#afccf3; }
 
-.dashboard .paginate { width:940px; margin-top:10px; }
+.dashboard .paginate { width:720px; margin-bottom:5px; }
 .dashboard .paginate li { width:auto; display:inline-block; }
 .dashboard .paginate li.displayNone { display:none; }
-.dashboard .paginate .moreBtn { width:auto; margin-right:3px; display:inline-block; }
+.dashboard .paginate .moreBtn { width:auto; margin-right:3px; display:inline-block; padding-left: 7px;}
+.dashboard .paginate .moreBtn span{padding-right: 7px;}
 .moreBtn.current { background: url(../img/moreGreyBtnLft.jpg) no-repeat top left; color:#999999; text-shadow:#fff 1px 1px 0px; }
 .moreBtn.current span { background: url(../img/moreGreyBtn.jpg) no-repeat top right; color:#999999; text-shadow:#fff 1px 1px 0px; }
 .moreBtn.inactive { background: url(../img/moreGreyBtnLft.jpg) no-repeat top left; color:#999999; text-shadow:#fff 1px 1px 0px; }
@@ -587,7 +588,7 @@ label.error_validate{
 
 .filterSection
 {
-	margin-bottom: 15px;
+	margin-bottom: 5px;
 	width: 700px;
 }
 

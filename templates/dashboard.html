@@ -44,6 +44,14 @@
 			</div>
 		</div>
 		<div class="filterSection">&nbsp;&nbsp;<input id="filterPatientsValue" type="text" value="{FILTER_VALUE}" /><a class="moreBtn" id="filterPatientsUrl" href="{FILTER_LINK}"><span>Filter</span></a></div>
+		<div>
+			<ul class="paginate {HIDE_NAV}">
+			<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
+			{PAGG}
+			<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
+			<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
+			</ul>
+		</div>
 		<div class="clientList">
 			<div class="clientListTitle">
 				<span class="add_exercise">&nbsp;</span>
@@ -73,14 +81,6 @@
 				<a class="moreBtn" href="#"><span>Next &gt;</span></a>
 			</div>
 -->
-		</div>
-		<div>
-			<ul class="paginate {HIDE_NAV}">
-			<li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
-			{PAGG}
-			<li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
-			<li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
-			</ul>
 		</div>
 		<div class="clearAll"></div>
 	</div>
