@@ -642,17 +642,19 @@ class member
 		{
 			$this->dbu->query("UPDATE exercise_notes SET exercise_notes = '".mysql_real_escape_string($ld['exercise_notes'])."' WHERE trainer_id=".$_SESSION[U_ID]." ");
 		}
-		$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_NOTES');
+		//$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_NOTES');
+        $_GET['pag'] = 'profile';
+        
 		if($_COOKIE['language'] != $ld['language'])
 		{
 			setcookie('language', $ld['language'], 0, '/');
 			$lang = ($ld['language'] == 'us') ? 'us/' : '';
-			
-			header("location: /".$lang.'index.php?pag=dashboard&redirect=1');
+            
+			header("location: /".$lang.'index.php?pag=profile&success=1');
 			exit;
 		}
 		
-		return true;		
+		return true;
 	}
 		
 	function validate_update_profile(&$ld)
@@ -1115,7 +1117,7 @@ class member
 	
 					$this->dbu->query("UPDATE trainer 
 									SET 
-										paypal_profile_id = '".$payerId."',
+										paypal_profile_id = '".$_SESSION['PROFILEID']."',
 										country_id 	    = '".$country_id."',
 										price_plan_id 	= '".$_SESSION['price_id']."',
 										is_trial		= '0',

@@ -84,7 +84,7 @@ class auth
 				$user_level = $_SESSION[ACCESS_LEVEL];
 				if($query->f('active')==1)
 				{
-					$set_trial_time = date('Y-m-d H:i:s',strtotime('+30days'));
+					$set_trial_time = date('Y-m-d H:i:s',strtotime('+14days'));
 					$this->dbu->query("
 										UPDATE 
 											trainer 

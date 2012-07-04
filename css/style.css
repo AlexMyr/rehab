@@ -132,7 +132,7 @@ button#exerciseAdd {margin:auto; width: 135px; text-align: center;}
 .brandit .moreBtn span, .changeViewBtn span {font-size: 12px; padding-right: 20px;}
 
 .join { background:url(../img/joinBoxBg.jpg) top left repeat-x #6099e7; width:200px; padding:0px 0px; margin:0px auto; }
-.join h3 { color:#ffffff; font-size:42px; width:180px; padding:6px 10px 6px 10px; border-bottom:1px solid #4a77b3; text-shadow:#4e7ec0 1px 1px 0px; }
+.join h3 { color:#ffffff; font-size:42px; width:195px; padding:6px 3px; border-bottom:1px solid #4a77b3; text-shadow:#4e7ec0 1px 1px 0px; }
 .join h3 sup { font-size:24px; font-size:21px; }
 .join a { font-size: 20px; color:#ffffff; text-align:center; text-decoration:none; text-transform:capitalize; line-height:40px;  display:block; width:180px; padding:18px 10px 0px 10px; text-shadow:#162336 1px 1px 0px; background:url(../img/joinBtn.jpg) 10px 18px no-repeat; border-top:1px solid #8bb2e7; }
 .join p { color:#ffffff; font-size:16px; width:180px; padding:5px 10px 0px 10px; text-shadow:#4e7ec0 1px 1px 0px; font-family: "MergeRegular"; text-align:center; }

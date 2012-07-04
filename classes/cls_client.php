@@ -243,7 +243,10 @@ class client
 	function send_program_email(&$ld)
 	{
 		$is_appeal_first_name = true;
-		$appeal_settings = $this->dbu->field("SELECT title_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
+		$this->dbu->query("SELECT title_set, email_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
+        $this->dbu->move_next();
+        $appeal_settings = $this->dbu->f('title_set');
+        $sendCopy = $this->dbu->f('email_set');
 		if($appeal_settings)
 		{
 			$is_appeal_first_name = false;
@@ -326,7 +329,7 @@ class client
 			$mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['program_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
 	        $mail->MsgHTML($body);
 			$mail->AddAddress($ordermail, $ld['first_name']." ".$ld['surname']);
-            $mail->AddAddress($fromMail, $company_name);
+            if($sendCopy) $mail->AddCC($fromMail, $company_name);
         
 	        $mail->Send();
 		
@@ -650,7 +653,10 @@ class client
 	function mail_exercise(&$ld)
 	{
 		$is_appeal_first_name = true;
-		$appeal_settings = $this->dbu->field("SELECT title_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
+        $this->dbu->query("SELECT title_set, email_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
+        $this->dbu->move_next();
+        $appeal_settings = $this->dbu->f('title_set');
+        $sendCopy = $this->dbu->f('email_set');
 		if($appeal_settings)
 		{
 			$is_appeal_first_name = false;
@@ -717,8 +723,8 @@ class client
             $mail->MsgHTML($body);
             
             $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
-            $mail->AddAddress($fromMail, $company_name);
-            
+            if($sendCopy) $mail->AddCC($fromMail, $company_name);
+
             $mail->Send();
                 $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_SENT');
             return true;					

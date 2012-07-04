@@ -151,22 +151,29 @@ include_once("php/gen/page_perm.php");
 if($glob['pag'])
 {
     if($page_access[$glob['pag']]['perm'] && $page_access[$glob['pag']]['perm'] >= $user_level)
-	    {
-	    	if($glob['pag'] == 'profile' && !isset($glob['redir']) && !isset($_GET['pag']))
-			{
-				$glob['redir'] = 'index.php?pag=dashboard&redirect=1';
-				include("php/redirect.php");
-				unset($glob['redir']);
-				exit;
-			}
-			else
-	    		$page=include("php/".$glob['pag'].".php");
-	    }
+    {
+        if($glob['pag'] == 'profile' && !isset($glob['redir']) && !isset($_GET['pag']))
+        {
+            echo '$glob<br><pre>';
+            print_r($glob);
+            echo '<br>$glob_end</pre>';
+            echo '$_GET<br><pre>';
+            print_r($_GET);
+            echo '<br>$_GET_end</pre>';
+            exit;
+            $glob['redir'] = 'index.php?pag=dashboard&redirect=1';
+            include("php/redirect.php");
+            unset($glob['redir']);
+            exit;
+        }
+        else
+            $page=include("php/".$glob['pag'].".php");
+    }
     else
-	    {
-            $glob['pag'] = 'login';
-	    	$page=include("php/login.php");
-	    }
+    {
+        $glob['pag'] = 'login';
+        $page=include("php/login.php");
+    }
 }
 
 if($site_module[$page_access[$glob['pag']]['module']])

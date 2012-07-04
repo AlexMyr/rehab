@@ -75,8 +75,11 @@ $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywor
 $site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $ft->assign('CSS_PAGE', $glob['pag']);
-
-$ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
+//because of redirection to another language site after changing profile language
+if($glob['success'] == 1)
+    $err = $ld['error']=get_template_tag($glob['pag'], $glob['lang'], 'T.SUCCESS');
+    
+$ft->assign('MESSAGE',get_error($err, $glob['success']) );
 $ft->parse('CONTENT','main');
 
 return $ft->fetch('CONTENT');

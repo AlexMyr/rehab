@@ -15,14 +15,14 @@ $time_now = time();
 	include_once ("../classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 */
 	
-	require_once ('../config/config.php');
-	require_once ('../misc/cls_mysql_db.php');
-	require_once ('../misc/cms_front_lib.php');
-	require_once ("../misc/security_lib.php");
-	require_once ("../misc/stlib.php");
-	require_once ('../classes/class.phpmailer.php');        
-	include_once ("../classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
-
+    $root_path = dirname(dirname(__FILE__));
+	require_once ($root_path.'/config/config.php');
+	require_once ($root_path.'/misc/cls_mysql_db.php');
+	require_once ($root_path.'/misc/cms_front_lib.php');
+	require_once ($root_path."/misc/security_lib.php");
+	require_once ($root_path."/misc/stlib.php");
+	require_once ($root_path.'/classes/class.phpmailer.php');        
+	include_once ($root_path."/classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 
 /*
 send mails to trainers on trial time in order of days
@@ -97,7 +97,7 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 	
 $dbu = new mysql_db();
 
-$select = "select trainer.* from trainer where 1=1 ";
+$select = "select trainer.* from trainer where 1=1 ORDER BY trainer_id";
 
 $dbu->query($select);
 
@@ -110,7 +110,6 @@ while($dbu->move_next())
 
     if($dbu->f('is_trial')!=0)
     {
-
         $expire_time = (strtotime($dbu->f('expire_date'))-$time_now);
         
         $expire_days = intval(intval($expire_time) / (3600 * 24));
@@ -121,6 +120,7 @@ while($dbu->move_next())
         
         else if($expire_days<1 && $expire_minutes>0) $time_remained = "<strong>today</strong>"; 
 //				echo "<pre>".$dbu->f('first_name')." ".$dbu->f('surname')." ".$dbu->f('email')." - expire ".$time_remained."</pre>";
+
 
         $message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
 
