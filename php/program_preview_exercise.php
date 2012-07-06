@@ -80,8 +80,8 @@ if(!$get_exercise_notes->next()  || !$get_exercise_notes->gf('exercise_notes'))
 	$get_exercise_notes->next();
 }
 
-if(!empty($glob['exercise_notes']))	$exercise_notes = $glob['exercise_notes'];
-else if(empty($glob['exercise_notes'])) $exercise_notes = $get_exercise_notes->gf('exercise_notes');
+if(!empty($glob['exercise_notes']))	$exercise_notes = stripslashes($glob['exercise_notes']);
+else if(empty($glob['exercise_notes'])) $exercise_notes = stripslashes($get_exercise_notes->gf('exercise_notes'));
 
 
 if($glob['mode']== 'edit')
@@ -115,7 +115,8 @@ if($glob['mode'] == 'preview')
 		'MAKE_MORE_CHANGES' 		=> 'index.php?pag=program_preview_exercise&program_id='.$glob['program_id'].'&exercise_id='.$glob['exercise_id'].'&mode=edit',		
 		'EMAIL_URL' 				=> 'index.php?pag=client_email&act=client-mail_exercise&client_id='.$glob['client_id'].'&exercise_plan_id='.$glob['exercise_plan_id'],
 		'TARGET'					=> '_blank',
-		'HIDE_EMAIL'				=> 'none'
+		'HIDE_EMAIL'				=> 'none',
+        'FINISH_URL'                => isset($_SESSION['modify_program_return_url']) ? $_SESSION['modify_program_return_url'] : 'index.php?pag=programs'
 		
 	));
 	$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.$exercise_notes.'</strong></span>', ));

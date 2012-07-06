@@ -29,21 +29,27 @@ if(!$exerciseString)
 if(isset($glob['client_id']))
 {
   //$button_line = '<a style="width:50px; float:left; margin:0px;" '.$blank.' class="moreBtn" href="'.$alert.'"><span>Print</span></a><button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span>Send Email</span></button>';
-  $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
-				  <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
+    $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
+                    <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
   
-  $dbu->query("select first_name, surname, email, appeal
-		   FROM client WHERE client_id = {$glob['client_id']} ");
-  
-  if($dbu->move_next())
-  {
-	$ft->assign(array(
-	  'FIRST_NAME'=>$dbu->f('first_name'),
-	  'SURNAME'=>$dbu->f('surname'),
-	  'EMAIL'=>$dbu->f('email'),
-	  'APPEAL'=>$dbu->f('appeal'),
-	));
-  }
+    $dbu->query("select first_name, surname, email, appeal
+             FROM client WHERE client_id = {$glob['client_id']} ");
+    
+    if(isset($_SESSION['modify_program_return_url']))
+        parse_str($_SESSION['modify_program_return_url'], $vals);
+    if(is_array($vals))
+        array_walk($vals, create_function('&$val', '$val = urldecode($val);'));
+    unset($_SESSION['modify_program_return_url']);
+    
+    if($dbu->move_next())
+    {
+      $ft->assign(array(
+        'FIRST_NAME' => isset($vals['first']) ? $vals['first'] : $dbu->f('first_name'),
+        'SURNAME' => isset($vals['surname']) ? $vals['surname'] : $dbu->f('surname'),
+        'EMAIL' => isset($vals['email']) ? $vals['email'] : $dbu->f('email'),
+        'APPEAL' => isset($vals['appeal']) ? $vals['appeal'] : $dbu->f('appeal'),
+      ));
+    }
 }
 elseif($glob['mode'] == 'email')
 {
@@ -57,6 +63,8 @@ else
   $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
 				  <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
 }
+$add_patient = get_template_tag('dashboard', $glob['lang'], 'T.ADD_NEW');
+$popup_title = get_template_tag('programs', $glob['lang'], 'T.POPUP_TITLE');
 
 $dbu->query("select * from exercise_program_plan where exercise_program_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_program_plan_id='".$glob['program_id']."' ORDER BY program_name ASC ");
 
@@ -66,6 +74,9 @@ if($dbu->move_next())
 			'PROGRAM_ID'=>$dbu->f('exercise_program_plan_id'),
 			'PROGRAM_NAME'=>$dbu->f('program_name'),
 			'BUTTON_LINE'=>$button_line,
+            'ADD_PATIENT' => $add_patient,
+            'T.POPUP_TITLE' => $popup_title,
+            'MODIFY_PROGRAM' => isset($glob['client_id']) ? '<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>' : ''
 		));
 	$ft->parse('CLIENT_LINE_OUT','.client_line');
 }

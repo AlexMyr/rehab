@@ -97,7 +97,7 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 	
 $dbu = new mysql_db();
 
-$select = "select trainer.* from trainer where 1=1 ORDER BY trainer_id";
+$select = "select trainer.* from trainer where 1=1";
 
 $dbu->query($select);
 
@@ -121,9 +121,8 @@ while($dbu->move_next())
         else if($expire_days<1 && $expire_minutes>0) $time_remained = "<strong>today</strong>"; 
 //				echo "<pre>".$dbu->f('first_name')." ".$dbu->f('surname')." ".$dbu->f('email')." - expire ".$time_remained."</pre>";
 
-
         $message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
-
+        
         if($message_data['text']!=null) 
         {
 			send_mail($send_to_email=$dbu->f('email'),$send_to_name=$dbu->f('first_name').' '.$dbu->f('surname'),$message_data);

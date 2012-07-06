@@ -5,7 +5,11 @@
 			
 			<div class="contactInfo floatLft">
 				<h3>{T.SEND_PROG} {PROGRAM_NAME} {T.TO_YOUR_PATIENT}</h3>
-				<form action="index.php" method="post">
+				<br />
+				<a href="javascript: void(0);" pid="{PROGRAM_ID}" ptitle="{T.POPUP_TITLE}" id="add_patient_button" class="moreBtn"><span>{ADD_PATIENT}</span></a>
+				{MODIFY_PROGRAM}
+				<!--<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id={PROGRAM_ID}&client_id={CLIENT_ID}" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>-->
+				<form action="index.php" method="post" >
 				<input type="hidden" name="act" value="client-send_program_email">
 				<input type="hidden" name="pag" value="program_add_patient">
 				<input type="hidden" name="program_id" value="{PROGRAM_ID}">
@@ -24,9 +28,13 @@
 				
 				<!--<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Send Email</span></button></div>-->
 				<div class="buttons login">{BUTTON_LINE}</div>
+				</form>
+				
 			</div>
-			
 		</div>
 		<div class="clearAll"></div>
+		<div id="clientsList" style="display:none;">
+			<div></div>
+		</div>
 	</div>
 	

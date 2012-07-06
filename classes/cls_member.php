@@ -1021,16 +1021,18 @@ class member
 		$currencyCodeType = $this->dbu->f('currency');
 		$paymentType = "Sale";
 		
-		$returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
+        $returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
 		$cancelURL = 'http://rehabmypatient.com/index.php';
-		$NOTIFYURL = 'http://rehabmypatient.com/ipn.php';
+		//$returnURL = 'http://rehab.loc/index.php?act=member-confirm_pay';
+		//$cancelURL = 'http://rehab.loc/index.php';
+        //$custom = 'referralId';
 		
 		if($is_recurring)
 			$description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
 		else
 			$description = $_SESSION['description'] = 'Yearly payment';
 		
-		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $NOTIFYURL, $description, $userEmail, $is_recurring);
+		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $description, $userEmail, $custom, $is_recurring);
 	
 		$ack = strtoupper($resArray["ACK"]);
 		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
@@ -1066,9 +1068,10 @@ class member
 				$_SESSION['TOKEN'] = $token;
 				$_SESSION['PaymentType'] = 'Sale';
 				$_SESSION['payer_id'] = $resArray["PAYERID"];
-			   
+                $NOTIFYURL = 'http://rehabmypatient.com/ipn_s.php';
+                $curTime = time();
+                
 				if($_SESSION['is_recurring']){
-					$curTime = time();
 					/* parameter reference: https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_nvp_r_CreateRecurringPayments */
 					$TOKEN = $_SESSION['TOKEN'];
 					$PROFILESTARTDATE = date("c", ($curTime + (1 * 24 * 3600)));
@@ -1090,12 +1093,12 @@ class member
 	
 					$resArray = CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $TOTALBILLINGCYCLES, $AUTOBILLOUTAMT,
 															   $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
-															   $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT,$FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS);
-				   
-					$resArray = GetRecurringPaymentsProfileDetails($resArray['PROFILEID']);
+															   $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT,$FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS, $NOTIFYURL);
+                    
+					$resArray = GetRecurringPaymentsProfileDetails($_SESSION['PROFILEID']);
 				}
 				else
-					$resArray = ConfirmPayment($_SESSION['Payment_Amount']);
+					$resArray = ConfirmPayment($_SESSION['Payment_Amount'], $NOTIFYURL);
 				
 				$ack = strtoupper($resArray["ACK"]);
 				if( $ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING" )
@@ -1114,17 +1117,29 @@ class member
 					$this->dbu->query("SELECT * from `country` WHERE code='".$dbCountryCode."'");
 					$this->dbu->move_next();
 					$country_id = $this->dbu->f('country_id');
-	
+                    
 					$this->dbu->query("UPDATE trainer 
 									SET 
-										paypal_profile_id = '".$_SESSION['PROFILEID']."',
+										paypal_profile_id = '".$_SESSION['payer_id']."',
 										country_id 	    = '".$country_id."',
 										price_plan_id 	= '".$_SESSION['price_id']."',
 										is_trial		= '0',
 										expire_date		= '$expireTime'
 									WHERE 
 										trainer_id=".$_SESSION[U_ID]." ");
-	
+                    
+                    $message_data=get_sys_message('succ_pay', $this->dbu->f('lang'));
+                    
+                    if($message_data['text']!=null) 
+                    {
+                        $this->dbu->query("SELECT trainer.email AS email, trainer.is_clinic  AS clinic, trainer_header_paper.first_name AS clinic_first, trainer_header_paper.surname AS clinic_last, trainer.first_name AS first, trainer.surname AS surname
+                                            FROM `trainer` INNER JOIN `trainer_header_paper` USING(trainer_id) WHERE trainer_id=".$_SESSION[U_ID]." ");
+                        $this->dbu->move_next();
+                        require_once (dirname(dirname(__FILE__)).'/classes/class.phpmailer.php');
+                        $name = ($this->dbu->f('clinic')) ? $this->dbu->f('clinic_first').' '.$this->dbu->f('clinic_last') : $this->dbu->f('first').' '.$this->dbu->f('surname');
+                        $this->send_mail($this->dbu->f('email'), $name, $message_data);
+                    }
+                    
 					header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
 				}
 				else{
@@ -1448,5 +1463,48 @@ class member
         }
         else
             return false;
+    }
+    function send_mail($send_to_email,$send_to_name,$message_data)
+    {
+        $ordermail = $send_to_email;
+        $fromMail = $message_data['from_email']; 
+        $replyMail = $message_data['from_email'];
+
+		$body=$message_data['text'];
+		$body=str_replace('[!NAME!]',$send_to_name, $body );
+		$body = nl2br($body);
+
+/*
+		mail($ordermail,$message_data['subject'],$body);
+		print_r($ordermail);
+*/
+                
+        $mail = new PHPMailer();
+		$mail->Mailer = 'sendmail';
+		$mail->IsHTML(true);
+        //$body             = file_get_contents('contents.html');
+        //$body             = eregi_replace("[\]",'',$body);
+        $mail->IsSMTP(); // telling the class to use SMTP
+        $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
+        // 1 = errors and messages
+        // 2 = messages only
+        $mail->SMTPAuth = true; // enable SMTP authentication
+        $mail->Host = SMTP_HOST; // sets the SMTP server
+        $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
+        $mail->Username = SMTP_USERNAME; // SMTP account username
+        $mail->Password = SMTP_PASSWORD; // SMTP account password
+
+        $mail->SetFrom($fromMail, $fromMail);
+        $mail->AddReplyTo($replyMail, $replyMail);
+
+		$subject = $message_data['subject'];
+		$mail->Subject = $subject;
+        //$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+        //$mail->MsgHTML($body);
+		$mail->Body = $body;
+
+        $mail->AddAddress($ordermail, $send_to_name);
+        $mail->Send();	
+
     }
 }//end class

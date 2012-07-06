@@ -78,16 +78,17 @@ while($dbu->move_next())
 		$firstCharArray[] = $l;
 }
 $firstCharArray = array_unique($firstCharArray);
-$firstCharArray[] = 'all';
+//$firstCharArray[] = 'all';
 
+$class = 'class="moreBtn"';
 foreach($firstCharArray as $fChar)
 {
 		$page = $dbu->f('surname');
-                $class = 'class="moreBtn"';
-                $link .= <<<HTML
+        $link .= <<<HTML
 <li><a href="index.php?pag={$glob['pag']}&fchar={$fChar}" {$class}><span>{$fChar}</span></a></li>
 HTML;
 }
+$link .= "<li><a href='index.php?pag={$glob['pag']}&fchar=all' {$class}><span style='width:15px;'>all</span></a></li>";
 
 //build sort link
 $sort_link = '';

@@ -37,7 +37,7 @@ class auth
 						FROM 
 							trainer 
 						WHERE 
-							username = '".$ld['username']."' AND password = '".$ld['password']."'
+							username = '".mysql_real_escape_string($ld['username'])."' AND password = '".mysql_real_escape_string($ld['password'])."'
 						");
 		}
 		

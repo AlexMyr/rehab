@@ -316,7 +316,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .dashboard .paginate li { width:auto; display:inline-block; /*IE7*/ *display:inline; *zoom:1;}
 .dashboard .paginate li.displayNone { display:none; }
 .dashboard .paginate .moreBtn { width:auto; margin-right:1px; display:inline-block; padding-left: 6px;}
-.dashboard .paginate .moreBtn span{padding-right: 5px;}
+.dashboard .paginate .moreBtn span{padding-right: 5px; width: 8px;}
 .moreBtn.current { background: url(../img/moreGreyBtnLft.jpg) no-repeat top left; color:#999999; text-shadow:#fff 1px 1px 0px; }
 .moreBtn.current span { background: url(../img/moreGreyBtn.jpg) no-repeat top right; color:#999999; text-shadow:#fff 1px 1px 0px; }
 .moreBtn.inactive { background: url(../img/moreGreyBtnLft.jpg) no-repeat top left; color:#999999; text-shadow:#fff 1px 1px 0px; }
@@ -612,3 +612,9 @@ label.error_validate{
  height: 21px;
 }
 #client_note{ height: 85px;}
+#add_patient_button, #modify_program_button{
+	float: right; 
+	position: relative; 
+	right: 90px; 
+	top: 5px;
+}

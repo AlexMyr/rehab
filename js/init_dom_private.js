@@ -404,7 +404,7 @@ $(document).ready(function()
 	
 	$('#clientsList').dialog({  autoOpen: false, resizable: false })
 	
-	$('.clientList .clientListRow .actions a.program').click(function(){
+	$('.clientList .clientListRow .actions a.program, #add_patient_button').click(function(){
 		
 		if($('#clientsList div').html() == '')
 		{
@@ -803,6 +803,15 @@ $(document).ready(function()
 		$('#lang_us').attr('href', ('/us'+window.location.pathname+window.location.search).toString());
 	}
 	
-});
-
+	$('#modify_program_button').click(function(e){
+		e.preventDefault(); 
+		var url = $(this).attr('href');
+		var first = escape($('#first_name').val());
+		var surname = escape($('#surname').val());
+		var appeal = escape($('#appeal').val());
+		var email = escape($('#email').val());
+		url += '&first='+first+'&surname='+surname+'&appeal='+appeal+'&email='+email;
+		location.href = url;
+	});
 	
+});

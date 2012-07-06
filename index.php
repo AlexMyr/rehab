@@ -15,7 +15,7 @@ if($_COOKIE['UID'] && (!isset($glob['act']) && $glob['act']!='auth-logout'))
 	$_SESSION[USER_EMAIL] = $_COOKIE['USER_EMAIL'];
 }
 
-
+//$debug=1;
 if(!$debug)
 {
 	error_reporting(0);
@@ -154,13 +154,6 @@ if($glob['pag'])
     {
         if($glob['pag'] == 'profile' && !isset($glob['redir']) && !isset($_GET['pag']))
         {
-            echo '$glob<br><pre>';
-            print_r($glob);
-            echo '<br>$glob_end</pre>';
-            echo '$_GET<br><pre>';
-            print_r($_GET);
-            echo '<br>$_GET_end</pre>';
-            exit;
             $glob['redir'] = 'index.php?pag=dashboard&redirect=1';
             include("php/redirect.php");
             unset($glob['redir']);

@@ -1,16 +1,15 @@
 <?php
 
 /* PAP4 integration */
-$_POST['pp_email'] = 'pp_email_yep';
  $ch = curl_init();
  curl_setopt($ch, CURLOPT_URL, "http://rehabmypatient.com/affiliate/plugins/PayPal/paypal.php");
  curl_setopt($ch, CURLOPT_POST, 1);
  curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
  curl_exec($ch);
 /* end of PAP4 integration */
-
+logPayment('', $_GET, 'IPN_message_GET');
 logPayment('', $_POST, 'IPN_message');
-mail('cardioprint@miralex.com.ua', 'IPN message', 'PayPal IPN message received at Rehabmypatient. Log is at paypal_transactions table', 'From: paypal@rehabmypatient.com' );
+mail('cardioprint@miralex.com.ua', 'IPN message', 'PayPal IPN message is received at Rehabmypatient. Log is at paypal_transactions table', 'From: paypal@rehabmypatient.com' );
 
 function logPayment($request, $answer, $type){
     include('config/config.php');

@@ -50,6 +50,7 @@ $func_access = array
 											'update_exercise_plan' => 3,
 											'delete_exercise' => 3,
                                             'delete_program_plan' => 3,
+                                            'modify_program' => 3
 										),
 				);
  

@@ -25,7 +25,7 @@ else
 }
 $ft->assign('IMAGE_TYPE',build_print_image_type_list(1));
 
-$dbu->query("select * from exercise_program_plan where exercise_program_plan.trainer_id=".$_SESSION[U_ID]." ORDER BY program_name ASC ");
+$dbu->query("SELECT * FROM exercise_program_plan WHERE exercise_program_plan.trainer_id=".$_SESSION[U_ID]." AND client_id=0 ORDER BY program_name ASC ");
 /*
 $dbu->query("
 				SELECT 
