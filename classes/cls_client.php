@@ -757,7 +757,6 @@ class client
         $mode = isset($ld['mode']) ? '&mode='.$ld['mode'] : '';
         //$client_id = isset($ld['client_id']) ? '&client_id='.$ld['client_id'] : '';
         
-        $_SESSION['modify_program_return_url'] = 'index.php?pag=program_add_patient&client_id='.$ld['client_id'].'&program_id='.$ld['program_id'].$first.$surname.$appeal.$email.$mode;
         $this->dbu->query("SELECT * FROM exercise_program_plan WHERE client_id=".$ld['client_id']." AND parent_plan=".$ld['program_id']);
         if($this->dbu->move_next())
             $plan_copy = $this->dbu->f('exercise_program_plan_id');
@@ -768,7 +767,8 @@ class client
             $plan_copy = $this->dbu->query_get_id("INSERT INTO exercise_program_plan SELECT * FROM foo;");
             $this->dbu->query("DROP TABLE foo;");
         }
-
+        $_SESSION['modify_program_return_url'] = 'index.php?pag=program_add_patient&client_id='.$ld['client_id'].'&program_id='.$plan_copy.$first.$surname.$appeal.$email.$mode;
+        
         header("location: /index.php?pag=program_update_exercise&program_id=".$plan_copy);exit;
         exit();
 		
