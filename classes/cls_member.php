@@ -1283,6 +1283,13 @@ class member
 			$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
 														values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
 			
+			if(isset($_FILES['upload_pdf']) && pathinfo($_FILES['upload_pdf']['name'], PATHINFO_EXTENSION) == 'pdf')
+			{
+				move_uploaded_file($_FILES['upload_pdf']['tmp_name'], 'pdf/uploaded_pdf/user_program_'.$ld['programs_id'].'.pdf');
+				$this->dbu->query("UPDATE programs SET uploaded_pdf='user_program_".$ld['programs_id'].".pdf' WHERE programs_id = '".$ld['programs_id']."' ");
+				unset($_FILES['upload_image']);
+			}
+			
             $programs->upload_file($ld);
 			$ld['pag'] = 'programs_user';
 			$ld['error'] = 'Exercise added.';
@@ -1338,6 +1345,13 @@ class member
             return false;
         }
 
+		if(isset($_FILES['upload_pdf']) && pathinfo($_FILES['upload_pdf']['name'], PATHINFO_EXTENSION) == 'pdf')
+		{
+			move_uploaded_file($_FILES['upload_pdf']['tmp_name'], 'pdf/uploaded_pdf/user_program_'.$ld['programs_id'].'.pdf');
+			$this->dbu->query("UPDATE programs SET uploaded_pdf='user_program_".$ld['programs_id'].".pdf' WHERE programs_id = '".$ld['programs_id']."' ");
+			unset($_FILES['upload_image']);
+		}
+		
         foreach(array('en', 'us') as $lang){
             $this->dbu->query("UPDATE programs_translate_".$lang." SET 
 								   programs_title='".mysql_real_escape_string($ld['name'])."',
@@ -1349,6 +1363,8 @@ class member
 		$this->dbu->query("DELETE FROM programs_in_category WHERE programs_id = '".$ld['programs_id']."' ");
 		$this->dbu->query("INSERT INTO programs_in_category ( programs_id, category_id, main )
                 									values ( '".$ld['programs_id']."', '".$ld['subcategory']."', '1' ) ");
+		
+		
         
         if($programs->image_validate()){
             $programs->upload_file($ld);

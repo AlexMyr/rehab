@@ -2,6 +2,9 @@
 /************************************************************************
 * @Author: MedeeaWeb Works                                              *
 ************************************************************************/
+session_start();
+$_SESSION['uploaded_pdf_program'] = array();
+
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define( array(main => "exercisepdf.html"));
 
@@ -83,12 +86,16 @@ while($i<count($exercise))
 		$ft->assign('BREAK_LINE',"");
 	$count_break++;
 	
-	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title FROM programs
+	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title, programs.* FROM programs
                                INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
                                WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
 	$print_image = ($get_program->f($image_type) && file_exists($script_path.UPLOAD_PATH.$get_program->f($image_type))) ? $script_path.UPLOAD_PATH.$get_program->f($image_type) : $script_path.UPLOAD_PATH.'noimage.png';
-	
+
+	if($get_program->f('owner') != -1 && $get_program->f('uploaded_pdf'))
+	{
+		$_SESSION['uploaded_pdf_program'][] = $get_program->f('uploaded_pdf');
+	}
 
 	$img = "<img src=\"".$print_image."\" width=\"224\" height=\"224\" align=\"left\" />";
 	$ft->assign(array(

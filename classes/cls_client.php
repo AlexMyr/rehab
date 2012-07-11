@@ -327,6 +327,13 @@ class client
 	        $mail->SetFrom($fromMail, $fromMail);
 	        $mail->Subject = $message_data['subject'];
 			$mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['program_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
+			
+			// add pdfs 
+			if(!empty($_SESSION['uploaded_pdf_program']))
+				foreach($_SESSION['uploaded_pdf_program'] as $att_pdf)
+					$mail->AddAttachment("pdf/uploaded_pdf/".$att_pdf, $att_pdf); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
+			unset($_SESSION['uploaded_pdf_program']);
+			
 	        $mail->MsgHTML($body);
 			$mail->AddAddress($ordermail, $ld['first_name']." ".$ld['surname']);
             if($sendCopy) $mail->AddCC($fromMail, $company_name);
@@ -345,7 +352,7 @@ class client
 	
 	function generate_pdf_for_program(&$ld)
 	{
-		include_once('php/pexercisepdf.php');		
+		include_once('php/pexercisepdf.php');
 	}
 		
 	function validate_add_program_plan(&$ld)
@@ -720,6 +727,11 @@ class client
             $mail->Subject = $message_data['subject'];
             
             $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
+			if(!empty($_SESSION['uploaded_pdf']))
+				foreach($_SESSION['uploaded_pdf'] as $att_pdf)
+					$mail->AddAttachment("pdf/uploaded_pdf/".$att_pdf, $att_pdf); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
+			unset($_SESSION['uploaded_pdf']);
+			
             $mail->MsgHTML($body);
             
             $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));

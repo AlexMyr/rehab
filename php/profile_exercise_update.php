@@ -20,12 +20,15 @@ $dbu->query("select * from programs as p left join programs_translate_en as pte 
 if($dbu->move_next())
 {
     $has_image = ($dbu->f('image')) ? true :false;
-  $ft->assign(array(
-    'name'=>stripslashes($dbu->f('programs_title')),
-    'description'=>stripslashes($dbu->f('description')),
-    'PROGRAM_PHOTO'=> ($has_image) ? '<img src="phpthumb/phpThumb.php?src=../upload/'.$dbu->f('image').'&amp;wl=69&amp;hp=69" class="image_preview" alt="photo" />' : '',
-    'PHOTO_DELETE' => ($has_image) ? '<img src="img/delete_red.png" class="delete_image" style="position: absolute; right: 0px;" />' : ''
-  ));
+	$has_pdf = ($dbu->f('uploaded_pdf')) ? true :false;
+	$ft->assign(array(
+	  'name'=>stripslashes($dbu->f('programs_title')),
+	  'description'=>stripslashes($dbu->f('description')),
+	  'PROGRAM_PHOTO'=> ($has_image) ? '<img src="phpthumb/phpThumb.php?src=../upload/'.$dbu->f('image').'&amp;wl=69&amp;hp=69" class="image_preview" alt="photo" />' : '',
+	  'PHOTO_DELETE' => ($has_image) ? '<img src="img/delete_red.png" class="delete_image" style="position: absolute; right: 0px; cursor:pointer;" />' : '',
+	  'PDF_UPLOADED' => $has_pdf ? '<a href="pdf/uploaded_pdf/user_program_'.$glob['programs_id'].'.pdf">Uploaded pdf file</a>' : '',
+	  'PDF_DELETE' => $has_pdf ? '<img src="img/delete_red.png" class="delete_image" style="cursor:pointer;" />' : '',
+	));
 }
 
 $selected_cat = -1;
