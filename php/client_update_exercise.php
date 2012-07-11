@@ -203,8 +203,9 @@ while ($program->next())
 	{
 		if($program->f('owner')!=-1 && !$start_user_exercise)
 		{
-		  $start_user_exercise = true;
-		  $user_break_line = '<div class="clearAllUser">Own exercises</div>';
+			$i = 0;
+			$start_user_exercise = true;
+			$user_break_line = '<div class="clearAllUser">Own exercises</div>';
 		}
 		else
 		{
