@@ -107,7 +107,6 @@ $ab = array();
 
 while($dbu->move_next())
 {
-
     if($dbu->f('is_trial')!=0)
     {
         $expire_time = (strtotime($dbu->f('expire_date'))-$time_now);
@@ -120,12 +119,20 @@ while($dbu->move_next())
         
         else if($expire_days<1 && $expire_minutes>0) $time_remained = "<strong>today</strong>"; 
 //				echo "<pre>".$dbu->f('first_name')." ".$dbu->f('surname')." ".$dbu->f('email')." - expire ".$time_remained."</pre>";
-
         $message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
         
+		if($dbu->f('is_clinic') == 1)
+		{
+			$send_to_name=$dbu->f('clinic_name');
+		}
+		else
+		{
+			$send_to_name=$dbu->f('first_name');
+		}
+		
         if($message_data['text']!=null) 
         {
-			send_mail($send_to_email=$dbu->f('email'),$send_to_name=$dbu->f('first_name').' '.$dbu->f('surname'),$message_data);
+			send_mail($send_to_email=$dbu->f('email'),$send_to_name,$message_data);
             /* USED FOR THE CRON LOG FILE */
             $ab[$i]['msg_uid'] = $dbu->f('trainer_id');
             $ab[$i]['msg_email'] = $dbu->f('email');
