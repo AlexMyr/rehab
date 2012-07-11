@@ -263,7 +263,7 @@ class client
 		
 		if(!$exerciseString)
 		{
-			$ld['error'] = 'This programme is empty. Please add some exercises before emailing.';
+			$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.PROGRAM_EMPTY');;
 			return false;
 		}
 		
