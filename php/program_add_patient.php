@@ -63,7 +63,7 @@ else
   $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
 				  <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
 }
-$add_patient = get_template_tag('dashboard', $glob['lang'], 'T.ADD_NEW');
+$add_patient = get_template_tag('dashboard', $glob['lang'], 'T.ADD_PATIENT');
 $popup_title = get_template_tag('programs', $glob['lang'], 'T.POPUP_TITLE');
 
 $dbu->query("select * from exercise_program_plan where exercise_program_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_program_plan_id='".$glob['program_id']."' ORDER BY program_name ASC ");
@@ -76,7 +76,9 @@ if($dbu->move_next())
 			'BUTTON_LINE'=>$button_line,
             'ADD_PATIENT' => $add_patient,
             'T.POPUP_TITLE' => $popup_title,
-            'MODIFY_PROGRAM' => isset($glob['client_id']) ? '<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>' : ''
+            'MODIFY_PROGRAM' => isset($glob['client_id'])
+								? '<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>'
+								: '<a href="javascript:void(0);" id="modify_program_button" class="moreBtn" style="clear: both; opacity:0.5; filter:alpha(opacity=50);"><span>Modify</span></a>'
 		));
 	$ft->parse('CLIENT_LINE_OUT','.client_line');
 }

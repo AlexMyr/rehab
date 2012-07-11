@@ -804,6 +804,9 @@ $(document).ready(function()
 	}
 	
 	$('#modify_program_button').click(function(e){
+		if($(this).attr('href') == 'javascript:void(0);')
+			return false;
+		
 		e.preventDefault(); 
 		var url = $(this).attr('href');
 		var first = escape($('#first_name').val());
