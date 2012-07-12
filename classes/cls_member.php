@@ -1287,7 +1287,7 @@ class member
 			{
 				move_uploaded_file($_FILES['upload_pdf']['tmp_name'], 'pdf/uploaded_pdf/user_program_'.$ld['programs_id'].'.pdf');
 				$this->dbu->query("UPDATE programs SET uploaded_pdf='user_program_".$ld['programs_id'].".pdf' WHERE programs_id = '".$ld['programs_id']."' ");
-				unset($_FILES['upload_image']);
+				unset($_FILES['upload_pdf']);
 			}
 			
             $programs->upload_file($ld);
@@ -1325,11 +1325,11 @@ class member
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
             $is_ok=false;
         }
-        /*if(!$_FILES['image']['name'])
-        {
-            $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
-            $is_ok=false;
-        }*/
+        //if(!$_FILES['image']['name'])
+        //{
+        //    $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_IMAGE')."<br>";
+        //    $is_ok=false;
+        //}
 		return $is_ok;
 	}
 	
@@ -1349,7 +1349,7 @@ class member
 		{
 			move_uploaded_file($_FILES['upload_pdf']['tmp_name'], 'pdf/uploaded_pdf/user_program_'.$ld['programs_id'].'.pdf');
 			$this->dbu->query("UPDATE programs SET uploaded_pdf='user_program_".$ld['programs_id'].".pdf' WHERE programs_id = '".$ld['programs_id']."' ");
-			unset($_FILES['upload_image']);
+			unset($_FILES['upload_pdf']);
 		}
 		
         foreach(array('en', 'us') as $lang){
@@ -1403,11 +1403,11 @@ class member
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_SUBCAT')."<br>";
             $is_ok=false;
         }       
-		/*if( !$_FILES['image']['name'] )
-		{
-			$ld['error'].=get_template_tag('profile_exercise_add', $ld['lang'], 'T.FILL_IMAGE')."<br>";
-            $is_ok=false;
-		}*/
+//		if( !$_FILES['image']['name'] && !$ld['image_uploaded'])
+//		{
+//			$ld['error'].=get_template_tag('profile_exercise_add', $ld['lang'], 'T.FILL_IMAGE')."<br>";
+//            $is_ok=false;
+//		}
 		return $is_ok;
 	}
 	

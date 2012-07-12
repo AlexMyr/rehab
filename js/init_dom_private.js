@@ -788,6 +788,7 @@ $(document).ready(function()
 			.done(function( msg ) {
 				if(msg.failure == false){
 					$('img.delete_image, .image_preview').hide(200);
+					$('#image_uploaded').val('0');
 				}
 			}
 		);

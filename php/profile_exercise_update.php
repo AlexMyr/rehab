@@ -28,6 +28,7 @@ if($dbu->move_next())
 	  'PHOTO_DELETE' => ($has_image) ? '<img src="img/delete_red.png" class="delete_image" style="position: absolute; right: 0px; cursor:pointer;" />' : '',
 	  'PDF_UPLOADED' => $has_pdf ? '<a href="pdf/uploaded_pdf/user_program_'.$glob['programs_id'].'.pdf">Uploaded pdf file</a>' : '',
 	  'PDF_DELETE' => $has_pdf ? '<img src="img/delete_red.png" class="delete_image" style="cursor:pointer;" />' : '',
+	  'HAS_IMAGE' => ($has_image) ? 1 : 0,
 	));
 }
 

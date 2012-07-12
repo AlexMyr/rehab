@@ -243,7 +243,7 @@ while ($program->next())
 			'PROGRAM_ID'=>$program->f('programs_id'),
 			'PROGRAM_TITLE'=>$program->f('programs_title'),
 			'PROGRAM_DESCRIPTION'=>$program->f('description'),
-			'PROGRAM_IMAGE'=>file_exists('upload/'.$program->f($image_type)) ? $program->f($image_type) : 'noimage_middle.png',
+			'PROGRAM_IMAGE'=>(file_exists('upload/'.$program->f($image_type))&& $program->f($image_type)) ? $program->f($image_type) : 'noimage_middle.png',
 			'CAT_ID'=>$glob['catID'],
 			'CLIENT_ID'=>$glob['client_id'],
 			'CLEAR_BOTH'=> $clear_both,
@@ -289,7 +289,7 @@ if(!empty($_SESSION['pids']))
 			'S_PROGRAM_ID' => $program->f('programs_id'),
 			'S_PROGRAM_TITLE' => strip_tags($program->f('programs_title')),
 			'S_PROGRAM_DESCRIPTION' => strip_tags($program->f('description')),
-			'S_PROGRAM_IMAGE' => file_exists('upload/'.$program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimage_small.png',
+			'S_PROGRAM_IMAGE' => (file_exists('upload/'.$program->f($image_type)) && $program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimage_small.png',
 			'S_PROGRAM_CATEGORY' => strip_tags(get_category_path(get_cat_ID($val),0)),
 		));
 	$ft->parse('SELECTED_LINE_OUT','.selected_line');
