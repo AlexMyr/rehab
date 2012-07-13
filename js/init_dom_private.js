@@ -435,7 +435,6 @@ $(document).ready(function()
 	});
 	
 	$('#pdfInfoImg').click(function(){
-		//$('#pdfInfo').dialog( "option" , "title", "Info" );
 		$('#pdfInfo').dialog('open');
 	});
 	
