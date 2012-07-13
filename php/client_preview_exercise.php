@@ -135,7 +135,7 @@ while($i<count($exercise))
 	
 	$ft->assign(array(
 		
-		'IMG' => file_exists('upload/'.$get_program->f($image_type)) ? $get_program->f($image_type) : 'noimage.png',
+		'IMG' => (file_exists('upload/'.$get_program->f($image_type)) && $get_program->f($image_type)) ? $get_program->f($image_type) : 'noimage.png',
 		'PROGRAM_ID' => $exercise[$i],
 	));	
 	$get_data = $dbu->query("
