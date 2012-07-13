@@ -618,3 +618,8 @@ label.error_validate{
 	right: 90px; 
 	top: 5px;
 }
+#pdfInfoImg
+{
+	padding-left:5px;
+	vertical-align:middle;
+}

@@ -403,6 +403,7 @@ $(document).ready(function()
 	});
 	
 	$('#clientsList').dialog({  autoOpen: false, resizable: false })
+	$('#pdfInfo').dialog({  autoOpen: false, resizable: false, title: "Info" })
 	
 	$('.clientList .clientListRow .actions a.program, #add_patient_button').click(function(){
 		
@@ -432,6 +433,12 @@ $(document).ready(function()
 		
 		$('#clientsList').dialog('open');
 	});
+	
+	$('#pdfInfoImg').click(function(){
+		//$('#pdfInfo').dialog( "option" , "title", "Info" );
+		$('#pdfInfo').dialog('open');
+	});
+	
 	
 	$( "#clientsList div" ).bind( "dialogclose", function(event, ui) {
 		$('#clientsList div').html('');
