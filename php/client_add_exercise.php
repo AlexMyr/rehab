@@ -67,14 +67,14 @@ foreach($category_array as &$cat){
             while($q->next())
                 $ids[] = $q->f('category_id');
             
-            $c = $dbu->query("SELECT COUNT(distinct `programs_id`) AS category_items FROM `programs_in_category`
-                             WHERE 1=1 AND `category_id` IN (".implode(', ', $ids).")");
+			$c = $dbu->query("SELECT COUNT(distinct pic.`programs_id`) AS category_items FROM `programs_in_category` pic left join programs p on p.programs_id=pic.programs_id
+							 WHERE 1=1 AND `category_id` IN (".implode(', ', $ids).") AND (owner=-1 or owner=".$_SESSION[U_ID].")");
             unset($ids);
             $c->next();
             $counter = $c->f('category_items');
         }
         else{
-            $c = $dbu->query("SELECT COUNT(`programs_id`) AS category_items FROM `programs_in_category` WHERE 1=1 AND `category_id`=".$cat['category_id']);
+			$c = $dbu->query("SELECT COUNT(pic.`programs_id`) AS category_items FROM `programs_in_category` pic left join programs p on p.programs_id=pic.programs_id WHERE 1=1 AND (owner=-1 or owner=".$_SESSION[U_ID].") AND `category_id`=".$cat['category_id']);
             $c->next();
             $counter += $c->f('category_items');
         }
