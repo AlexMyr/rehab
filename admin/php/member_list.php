@@ -30,31 +30,33 @@ else
 
 //$dbu->query("select * from trainer where active=2 and  or expire_date-".date("Y-m-d H:i:S")." order by trainer_id");
 
+$order_by = ' order by create_date desc, trainer_id asc';
+
 $arguments='';
 if($glob['active']==2)
 {
 	if($glob['trial']==0)
 	{
-		$dbu->query("select * from trainer where active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 order by trainer_id");	 
+		$dbu->query("select * from trainer where active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
 		$bannName='Block';
 		$pageTitle='Full Paid Members List';
 	}
 	else
 	{
-		$dbu->query("select * from trainer where active=2 and is_trial=1 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 order by trainer_id");	 
+		$dbu->query("select * from trainer where active=2 and is_trial=1 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
 		$bannName='Block';
 		$pageTitle='Trial Members List';
 	}
 }
 else if($glob['active']==0)
 {
-	$dbu->query("select * from trainer where active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0 order by trainer_id");	
+	$dbu->query("select * from trainer where active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0 $order_by");	
 	$bannName='Activate';
 	$pageTitle='New Members List';
 }
 else if($glob['active']==1)
 {
-	$dbu->query("select * from trainer where active=1 or(active=2 and expire_date='0000-00-00 00:00:00') order by trainer_id");	 
+	$dbu->query("select * from trainer where active=1 or(active=2 and expire_date='0000-00-00 00:00:00') $order_by");	 
 	$bannName='Block';
 	$pageTitle='Members List';
 }
