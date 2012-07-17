@@ -450,12 +450,15 @@ $(document).ready(function()
 	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
 		$('.jsScrollDiv').jScrollPane();
 			
-	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
-		$('.jsScrollDiv').jScrollPane();
 
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
 		window.location = $(this).attr('href') + '&query=' + $('#filterPatientsValue').val();
+	});
+	
+	$('#searchExerciseButton').click(function(e){
+		e.preventDefault();
+		window.location = $(this).attr('href') + '&query=' + $('#searchExerciseInput').val();
 	});
 	
 	$('.changeVideoUrl').click(function(){
@@ -618,7 +621,7 @@ $(document).ready(function()
 		function(){
 			$('.item1').removeClass('topForSubMenu');
 			hovered = true;
-			setTimeout(hide_submenu('#submenuProgramList'), 100);
+			hide_submenu("#submenuProgramList");
 		}
 	);
 		
