@@ -128,14 +128,14 @@ $i = 0;
 
 while($i<count($exercise))
 {
-	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title FROM programs
+	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title, uploaded_pdf FROM programs
                                INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
                                WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
 	
 	$ft->assign(array(
 		
-		'IMG' => (file_exists('upload/'.$get_program->f($image_type)) && $get_program->f($image_type)) ? $get_program->f($image_type) : 'noimage.png',
+		'IMG' => (file_exists('upload/'.$get_program->f($image_type)) && $get_program->f($image_type)) ? $get_program->f($image_type) : ($get_program->f('uploaded_pdf') ? 'pdf.png' : 'noimage.png'),
 		'PROGRAM_ID' => $exercise[$i],
 	));	
 	$get_data = $dbu->query("
