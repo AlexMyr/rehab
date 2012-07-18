@@ -178,7 +178,7 @@ if($glob['catID']&&$glob['program_id'])
 		
 	if(isset($glob['query']) && $glob['query'])
 	{
-	  $where .= " AND translate.programs_title LIKE '%".$glob['query']."%' ";
+	  $where .= " AND translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
 	}
 
   $program = $dbu->query("
@@ -316,7 +316,7 @@ if(!empty($_SESSION['ppids']))
 
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);
 $ft->assign('CSS_PAGE', $glob['pag']);
-$ft->assign('SEARHC_LINK', "index.php?pag=".$glob['pag']
+$ft->assign('SEARCH_LINK', "index.php?pag=".$glob['pag']
 				."&catID=".$glob['catID']
 				."&program_id=".$glob['program_id']);
 

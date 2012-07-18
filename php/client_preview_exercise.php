@@ -100,7 +100,7 @@ global $script_path;
 			'TARGET'					=> '_self'
 		));	
 
-		$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, $exercise_notes, 'exercise_notes', ''), ));
+		$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, stripcslashes($exercise_notes), 'exercise_notes', ''), ));
 
 	}
 	if($glob['mode'] == 'preview'){
@@ -119,7 +119,7 @@ global $script_path;
 			'FINISH'					=> 'index.php?pag=client&client_id='.$glob['client_id'],
 			
 		));
-		$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.$exercise_notes.'</strong></span>', ));
+		$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.stripcslashes($exercise_notes).'</strong></span>', ));
 	}
 	
 	$exercise = explode(',',$glob['exercise_id']);

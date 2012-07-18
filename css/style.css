@@ -82,9 +82,9 @@ a { cursor:pointer; color:#ffffff; }
 .contentContainerBox .text .homepage h4  a{ color:blue;}
 .contentContainerBox p { margin: 0px; padding: 5px 0px; border: 0px; color:#666666; color:#343434; font-size: 14px; font-family: avgardn, Arial, Helvetica, sans-serif; line-height:18px; }
 #innercontentwrapper{padding-top:10px;}
-.moreBtn, .changeViewBtn { line-height:30px; background: url(../img/moreBtnLft.png) no-repeat top left; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:block; text-decoration:none; padding-left:12px; width:auto; font-family: Arial, Helvetica, sans-serif;}
-.moreBtn span, .changeViewBtn span { line-height:30px; background: url(../img/moreBtn.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; }
-.pricePlanTable .moreBtn span{width:100%;}
+.moreBtn, .changeViewBtn, .searchBtn { line-height:30px; background: url(../img/moreBtnLft.png) no-repeat top left; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:block; text-decoration:none; padding-left:12px; width:auto; font-family: Arial, Helvetica, sans-serif;}
+.moreBtn span, .changeViewBtn span, .searchBtn span { line-height:30px; background: url(../img/moreBtn.png) no-repeat top right; color:#ffffff; font-size:14px; text-shadow:#666 1px 1px 0px; display:inline-block; text-decoration:none; padding-right:12px; width:auto; }
+.pricePlanTable .moreBtn span, .searchBtn span {width:100%;}
 .changeViewBtn { margin-top:5px; }
 #exerciseAddForm  .changeViewBtn {width:125px; margin: 5px auto 0px 35px;}
 #exerciseAddForm  .changeViewBtn span {padding-right: 17px;}
@@ -605,6 +605,12 @@ label.error_validate{
 .filterSection input
 {
 	width: 300px;
+	height: 30px;
+}
+
+.programList .filterSection input
+{
+	width: 370px;
 	height: 30px;
 }
 

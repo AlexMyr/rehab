@@ -181,6 +181,11 @@ if($cat_info['category_name'] == 'All'){
 else
     $where = "programs_in_category.category_id=".$glob['catID'];
 
+if(isset($glob['query']) && $glob['query'])
+{
+  $where .= " AND translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
+}
+
 $program = $dbu->query("
 				SELECT 
 					programs.*, programs_in_category.category_id, translate.*
@@ -308,6 +313,7 @@ $ft->define_dynamic('selected_line','main');
 
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);
 $ft->assign('CSS_PAGE', $glob['pag']);
+$ft->assign('SEARCH_LINK', "index.php?pag=client_add_exercise&catID=".$glob['catID']."&client_id=".$glob['client_id']."&exercise_plan_id=".$glob['exercise_plan_id']);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');

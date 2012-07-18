@@ -98,7 +98,7 @@ if($glob['mode']== 'edit')
 		'VIS' 						=> 'none',
 		'TARGET'					=> '_self'
 	));	
-	$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, $exercise_notes, 'exercise_notes', ''), ));
+	$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, stripcslashes($exercise_notes), 'exercise_notes', ''), ));
 }
 
 if($glob['mode'] == 'preview')
@@ -119,7 +119,7 @@ if($glob['mode'] == 'preview')
         'FINISH_URL'                => isset($_SESSION['modify_program_return_url']) ? $_SESSION['modify_program_return_url'] : 'index.php?pag=programs'
 		
 	));
-	$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.$exercise_notes.'</strong></span>', ));
+	$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.stripcslashes($exercise_notes).'</strong></span>', ));
 }
 
 $exercise = explode(',',$glob['exercise_id']);
