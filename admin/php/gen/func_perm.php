@@ -269,6 +269,8 @@
 										'activate'=>1,
 										
 										'activate_full_rights'=>1,
+                                        
+                                        'trial'=>1
 
 										),                                    
 

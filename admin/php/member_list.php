@@ -89,6 +89,9 @@ $i=0;
 $t=1;
 while($dbu->move_next()&&$i<$l_r)
 {
+	$trial_name = '';
+	$trial_link = '';
+	
 	$t=$offset+$i+1;
 
 	$expire_date = strtotime($dbu->f('expire_date'));
@@ -99,11 +102,15 @@ while($dbu->move_next()&&$i<$l_r)
 		if($expire_time<1) $is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
 		else if($expire_time>0)
 		{
-			if($dbu->f('is_trial')==1) $is_trial = "trial";
-			else if($dbu->f('is_trial')==0) $is_trial = "payed";
+			if($dbu->f('is_trial')==1)
+				$is_trial = "trial";
+			else if($dbu->f('is_trial')==0){
+				$is_trial = "payed";
+				$trial_name = 'Trial';
+				$trial_link = "index.php?pag=member_list&act=member-trial&trainer_id=".$dbu->f('trainer_id');
+			}
 		}
 	}
-
 	else $is_trial = "<span style='color:#ff0000;'>never used</span>";
 
 	if($dbu->f('is_clinic')==2) $is_clinic = "not set";
@@ -138,11 +145,15 @@ while($dbu->move_next()&&$i<$l_r)
 	{
 		$b_offset=$offset;
 	}
-
+	
+	
+	
     $ft->assign('EDIT_LINK',"index.php?pag=member_add&trainer_id=".$dbu->f('trainer_id'));
     $ft->assign('DELETE_LINK',"index.php?pag=member_list&act=member-delete&trainer_id=".$dbu->f('trainer_id')."&offset=".$b_offset.$arguments);
     $ft->assign('BANN_LINK',$activation);
     $ft->assign('BANN_NAME',$bannName);
+	$ft->assign('TRIAL_LINK',$trial_link);
+    $ft->assign('TRIAL_NAME',$trial_name);
     $ft->assign('FULLRIGHTS_LINK',"index.php?pag=member_list&act=member-activate_full_rights&active=2&trainer_id=".$dbu->f('trainer_id'));
     $ft->assign('FULLRIGHTS_NAME','No Pay - Full Rights');
     $ft->parse('member_ROW_OUT','.member_row');

@@ -53,7 +53,10 @@ if(isset($glob['search_key']))
           $bannName='Activate';
       else if($dbu->f('active')==1)
           $bannName='Block';
-
+    
+      $trial_name = '';
+      $trial_link = '';
+	
       $expire_date = strtotime($dbu->f('expire_date'));
       if($expire_date>0)
       {
@@ -61,8 +64,15 @@ if(isset($glob['search_key']))
           if($expire_time<1) $is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
           else if($expire_time>0)
           {
-              if($dbu->f('is_trial')==1) $is_trial = "trial";
-              else if($dbu->f('is_trial')==0) $is_trial = "payed";
+              if($dbu->f('is_trial')==1)
+                $is_trial = "trial";
+              else if($dbu->f('is_trial')==0)
+              {
+                $is_trial = "payed";
+                $trial_name = 'Trial';
+				$trial_link = "index.php?pag=member_list&act=member-trial&trainer_id=".$dbu->f('trainer_id');
+              }
+              
           }
       }
       else $is_trial = "<span style='color:#ff0000;'>never used</span>";
@@ -105,6 +115,8 @@ if(isset($glob['search_key']))
       $ft->assign('DELETE_LINK',"index.php?pag=member_list&act=member-delete&trainer_id=".$dbu->f('trainer_id'));
       $ft->assign('BANN_LINK',$activation);
       $ft->assign('BANN_NAME',$bannName);
+      $ft->assign('TRIAL_LINK',$trial_link);
+      $ft->assign('TRIAL_NAME',$trial_name);
       $ft->assign('FULLRIGHTS_LINK',"index.php?pag=member_list&act=member-activate_full_rights&active=2&trainer_id=".$dbu->f('trainer_id'));
       $ft->assign('FULLRIGHTS_NAME','No Pay - Full Rights');
       $ft->parse('member_ROW_OUT','.member_row');
