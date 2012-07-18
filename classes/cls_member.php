@@ -320,6 +320,7 @@ class member
 
 	function update_licence(&$ld)
     {
+
         if(!$this->validate_update_licence($ld))
         {
             $ld['pag']= "profile_choose_clinic"; 
@@ -328,7 +329,7 @@ class member
 
         if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."'";
         else if($ld['is_clinic']==1) $update = "is_clinic='".$ld['is_clinic']."', clinic_name='".$ld['clinic_name']."'";
-        
+     
         $this->dbu->query("
                             UPDATE 
                                 trainer 
@@ -338,9 +339,9 @@ class member
                                 trainer_id=".$_SESSION[U_ID]." 
                         ");
 		
-		$this->dbu->query("SELECT first_name, surname, username FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
+		$this->dbu->query("SELECT first_name, surname, username, clinic_name FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
 		$this->dbu->move_next();
-		$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('surname')."', email='".$this->dbu->f('username')."' ");
+		$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('surname')."', email='".$this->dbu->f('username')."', company_name='".$this->dbu->f('clinic_name')."' ");
     
         $ld['error']="Licence Succesfully Saved.";
 
@@ -622,7 +623,7 @@ class member
 													");
 
 			$this->dbu->query("UPDATE trainer SET first_name='".$ld['first_name']."', surname='".$ld['surname']."', 
-				profile_id=".$ld['profile_id']." WHERE trainer_id=".$_SESSION[U_ID]." ");
+				profile_id=".$ld['profile_id'].", clinic_name=''".$ld['company_name']." WHERE trainer_id=".$_SESSION[U_ID]." ");
 
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
 		//$ld['pag'] = "profile";

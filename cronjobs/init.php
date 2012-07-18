@@ -97,7 +97,7 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 	
 $dbu = new mysql_db();
 
-$select = "select trainer.* from trainer where 1=1";
+$select = "select thp.*, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1";
 
 $dbu->query($select);
 
@@ -107,6 +107,7 @@ $ab = array();
 
 while($dbu->move_next())
 {
+	//if($dbu->f('email_contact') != 'oleg_gladchenko@mail.ru') continue;
     if($dbu->f('is_trial')!=0)
     {
         $expire_time = (strtotime($dbu->f('expire_date'))-$time_now);
@@ -123,19 +124,30 @@ while($dbu->move_next())
         
 		if($dbu->f('is_clinic') == 1)
 		{
-			$send_to_name=$dbu->f('clinic_name');
+			$send_to_name=trim($dbu->f('company_name'));
 		}
 		else
 		{
-			$send_to_name=$dbu->f('first_name');
+			$send_to_name=trim($dbu->f('first_name'));
 		}
+		
+		
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('first_name'));
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('company_name'));
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('surname'));
+		if(!$send_to_name)
+			$send_to_name = 'client';
+			
 		
         if($message_data['text']!=null) 
         {
-			send_mail($send_to_email=$dbu->f('email'),$send_to_name,$message_data);
+			send_mail($send_to_email=$dbu->f('email_contact'),$send_to_name,$message_data);
             /* USED FOR THE CRON LOG FILE */
             $ab[$i]['msg_uid'] = $dbu->f('trainer_id');
-            $ab[$i]['msg_email'] = $dbu->f('email');
+            $ab[$i]['msg_email'] = $dbu->f('email_contact');
             $ab[$i]['exp_date'] = $dbu->f('expire_date');
             $ab[$i]['exp_time'] = $expire_time;
             $ab[$i]['time'] = $time_now;
