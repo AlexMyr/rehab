@@ -659,6 +659,9 @@ $(document).ready(function()
 	$('.item img, .itemCompact img').click(function(){
 		var clickedImgUrl = $(this).attr('src');
 		clickedImgUrl = clickedImgUrl.match(/([\w]+?)\.jpg/);
+		if(!clickedImgUrl)
+			return false;
+		
 		var lightBox = $('<div id="innerLightBoxDiv"><img src="phpthumb/phpThumb.php?src=../upload/'+clickedImgUrl[1]+'.jpg&wl=300&hp=300" /></div>');
 		$('#imgLightBox').css('left', '500px');
 		$('#imgLightBox').css('top', '200px');
