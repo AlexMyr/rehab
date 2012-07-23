@@ -178,7 +178,7 @@ if($glob['catID']&&$glob['program_id'])
 		
 	if(isset($glob['query']) && $glob['query'])
 	{
-	  $where .= " AND translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
+	  $where = "translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
 	}
 
   $program = $dbu->query("
