@@ -608,9 +608,14 @@ label.error_validate{
 	height: 30px;
 }
 
+.programList .filterSection
+{
+	margin-bottom: 15px;
+}
+
 .programList .filterSection input
 {
-	width: 370px;
+	width: 200px;
 	height: 30px;
 }
 
@@ -628,4 +633,8 @@ label.error_validate{
 {
 	padding-left:5px;
 	vertical-align:middle;
+}
+#searchExerciseButton span
+{
+	width: auto;
 }
