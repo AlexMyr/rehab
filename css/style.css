@@ -70,7 +70,8 @@ a { cursor:pointer; color:#ffffff; }
 .navMenu ul li div a, .navMenu ul li div a:hover, .navMenu ul li div a span, .navMenu ul li div a:hover span { margin:0px 0px 0px 0px; padding:0px; background: none; }
 
 .scrolledList{ height: 700px; overflow-y: auto;}
-.jsScrollDiv{ overflow-y: hidden;}
+.jsScrollDiv{ overflow-y: auto;}
+.faqScrollDiv{ max-height:650px;}
 
 .contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px;}
 .contentContainerBox h2 { color:#6099e7; font-size: 36px; color:#3868aa; }
