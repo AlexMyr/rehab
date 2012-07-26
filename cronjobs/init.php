@@ -97,7 +97,7 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 	
 $dbu = new mysql_db();
 
-$select = "select thp.*, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1";
+$select = "select t.trainer_id as tid, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date, thp.*  from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1 and t.is_trial<>0 and t.trainer_id IS NOT NULL";
 
 $dbu->query($select);
 
