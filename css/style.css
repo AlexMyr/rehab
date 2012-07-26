@@ -238,7 +238,7 @@ p.redBold { color:#f00; font-weight:bold; }
 
 .contactHeadedInfo { width:460px; }
 .contactHeadedInfo h2 { font-size:20px; padding:0px 0px 7px 0px; }
-.contactHeadedInfo p { padding:0px; }
+.contactHeadedInfo p { padding:0px; font-size: 13px; }
 .contactHeadedInfo p b { width:108px; display:inline-block; font-weight:bold; }
 .contactHeadedInfo p i { font-style:normal; }
 .contactHeadedInfo .moreBtn { margin:20px 0px 0px 0px; font-family: "MergeRegular"; }
