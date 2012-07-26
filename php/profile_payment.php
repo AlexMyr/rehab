@@ -85,7 +85,7 @@ while($query->next())
 //form payment table
 
 $payment_table =
-'<table class="pricePlanTable">
+'<div class="cornerTable"><table class="pricePlanTable">
         <tr>
             <th class="priceTableHead"></th>
 ';
@@ -181,7 +181,7 @@ for($i=0;$i<$payment_count;$i++)
                         </a>
                     </td>';
 }
-$payment_table .= '</tr></table>';
+$payment_table .= '</tr></table></div>';
 $ft->assign('PAYMENT_TABLE', $payment_table);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');

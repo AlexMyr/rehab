@@ -466,6 +466,18 @@ $(document).ready(function()
 		$('#currentVideo').attr('src', newUrl);
 	})
 	
+	//add corner
+	if($('.breadcrumb').length > 0)
+		$('.breadcrumb').corner('5px');
+	if($('.compact').length > 0)
+		$('.compact').corner('right 5px');
+	if($('input, textarea, select').length > 0)
+		$('input, textarea, select').corner('5px');
+	if($('.deleteClient button.del b').length > 0)
+		$('.deleteClient button.del b').corner('left 5px');
+	if($('.deleteClient button.del span').length > 0)
+		$('.deleteClient button.del span').corner('right 5px');
+	
 	//posX = null;
 	//posY = null;
 	redirect_url = null;
