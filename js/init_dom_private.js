@@ -697,7 +697,8 @@ $(document).ready(function()
 		e.preventDefault();
 		if($(this).data('planChosen')!=true)
 		{
-			alert('Your trial has expired. Please select another plan.');
+			var alertValue = $('span.expire_time span').text();
+			alert(alertValue);
 			return false;
 		}
 		else
