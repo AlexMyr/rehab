@@ -61,7 +61,32 @@ class member
             return false;
         }
 		else 
-        { 
+        {
+//if(isset($_COOKIE['test'])){
+//require_once ('misc/PapApi.class.php');
+//// login (as merchant)
+//
+//$session = new Gpf_Api_Session(AFFILIATES_API_M_URL);
+//
+//if(!$session->login(AFFILIATES_API_M_USERNAME, AFFILIATES_API_M_PASSWORD))
+//	{
+//		die("Cannot login. Message: ".$session->getMessage());
+//	}
+//$clickTracker = new Pap_Api_ClickTracker($session);
+//try
+//	{
+//		$clickTracker->track();
+//	}
+//catch (Exception $e)
+//	{
+//		die("Click tracker: ".$e->getMessage());
+//	}
+//if ($clickTracker->getAffiliate() != null && $clickTracker->getAffiliate()->getValue('userid') != null)
+//{
+//	$refferer_UID = $clickTracker->getAffiliate()->getValue('userid'); // prints affiliate userid
+//}
+//var_dump($clickTracker->getAffiliate());exit;
+//}
         /*	require_once ('misc/PapApi.class.php');
             // login (as merchant)
             
@@ -913,12 +938,12 @@ class member
 			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
 
 			$cur_image = ImageCreateFromJPEG($img_path);
-			if(imagesy($cur_image)>180)
-			  $this->resize($img_path, 0, 180, $f_title);
+			if(imagesy($cur_image)>90)
+			  $this->resize($img_path, 0, 90, $f_title);
 			  
 			$cur_image = ImageCreateFromJPEG($img_path);
-			if(imagesx($cur_image)>200)
-			  $this->resize($img_path, 200, 0, $f_title);
+			if(imagesx($cur_image)>100)
+			  $this->resize($img_path, 100, 0, $f_title);
             
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
@@ -1119,7 +1144,7 @@ class member
 					$this->dbu->move_next();
 					$country_id = $this->dbu->f('country_id');
                     
-					$this->dbu->query("UPDATE trainer 
+					$str = "UPDATE trainer 
 									SET 
 										paypal_profile_id = '".$_SESSION['payer_id']."',
 										country_id 	    = '".$country_id."',
@@ -1127,7 +1152,14 @@ class member
 										is_trial		= '0',
 										expire_date		= '$expireTime'
 									WHERE 
-										trainer_id=".$_SESSION[U_ID]." ");
+										trainer_id=".$_SESSION[U_ID]." ";
+
+                    $trans_id = $this->dbu->query_get_id("INSERT INTO `paypal_transactions`
+                                (`trainer_id`, `name`, `profile_id`, `status`, `type`, `amount`, `currency`, `timestamp`, `ack`, `request`, `correlation_id`, `error`, `answer`)
+                         VALUES ('{$_SESSION[U_ID]}', 'mysql Update trainer after Confirm pay', '{$_SESSION['payer_id']}', 'error', '', '', '', '".date('c')."', '', '".mysql_real_escape_string($str)."', '',
+                                '', '')");
+                    $this->dbu->query($str);
+                    $this->dbu->query("UPDATE `paypal_transactions` SET `status` = 'ok' ");
                     
                     $message_data=get_sys_message('succ_pay', $this->dbu->f('lang'));
                     
