@@ -492,8 +492,10 @@ label.error_validate{
 .cornerTable {
 	width: 85%;
 	margin: auto;
-	border: 1px solid;
+	border: 2px solid #000000;
     border-radius: 5px 5px 5px 5px;
+	overflow: hidden;
+	behavior: url(http://rehab.loc/css/PIE.php);
 }
 
 .pricePlanTable th, .pricePlanTable td
