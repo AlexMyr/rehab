@@ -40,20 +40,20 @@ function add(&$ld)
 												clinic_name = '".$ld['clinic_name']."' ".$is_clinic."
 									");
 	
-	$this->dbu->query("INSERT INTO trainer_profile
-					  SET
-						company_name = '".$ld['clinic_name']."',
-						first_name = '".$ld['first_name']."',
-						surname = '".$ld['surname']."',
-						address = '".$ld['address']."',
-						city = '".$ld['city']."',
-						post_code = '".$ld['post_code']."',
-						website = '".$ld['website']."',
-						phone = '".$ld['phone']."',
-						mobile = '".$ld['mobile']."',
-						email = '".$ld['email']."',
-						trainer_id = '".$ld['trainer_id']."'
-					  ");
+	//$this->dbu->query("INSERT INTO trainer_profile
+	//				  SET
+	//					company_name = '".$ld['clinic_name']."',
+	//					first_name = '".$ld['first_name']."',
+	//					surname = '".$ld['surname']."',
+	//					address = '".$ld['address']."',
+	//					city = '".$ld['city']."',
+	//					post_code = '".$ld['post_code']."',
+	//					website = '".$ld['website']."',
+	//					phone = '".$ld['phone']."',
+	//					mobile = '".$ld['mobile']."',
+	//					email = '".$ld['email']."',
+	//					trainer_id = '".$ld['trainer_id']."'
+	//				  ");
 	
 	$this->dbu->query("
 					  INSERT INTO 
@@ -92,25 +92,25 @@ function update(&$ld)
 					   clinic_name = '".$ld['clinic_name']."'						
                        where trainer_id=".$ld['trainer_id']."");
 	
-	$this->dbu->query("update trainer_profile set
-					  company_name = '".$ld['clinic_name']."',
-						first_name = '".$ld['first_name']."',
-						surname = '".$ld['surname']."',
-						address = '".$ld['address']."',
-						city = '".$ld['city']."',
-						post_code = '".$ld['post_code']."',
-						website = '".$ld['website']."',
-						phone = '".$ld['phone']."',
-						mobile = '".$ld['mobile']."',
-						email = '".$ld['email']."'
-						where trainer_id = '".$ld['trainer_id']."'
-					  ");
+	//$this->dbu->query("update trainer_profile set
+	//				  company_name = '".$ld['clinic_name']."',
+	//					first_name = '".$ld['first_name']."',
+	//					surname = '".$ld['surname']."',
+	//					address = '".$ld['address']."',
+	//					city = '".$ld['city']."',
+	//					post_code = '".$ld['post_code']."',
+	//					website = '".$ld['website']."',
+	//					phone = '".$ld['phone']."',
+	//					mobile = '".$ld['mobile']."',
+	//					email = '".$ld['email']."'
+	//					where trainer_id = '".$ld['trainer_id']."'
+	//				  ");
 	
 	$this->dbu->query("
 								UPDATE 
 									trainer_header_paper 
 								SET 
-									company_name='".$ld['clinic_name']."',
+									#company_name='".$ld['clinic_name']."',
 									address='".$ld['address']."',
 									first_name='".$ld['first_name']."',
 									surname='".$ld['surname']."',
