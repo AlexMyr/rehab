@@ -49,7 +49,7 @@ a { cursor:pointer; color:#ffffff; }
 .logo { margin:0px 0px 0px 0px; width:340px; padding:27px 0px 0px 0px; height:75px; float:left; display:block; padding:9px 0px 0px 0px; height:91px; }
 .logo a { margin:0px; width:340px; padding:0px; height:93px; display:block; background: url(../img/logo.png) no-repeat top left; position:relative; overflow:hidden; }
 .logo a span { position:absolute; left:-99999px; }
-.whirl{background: url('../img/background_wave.png') no-repeat scroll center top transparent; width: 100%; height: 937px; top:0; left:0;}
+.whirl{background: url('../img/background_wave.png') no-repeat scroll center top transparent; width: 100%; height: 937px; top:0; left:0; border-radius: 1px; behavior: url(http://rehab.loc/css/PIE.php);}
 
 #submenuList {top: 85px; left:725px; z-index: 9999; }
 #submenuProgramList {top: 85px; left:580px; z-index: 9999; }
@@ -177,7 +177,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .loginForm { margin: 10px 10px 20px 10px; margin:10px 3px 20px 3px; width: 460px; float:left; }
 .loginForm h2 { color:#17ae42; }
 .loginForm label { color: #acacac; font-size: 18px; font-family: "MergeRegular"; padding:7px 0px; display:inline-block; color:#4c4c4c; }
-.loginForm input.textField { border:1px solid #e0e0e0; width: 418px; height: 32px; }
+.loginForm input.textField { border:1px solid #e0e0e0; width: 418px; height: 32px; line-height: 32px; }
 .buttons.login { margin-top:10px;}
 .buttons.login button{text-align: left;}
 .buttons.new_join { margin-top:10px; }
@@ -197,7 +197,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .joinForm h2 { color:#6099e7; }
 .joinForm label { color: #acacac; font-size: 18px; font-family: "MergeRegular"; padding:7px 0px; display:inline-block; color:#4c4c4c; }
 .joinForm .top { width:460px; height:5px; background: url(../img/join_content_top.jpg) no-repeat top right; }
-.joinForm .content { background-color:#e7f0fb; padding:8px 20px 15px 20px; }
+.joinForm .content { background-color:#e7f0fb; padding:8px 20px 15px 20px; border-radius: 1px; behavior: url(http://rehab.loc/css/PIE.php); }
 .joinForm .bottom { width:460px; height:5px; background: url(../img/join_content_bottom.jpg) no-repeat top right; }
 .joinForm p { font-size:18px; color:#898989; line-height:normal; font-family: "MergeRegular"; color:#000000; }
 .joinForm input.textField { border:1px solid #e0e0e0; width: 418px; height: 32px; }
@@ -670,4 +670,11 @@ label.error_validate{
 #searchExerciseButton span
 {
 	width: auto;
+}
+
+
+.curvyCorner
+{
+	border-radius: 5px;
+	behavior: url(http://rehab.loc/css/PIE.php);
 }
