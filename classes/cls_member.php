@@ -1119,7 +1119,7 @@ class member
 					$this->dbu->move_next();
 					$country_id = $this->dbu->f('country_id');
                     
-					$this->dbu->query("UPDATE trainer 
+                    $str = "UPDATE trainer 
 									SET 
 										paypal_profile_id = '".$_SESSION['payer_id']."',
 										country_id 	    = '".$country_id."',
@@ -1127,7 +1127,14 @@ class member
 										is_trial		= '0',
 										expire_date		= '$expireTime'
 									WHERE 
-										trainer_id=".$_SESSION[U_ID]." ");
+										trainer_id=".$_SESSION[U_ID]." ";
+
+                    $trans_id = $this->dbu->query_get_id("INSERT INTO `paypal_transactions`
+                                (`trainer_id`, `name`, `profile_id`, `status`, `type`, `amount`, `currency`, `timestamp`, `ack`, `request`, `correlation_id`, `error`, `answer`)
+                         VALUES ('{$_SESSION[U_ID]}', 'mysql Update trainer after Confirm pay', '{$_SESSION['payer_id']}', 'error', '', '', '', '".date('c')."', '', '".mysql_real_escape_string($str)."', '',
+                                '', '')");
+                    $this->dbu->query($str);
+                    $this->dbu->query("UPDATE `paypal_transactions` SET `status` = 'ok' ");
                     
                     $message_data=get_sys_message('succ_pay', $this->dbu->f('lang'));
                     
