@@ -913,12 +913,12 @@ class member
 			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
 
 			$cur_image = ImageCreateFromJPEG($img_path);
-			if(imagesy($cur_image)>180)
-			  $this->resize($img_path, 0, 180, $f_title);
+			if(imagesy($cur_image)>90)
+			  $this->resize($img_path, 0, 90, $f_title);
 			  
 			$cur_image = ImageCreateFromJPEG($img_path);
-			if(imagesx($cur_image)>200)
-			  $this->resize($img_path, 200, 0, $f_title);
+			if(imagesx($cur_image)>100)
+			  $this->resize($img_path, 100, 0, $f_title);
             
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
