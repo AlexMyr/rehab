@@ -45,8 +45,9 @@ doSave = function()
 		if($("#exercise_id").attr('value')=="") 
 			{
 				doExerciseErr('you need to add exercises before trying to save!');
+				return false;
 			}
-		else if($("#exercise_id").attr('value')!="") $("form#exerciseAddForm")[0].submit();
+		else $("form#exerciseAddForm")[0].submit();
 	}
 makeSortable = function()
 	{
@@ -467,18 +468,22 @@ $(document).ready(function()
 	})
 	
 	//add corner
-	if($('.breadcrumb').length > 0)
-		$('.breadcrumb').corner('5px');
-	if($('.compact').length > 0)
-		$('.compact').corner('right 5px');
-	if($('.curvyCorner').length > 0)
-		$('.curvyCorner').corner('5px');
-	//if($('input, textarea, select').length > 0)
-	//	$('input, textarea, select').corner('5px');
-	if($('.deleteClient button.del b').length > 0)
-		$('.deleteClient button.del b').corner('left 5px');
-	if($('.deleteClient button.del span').length > 0)
-		$('.deleteClient button.del span').corner('right 5px');
+	if(jQuery.browser.msie == 'undefined' || (jQuery.browser.msie && jQuery.browser.version>8))
+	{
+		if($('.breadcrumb').length > 0)
+			$('.breadcrumb').corner('5px');
+		if($('.compact').length > 0)
+			$('.compact').corner('right 5px');
+		if($('.curvyCorner').length > 0)
+			$('.curvyCorner').corner('5px');
+		//if($('input, textarea, select').length > 0)
+		//	$('input, textarea, select').corner('5px');
+		if($('.deleteClient button.del b').length > 0)
+			$('.deleteClient button.del b').corner('left 5px');
+		if($('.deleteClient button.del span').length > 0)
+			$('.deleteClient button.del span').corner('right 5px');
+	}
+	
 	
 	//posX = null;
 	//posY = null;
