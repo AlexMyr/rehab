@@ -911,14 +911,16 @@ class member
         {
 			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_title;
 			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
-
-			$cur_image = ImageCreateFromJPEG($img_path);
+			
+			$cur_image = createImgFromFile($img_path);
+			
 			if(imagesy($cur_image)>90)
-			  $this->resize($img_path, 0, 90, $f_title);
-			  
-			$cur_image = ImageCreateFromJPEG($img_path);
+			  $this->resize($img_path, 0, 90, $f_title, $img_ext);
+			
+			$cur_image = createImgFromFile($img_path);
+			
 			if(imagesx($cur_image)>100)
-			  $this->resize($img_path, 100, 0, $f_title);
+			  $this->resize($img_path, 100, 0, $f_title, $img_ext);
             
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
@@ -928,6 +930,30 @@ class member
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_IMAGE').'<br>';
             return true;
         }
+	}
+	
+	function createImgFromFile($img_path)
+	{
+		$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);
+		
+		if(in_array(strtolower($img_ext), array('jpg', 'jpeg')))
+			$img_created = ImageCreateFromJPEG($img_path);
+		elseif(strtolower($img_ext) == 'png')
+			$img_created = imagecreatefrompng($img_path);
+		elseif(strtolower($img_ext) == 'gif')
+			$img_created = imagecreatefromgif($img_path);
+			
+		return $img_created;
+	}
+	
+	function createImgFromRes($img_res, $img_path, $img_ext)
+	{
+		if(in_array(strtolower($img_ext), array('jpg', 'jpeg')))
+			ImageJPEG($img_res, $img_path) or die("Problem In saving");
+		elseif(strtolower($img_ext) == 'png')
+			imagepng($img_res, $img_path) or die("Problem In saving");
+		elseif(strtolower($img_ext) == 'gif')
+			imagegif($img_res, $img_path) or die("Problem In saving");
 	}
 
 	/****************************************************************
@@ -975,30 +1001,29 @@ class member
 	function resize($original_image, $new_width, $new_height, $image_title) 
 	{
 		global $script_path;
+		
+		$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);
+		$original_image = createImgFromFile($original_image);
+		
+		$aspect_ratio = imagesx($original_image) / imagesy($original_image);
 
-		$original_image=ImageCreateFromJPEG($original_image);
-
-		$aspect_ratio = imagesx($original_image) / imagesy($original_image); 
 		if (empty($new_width)) 
-		{ 
 			$new_width = $aspect_ratio * $new_height; 
-		}
 		elseif (empty($new_height)) 
-		{ 
 			$new_height= $new_width / $aspect_ratio; 
-		}
+
 		if (imageistruecolor($original_image))	
-		{ 
 			$image = imagecreatetruecolor($new_width, $new_height); 
-		} 
 		else 
-		{ 
 			$image = imagecreate($new_width, $new_height); 
-		} 
+
 		// copy the original image onto the smaller blank 
 		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
-		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
+		
+		createImgFromRes($image, $script_path.UPLOAD_PATH.$image_title, $img_ext);
 	}
+	
+	
 
 	function pay(&$ld){
 		$_SESSION['userEmail'] = $userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
