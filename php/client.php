@@ -34,9 +34,9 @@ $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SES
 $dbu->query("select count(exercise_plan_id) as cnt from exercise_plan where trainer_id=".$_SESSION[U_ID]." AND client_id=".$glob['client_id']." ");
 if($dbu->move_next()) $out=$dbu->f('cnt');
 
-if(intval($out)>4 && $chk_trial)
-    $show_limit_error = 'class="showLimitError"';
-else
+//if(intval($out)>4 && $chk_trial)
+//    $show_limit_error = 'class="showLimitError"';
+//else
     $show_limit_error = '';
 
 $ft->assign('SHOW_LIMIT_ERROR', $show_limit_error);

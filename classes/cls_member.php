@@ -837,7 +837,7 @@ class member
         {
         	
 //        	$this->resize($_FILES['upload_image']['tmp_name'], 276, 0, $f_title);
-        	$this->resize($_FILES['upload_image']['tmp_name'], 200, 0, $f_title);
+        	$this->resize($_FILES['upload_image']['tmp_name'], 200, 0, $f_title, $f_ext);
 	        @chmod($f_out, 0777);
         	$this->dbu->query("UPDATE trainer_profile SET
 	                           logo_image='".$f_title."'
@@ -910,18 +910,20 @@ class member
         else
         {
 			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_title;
+
 			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
 			
-			$cur_image = createImgFromFile($img_path);
+			$cur_image = $this->createImgFromFile($img_path);
 			
+			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			if(imagesy($cur_image)>90)
 			  $this->resize($img_path, 0, 90, $f_title, $img_ext);
 			
-			$cur_image = createImgFromFile($img_path);
+			$cur_image = $this->createImgFromFile($img_path);
 			
 			if(imagesx($cur_image)>100)
 			  $this->resize($img_path, 100, 0, $f_title, $img_ext);
-            
+
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
                                logo_image='".$f_title."'
@@ -942,12 +944,12 @@ class member
 			$img_created = imagecreatefrompng($img_path);
 		elseif(strtolower($img_ext) == 'gif')
 			$img_created = imagecreatefromgif($img_path);
-			
 		return $img_created;
 	}
 	
 	function createImgFromRes($img_res, $img_path, $img_ext)
 	{
+
 		if(in_array(strtolower($img_ext), array('jpg', 'jpeg')))
 			ImageJPEG($img_res, $img_path) or die("Problem In saving");
 		elseif(strtolower($img_ext) == 'png')
@@ -998,13 +1000,11 @@ class member
 	* function resize(&$ld)                                         *
 	****************************************************************/
 
-	function resize($original_image, $new_width, $new_height, $image_title) 
+	function resize($original_image, $new_width, $new_height, $image_title, $img_ext) 
 	{
 		global $script_path;
 		
-		$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);
-		$original_image = createImgFromFile($original_image);
-		
+		$original_image = $this->createImgFromFile($original_image);
 		$aspect_ratio = imagesx($original_image) / imagesy($original_image);
 
 		if (empty($new_width)) 
@@ -1016,11 +1016,10 @@ class member
 			$image = imagecreatetruecolor($new_width, $new_height); 
 		else 
 			$image = imagecreate($new_width, $new_height); 
-
 		// copy the original image onto the smaller blank 
 		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
 		
-		createImgFromRes($image, $script_path.UPLOAD_PATH.$image_title, $img_ext);
+		$this->createImgFromRes($image, $script_path.UPLOAD_PATH.$image_title, $img_ext);
 	}
 	
 	

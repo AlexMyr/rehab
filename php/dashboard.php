@@ -61,7 +61,7 @@ while ($dbu->move_next())
 			'CLIENT_NAME'=>stripcslashes($dbu->f('surname').", ".$dbu->f('first_name')),
 			'EXERCISES_NR'=>count_exercise($_SESSION[U_ID],$dbu->f('client_id')),
 			'ACTIVITY_DATE'=>date('D jS M Y',strtotime($dbu->f('modify_date'))),
-			'SHOW_LIMIT_ERROR'=>(count_exercise($_SESSION[U_ID],$dbu->f('client_id'))>4 && $chk_trial) ? 'showLimitError' : '',
+			'SHOW_LIMIT_ERROR'=>/*(count_exercise($_SESSION[U_ID],$dbu->f('client_id'))>4 && $chk_trial) ? 'showLimitError' : */'',
 		));
 	$ft->parse('CLIENT_LINE_OUT','.client_line');
 	$i++;

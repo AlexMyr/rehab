@@ -712,17 +712,17 @@ $(document).ready(function()
 			window.location = $(this).attr('href');
 	});
 	
-	$('.showLimitError').click(function(e){
-		e.preventDefault();
-		if(confirm("Trial user can't add more than 5 programs. Do you want to upgrade your plan?"))
-		{
-			window.location = 'index.php?pag=profile_payment';
-		}
-		else
-		{
-			return false;
-		}
-	});
+	//$('.showLimitError').click(function(e){
+	//	e.preventDefault();
+	//	if(confirm("Trial user can't add more than 5 programs. Do you want to upgrade your plan?"))
+	//	{
+	//		window.location = 'index.php?pag=profile_payment';
+	//	}
+	//	else
+	//	{
+	//		return false;
+	//	}
+	//});
 	
 		// error messages box
 	$(".info a,.success a,.warning a,.error a").live('click',function(e)
