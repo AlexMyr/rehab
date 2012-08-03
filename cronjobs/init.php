@@ -113,6 +113,10 @@ while($dbu->move_next())
         $expire_time = (strtotime($dbu->f('expire_date'))-$time_now);
         
         $expire_days = intval(intval($expire_time) / (3600 * 24));
+
+		//hack for trial users which signed up before updating of payment plans
+		if((strtotime($dbu->f('create_date')) <= mktime(0,0,0,7,4,2012)) && $expire_days>=0) continue;
+		
         $expire_hours = intval(intval($expire_time) / 3600);
         $expire_minutes = (intval(intval($expire_time) / 60) % 60);
         if($expire_days>0 && $expire_days>1) $time_remained = "in <strong>".$expire_days." days</strong>"; 
@@ -139,7 +143,7 @@ while($dbu->move_next())
 		if(!$send_to_name)
 			$send_to_name = trim($dbu->f('surname'));
 		if(!$send_to_name)
-			$send_to_name = 'client';
+			$send_to_name = 'Client';
 			
 		
         if($message_data['text']!=null) 

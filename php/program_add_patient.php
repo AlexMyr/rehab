@@ -48,6 +48,7 @@ if(isset($glob['client_id']))
         'SURNAME' => isset($vals['surname']) ? $vals['surname'] : $dbu->f('surname'),
         'EMAIL' => isset($vals['email']) ? $vals['email'] : $dbu->f('email'),
         'APPEAL' => isset($vals['appeal']) ? $vals['appeal'] : $dbu->f('appeal'),
+		'CLIENT_ID' => $glob['client_id'],
       ));
     }
 }

@@ -266,6 +266,49 @@ class client
 			$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.PROGRAM_EMPTY');;
 			return false;
 		}
+
+		if(isset($ld['client_id']))
+		{
+			$exercise_plan_id=$this->dbu->query_get_id("
+							INSERT INTO 
+										exercise_plan 
+							SET 
+										exercise_program_id='".$exerciseString."', 
+										date_created=NOW(), 
+										date_modified=NOW(), 
+										trainer_id='".$_SESSION[U_ID]."', 
+										client_id= ".$ld['client_id']." 
+							");
+
+			$this->dbu->query("
+				SELECT *
+				FROM exercise_plan_set
+				WHERE exercise_plan_id = ".$ld['program_id']."
+			");
+			
+			while($this->dbu->move_next())
+			{
+
+				$this->dbu->query("
+					 INSERT INTO
+						 exercise_plan_set 
+					 SET
+						 exercise_plan_id = '".$exercise_plan_id."',
+						 exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+						 plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+						 plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+						 plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+						 plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+						 trainer_id = '".$_SESSION[U_ID]."',
+						 client_id = '".$ld['client_id']."',
+						 is_program_plan = 0
+					");		
+				
+			}
+			
+			
+		}
+		
 		
 		if(isset($ld['print']))
 		{

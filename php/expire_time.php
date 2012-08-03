@@ -41,7 +41,7 @@ if($_SESSION[U_ID])
         {
             $dbu->query("UPDATE trainer SET active=0 WHERE trainer_id=".$_SESSION[U_ID]." AND active!=0 ");
             $ft->assign(array(
-                'EXPIRE_DATE' => "<span class='expire_time'><span>".$tags['T.EXPIRE']."</span></span>",
+                'EXPIRE_DATE' => "<span class='expire_time'><span>".$tags['T.EXPIRE_ALREADY']."</span></span>",
             ));
         }
         else

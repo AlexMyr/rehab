@@ -36,7 +36,7 @@ else
 {
     $page_title="Edit Member";
     $next_function='member-update';
-    $dbu->query("select * from trainer as t left join trainer_profile as tp on (tp.trainer_id = t.trainer_id) 
+    $dbu->query("select t.username, t.password, t.clinic_name, tp.* from trainer as t left join trainer_header_paper as tp on (tp.trainer_id = t.trainer_id) 
     			 where t.trainer_id='".$glob['trainer_id']."'");
     $dbu->move_next();
 

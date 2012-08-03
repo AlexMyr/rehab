@@ -61,32 +61,7 @@ class member
             return false;
         }
 		else 
-        {
-//if(isset($_COOKIE['test'])){
-//require_once ('misc/PapApi.class.php');
-//// login (as merchant)
-//
-//$session = new Gpf_Api_Session(AFFILIATES_API_M_URL);
-//
-//if(!$session->login(AFFILIATES_API_M_USERNAME, AFFILIATES_API_M_PASSWORD))
-//	{
-//		die("Cannot login. Message: ".$session->getMessage());
-//	}
-//$clickTracker = new Pap_Api_ClickTracker($session);
-//try
-//	{
-//		$clickTracker->track();
-//	}
-//catch (Exception $e)
-//	{
-//		die("Click tracker: ".$e->getMessage());
-//	}
-//if ($clickTracker->getAffiliate() != null && $clickTracker->getAffiliate()->getValue('userid') != null)
-//{
-//	$refferer_UID = $clickTracker->getAffiliate()->getValue('userid'); // prints affiliate userid
-//}
-//var_dump($clickTracker->getAffiliate());exit;
-//}
+        { 
         /*	require_once ('misc/PapApi.class.php');
             // login (as merchant)
             
@@ -862,7 +837,7 @@ class member
         {
         	
 //        	$this->resize($_FILES['upload_image']['tmp_name'], 276, 0, $f_title);
-        	$this->resize($_FILES['upload_image']['tmp_name'], 200, 0, $f_title);
+        	$this->resize($_FILES['upload_image']['tmp_name'], 200, 0, $f_title, $f_ext);
 	        @chmod($f_out, 0777);
         	$this->dbu->query("UPDATE trainer_profile SET
 	                           logo_image='".$f_title."'
@@ -935,16 +910,20 @@ class member
         else
         {
 			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_title;
-			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
 
-			$cur_image = ImageCreateFromJPEG($img_path);
+			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
+			
+			$cur_image = $this->createImgFromFile($img_path);
+			
+			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			if(imagesy($cur_image)>90)
-			  $this->resize($img_path, 0, 90, $f_title);
-			  
-			$cur_image = ImageCreateFromJPEG($img_path);
+			  $this->resize($img_path, 0, 90, $f_title, $img_ext);
+			
+			$cur_image = $this->createImgFromFile($img_path);
+			
 			if(imagesx($cur_image)>100)
-			  $this->resize($img_path, 100, 0, $f_title);
-            
+			  $this->resize($img_path, 100, 0, $f_title, $img_ext);
+
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
                                logo_image='".$f_title."'
@@ -953,6 +932,30 @@ class member
             $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS_IMAGE').'<br>';
             return true;
         }
+	}
+	
+	function createImgFromFile($img_path)
+	{
+		$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);
+		
+		if(in_array(strtolower($img_ext), array('jpg', 'jpeg')))
+			$img_created = ImageCreateFromJPEG($img_path);
+		elseif(strtolower($img_ext) == 'png')
+			$img_created = imagecreatefrompng($img_path);
+		elseif(strtolower($img_ext) == 'gif')
+			$img_created = imagecreatefromgif($img_path);
+		return $img_created;
+	}
+	
+	function createImgFromRes($img_res, $img_path, $img_ext)
+	{
+
+		if(in_array(strtolower($img_ext), array('jpg', 'jpeg')))
+			ImageJPEG($img_res, $img_path) or die("Problem In saving");
+		elseif(strtolower($img_ext) == 'png')
+			imagepng($img_res, $img_path) or die("Problem In saving");
+		elseif(strtolower($img_ext) == 'gif')
+			imagegif($img_res, $img_path) or die("Problem In saving");
 	}
 
 	/****************************************************************
@@ -997,33 +1000,29 @@ class member
 	* function resize(&$ld)                                         *
 	****************************************************************/
 
-	function resize($original_image, $new_width, $new_height, $image_title) 
+	function resize($original_image, $new_width, $new_height, $image_title, $img_ext) 
 	{
 		global $script_path;
+		
+		$original_image = $this->createImgFromFile($original_image);
+		$aspect_ratio = imagesx($original_image) / imagesy($original_image);
 
-		$original_image=ImageCreateFromJPEG($original_image);
-
-		$aspect_ratio = imagesx($original_image) / imagesy($original_image); 
 		if (empty($new_width)) 
-		{ 
 			$new_width = $aspect_ratio * $new_height; 
-		}
 		elseif (empty($new_height)) 
-		{ 
 			$new_height= $new_width / $aspect_ratio; 
-		}
+
 		if (imageistruecolor($original_image))	
-		{ 
 			$image = imagecreatetruecolor($new_width, $new_height); 
-		} 
 		else 
-		{ 
 			$image = imagecreate($new_width, $new_height); 
-		} 
 		// copy the original image onto the smaller blank 
 		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
-		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
+		
+		$this->createImgFromRes($image, $script_path.UPLOAD_PATH.$image_title, $img_ext);
 	}
+	
+	
 
 	function pay(&$ld){
 		$_SESSION['userEmail'] = $userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
@@ -1144,7 +1143,7 @@ class member
 					$this->dbu->move_next();
 					$country_id = $this->dbu->f('country_id');
                     
-					$str = "UPDATE trainer 
+                    $str = "UPDATE trainer 
 									SET 
 										paypal_profile_id = '".$_SESSION['payer_id']."',
 										country_id 	    = '".$country_id."',
