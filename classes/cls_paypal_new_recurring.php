@@ -72,7 +72,7 @@ function paypal_init()
 	'		cancelURL:			the page where buyers return to when they cancel the payment review on PayPal
 	'--------------------------------------------------------------------------------------------------------------------------------------------	
 	*/
-	function CallShortcutExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $description, $userEmail, $custom, $is_recurring = false) 
+	function CallShortcutExpressCheckout( $paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $NOTIFYURL, $description, $userEmail, $is_recurring = false) 
 	{
 		//------------------------------------------------------------------------------------------------------------------------------------
 		// Construct the parameter string that describes the SetExpressCheckout API call in the shortcut implementation
@@ -81,6 +81,7 @@ function paypal_init()
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_PAYMENTACTION=" . $paymentType;
 		$nvpstr = $nvpstr . "&RETURNURL=" . $returnURL;
 		$nvpstr = $nvpstr . "&CANCELURL=" . $cancelURL;
+        $nvpstr = $nvpstr . "&NOTIFYURL=" . $NOTIFYURL;
         $nvpstr = $nvpstr . "&EMAIL=".$userEmail;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_CURRENCYCODE=" . $currencyCodeType;
 		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME0=".$description;
@@ -97,7 +98,6 @@ function paypal_init()
             $nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_AMT0=".$paymentAmount;
             $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=".$paymentAmount;
             $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_ITEMAMT=".$paymentAmount;
-            $nvpstr .= '&PAYMENTREQUEST_0_CUSTOM='.$custom;
             $nvpstr = $nvpstr . "&ALLOWNOTE=1";           
 		}
 		
@@ -109,6 +109,7 @@ function paypal_init()
 		//' If the API call succeded, then redirect the buyer to PayPal to begin to authorize payment.  
 		//' If an error occured, show the resulting errors
 		//'---------------------------------------------------------------------------------------------------------------
+
 	    $resArray=hash_call("SetExpressCheckout", $nvpstr);
         
         logPayment($nvpstr, $resArray, "SetExpressCheckout");
@@ -123,7 +124,7 @@ function paypal_init()
 	
 	function CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $TOTALBILLINGCYCLES, $AUTOBILLOUTAMT,
                                             $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
-                                            $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT, $FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS, $NOTIFYURL)
+                                            $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT, $FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS)
 	{
 		$nvpstr="&TOKEN=". $TOKEN;
 		$nvpstr.="&PROFILESTARTDATE=". $PROFILESTARTDATE;
@@ -145,7 +146,6 @@ function paypal_init()
 		$nvpstr.="&MAXFAILEDPAYMENTS=". $MAXFAILEDPAYMENTS;
         $nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
 		$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=".$DESC;
-        $nvpstr .= "&L_PAYMENTREQUEST_0_NOTIFYURL=" . $NOTIFYURL;
         
 		$resArray=hash_call("CreateRecurringPaymentsProfile", $nvpstr);
 		logPayment($nvpstr, $resArray, "CreateRecurringPaymentsProfile");
@@ -280,7 +280,7 @@ function paypal_init()
 	'		The NVP Collection object of the GetExpressCheckoutDetails Call Response.
 	'--------------------------------------------------------------------------------------------------------------------------------------------	
 	*/
-	function ConfirmPayment( $FinalPaymentAmt, $NOTIFYURL )
+	function ConfirmPayment( $FinalPaymentAmt )
 	{
 		/* Gather the information to make the final call to
 		   finalize the PayPal payment.  The variable nvpstr
@@ -298,7 +298,7 @@ function paypal_init()
 
 		$nvpstr  = '&TOKEN=' . $token . '&PAYERID=' . $payerID . '&PAYMENTREQUEST_0_PAYMENTACTION=' . $paymentType . '&PAYMENTREQUEST_0_AMT=' . $FinalPaymentAmt;
 		$nvpstr .= '&PAYMENTREQUEST_0_CURRENCYCODE=' . $currencyCodeType . '&IPADDRESS=' . $serverName;
-        $nvpstr .= "&PAYMENTREQUEST_0_NOTIFYURL=" . $NOTIFYURL;
+        
 
 		 /* Make the call to PayPal to finalize payment
 		    If an error occured, show the resulting errors

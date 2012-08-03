@@ -1046,8 +1046,8 @@ class member
 		$currencyCodeType = $this->dbu->f('currency');
 		$paymentType = "Sale";
 		
-        $returnURL = 'http://rehabmypatient.com/index.php?act=member-confirm_pay';
-		$cancelURL = 'http://rehabmypatient.com/index.php';
+        $returnURL = urlencode('http://rehabmypatient.com/index.php?act=member-confirm_pay&user_id='.$_SESSION[U_ID]);
+		$cancelURL = urlencode('http://rehabmypatient.com/index.php');
 		//$returnURL = 'http://rehab.loc/index.php?act=member-confirm_pay';
 		//$cancelURL = 'http://rehab.loc/index.php';
         //$custom = 'referralId';
@@ -1070,7 +1070,7 @@ class member
 		}
 	}
 
-	function confirm_pay()
+	function confirm_pay(&$ld)
 	{
 		global $glob;
 		include_once('classes/cls_paypal_new_recurring.php');
@@ -1151,14 +1151,14 @@ class member
 										is_trial		= '0',
 										expire_date		= '$expireTime'
 									WHERE 
-										trainer_id=".$_SESSION[U_ID]." ";
+										trainer_id=".$ld['user_id']." ";
 
                     $trans_id = $this->dbu->query_get_id("INSERT INTO `paypal_transactions`
                                 (`trainer_id`, `name`, `profile_id`, `status`, `type`, `amount`, `currency`, `timestamp`, `ack`, `request`, `correlation_id`, `error`, `answer`)
-                         VALUES ('{$_SESSION[U_ID]}', 'mysql Update trainer after Confirm pay', '{$_SESSION['payer_id']}', 'error', '', '', '', '".date('c')."', '', '".mysql_real_escape_string($str)."', '',
+                         VALUES ('{$ld['user_id']}', 'mysql Update trainer after Confirm pay', '{$_SESSION['payer_id']}', 'error', '', '', '', '".date('c')."', '', '".mysql_real_escape_string($str)."', '',
                                 '', '')");
                     $this->dbu->query($str);
-                    $this->dbu->query("UPDATE `paypal_transactions` SET `status` = 'ok' ");
+                    $this->dbu->query("UPDATE `paypal_transactions` SET `status` = 'ok' WHERE id=$trans_id ");
                     
                     $message_data=get_sys_message('succ_pay', $this->dbu->f('lang'));
                     
