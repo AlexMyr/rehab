@@ -2,6 +2,8 @@
 /************************************************************************
 * @Author: Tinu Coman                                                   *
 ************************************************************************/
+define('SANDBOX', false);
+
 class member
 {
 	var $dbu;
@@ -10,27 +12,36 @@ class member
 		{
 			$this->dbu = new mysql_db();
 			
-			$this->dbu->query("
+			if(SANDBOX)
+			{
+				define('API_USERNAME', 'oleg_g_1291193039_biz_api1.mail.ru');
+				define('API_PASSWORD', '1291193052');
+				define('API_SIGN', 'A83lKGFYhcUgZ0ktSkwH3B0.KTEHAYo4yVcP8eQ.f2NBxKvLgVXndbQa');
+			}
+			else
+			{
+				$this->dbu->query("
 							SELECT 
 								*
 							FROM 
 								settings
 							WHERE constant_name='PAYPAL_USERNAME' OR constant_name='PAYPAL_PASSWORD' OR constant_name='PAYPAL_SIGN'
 							
-						");
-			while($this->dbu->move_next())
-			{
-				if($this->dbu->f('constant_name') == 'PAYPAL_USERNAME')
+							");
+				while($this->dbu->move_next())
 				{
-					define('API_USERNAME', $this->dbu->f('value'));
-				}
-				elseif($this->dbu->f('constant_name') == 'PAYPAL_PASSWORD')
-				{
-					define('API_PASSWORD', $this->dbu->f('value'));
-				}
-				elseif($this->dbu->f('constant_name') == 'PAYPAL_SIGN')
-				{
-					define('API_SIGN', $this->dbu->f('value'));
+					if($this->dbu->f('constant_name') == 'PAYPAL_USERNAME')
+					{
+						define('API_USERNAME', $this->dbu->f('value'));
+					}
+					elseif($this->dbu->f('constant_name') == 'PAYPAL_PASSWORD')
+					{
+						define('API_PASSWORD', $this->dbu->f('value'));
+					}
+					elseif($this->dbu->f('constant_name') == 'PAYPAL_SIGN')
+					{
+						define('API_SIGN', $this->dbu->f('value'));
+					}
 				}
 			}
 		}
@@ -1046,10 +1057,16 @@ class member
 		$currencyCodeType = $this->dbu->f('currency');
 		$paymentType = "Sale";
 		
-        $returnURL = urlencode('http://rehabmypatient.com/index.php?act=member-confirm_pay&user_id='.$_SESSION[U_ID]);
-		$cancelURL = urlencode('http://rehabmypatient.com/index.php');
-		//$returnURL = 'http://rehab.loc/index.php?act=member-confirm_pay';
-		//$cancelURL = 'http://rehab.loc/index.php';
+		if(SANDBOX)
+		{
+			$returnURL = urlencode('http://rehab.loc/index.php?act=member-confirm_pay&user_id='.$_SESSION[U_ID]);
+			$cancelURL = urlencode('http://rehab.loc/index.php');
+		}
+		else
+		{
+			$returnURL = urlencode('http://rehabmypatient.com/index.php?act=member-confirm_pay&user_id='.$_SESSION[U_ID]);
+			$cancelURL = urlencode('http://rehabmypatient.com/index.php');
+		}
         //$custom = 'referralId';
 		
 		if($is_recurring)
@@ -1066,7 +1083,7 @@ class member
 		} 
 		else  
 		{
-			header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=0");
+			header("Location: /index.php?pag=profile_payment&paym=0");
 		}
 	}
 
@@ -1128,12 +1145,23 @@ class member
 				$ack = strtoupper($resArray["ACK"]);
 				if( $ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING" )
 				{
+					$startDate = 0;
+					$expireTime = $this->dbu->field("
+						SELECT expire_date FROM trainer WHERE trainer_id=".$ld['user_id']."
+					");
+					
+					$expireTime = strtotime($expireTime);
+					if(($expireTime - $curTime) < 0)
+						$startDate = $curTime;
+					else
+						$startDate = $expireTime;
+					
 					$daysToAdd = 0;
 					switch($this->dbu->f('licence_period')){
 						case '1 year':{}
 						default: {$daysToAdd = 365;}
 					}
-					$expireTime = date("Y-m-d H:i:s", ($curTime + ($daysToAdd * 24 * 3600)));
+					$expireTime = date("Y-m-d H:i:s", ($startDate + ($daysToAdd * 24 * 3600)));
 		
 					switch($glob['lang']){
 						case 'us': $dbCountryCode = 'US'; break;
@@ -1172,15 +1200,15 @@ class member
                         $this->send_mail($this->dbu->f('email'), $name, $message_data);
                     }
                     
-					header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=1");
+					header("Location: /index.php?pag=profile&paym=1");
 				}
 				else{
-					header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=0");
+					header("Location: /index.php?pag=profile&paym=0");
 				}
 			}
 			else  
 			{
-				header("Location: http://rehabmypatient.com/index.php?pag=profile&paym=0");
+				header("Location: /index.php?pag=profile&paym=0");
 			}
 		}
 	}

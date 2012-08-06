@@ -168,7 +168,7 @@ for($i=0;$i<$payment_count;$i++)
                                 </a></td>';
         continue;
     }
-    if(($current_price_id == $price_plan_id[$i] && $active == 2) OR ($is_trial && $price_amount[$i] === '0')){
+    if(($current_price_id != $price_plan_id[$i] && $active == 2 && !$is_trial) OR ($is_trial && $price_amount[$i] === '0')){
         $payment_table .= '<td><span>'.$tags['T.ALREADY'].'</span></td>';
         continue;
     }
