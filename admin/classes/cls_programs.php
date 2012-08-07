@@ -391,7 +391,9 @@ function upload_file(&$ld)
         $f_image_out=$script_path.UPLOAD_PATH.$f_image_title;
         $t_image_out=$script_path.UPLOAD_PATH.$t_image_title;
         }
-        
+
+		$owner = $this->dbu->field("select owner from programs where programs_id='".$ld['programs_id']."'");
+
         if(!$is_live || (strtolower($f_lineart_ext) =='.gif') || (strtolower($f_lineart_ext) =='.png'))
         {
         	if(FALSE === move_uploaded_file($_FILES['lineart']['tmp_name'],$f_lineart_out))
@@ -416,12 +418,21 @@ function upload_file(&$ld)
 	               // $ld['error'].="Unable to upload the file.  Move operation failed."."<!-- Check file permissions -->";
 	                return false;
 	        }
-	        
+
         	$this->dbu->query("update programs set
 	                           image='".$f_image_title."',
 	                           thumb_image='".$t_image_title."'
 	                           where programs_id='".$ld['programs_id']."'" 
 	                          );
+			if($owner > -1)
+			{
+			  $this->dbu->query("update programs set
+	                           lineart='".$f_image_title."',
+	                           thumb_lineart='".$t_image_title."'
+	                           where programs_id='".$ld['programs_id']."'" 
+	                          );
+			}
+			
 			@chmod($f_image_out, 0777);
         	$ld['error'].="Image Succesfully saved.<br>";
         	return true;
