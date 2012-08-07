@@ -450,7 +450,10 @@ $(document).ready(function()
 		
 	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
 		$('.jsScrollDiv').jScrollPane();
-			
+	
+	
+	if(typeof($('.videoList').jScrollPane()) != 'undefined')
+		$('.videoList').jScrollPane();
 
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
@@ -463,7 +466,8 @@ $(document).ready(function()
 	});
 	
 	$('.changeVideoUrl').click(function(){
-		var newUrl = "http://www.youtube.com/v/"+$(this).attr('url')+"?version=3&f=videos&app=youtube_gdata&autoplay=0";
+		//var newUrl = "http://www.youtube.com/v/"+$(this).attr('url')+"?version=3&f=videos&app=youtube_gdata&autoplay=0";
+		var newUrl = "http://www.youtube.com/embed/"+$(this).attr('url');
 		$('#currentVideo').attr('src', newUrl);
 	})
 	
@@ -677,11 +681,12 @@ $(document).ready(function()
 	
 	$('.item img, .itemCompact img').click(function(){
 		var clickedImgUrl = $(this).attr('src');
-		clickedImgUrl = clickedImgUrl.match(/([\w]+?)\.jpg/);
-		if(!clickedImgUrl)
+		clickedImgUrl = clickedImgUrl.match(/upload\/([\w]+?\.\w{3})/);
+
+		if(!clickedImgUrl[1] || clickedImgUrl[1].indexOf('noimage')>-1 || clickedImgUrl[1].indexOf('pdf')>-1)
 			return false;
 		
-		var lightBox = $('<div id="innerLightBoxDiv"><img src="phpthumb/phpThumb.php?src=../upload/'+clickedImgUrl[1]+'.jpg&wl=300&hp=300" /></div>');
+		var lightBox = $('<div id="innerLightBoxDiv"><img src="phpthumb/phpThumb.php?src=../upload/'+clickedImgUrl[1]+'&wl=300&hp=300" /></div>');
 		$('#imgLightBox').css('left', '500px');
 		$('#imgLightBox').css('top', '200px');
 		$('#imgLightBox').css('z-index', '9999999');
@@ -807,8 +812,13 @@ $(document).ready(function()
 	doExerciseCompactViewDetails();
 	
 	$('.lang a').click(function(){
-		var lang = $(this).attr('value');
-		document.cookie = 'language' + "=" + escape(lang) + "; expires=" + new Date( 2020, 1, 1 ) +  "; path=/";
+		var cookieName = 'language';
+		var cookieVal = $(this).attr('value');
+		var cookieOption = {
+			path: '/',
+			expiresAt: new Date( 2020, 1, 1 )
+		};
+		$.cookies.set(cookieName , cookieVal, cookieOption);
 	});
 	
 	//delete image preview
