@@ -23,70 +23,72 @@
     <!--script language="JavaScript" src="js/se.js">
     </script-->
     
-	<script type="text/javascript" src="js/libs/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="js/libs/jquery-ui-1.8.11.custom.min.js"></script>
-	
-	<script type="text/javascript" src="js/libs/jScrollPane/jquery.mousewheel.js"></script>
-	<script type="text/javascript" src="js/libs/jScrollPane/jquery.jscrollpane.min.js"></script>
-	
-	<script type="text/javascript" src="js/libs/jquery.corner.js"></script>
-	
-	<script type="text/javascript" src="js/gdslider.js"></script>
-	<script type="text/javascript" src="js/init_dom_public.js"></script>
-	<script type="text/javascript" src="js/init_dom_private.js"></script>
-	<script type="text/javascript">
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-33592183-1']);
-	  _gaq.push(['_trackPageview']);
+    <script type="text/javascript" src="js/libs/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-ui-1.8.11.custom.min.js"></script>
+    
+    <script type="text/javascript" src="js/libs/jquery.cookies.2.2.0.min.js"></script>
+    
+    <script type="text/javascript" src="js/libs/jScrollPane/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/libs/jScrollPane/jquery.jscrollpane.min.js"></script>
+    
+    <script type="text/javascript" src="js/libs/jquery.corner.js"></script>
+    
+    <script type="text/javascript" src="js/gdslider.js"></script>
+    <script type="text/javascript" src="js/init_dom_public.js"></script>
+    <script type="text/javascript" src="js/init_dom_private.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-33592183-1']);
+      _gaq.push(['_trackPageview']);
 
-	  (function() {
-	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-	</script>
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
 </head>
 <body>
 <div class="whirl">
-	<div class="siteBody">
-		<div class="header">
-			<h1 class="logo"><a href="index.php"><span>rehab my patient</span></a></h1>
-			<div class="navMenu">
-				<div class="lang">
-					<a id="lang_en" href="/index.php" value="en"><img src="/img/gb.gif"/></a>
-					<a id="lang_us" href="/us/index.php" value="us"><img src="/img/us.gif"/></a>
-				</div>
-			{MAIN_MENU}
-			</div>
-			<div style="display:none; position: absolute;" id="submenuProgramList">
-				<ul>
-					<li><a href="index.php?pag=programs"><div class="subMenuProgramLinkSpan">{T.MY_PROGRAMMES}</div></a></li>
-					<li><a href="index.php?pag=programs_user"><div class="subMenuProgramLinkSpan">Own Exercises</div></a></li>
-				</ul>
-			</div>
-			<div style="display:none; position: absolute;" id="submenuList">
-				<ul>
-					<li class="changeURL"><a href="index.php?pag=profile"><div class="subMenuLinkSpan">Settings</div></a></li>
-					<li class="changeURL"><a href="index.php?pag=profile_header_paper"><div class="subMenuLinkSpan">Edit Header Paper</div></a></li>
-					<li class="changeURL"><a href="index.php?pag=profile_edit_email"><div class="subMenuLinkSpan">Change Email Address</div></a></li>
-					<li class="changeURL"><a href="index.php?pag=profile_edit_password"><div class="subMenuLinkSpan">Change Password</div></a></li>
-				</ul>
-			</div>
-			<div class="clearAll"></div>
-		</div>
-		<div class="contentContainerBox">
-			<div class="col2lft scrolledList">
-				{CONTENT}
-			</div>
-			<div class="col2rgt">
-				{SIDEBAR}
-			</div>
-			<div class="clearAll"></div>
-			
-		</div>
-		<div class="footer">
-		{MAIN_MENU}
-		</div>
+    <div class="siteBody">
+        <div class="header">
+            <h1 class="logo"><a href="index.php"><span>rehab my patient</span></a></h1>
+            <div class="navMenu">
+                <div class="lang">
+                    <a id="lang_en" href="/index.php" value="en"><img src="/img/gb.gif"/></a>
+                    <a id="lang_us" href="/us/index.php" value="us"><img src="/img/us.gif"/></a>
+                </div>
+            {MAIN_MENU}
+            </div>
+            <div style="display:none; position: absolute;" id="submenuProgramList">
+                <ul>
+                    <li><a href="index.php?pag=programs"><div class="subMenuProgramLinkSpan">{T.MY_PROGRAMMES}</div></a></li>
+                    <li><a href="index.php?pag=programs_user"><div class="subMenuProgramLinkSpan">Own Exercises</div></a></li>
+                </ul>
+            </div>
+            <div style="display:none; position: absolute;" id="submenuList">
+                <ul>
+                    <li class="changeURL"><a href="index.php?pag=profile"><div class="subMenuLinkSpan">Settings</div></a></li>
+                    <li class="changeURL"><a href="index.php?pag=profile_header_paper"><div class="subMenuLinkSpan">Edit Header Paper</div></a></li>
+                    <li class="changeURL"><a href="index.php?pag=profile_edit_email"><div class="subMenuLinkSpan">Change Email Address</div></a></li>
+                    <li class="changeURL"><a href="index.php?pag=profile_edit_password"><div class="subMenuLinkSpan">Change Password</div></a></li>
+                </ul>
+            </div>
+            <div class="clearAll"></div>
+        </div>
+        <div class="contentContainerBox">
+            <div class="col2lft scrolledList">
+                {CONTENT}
+            </div>
+            <div class="col2rgt">
+                {SIDEBAR}
+            </div>
+            <div class="clearAll"></div>
+            
+        </div>
+        <div class="footer">
+        {MAIN_MENU}
+        </div>
     </div>
 
 {BOTTOM_INCLUDES}
