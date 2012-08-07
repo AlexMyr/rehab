@@ -48,14 +48,20 @@ function ytchannel($atts = '') {
       
       if ($showcase != ""):
         
-        if (isset($_GET['entry'])) { 
-        	$iframe_src = 'http://www.youtube.com/v/' . $_GET['entry'] . '?version=3&f=videos&app=youtube_gdata&autoplay=0';
+        //if (isset($_GET['entry'])) { 
+        //	$iframe_src = 'http://www.youtube.com/v/' . $_GET['entry'] . '?version=3&f=videos&app=youtube_gdata&autoplay=0&wmode=transparent';
+        //}
+        //else {
+        //	$iframe_src = 'http://www.youtube.com/v/' . $showcase . '?version=3&f=videos&app=youtube_gdata&autoplay=0&wmode=transparent';
+        //}
+		if (isset($_GET['entry'])) { 
+        	$iframe_src = 'http://www.youtube.com/embed/' . $_GET['entry'];
         }
         else {
-        	$iframe_src = 'http://www.youtube.com/v/' . $showcase . '?version=3&f=videos&app=youtube_gdata&autoplay=0';
+        	$iframe_src = 'http://www.youtube.com/embed/' . $showcase;
         }
       	
-      	$showcase_output = "<iframe id='currentVideo' height='" . $showcase_height . "' width='". $showcase_width . "' src='" . $iframe_src . "'></iframe>";
+      	$showcase_output = "<iframe id='currentVideo' wmode='transparent' height='" . $showcase_height . "' width='". $showcase_width . "' src='" . $iframe_src . "'></iframe>";
         
       endif;
       
