@@ -1037,25 +1037,42 @@ class member
 
 	function pay(&$ld){
 		$_SESSION['userEmail'] = $userEmail = $this->dbu->field("select email from trainer where trainer_id=".$_SESSION[U_ID]);
-	
+		
+		$this->dbu->query("select * from price_plan_new where price_id='".$ld['price_id']."' ");
+		$this->dbu->move_next();
+		$_SESSION['price_id'] = $ld['price_id'];
+		$currencyCodeType = $this->dbu->f('currency');
+		$paymentType = "Sale";
+
+		$_SESSION['pay_type'] = $ld['pay_type'];
 		switch($ld['pay_type']){
-			case 'monthly': $is_recurring = $_SESSION['is_recurring'] = true; break;
-			case 'per_year': $is_recurring = $_SESSION['is_recurring'] = false; break;
-			//case 'yearly': $is_recurring = true; /*some param*/ break;
+			case 'monthly':
+			{
+				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode(round($this->dbu->f('price_value'))/12, 2);
+				$description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
+				$is_recurring = $_SESSION['is_recurring'] = true; break;
+			}
+			case 'per_year':
+			{
+				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));
+				$description = $_SESSION['description'] = 'Pay per year';
+				$is_recurring = $_SESSION['is_recurring'] = false; break;
+			}
+			case 'yearly':
+			{
+				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode($this->dbu->f('price_value'));
+				$description = $_SESSION['description'] = 'Yearly payment ('.$paymentAmount.' '.$currencyCodeType.')';
+				$is_recurring = $_SESSION['is_recurring'] = true; break;
+			}
 			default: header("Location: http://rehabmypatient.com/index.php?pag=profile_payment&paym=0"); exit;
 		}
-		
+
 		//include_once('classes/cls_paypal_new.php');
 		include_once('classes/cls_paypal_new_recurring.php');
 		paypal_init();
 		
-		$this->dbu->query("select * from price_plan_new where price_id='".$ld['price_id']."' ");
-		$this->dbu->move_next();
+		//$paymentAmount = $_SESSION['Payment_Amount'] = $is_recurring ? round(urlencode($this->dbu->f('price_value'))/12, 2) : urlencode($this->dbu->f('price_value'));
 		
-		$_SESSION['price_id'] = $ld['price_id'];
-		$paymentAmount = $_SESSION['Payment_Amount'] = $is_recurring ? round(urlencode($this->dbu->f('price_value'))/12, 2) : urlencode($this->dbu->f('price_value'));
-		$currencyCodeType = $this->dbu->f('currency');
-		$paymentType = "Sale";
 		
 		if(SANDBOX)
 		{
@@ -1069,10 +1086,10 @@ class member
 		}
         //$custom = 'referralId';
 		
-		if($is_recurring)
-			$description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
-		else
-			$description = $_SESSION['description'] = 'Yearly payment';
+		//if($is_recurring)
+		//	$description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
+		//else
+		//	$description = $_SESSION['description'] = 'Yearly payment';
 		
 		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $description, $userEmail, $custom, $is_recurring);
 	
@@ -1112,15 +1129,25 @@ class member
 				$_SESSION['payer_id'] = $resArray["PAYERID"];
                 $NOTIFYURL = 'http://rehabmypatient.com/ipn_s.php';
                 $curTime = time();
-                
+
 				if($_SESSION['is_recurring']){
 					/* parameter reference: https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_nvp_r_CreateRecurringPayments */
 					$TOKEN = $_SESSION['TOKEN'];
 					$PROFILESTARTDATE = date("c", ($curTime + (1 * 24 * 3600)));
 					$DESC = $_SESSION['description'];
-					$BILLINGPERIOD = 'Month';
-					$BILLINGFREQUENCY = 1;
-					$TOTALBILLINGCYCLES = '12';
+					if($_SESSION['pay_type'] == 'monthly')
+					{
+						$BILLINGPERIOD = 'Month';
+						$BILLINGFREQUENCY = 1;
+						$TOTALBILLINGCYCLES = '12';
+					}
+					else
+					{
+						$BILLINGPERIOD = 'Year';
+						$BILLINGFREQUENCY = 1;
+						$TOTALBILLINGCYCLES = '5';
+					}
+					
 					$AUTOBILLOUTAMT = 'AddToNextBilling';
 					$AMT = $_SESSION['Payment_Amount'];
 					$CURRENCYCODE = $_SESSION['currencyCodeType'];
@@ -1161,6 +1188,10 @@ class member
 						case '1 year':{}
 						default: {$daysToAdd = 365;}
 					}
+					
+					if($_SESSION['pay_type'] == 'yearly')
+						$daysToAdd *= 5;
+						
 					$expireTime = date("Y-m-d H:i:s", ($startDate + ($daysToAdd * 24 * 3600)));
 		
 					switch($glob['lang']){
