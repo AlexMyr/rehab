@@ -1145,7 +1145,7 @@ class member
 					{
 						$BILLINGPERIOD = 'Year';
 						$BILLINGFREQUENCY = 1;
-						$TOTALBILLINGCYCLES = '5';
+						$TOTALBILLINGCYCLES = '10';
 					}
 					
 					$AUTOBILLOUTAMT = 'AddToNextBilling';
@@ -1190,7 +1190,7 @@ class member
 					}
 					
 					if($_SESSION['pay_type'] == 'yearly')
-						$daysToAdd *= 5;
+						$daysToAdd *= 10;
 						
 					$expireTime = date("Y-m-d H:i:s", ($startDate + ($daysToAdd * 24 * 3600)));
 		
