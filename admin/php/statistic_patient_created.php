@@ -9,7 +9,7 @@
 $ft = new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define( array(main => "statistic_patient_created.html"));
 $ft->define_dynamic('member_row','main');
-$l_r=ROW_PER_PAGE;
+$l_r=50;//ROW_PER_PAGE;
 
 $dbu=new mysql_db;
 
@@ -76,7 +76,7 @@ if($i==0)
 
 if($offset>=$l_r)
 {
-	$ft->assign('BACKLINK',"<a class=\"RedBoldLink\" href=\"index.php?pag=statistic_user_login&offset=".($offset-$l_r).$arguments."\">Prev</a>");
+	$ft->assign('BACKLINK',"<a class=\"RedBoldLink\" href=\"index.php?pag=statistic_patient_created&offset=".($offset-$l_r).$arguments."\">Prev</a>");
 }
 else
 {
@@ -85,7 +85,7 @@ else
 
 if($offset+$l_r<$max_rows)
 {
-	$ft->assign('NEXTLINK',"<a class=\"RedBoldLink\" href=\"index.php?pag=statistic_user_login&offset=".($offset+$l_r).$arguments."\">Next</a>");
+	$ft->assign('NEXTLINK',"<a class=\"RedBoldLink\" href=\"index.php?pag=statistic_patient_created&offset=".($offset+$l_r).$arguments."\">Next</a>");
 }
 else
 {

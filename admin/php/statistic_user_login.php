@@ -9,7 +9,7 @@
 $ft = new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define( array(main => "statistic_user_login.html"));
 $ft->define_dynamic('member_row','main');
-$l_r=ROW_PER_PAGE;
+$l_r=50;//ROW_PER_PAGE;
 
 $dbu=new mysql_db;
 
