@@ -43,7 +43,7 @@ class contact
   {
 	global $site_url,$script_path, $site_name,$contact_thankyou_page_id;
 	
-	$from="support@rehabmypatient.com";
+	$to="support@rehabmypatient.com";
 	
 	$body='New Contact From '.$site_name.' website
 
