@@ -7,7 +7,7 @@
 				<input type="hidden" name="pag" value="client_add_exercise">
 				<input type="hidden" name="client_id" value="{CLIENT_ID}">
 						
-				<div class="buttons deleteClient"><button type="submit"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>
+				<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>
 			</form>
 			<div class="greyBorderBox">
 				<img src="img/exercises_top.png" class="greyBorderBoxTop">
@@ -56,7 +56,7 @@
 					<h2>{CREATE_DATE}</h2>
 					<p>Last Modified: {MODIFY_DATE}</p>
 				</span>
-				<span class="notes">{CLIENT_NOTE}</span>
+				<span class="notes">{EXERCISE_DESC}</span>
 				<span class="actions">
 					<a href="index.php?pag=client_update_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="edit">edit</a>
 					<a href="index.php?pag=client&act=client-mail_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="mail">mail</a>

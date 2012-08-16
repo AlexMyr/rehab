@@ -860,4 +860,9 @@ $(document).ready(function()
 		location.href = url;
 	});
 	
+	$('#addExerciseToClient').click(function(){
+		$('#exercise_desc').val($('#client_note').val());
+		$('#create_exercise').submit();
+	});
+	
 });

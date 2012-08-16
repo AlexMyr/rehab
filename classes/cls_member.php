@@ -2,7 +2,7 @@
 /************************************************************************
 * @Author: Tinu Coman                                                   *
 ************************************************************************/
-define('SANDBOX', false);
+define('SANDBOX', true);
 
 class member
 {
@@ -1048,7 +1048,7 @@ class member
 		switch($ld['pay_type']){
 			case 'monthly':
 			{
-				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode(round($this->dbu->f('price_value'))/12, 2);
+				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode(round($this->dbu->f('price_value')/12, 2));
 				$description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
 				$is_recurring = $_SESSION['is_recurring'] = true; break;
 			}

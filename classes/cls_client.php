@@ -532,24 +532,25 @@ class client
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
 		$ld['exercise_plan_id']=$this->dbu->query_get_id("
 							INSERT INTO 
-										exercise_plan 
+								exercise_plan 
 							SET 
-										exercise_program_id='".$ld['exercise_id']."', 
-										date_created=NOW(), 
-										date_modified=NOW(), 
-										trainer_id='".$_SESSION[U_ID]."', 
-										client_id= ".$ld['client_id']." 
+								exercise_program_id='".$ld['exercise_id']."', 
+								date_created=NOW(), 
+								date_modified=NOW(), 
+								trainer_id='".$_SESSION[U_ID]."', 
+								client_id= ".$ld['client_id'].",
+								exercise_desc = '".$ld['exercise_desc']."'
 							");
 	
 		$this->dbu->query("
 							UPDATE
-										client 
+								client 
 							SET 
-										modify_date=NOW()
+								modify_date=NOW()
 							WHERE 
-										client_id = ".$ld['client_id']."
-								AND
-										trainer_id = ".$_SESSION[U_ID]." 
+								client_id = ".$ld['client_id']."
+							AND
+								trainer_id = ".$_SESSION[U_ID]." 
 							");
 		
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
@@ -562,14 +563,14 @@ class client
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
 		$this->dbu->query("
 							UPDATE 
-										exercise_plan 
+								exercise_plan 
 							SET 
-										exercise_program_id='".$ld['exercise_id']."',
-										date_modified=NOW(), 
-										trainer_id='".$_SESSION[U_ID]."', 
-										client_id= ".$ld['client_id']." 
+								exercise_program_id='".$ld['exercise_id']."',
+								date_modified=NOW(), 
+								trainer_id='".$_SESSION[U_ID]."', 
+								client_id= ".$ld['client_id']."
 							WHERE
-										exercise_plan_id='".$ld['exercise_plan_id']."'
+								exercise_plan_id='".$ld['exercise_plan_id']."'
 							");
 		$del_id = explode(',',$ld['exercise_id']);
 		$get_exercises = $this->dbu->query("SELECT exercise_plan_set.* FROM exercise_plan_set WHERE 1=1 AND exercise_plan_id='".$ld['exercise_plan_id']."' AND client_id= ".$ld['client_id']." ");
@@ -581,13 +582,13 @@ class client
 					
 		$this->dbu->query("
 							UPDATE
-										client 
+								client 
 							SET 
-										modify_date=NOW()
+								modify_date=NOW()
 							WHERE 
-										client_id = ".$ld['client_id']."
-								AND
-										trainer_id = ".$_SESSION[U_ID]." 
+								client_id = ".$ld['client_id']."
+							AND
+								trainer_id = ".$_SESSION[U_ID]." 
 							");
 		
 		return true;			

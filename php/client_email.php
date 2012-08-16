@@ -54,6 +54,7 @@ while($dbu->move_next())
 			'CLIENT_NAME'=>$dbu->f('first_name')." ".$dbu->f('surname'),
 			'EMAIL'=>$dbu->f('email'),
 			'CLIENT_NOTE'=>$dbu->f('client_note'),
+			'EXERCISE_DESC'=>stripcslashes($dbu->f('exercise_desc')),
 		));
 		$i++;
 }
