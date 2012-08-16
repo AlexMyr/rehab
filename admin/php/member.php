@@ -61,7 +61,13 @@ if(isset($glob['search_key']))
       if($expire_date>0)
       {
           $expire_time = ($expire_date-time());
-          if($expire_time<1) $is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
+          if($expire_time<1)
+		{
+			$is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
+			$trial_name = 'Trial';
+			$trial_link = "index.php?pag=member_list&act=member-trial&trainer_id=".$dbu->f('trainer_id');
+		}
+          //if($expire_time<1) $is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
           else if($expire_time>0)
           {
               if($dbu->f('is_trial')==1)

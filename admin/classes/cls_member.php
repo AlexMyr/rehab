@@ -276,7 +276,7 @@ function trial($ld)
 {
   $expire_date = date("Y-m-d H:i:S", (time() + 14*24*3600));
   $this->dbu->query("update trainer set active=2,is_trial=1,expire_date='$expire_date' where trainer_id=".$ld['trainer_id']."");                  
-  $ld['error'].="The member has full rights.";
+  $ld['error'].="The member became trial user.";
   return true;
 }
 /****************************************************************
