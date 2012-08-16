@@ -11,7 +11,7 @@ function paypal_init()
 	$PROXY_HOST = '127.0.0.1';
 	$PROXY_PORT = '808';
 
-	$SandboxFlag = false;
+	$SandboxFlag = SANDBOX;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -391,7 +391,7 @@ function paypal_init()
 	$PROXY_PORT = '808';
 
 	
-	$SandboxFlag = false;
+	$SandboxFlag = SANDBOX;
 
 	//'------------------------------------
 	//' PayPal API Credentials
@@ -495,7 +495,7 @@ function paypal_init()
 	{
 		//global $PAYPAL_URL;
 		
-		$SandboxFlag = false;
+		$SandboxFlag = SANDBOX;
 		if ($SandboxFlag == true) 
         {
             $API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";
