@@ -2,7 +2,7 @@
 /************************************************************************
 * @Author: Tinu Coman                                                   *
 ************************************************************************/
-define('SANDBOX', true);
+define('SANDBOX', false);
 
 class member
 {
@@ -1084,6 +1084,7 @@ class member
 			$returnURL = urlencode('http://rehabmypatient.com/index.php?act=member-confirm_pay&user_id='.$_SESSION[U_ID]);
 			$cancelURL = urlencode('http://rehabmypatient.com/index.php');
 		}
+		$NOTIFYURL = 'http://rehabmypatient.com/ipn.php';
         //$custom = 'referralId';
 		
 		//if($is_recurring)
@@ -1091,7 +1092,7 @@ class member
 		//else
 		//	$description = $_SESSION['description'] = 'Yearly payment';
 		
-		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $description, $userEmail, $custom, $is_recurring);
+		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $NOTIFYURL, $description, $userEmail, $is_recurring);
 	
 		$ack = strtoupper($resArray["ACK"]);
 		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
@@ -1163,8 +1164,9 @@ class member
 					$resArray = CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $TOTALBILLINGCYCLES, $AUTOBILLOUTAMT,
 															   $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
 															   $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT,$FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS, $NOTIFYURL);
-                    
-					$resArray = GetRecurringPaymentsProfileDetails($_SESSION['PROFILEID']);
+
+					$resArray = GetRecurringPaymentsProfileDetails($resArray['PROFILEID']);
+
 				}
 				else
 					$resArray = ConfirmPayment($_SESSION['Payment_Amount'], $NOTIFYURL);

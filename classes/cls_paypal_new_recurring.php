@@ -47,7 +47,8 @@ function paypal_init()
 	}
 
 	$USE_PROXY = false;
-	$version="64";
+	//$version="64";
+	$version="86";
     if (session_id() == "") 
 		session_start();
 }
@@ -76,24 +77,22 @@ function paypal_init()
 	{
 		//------------------------------------------------------------------------------------------------------------------------------------
 		// Construct the parameter string that describes the SetExpressCheckout API call in the shortcut implementation
-		
+
 		$nvpstr = '';
-		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_PAYMENTACTION=" . $paymentType;
 		$nvpstr = $nvpstr . "&RETURNURL=" . $returnURL;
 		$nvpstr = $nvpstr . "&CANCELURL=" . $cancelURL;
-        $nvpstr = $nvpstr . "&NOTIFYURL=" . $NOTIFYURL;
         $nvpstr = $nvpstr . "&EMAIL=".$userEmail;
-		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_CURRENCYCODE=" . $currencyCodeType;
-		$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME0=".$description;
-		//$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_DESC0=".$description;
 		
 		if($is_recurring)
 		{
 			$nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
 			$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=".$description;
-			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=0";
 		}
 		else{
+			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_PAYMENTACTION=" . $paymentType;
+			$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_CURRENCYCODE=" . $currencyCodeType;
+			$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_NAME0=".$description;
+			$nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_DESC0=".$description;
             $nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_QTY0=0";
             $nvpstr = $nvpstr . "&L_PAYMENTREQUEST_0_AMT0=".$paymentAmount;
             $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_AMT=".$paymentAmount;
@@ -111,7 +110,7 @@ function paypal_init()
 		//'---------------------------------------------------------------------------------------------------------------
 
 	    $resArray=hash_call("SetExpressCheckout", $nvpstr);
-        
+
         logPayment($nvpstr, $resArray, "SetExpressCheckout");
 		$ack = strtoupper($resArray["ACK"]);
 		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
@@ -119,6 +118,7 @@ function paypal_init()
 			$token = urldecode($resArray["TOKEN"]);
 			$_SESSION['TOKEN']=$_SESSION['PREV_TOKEN']=$token;
 		}
+
 	    return $resArray;
 	}
 	
@@ -126,12 +126,13 @@ function paypal_init()
                                             $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
                                             $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT, $FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS)
 	{
-		$nvpstr="&TOKEN=". $TOKEN;
+
+		$nvpstr = "&TOKEN=". $TOKEN;
+		$nvpstr = $nvpstr . "&PAYERID=".$_SESSION['payer_id'];
 		$nvpstr.="&PROFILESTARTDATE=". $PROFILESTARTDATE;
 		$nvpstr.="&DESC=". $DESC;
 		$nvpstr.="&BILLINGPERIOD=". $BILLINGPERIOD;
 		$nvpstr.="&BILLINGFREQUENCY=". $BILLINGFREQUENCY;
-        $nvpstr.="&L_BILLINGTYPE0=". $L_BILLINGTYPE;
         $nvpstr.="&TOTALBILLINGCYCLES=". $TOTALBILLINGCYCLES;
         $nvpstr.="&AUTOBILLOUTAMT=". $AUTOBILLOUTAMT;
 		$nvpstr.="&AMT=".$AMT;
@@ -146,10 +147,11 @@ function paypal_init()
 		$nvpstr.="&MAXFAILEDPAYMENTS=". $MAXFAILEDPAYMENTS;
         $nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
 		$nvpstr = $nvpstr . "&L_BILLINGAGREEMENTDESCRIPTION0=".$DESC;
-        
+		
+
 		$resArray=hash_call("CreateRecurringPaymentsProfile", $nvpstr);
 		logPayment($nvpstr, $resArray, "CreateRecurringPaymentsProfile");
-        
+
 	    return $resArray;
 	}
 	function GetRecurringPaymentsProfileDetails($profileID){
@@ -428,7 +430,7 @@ function paypal_init()
 	}
 
 	$USE_PROXY = false;
-	$version="76";//64
+	$version="84";//64
     if (session_id() == "") 
 		session_start();
 		//declaring of global variables
