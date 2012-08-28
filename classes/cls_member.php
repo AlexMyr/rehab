@@ -926,14 +926,18 @@ class member
 			
 			$cur_image = $this->createImgFromFile($img_path);
 			
+            $max_width = (715 == $_SESSION[U_ID]) ? 300 : 100;//quick-fix for specific user - he needs a bigger logo
+            $max_height = (715 == $_SESSION[U_ID]) ? 270 : 90;//quick-fix for specific user - he needs a bigger logo
+            
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
-			if(imagesy($cur_image)>90)
-			  $this->resize($img_path, 0, 90, $f_title, $img_ext);
+			
+            if(imagesy($cur_image)>$max_height)
+                $this->resize($img_path, 0, $max_height, $f_title, $img_ext);
 			
 			$cur_image = $this->createImgFromFile($img_path);
 			
-			if(imagesx($cur_image)>100)
-			  $this->resize($img_path, 100, 0, $f_title, $img_ext);
+			if(imagesx($cur_image)>$max_width)
+			  $this->resize($img_path, $max_width, 0, $f_title, $img_ext);
 
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
