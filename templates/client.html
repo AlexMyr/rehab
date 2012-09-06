@@ -2,12 +2,13 @@
 		{MESSAGE}
 		<h2 class="bottomLine"><span class="pageTitle">{CLIENT_NAME}</span> / {T.RECORD}</h2>
 		<div class="sidebar">
-			<form action="index.php" method="post">
+			<form action="index.php" method="post" id="create_exercise">
 				<!-- input type="hidden" name="act" value="client-add_exercise" -->
 				<input type="hidden" name="pag" value="client_add_exercise">
 				<input type="hidden" name="client_id" value="{CLIENT_ID}">
+				<input type="hidden" id="exercise_desc" name="exercise_desc" value="">
 						
-				<div class="buttons deleteClient"><button {SHOW_LIMIT_ERROR} type="submit"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>
+				<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>
 			</form>
 			<div class="greyBorderBox">
 				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
@@ -63,7 +64,7 @@
 					<h2>{CREATE_DATE}</h2>
 					<p>{T.LAST_MOD}: {MODIFY_DATE}</p>
 				</span>
-				<span class="notes">{CLIENT_NOTE}</span>
+				<span class="notes">{EXERCISE_DESC}</span>
 				<span class="actions">
 					<a title="Email" style="display: {HIDE_EMAIL};" href="index.php?pag=client_email&act=client-mail_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="mail"><span>mail</span></a>
 					<a title="Print" href="index.php?pag=exercisepdf&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="print" target="_blank" ><span>print</span></a>

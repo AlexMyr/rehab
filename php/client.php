@@ -89,6 +89,7 @@ while ($programs->next()&&$i<$l_r)
 			'EXERCISE_PLAN_ID'=>$programs->f('exercise_plan_id'),
 			'CREATE_DATE'=>date('D jS M Y',strtotime($programs->f('date_created'))),
 			'MODIFY_DATE'=>date('D jS M Y, h.ia',strtotime($programs->f('date_modified'))),
+			'EXERCISE_DESC'=>stripcslashes($dbu->f('exercise_desc')),
 		));
 	$ft->parse('CLIENT_RECORD_LINE_OUT','.client_record_line');
 	$i++;

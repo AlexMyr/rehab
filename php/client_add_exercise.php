@@ -4,7 +4,6 @@
 ************************************************************************/ 
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client_add_exercise.html"));
-
 $tags = get_template_tag($glob['pag'], $glob['lang']);
 foreach($tags as $name => $row){
   $ft->assign($name, $row);
@@ -44,7 +43,7 @@ if($get_exercise_image_type==0) $image_type = "lineart";
 else if($get_exercise_image_type==1) $image_type = "image";
 
 $change_image_type = $image_type == 'lineart' ? 'image' : 'lineart';
-
+//var_dump($glob);
 $ft->assign('CLIENT_ID', $glob['client_id']);
 
 $query = $dbu->query("select client.* from client where client.client_id=".$glob['client_id']." ");
@@ -123,7 +122,7 @@ if($category_array)
             $firstSubCat++;
             if(!isset($glob['catID'])&&$firstSubCat==1)
             {
-                header("location: index.php?pag=client_add_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id']);
+                header("location: index.php?pag=client_add_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id'].'&exercise_desc='.urlencode($glob['exercise_desc']));
             }
             else
             {
@@ -301,6 +300,7 @@ if(!empty($_SESSION['pids']))
 		}
 }
 
+$ft->assign('EXERCISE_DESC', $glob['exercise_desc']);
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);
 $ft->assign('CSS_PAGE', $glob['pag']);
 $ft->assign('SEARCH_LINK', "index.php?pag=client_add_exercise&catID=".$glob['catID']."&client_id=".$glob['client_id']);

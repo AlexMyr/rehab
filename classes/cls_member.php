@@ -926,14 +926,18 @@ class member
 			
 			$cur_image = $this->createImgFromFile($img_path);
 			
+            $max_width = ($ld['width'] <= 300 ) ? $ld['width'] : 100;
+			$max_height = ($ld['height'] <= 300 ) ? $ld['height'] : 90;
+
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
-			if(imagesy($cur_image)>90)
-			  $this->resize($img_path, 0, 90, $f_title, $img_ext);
+			
+            if(imagesy($cur_image)>$max_height)
+                $this->resize($img_path, 0, $max_height, $f_title, $img_ext);
 			
 			$cur_image = $this->createImgFromFile($img_path);
 			
-			if(imagesx($cur_image)>100)
-			  $this->resize($img_path, 100, 0, $f_title, $img_ext);
+			if(imagesx($cur_image)>$max_width)
+			  $this->resize($img_path, $max_width, 0, $f_title, $img_ext);
 
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
@@ -1048,7 +1052,7 @@ class member
 		switch($ld['pay_type']){
 			case 'monthly':
 			{
-				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode(round($this->dbu->f('price_value'))/12, 2);
+				$paymentAmount = $_SESSION['Payment_Amount'] = urlencode(round($this->dbu->f('price_value')/12, 2));
 				$description = $_SESSION['description'] = 'Monthly payment ('.$paymentAmount.' '.$currencyCodeType.')';
 				$is_recurring = $_SESSION['is_recurring'] = true; break;
 			}
@@ -1084,6 +1088,7 @@ class member
 			$returnURL = urlencode('http://rehabmypatient.com/index.php?act=member-confirm_pay&user_id='.$_SESSION[U_ID]);
 			$cancelURL = urlencode('http://rehabmypatient.com/index.php');
 		}
+		$NOTIFYURL = 'http://rehabmypatient.com/ipn.php';
         //$custom = 'referralId';
 		
 		//if($is_recurring)
@@ -1091,7 +1096,7 @@ class member
 		//else
 		//	$description = $_SESSION['description'] = 'Yearly payment';
 		
-		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $description, $userEmail, $custom, $is_recurring);
+		$resArray = CallShortcutExpressCheckout ($paymentAmount, $currencyCodeType, $paymentType, $returnURL, $cancelURL, $NOTIFYURL, $description, $userEmail, $is_recurring);
 	
 		$ack = strtoupper($resArray["ACK"]);
 		if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")
@@ -1163,8 +1168,9 @@ class member
 					$resArray = CreateRecurringPaymentsProfile($TOKEN, $PROFILESTARTDATE, $DESC, $BILLINGPERIOD, $BILLINGFREQUENCY, $TOTALBILLINGCYCLES, $AUTOBILLOUTAMT,
 															   $AMT, $CURRENCYCODE, $EMAIL, $L_PAYMENTREQUEST_0_ITEMCATEGORY0, $L_PAYMENTREQUEST_0_NAME0, $L_PAYMENTREQUEST_0_AMT0,
 															   $L_PAYMENTREQUEST_0_QTY0, /*$INITAMT,$FAILEDINITAMTACTION,*/ $MAXFAILEDPAYMENTS, $NOTIFYURL);
-                    
-					$resArray = GetRecurringPaymentsProfileDetails($_SESSION['PROFILEID']);
+
+					$resArray = GetRecurringPaymentsProfileDetails($resArray['PROFILEID']);
+
 				}
 				else
 					$resArray = ConfirmPayment($_SESSION['Payment_Amount'], $NOTIFYURL);
@@ -1208,6 +1214,7 @@ class member
 										country_id 	    = '".$country_id."',
 										price_plan_id 	= '".$_SESSION['price_id']."',
 										is_trial		= '0',
+										active			= '2',
 										expire_date		= '$expireTime'
 									WHERE 
 										trainer_id=".$ld['user_id']." ";

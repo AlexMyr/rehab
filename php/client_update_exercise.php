@@ -165,6 +165,15 @@ $ft->assign('BREADCRUMB',get_category_path($glob['catID'],$glob['client_id']));
 
 $ft->assign('VIEW_MODE',$view_buttons);
 $ft->assign('EXERCISE_PLAN_ID',$glob['exercise_plan_id']);
+$descr = $dbu->query("
+                    SELECT *
+                    FROM exercise_plan
+                    WHERE  exercise_plan_id=".$glob['exercise_plan_id']."
+                        AND trainer_id='".$_SESSION[U_ID]."'
+                        AND client_id= ".$glob['client_id']." 
+                    ");
+$descr->next();
+$ft->assign(array('EXERCISE_DESC'=>$descr->f('exercise_desc')));
 
 $ft->define_dynamic($view_mode,'main');
 
@@ -252,34 +261,37 @@ else
 {
 	$glob['error'] = $tags['T.SELECT_CAT'];
 }
+
 if(!$_SESSION['pids'] || empty($_SESSION['pids']))
 {
-$_SESSION['pids'] = array();
-$session_register = $dbu->query("
-								SELECT 
-									exercise_program_id 
-								FROM 
-									exercise_plan
-								WHERE 
-									exercise_plan_id=".$glob['exercise_plan_id']."
-									AND
-									trainer_id='".$_SESSION[U_ID]."'
-									AND
-									client_id= ".$glob['client_id']." 
-								");
-$i =0;
-while ($session_register->next())
-{
-	$sess_edit = explode(",",$session_register->f('exercise_program_id'));
-	foreach($sess_edit as $sVal)
-		{
-			$_SESSION['pids'][] = $sVal;
-		}
-	$i++;
-}}
+    $_SESSION['pids'] = array();
+    $session_register = $dbu->query("
+                                    SELECT 
+                                        exercise_program_id 
+                                    FROM 
+                                        exercise_plan
+                                    WHERE 
+                                        exercise_plan_id=".$glob['exercise_plan_id']."
+                                        AND
+                                        trainer_id='".$_SESSION[U_ID]."'
+                                        AND
+                                        client_id= ".$glob['client_id']." 
+                                    ");
+    $i =0;
+    
+    while ($session_register->next())
+    {
+        $sess_edit = explode(",",$session_register->f('exercise_program_id'));
+        foreach($sess_edit as $sVal)
+            {
+                $_SESSION['pids'][] = $sVal;
+            }
+        $i++;
+    }
+}
 if(!empty($_SESSION['pids']))
 {
-$ft->define_dynamic('selected_line','main');
+    $ft->define_dynamic('selected_line','main');
 	
 	$dbu = new mysql_db();
 	

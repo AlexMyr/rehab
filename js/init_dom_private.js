@@ -860,4 +860,21 @@ $(document).ready(function()
 		location.href = url;
 	});
 	
+	$('#addExerciseToClient').click(function(){
+		//$('#exercise_desc').val($('#client_note').val()); //no more need as user can enter plan descr at exercises adding page
+		$('#create_exercise').submit();
+		return true;
+	});
+	$('#advanced').click(function(){ $('#advanced_popup').toggle(100) });
+	
+	$('#exercise_desc').click(function(){
+		if( $(this).val() == $(this).attr('jsplaceholder') ){
+			$(this).val('');
+		}
+	});
+	$('#exercise_desc').blur(function(){
+		if( $(this).val() == '' ){
+			$(this).val( $(this).attr('jsplaceholder') );
+		}
+	});
 });

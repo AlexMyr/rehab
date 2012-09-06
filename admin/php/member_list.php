@@ -51,8 +51,8 @@ if($glob['active']==2)
 else if($glob['active']==0)
 {
 	$dbu->query("select * from trainer where active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0 $order_by");	
-	$bannName='Activate';
-	$pageTitle='New Members List';
+	$bannName='Trial';
+	$pageTitle='Blocked Members List';
 }
 else if($glob['active']==1)
 {
@@ -124,7 +124,7 @@ while($dbu->move_next()&&$i<$l_r)
 	$ft->assign('IS_CLINIC', $is_clinic );
 	$ft->assign('EMAIL',$dbu->f('email'));
 
-	if($glob['active']==0) $activation="index.php?pag=member_list&active=0&act=member-activate&trainer_id=".$dbu->f('trainer_id');
+	if($glob['active']==0) $activation="index.php?pag=member_list&active=0&act=member-trial&trainer_id=".$dbu->f('trainer_id');
 	else if($glob['active']==1) $activation="index.php?pag=member_list&act=member-deactivate&active=1&trainer_id=".$dbu->f('trainer_id');
 	else if($glob['active']==2) $activation="index.php?pag=member_list&act=member-deactivate&active=2&trainer_id=".$dbu->f('trainer_id');
 
