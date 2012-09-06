@@ -925,10 +925,14 @@ class member
 			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
 			
 			$cur_image = $this->createImgFromFile($img_path);
-			
-            $max_width = ($ld['width'] <= 300 ) ? $ld['width'] : 100;
-			$max_height = ($ld['height'] <= 300 ) ? $ld['height'] : 90;
 
+            //$max_width = ($ld['width'] <= 300 ) ? $ld['width'] : 100;
+			//$max_height = ($ld['height'] <= 300 ) ? $ld['height'] : 90;
+
+            $max_width = (715 == $_SESSION[U_ID]) ? 300 : 100;//quick-fix for specific user - he needs a bigger logo
+            $max_height = (715 == $_SESSION[U_ID]) ? 270 : 90;//quick-fix for specific user - he needs a bigger logo
+
+            
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			
             if(imagesy($cur_image)>$max_height)
