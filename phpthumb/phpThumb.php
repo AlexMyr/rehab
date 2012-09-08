@@ -464,7 +464,7 @@ function RedirectToCachedFile() {
 		} else {
 			@readfile($phpThumb->cache_filename);
 		}
-		exit;
+		//exit;
 
 	}
 	return true;

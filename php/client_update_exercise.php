@@ -102,7 +102,7 @@ if($query->next()) $ft->assign('CLIENT_NAME',stripcslashes($query->f('first_name
 			$firstSubCat++;
 			if(!isset($glob['catID'])&&$firstSubCat==1)
 			{
-				header("location: index.php?pag=client_update_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id']."&exercise_plan_id=".$glob['exercise_plan_id']);
+				//header("location: index.php?pag=client_update_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id']."&exercise_plan_id=".$glob['exercise_plan_id']);
 			}
 			else
 			{
@@ -173,7 +173,8 @@ $descr = $dbu->query("
                         AND client_id= ".$glob['client_id']." 
                     ");
 $descr->next();
-$ft->assign(array('EXERCISE_DESC'=>$descr->f('exercise_desc')));
+$exer_descr = $descr->f('exercise_desc') != '' ? $descr->f('exercise_desc') : 'plan description';
+$ft->assign('EXERCISE_DESC', $exer_descr);
 
 $ft->define_dynamic($view_mode,'main');
 
@@ -260,6 +261,9 @@ if ($i==0)
 else 
 {
 	$glob['error'] = $tags['T.SELECT_CAT'];
+    $msg = '<p style="color: white; font-size: 1.5em; margin: 90px 30px;">
+                Please select an exercise category, or search for an exercise in the search box above.</p>';
+    $ft->assign('NO_DATA_FOUND', $msg);
 }
 
 if(!$_SESSION['pids'] || empty($_SESSION['pids']))
