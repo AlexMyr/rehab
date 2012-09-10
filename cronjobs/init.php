@@ -97,7 +97,7 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 	
 $dbu = new mysql_db();
 
-$select = "select t.trainer_id as tid, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date, thp.*  from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1 and t.is_trial<>0 and t.trainer_id IS NOT NULL";
+$select = "select t.trainer_id as tid, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date, t.create_date, thp.*  from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1 and t.is_trial<>0 and t.trainer_id IS NOT NULL";
 
 $dbu->query($select);
 
@@ -107,7 +107,8 @@ $ab = array();
 
 while($dbu->move_next())
 {
-	//if($dbu->f('email_contact') != 'oleg_gladchenko@mail.ru') continue;
+	//if($dbu->f('email_contact') != 'ole_gi@miralex.com.ua') continue;
+
     if($dbu->f('is_trial')!=0)
     {
         $expire_time = (strtotime($dbu->f('expire_date'))-$time_now);
@@ -124,8 +125,9 @@ while($dbu->move_next())
         
         else if($expire_days<1 && $expire_minutes>0) $time_remained = "<strong>today</strong>"; 
 //				echo "<pre>".$dbu->f('first_name')." ".$dbu->f('surname')." ".$dbu->f('email')." - expire ".$time_remained."</pre>";
-        $message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
-        
+
+		$message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
+
 		if($dbu->f('is_clinic') == 1)
 		{
 			$send_to_name=trim($dbu->f('company_name'));
@@ -145,7 +147,7 @@ while($dbu->move_next())
 		if(!$send_to_name)
 			$send_to_name = 'Client';
 			
-		
+
         if($message_data['text']!=null) 
         {
 			send_mail($send_to_email=$dbu->f('email_contact'),$send_to_name,$message_data);

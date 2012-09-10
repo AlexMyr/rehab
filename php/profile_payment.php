@@ -157,7 +157,7 @@ $payment_table .= '<tr>
 for($i=0;$i<$payment_count;$i++)
 {//$tags['T.CHOOSE']
     if($price_amount[$i] === '0'){
-        $payment_table .= '<td><a id="submitPayment" class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_do_payment&price_id='.$price_plan_id[$i].'">
+        $payment_table .= '<td><a id="submitPayment" class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
                             <span>'.$tags['T.CHOOSE'].'</span>
                         </a></td>';
         continue;
@@ -173,13 +173,13 @@ for($i=0;$i<$payment_count;$i++)
         continue;
     }
     $payment_table .= '<td>
-						<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_do_payment&price_id='.$price_plan_id[$i].'">
+						<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
                             <span>'.$tags['T.YEAR'].'</span>
                         </a>
-                        <a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_do_payment&price_id='.$price_plan_id[$i].'">
+                        <a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
                             <span>'.$tags['T.YEARLY'].'</span>
                         </a>
-                        <a class="moreBtn" style="margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=monthly&pag=profile_do_payment&price_id='.$price_plan_id[$i].'">
+                        <a class="moreBtn" style="margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=monthly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
                             <span>'.$tags['T.MONTH'].'</span>
                         </a>
                     </td>';
