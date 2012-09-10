@@ -25,9 +25,10 @@ else if($get_exercise_image_type==1) $image_type = "image";
 
 $change_image_type = $image_type == 'lineart' ? 'image' : 'lineart';
 
-$get_program_name = $dbu->field("SELECT program_name FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
+$dbu->query("SELECT * FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
+$dbu->move_next();
 
-$ft->assign('PROGRAM_NAME', $get_program_name);
+$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => $dbu->f('exercise_notes')) );
 
 /* make the category / subcategory menu */
 
@@ -100,8 +101,8 @@ if($category_array)
 			$firstSubCat++;
 			if(!isset($glob['catID'])&&$firstSubCat==1)
 			{
-				header("location: index.php?pag=program_update_exercise&catID=".$cat_array['category_id']."&program_id=".$glob['program_id']);
-				exit;
+				//header("location: index.php?pag=program_update_exercise&catID=".$cat_array['category_id']."&program_id=".$glob['program_id']);
+				//exit;
 			}
 			else
 			{
@@ -123,7 +124,10 @@ if($category_array)
 		if($next==0) $out_str.="</li>";//category
 	}
 }
-	
+if(isset($glob['program_id'])){
+    $ft->assign('PROGRAM_PLAN_ID', $glob['program_id']);
+}
+
 $ft->assign('LIST',$out_str);
 if($glob['catID']&&$glob['program_id']) 
 {
@@ -226,13 +230,14 @@ if($glob['catID']&&$glob['program_id'])
 			$last_css = "";
 			$clear_both = "";
 		}
+        
 		$ft->assign(array(
 			'PROGRAM_ID'=>$program->f('programs_id'),
 			'PROGRAM_TITLE'=>$program->f('programs_title'),
 			'PROGRAM_DESCRIPTION'=>$program->f('description'),
 			'PROGRAM_IMAGE'=>(file_exists('upload/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png'),
 			'CAT_ID'=>$glob['catID'],
-			'PROGRAM_PLAN_ID'=>$glob['program_id'],
+			//'PROGRAM_PLAN_ID'=>$glob['program_id'],
 			'LAST_CSS'=> $last_css,
 			'CLEAR_BOTH'=> $clear_both,
 			'USER_BREAK_LINE'=> $user_break_line,
@@ -251,6 +256,9 @@ if($glob['catID']&&$glob['program_id'])
 else 
 {
 	$glob['error'] = $tags['T.SELECT'];
+    $msg = '<p style="color: white; font-size: 1.5em; margin: 90px 30px;">
+                Please select an exercise category, or search for an exercise in the search box above.</p>';
+    $ft->assign('NO_DATA_FOUND', $msg);
 }
 
 //if(!count($_SESSION['ppids'])) $_SESSION['ppids'] = array('0'=>'0');

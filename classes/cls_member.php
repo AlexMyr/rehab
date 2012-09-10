@@ -723,25 +723,27 @@ class member
 								state_zip='".$ld['state_zip']."'
 							WHERE 
 								trainer_id='".$_SESSION[U_ID]."'");
+        
+        $ld['pag'] = 'dashboard';
 		$success = true;
 		if(!$ld['delete_image']&&!empty($_FILES['upload_image']['name']))
 		{
 			if($_FILES['upload_image']['error'] === 0)
 				$success = $this->upload_custom_file($ld);
+            $ld['pag'] = 'profile_header_paper';
 			//$ld['error']='unchecked';
 		}
 		elseif($ld['delete_image'])
 		{
+            $ld['pag'] = 'profile_header_paper';
 			$success &= $this->erasecustompicture($ld);
 			//$ld['error']='checked';
 		}
-
+        
         if($success){
             $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
-            $ld['pag'] = 'dashboard';
             return true;
         } else{
-            $ld['pag'] = 'profile_header_paper';
             return false;
         }
 	}
@@ -926,11 +928,8 @@ class member
 			
 			$cur_image = $this->createImgFromFile($img_path);
 
-            //$max_width = ($ld['width'] <= 300 ) ? $ld['width'] : 100;
-			//$max_height = ($ld['height'] <= 300 ) ? $ld['height'] : 90;
-
-            $max_width = (715 == $_SESSION[U_ID]) ? 300 : 100;//quick-fix for specific user - he needs a bigger logo
-            $max_height = (715 == $_SESSION[U_ID]) ? 270 : 90;//quick-fix for specific user - he needs a bigger logo
+            $max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
+			$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
 
             
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		

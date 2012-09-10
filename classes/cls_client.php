@@ -115,6 +115,7 @@ class client
 								AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
 						");
 		
+
 		/* CHECK IF Programme EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
 		{
@@ -130,7 +131,7 @@ class client
 							SET 
 										program_name='".mysql_escape_string($ld['program_name'])."', 
 										print_image_type='".mysql_real_escape_string($ld['print_image_type'])."', 
-										client_note='".mysql_real_escape_string($ld['client_note'])."', 
+										exercise_notes ='".mysql_real_escape_string($ld['exercise_note'])."', 
 										date_created=NOW(),
 										date_modified=NOW(),
 										trainer_id = ".$_SESSION[U_ID]." 
@@ -159,11 +160,15 @@ class client
 	function update_program_exercise(&$ld)
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
+        if($ld['program_desc'] == 'plan description')
+            $ld['program_desc'] = '';
+        
 		$this->dbu->query("
 							UPDATE 
 								exercise_program_plan 
 							SET 
 								exercise_program_id='".$ld['exercise_id']."',
+                                exercise_notes = '".mysql_real_escape_string($ld['program_desc'])."',
 								date_modified=NOW()
 							WHERE
 								exercise_program_plan_id='".$ld['program_id']."'

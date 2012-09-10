@@ -41,7 +41,9 @@ else
     $ft->assign('CANCEL_PAYMENT','');
 }	
     $ft->define(array('main' => "profile_header_paper.html"));
-    $image = '<img src="'.$script_path.UPLOAD_PATH.$dbu->gf('logo_image').'" alt="trainer_logo" style="display:block;"/>';
+    $img_src = $script_path.UPLOAD_PATH.$dbu->gf('logo_image');
+    $image = '<img src="'.$img_src.'" alt="trainer_logo" style="display:block;"/>';
+    $size = is_file($img_src) ? getimagesize($img_src) : false;
     $glob['delete_image'] = 0;
     $ft->assign(array(
         'FIRST_NAME'=>$dbu->f('first_name'),
@@ -59,7 +61,9 @@ else
         'CITY' => $dbu->f('city'),
         'FAX' => $dbu->f('fax'),
         'LANG_EN' => $dbu->f('lang') == 'en' ? 'selected' : '',
-        'LANG_US' => $dbu->f('lang') == 'us' ? 'selected' : ''
+        'LANG_US' => $dbu->f('lang') == 'us' ? 'selected' : '',
+        'WIDTH' => (is_array($size) && !empty($size) ? $size[0] : 100),
+        'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 90)
     ));
 
 if($glob['lang']=='en')

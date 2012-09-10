@@ -865,14 +865,19 @@ $(document).ready(function()
 		$('#create_exercise').submit();
 		return true;
 	});
+	
 	$('#advanced').click(function(){ $('#advanced_popup').toggle(100) });
 	
-	$('#exercise_desc').click(function(){
+	$('#reset_size').click(function(){ 	$('input[name="width"]').val(100); 
+										$('input[name="height"]').val(90);
+	});
+	
+	$('#exercise_desc, #program_desc').click(function(){
 		if( $(this).val() == $(this).attr('jsplaceholder') ){
 			$(this).val('');
 		}
 	});
-	$('#exercise_desc').blur(function(){
+	$('#exercise_desc, #program_desc').blur(function(){
 		if( $(this).val() == '' ){
 			$(this).val( $(this).attr('jsplaceholder') );
 		}

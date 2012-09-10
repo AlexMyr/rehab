@@ -47,7 +47,7 @@ while ($dbu->move_next()&&$i<$l_r)
 		$ft->assign(array(
 			'PROGRAM_ID'=>$dbu->f('exercise_program_plan_id'),
 			'PROGRAM_NAME'=>$dbu->f('program_name'),
-			'PROGRAM_DESC'=>$dbu->f('client_note'),
+			'PROGRAM_DESC'=>$dbu->f('exercise_notes'),
 		));
 	$ft->parse('CLIENT_LINE_OUT','.client_line');
 	$i++;
@@ -147,7 +147,7 @@ $ft->assign('FIRST_NAME', $glob['first_name']);
 $ft->assign('SURNAME', $glob['surname']);
 $ft->assign('EMAIL', $glob['email']);
 //$ft->assign('IMAGE_TYPE', $glob['print_image_type']);
-$ft->assign('CLIENT_NOTE', $glob['client_note']);
+$ft->assign('EXERCISE_NOTE', $glob['client_note']);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');

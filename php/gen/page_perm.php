@@ -196,7 +196,12 @@
 									'module' => 'exercise_preview',
 									'folder' => 'pdf',
 									'session' => 1
-									),                 
+									),
+                        'exercisepdf_test' => array(
+									'perm' => 3,
+									'folder' => 'pdf',
+									'session' => 1
+									),
 						);
 
 /*
