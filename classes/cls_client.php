@@ -181,9 +181,27 @@ class client
 			if(!in_array($get_exercises->gf('exercise_program_id'),$del_id))
 				$this->dbu->query("DELETE FROM exercise_plan_set WHERE exercise_program_id=".$get_exercises->gf('exercise_program_id')." AND exercise_plan_id='".$ld['program_id']."' AND client_id= ".$ld['program_id']." AND is_program_plan=1 ");
 		}
+        
 		return true;			
 	}
-	
+    
+	function update_custom_description($ld){
+        if( isset($ld['ex_id']) && isset($ld['descr']) && isset($ld['program_id']) ){
+            $this->dbu->query('SELECT * FROM `programs_custom_descr` WHERE program_id = '.$ld['program_id'].' AND exercise_id ='.$ld['ex_id']);
+            $this->dbu->move_next();
+            if($this->dbu->f('exercise_id')){
+                $this->dbu->f('exercise_id');
+                $this->dbu->query('UPDATE `programs_custom_descr`
+                                    SET description = "'.mysql_real_escape_string($ld['descr']).'"
+                                    WHERE exercise_id = "'.$ex_id.'" AND program_id = "'.$ld['program_id'].'"');
+            }
+            else{
+                $this->dbu->query('INSERT INTO `programs_custom_descr` (exercise_id, program_id, description)
+                                    VALUES ('.$ld['ex_id'].', '.$ld['program_id'].', "'.mysql_real_escape_string($ld['descr']).'");');
+            }
+        }
+    }
+    
 	function update_program_exercise_plan(&$ld)
 	{
 		$exercise = explode(',',$ld['exercise_id']);

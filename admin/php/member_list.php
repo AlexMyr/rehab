@@ -107,8 +107,17 @@ while($dbu->move_next()&&$i<$l_r)
 		}
 		else if($expire_time>0)
 		{
-			if($dbu->f('is_trial')==1)
+			if($dbu->f('is_trial')==1){
 				$is_trial = "trial";
+                $extend_3_name = 'Extend to 3 month';
+                $extend_3_link = "index.php?pag=member_list&act=member-extend_trial&to=90&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+                $extend_6_name = 'Extend to 6 month';
+                $extend_6_link = "index.php?pag=member_list&act=member-extend_trial&to=180&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+                $ft->assign('EXTEND_3_NAME',$extend_3_name);
+                $ft->assign('EXTEND_3_LINK',$extend_3_link);
+                $ft->assign('EXTEND_6_NAME',$extend_6_name);
+                $ft->assign('EXTEND_6_LINK',$extend_6_link);
+			}
 			else if($dbu->f('is_trial')==0){
 				$is_trial = "payed";
 				$trial_name = 'Trial';

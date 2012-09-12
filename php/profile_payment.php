@@ -172,11 +172,11 @@ for($i=0;$i<$payment_count;$i++)
         $payment_table .= '<td><span>'.$tags['T.ALREADY'].'</span></td>';
         continue;
     }
-    $payment_table .= '<td>
-						<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+    $payment_table .= '<td>'./*
+						'<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
                             <span>'.$tags['T.YEAR'].'</span>
-                        </a>
-                        <a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+                        </a>'.*/
+                        '<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
                             <span>'.$tags['T.YEARLY'].'</span>
                         </a>
                         <a class="moreBtn" style="margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=monthly&pag=profile_payment&price_id='.$price_plan_id[$i].'">

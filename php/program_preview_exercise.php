@@ -129,14 +129,19 @@ $i = 0;
 while($i<count($exercise))
 {
 	$get_program = $dbu->query("SELECT description, ".$image_type.", programs_title, uploaded_pdf FROM programs
-                               INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
+                                INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
                                 WHERE programs_id='".$exercise[$i]."'");
 	$get_program->next();
 	$ft->assign(array(
 		//'IMG' => $get_program->f($image_type) ? $get_program->f($image_type) : 'noimg256.gif',
 		'IMG' => (file_exists('upload/'.$get_program->f($image_type)) && $get_program->f($image_type)) ? $get_program->f($image_type) : ($get_program->f('uploaded_pdf') ? 'pdf.png' : 'noimage.png'),
 		'PROGRAM_ID' => $exercise[$i],
-	));	
+	));
+    $get_descr = $dbu->query("SELECT description FROM programs
+                                INNER JOIN programs_custom_descr AS custom_descr ON custom_descr.exercise_id = programs.programs_id
+                                WHERE programs_id='".$exercise[$i]."'
+                                    AND custom_descr.program_id=".$glob['program_id']);
+    $get_descr->next();
 	$get_data = $dbu->query("
 							SELECT 
 								exercise_plan_set.*, translate.*
@@ -147,7 +152,7 @@ while($i<count($exercise))
 							WHERE
 								is_program_plan = 1
 							AND
-								1=1 AND programs.programs_id = exercise_plan_set.exercise_program_id
+								programs.programs_id = exercise_plan_set.exercise_program_id
 							AND
 								exercise_program_id=".$exercise[$i]." 
 							AND
@@ -155,7 +160,10 @@ while($i<count($exercise))
 							AND 
 								client_id=".$glob['program_id']." 
 							");
+                            
 	$get_data->next();
+    $description = $get_descr->f('description') ? $get_descr->f('description') : $get_program->gf('description');
+    
 	if($glob['mode']== 'edit')
 	{
 		if($get_data->gf('plan_description')) 
@@ -166,7 +174,7 @@ while($i<count($exercise))
 		else 
 		{
 			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, $get_program->gf('description'), 'description'.$exercise[$i],$params), ));	
+			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, $description, 'description'.$exercise[$i],$params), ));	
 		}
 	}
 	elseif($glob['mode'] == 'preview')
@@ -179,7 +187,7 @@ while($i<count($exercise))
 		else 
 		{
 			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$get_program->gf('description').'</strong></span>', ));
+			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$description.'</strong></span>', ));
 		}
 	}
 	if(!empty($glob['sets'.$exercise[$i]]))	$ft->assign('SETS' , $glob['sets'.$exercise[$i]]);

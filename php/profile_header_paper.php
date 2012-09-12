@@ -42,7 +42,7 @@ else
 }	
     $ft->define(array('main' => "profile_header_paper.html"));
     $img_src = $script_path.UPLOAD_PATH.$dbu->gf('logo_image');
-    $image = '<img src="'.$img_src.'" alt="trainer_logo" style="display:block;"/>';
+    $image = '<img src="'.$img_src.'?rnd='.rand(0,1000).'" alt="trainer_logo" style="display:block;"/>';
     $size = is_file($img_src) ? getimagesize($img_src) : false;
     $glob['delete_image'] = 0;
     $ft->assign(array(

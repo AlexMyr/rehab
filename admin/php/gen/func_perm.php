@@ -270,7 +270,8 @@
 										
 										'activate_full_rights'=>1,
                                         
-                                        'trial'=>1
+                                        'trial'=>1,
+                                        'extend_trial' => 1
 
 										),                                    
 

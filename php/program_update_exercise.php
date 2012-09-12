@@ -28,7 +28,7 @@ $change_image_type = $image_type == 'lineart' ? 'image' : 'lineart';
 $dbu->query("SELECT * FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
 $dbu->move_next();
 
-$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => $dbu->f('exercise_notes')) );
+$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') ? $dbu->f('exercise_notes') : 'plan description')) );
 
 /* make the category / subcategory menu */
 
@@ -294,14 +294,15 @@ if(!empty($_SESSION['ppids']))
   
 	$dbu = new mysql_db();
 	
-	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
+	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id
+                   LEFT JOIN programs_custom_descr AS custom_descr ON custom_descr.exercise_id = programs.programs_id";
 	foreach($_SESSION['ppids'] as $key=>$val)
 	{
 		if(!$val)continue;
 
 		$program = $dbu->query("
 						SELECT 
-							programs.*, programs_loc.programs_title, programs_loc.description
+							programs.*, programs_loc.programs_title, programs_loc.description, custom_descr.description AS custom_descr
 						FROM
 								programs
 						$left_join
@@ -313,7 +314,7 @@ if(!empty($_SESSION['ppids']))
 		$ft->assign(array(
 			'S_PROGRAM_ID' => $program->f('programs_id'),
 			'S_PROGRAM_TITLE' => strip_tags($program->f('programs_title')),
-			'S_PROGRAM_DESCRIPTION' => strip_tags($program->f('description')),
+			'S_PROGRAM_DESCRIPTION' => strip_tags($program->f('custom_descr') ? $program->f('custom_descr') : $program->f('description')),
 			'S_PROGRAM_IMAGE' => (file_exists('upload/'.$program->f($image_type)) && $program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : ($program->f('uploaded_pdf') ? $script_path.UPLOAD_PATH.'pdf_small.png' : $script_path.UPLOAD_PATH.'noimage_small.png'),
 			'S_PROGRAM_CATEGORY' => strip_tags(get_category_path(get_cat_ID($val),0)),
 		));

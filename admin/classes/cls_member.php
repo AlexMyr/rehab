@@ -279,6 +279,14 @@ function trial($ld)
   $ld['error'].="The member became trial user.";
   return true;
 }
+function extend_trial($ld)
+{
+    $to = $ld['to'];
+    $expire_date = date("Y-m-d H:i:S", (time() + $to*24*3600));
+    $this->dbu->query("UPDATE trainer SET expire_date='$expire_date' WHERE trainer_id=".$ld['trainer_id']."");                  
+    $ld['error'].="Trial period is extended.";
+    return true;
+}
 /****************************************************************
 * function send_notiffication_mail_activate(&$ld)                        *
 ****************************************************************/
