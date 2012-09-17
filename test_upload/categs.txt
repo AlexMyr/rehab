@@ -1,0 +1,137 @@
+Face	All
+	Assisted
+	
+TMJ	All
+	Strengthening
+	
+Breathing	All
+	
+Neck	All
+	Flexion
+	Extension
+	Rotation
+	Side-flexion
+	Retraction
+	Protraction
+	Neural
+	Stabilisation
+	Exercise band
+	Proprioception
+	
+Shoulder	All
+	Circumduction
+	Flexion
+	Extension
+	Abduction
+	Adduction
+	Internal roation
+	External rotation
+	Protraction
+	Retraction
+	Stabilisation
+	Swiss ball
+	Dumbell
+	Exercise band
+	Other
+	Advice
+	
+Elbow	All
+	Flexion
+	Extension
+	Pronation/supination
+	Proprioception
+	Other
+	
+Wrist	All
+	Flexion
+	Extension
+	Deviation
+	Exercise band
+	Dumbbell
+	
+Hand/fingers/thumb	All
+	Flexion
+	Extension
+	Abduction
+	Thumb opposition
+	Other
+	
+Lumbar Spine	All
+	Flexion
+	Extension
+	Rotation
+	Side-flexion
+	Stability
+	Traction
+	Posture
+	Swiss ball
+	Core
+	Foam roller
+	Advice
+	
+Thoracic Spine	All
+	Flexion
+	Extension
+	Side-flexion
+	Rotation
+	Swiss ball
+	Posture
+	Advice
+	
+Knee	All
+	Flexion
+	Extension
+	Proprioception
+	Co-ordination
+	Foam roller
+	Exercise band
+	Swiss ball
+	Other
+	Advice
+	
+Hip	All
+	Flexion
+	Extension
+	Abduction
+	Adduction
+	Internal rotation
+	External rotation
+	Other
+	Advice
+	
+Cardio	All
+	
+Core	All
+	Other
+	
+Ankle	All
+	Plantarflexion
+	Dorsiflexion
+	Inversion
+	Eversion
+	Balance/Proprioception
+	Other
+	
+Toe	All
+	Flexion
+	Extension
+	Abduction
+	Adduction
+	
+Swiss Ball	All
+	
+Posture 	All
+	
+Dumbbell	All
+	
+Balance	All
+	
+Foam Roller	All
+	
+Co-ordination	All
+	
+Exercise Band	All
+	
+Pilates	All
+	Set-up positions
+			
