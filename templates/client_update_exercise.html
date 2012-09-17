@@ -11,7 +11,6 @@
 						<input type="hidden" name="act" value="client-update_exercise">
 						<input type="hidden" name="pag" value="client_preview_exercise">
 						<input type="hidden" name="client_id" value="{CLIENT_ID}">
-						<input type="text" value="{EXERCISE_DESC}" name="exercise_desc" id="exercise_desc" class="curvyCorner" jsplaceholder="plan description">
 						<input id="exercise_plan_id" type="hidden" name="exercise_plan_id" value="{EXERCISE_PLAN_ID}">
 						<input id="exercise_id" type="hidden" name="exercise_id" value="">
 							<span id="program_list">
@@ -30,6 +29,7 @@
 <!-- END DYNAMIC BLOCK: selected_line -->
 </ul>
 							</span>
+							<input type="text" value="{EXERCISE_DESC}" name="exercise_desc" id="exercise_desc" class="curvyCorner" jsplaceholder="Notes">
 							<div>
 								{IMAGE_TYPE_CHANGE}
 								<div class="buttons login"><button id="exerciseAdd" type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>

@@ -62,16 +62,20 @@ $ft->assign(array(
     'CURRENT_DATE' => date('d F Y',time()),
     ));
 
-$get_exercises = $dbu->query("SELECT * FROM `programs`
-                                WHERE active =1 AND owner = -1
-                                ORDER BY RAND( ) LIMIT 0, 3");
-while($dbu->move_next()){
-    $exercise[] = $dbu->f('programs_id');
-}
-
+$get_exercises = $dbu->field("
+							SELECT 
+								exercise_program_plan.exercise_program_id 
+							FROM 
+								exercise_program_plan 
+							WHERE 
+								1=1
+							AND
+								exercise_program_plan_id=".$glob['program_id']." 
+							");
+$exercises = explode(',',$get_exercises);
 $i = 0;
 $count_break = 1;
-while($i<count($exercise))
+foreach($exercises as $exercise)
 {
     if($count_break%3 == 0 && $count_break < count($exercise))
         $ft->assign('BREAK_LINE' ,'<br pagebreak="true" />');
@@ -81,7 +85,7 @@ while($i<count($exercise))
     
     $get_program = $dbu->query("SELECT description, ".$image_type.", programs_title, programs.* FROM programs
                                INNER JOIN programs_translate_".$glob['lang']." USING(programs_id)
-                                WHERE programs_id='".$exercise[$i]."'");
+                                WHERE programs_id='".$exercise."'");
     $get_program->next();
 
     $print_image = ($get_program->f($image_type) && file_exists($script_path.UPLOAD_PATH.$get_program->f($image_type))) ? $script_path.UPLOAD_PATH.$get_program->f($image_type) : $script_path.UPLOAD_PATH.'noimage.png';
@@ -99,7 +103,7 @@ while($i<count($exercise))
     $get_data = $dbu->query("SELECT translate.*
                             FROM programs
                                 INNER JOIN programs_translate_".$glob['lang']." AS translate USING(programs_id)
-                            WHERE 1=1 AND programs.programs_id = ".$exercise[$i]);
+                            WHERE 1=1 AND programs.programs_id = ".$exercise);
     $get_data->next();
 
     $programs_title = str_replace('’', '\'', htmlentities($get_data->gf('programs_title')));
@@ -111,7 +115,7 @@ while($i<count($exercise))
     $description = mb_eregi_replace('”', '"', $description);
     
     $ft->assign(array( 'EXERCISE_TITLE'=> $programs_title ));
-    $ft->assign(array( 'EXERCISE_DESC'=> $plan_description ));
+    $ft->assign(array( 'EXERCISE_DESC'=> $description ));
 
     $ft->assign('SETS' , "Sets: ".htmlentities(rand(1,5)));
     $ft->assign('REPETITIONS' , "Repetitions: ".htmlentities(rand(1,5)));
@@ -121,7 +125,7 @@ while($i<count($exercise))
     $i++;
 }
 
-$ft->assign('EXERCISE_NOTES', 'Here would be the text of exercise notes');
+$ft->assign('EXERCISE_NOTES', 'Your default recommendation text will go here. For example, you might want to send a default message to each patient, e.g. <i>please stop any exercise if you get pain, and contact the clinic.</i>');
 $ft->parse('CONTENT','main');
 
 return $ft->fetch('CONTENT');

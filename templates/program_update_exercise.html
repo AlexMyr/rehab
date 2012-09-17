@@ -13,7 +13,6 @@
 						<input type="hidden" name="program_id" value="{PROGRAM_PLAN_ID}">
 						<input id="exercise_plan_id" type="hidden" name="exercise_plan_id" value="{EXERCISE_PLAN_ID}">
 						<input id="exercise_id" type="hidden" name="exercise_id" value="">
-						<input type="text" value="{PROGRAM_DESC}" name="program_desc" id="program_desc" class="curvyCorner" jsplaceholder="plan description">
 							<span id="program_list">
 <ul id="sortable" class="ui-sortable">
 <!-- BEGIN DYNAMIC BLOCK: selected_line -->
@@ -23,13 +22,14 @@
 <a id="del_{S_PROGRAM_ID}" class="exercise_del program_del" href="#">&nbsp;</a>
 <span id="title_{S_PROGRAM_ID}" class="exercise_title">{S_PROGRAM_TITLE}</span>
 <span class="exercise_cat">{S_PROGRAM_CATEGORY}</span>
-<a id="details_{S_PROGRAM_ID}" class="exercise_details">Edit Info</a>
+<a id="details_{S_PROGRAM_ID}" class="exercise_details edit">Edit Info</a>
 <span id="text_{S_PROGRAM_ID}" class="exercise_text"><div>{S_PROGRAM_DESCRIPTION}</div></span>
 <div class="clearAll"></div>
 </li>
 <!-- END DYNAMIC BLOCK: selected_line -->
 </ul>
 							</span>
+						<input type="text" value="{PROGRAM_DESC}" name="program_desc" id="program_desc" class="curvyCorner" jsplaceholder="Notes">
 						<div>
 							{IMAGE_TYPE_CHANGE}
 							<div class="buttons login"><button id="exerciseAdd" type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
@@ -45,7 +45,7 @@
 			</ul>
 		</div>
 		<div class="programList floatLft">
-			<div class="filterSection"><input id="searchExerciseInput" type="text" name="search_val" /><a id="searchExerciseButton" class="searchBtn" href="{SEARCH_LINK}" ><span>Search</span></a></div>
+			<div class="filterSection"><input id="searchExerciseInput" type="text" name="search_val" class="curvyCorner"/><a id="searchExerciseButton" class="searchBtn" href="{SEARCH_LINK}" ><span>Search</span></a></div>
 			<div class="breadcrumb"><span class="buttons">{VIEW_MODE}</span>{BREADCRUMB}<div class="clearAll"></div></div>
 			{NO_DATA_FOUND}
 <!-- BEGIN DYNAMIC BLOCK: exercise_details_line -->

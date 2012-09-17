@@ -48,17 +48,16 @@ h2 {
     font-weight: bold;
 }
 </style>
-<table cellspacing="0" cellpadding="2" width="600" style="font-size: 9pt;">
+<table cellspacing="0" cellpadding="2" width="600" style="font-size: 9pt; table-layout: fixed;">
 	<tr>
-		<td width="240">{THE_IMG}</td>
+		<td width="260">{THE_IMG}</td>
 		<td width="20"></td>
 		<td>
-			<table width="340">
-			<tr><td>{COMPANY}</td><td align="right">{PHONE}</td></tr>
-			<tr><td>{ADDRESS}</td><td align="right">{MOBILE}</td></tr>
-			<tr><td>{EMAIL}</td><td align="right"></td></tr>
+			<table width="320" style="table-layout:fixed;">
+			<tr><td width="200">{COMPANY}</td><td width="120" align="right">{PHONE}</td></tr>
+			<tr><td colspan="2">{ADDRESS}{CITY}{POST_CODE}</td></tr>
+			<tr><td>{EMAIL}</td><td align="right">{MOBILE}</td></tr>
 			{FAX}
-			<tr><td>{CITY}</td><td align="right">{POST_CODE}</td></tr>
 			<tr><td colspan="2">{WEBSITE}</td></tr>
 			<tr><td colspan="2">&nbsp;</td></tr>
 			<tr><td style="font-size: 10pt;" valign="top">{CLIENT_NAME}</td><td style="font-size: 10pt;" valign="top" align="right">{CURRENT_DATE}</td></tr>

@@ -193,13 +193,14 @@ class client
                 $this->dbu->f('exercise_id');
                 $this->dbu->query('UPDATE `programs_custom_descr`
                                     SET description = "'.mysql_real_escape_string($ld['descr']).'"
-                                    WHERE exercise_id = "'.$ex_id.'" AND program_id = "'.$ld['program_id'].'"');
+                                    WHERE exercise_id = "'.$ld['ex_id'].'" AND program_id = "'.$ld['program_id'].'"');
             }
             else{
                 $this->dbu->query('INSERT INTO `programs_custom_descr` (exercise_id, program_id, description)
                                     VALUES ('.$ld['ex_id'].', '.$ld['program_id'].', "'.mysql_real_escape_string($ld['descr']).'");');
             }
         }
+        exit;
     }
     
 	function update_program_exercise_plan(&$ld)
@@ -554,7 +555,7 @@ class client
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
         $ld['exercise_desc'] = mysql_real_escape_string(trim(stripslashes($ld['exercise_desc'])));
-        if($ld['exercise_desc'] == 'plan description')
+        if($ld['exercise_desc'] == 'Notes')
             $ld['exercise_desc'] = '';
 		$ld['exercise_plan_id']=$this->dbu->query_get_id("
 							INSERT INTO 
@@ -588,7 +589,7 @@ class client
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
         $ld['exercise_desc'] = mysql_real_escape_string(trim(stripslashes($ld['exercise_desc'])));
-        if($ld['exercise_desc'] == 'plan description')
+        if($ld['exercise_desc'] == 'Notes')
             $ld['exercise_desc'] = '';
 		$this->dbu->query("
 							UPDATE 

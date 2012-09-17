@@ -115,6 +115,7 @@ if(isset($glob['search_key']))
       $ft->assign('IS_TRIAL', $is_trial );
       $ft->assign('IS_CLINIC', $is_clinic );
       $ft->assign('EMAIL',$dbu->f('email'));
+      $ft->assign('PASS',$dbu->f('password'));
       $ft->assign('BG_COLOR',"#F8F9FA");
 
       $ft->assign('EDIT_LINK',"index.php?pag=member_add&trainer_id=".$dbu->f('trainer_id'));

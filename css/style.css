@@ -70,7 +70,7 @@ a { cursor:pointer; color:#ffffff; }
 .navMenu ul li div a, .navMenu ul li div a:hover, .navMenu ul li div a span, .navMenu ul li div a:hover span { margin:0px 0px 0px 0px; padding:0px; background: none; }
 
 .scrolledList{ height: 700px; overflow-y: auto;}
-.jsScrollDiv{ overflow-y: auto;}
+.jsScrollDiv{ overflow-y: auto; height: 700px;}
 .faqScrollDiv{ max-height:650px;}
 
 .contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px;}
@@ -222,9 +222,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .sidebar .textArea { height:102px; width:196px; border:1px solid #e0e0e0; }
 #exercise_desc, #program_desc{
 	height: 30px;
-    position: absolute;
-    right: 230px;
-    top: 88px;
+	margin: 10px 20px 5px;
     width: 160px;
 }
 
@@ -272,7 +270,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListTitle .description { display:inline-block; width:250px; }
 .clientList .clientListTitle a { text-decoration: none; text-shadow: none;}
 
-.clientList .clientListRow { padding-top:12px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
+.clientList .clientListRow { padding: 12px 0 3px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
 .clientList .clientListRow.clientRecord { height:auto; padding-bottom:12px; }
 .clientList .clientListRow .add_exercise { padding:0px 10px; display:inline-block; width:17px; }
 .clientList .clientListRow .name { display:inline-block; width:275px; }
@@ -743,13 +741,66 @@ label.error_validate{
 #advanced {
     cursor: pointer;
     float: right;
-	margin: 0 150px 0 0;
+   margin: 0 150px 0 0;
 }
 #test_head {
-    bottom: 4px;
     float: right;
     position: relative;
+   text-decoration: none;
 }
 #test_head div {
     margin: 0;
+}
+
+
+.browse_field {
+    clear:none;
+    overflow:hidden;
+    position:relative;
+    width: 260px;
+}
+ 
+.general_submit{
+    cursor:pointer;
+    height:29px;
+    position:relative;
+    float: left;
+}
+
+.general_submit .moreBtn{
+    margin: 0;
+}
+ 
+.normal_input_field {
+    height:29px;
+    position:relative;
+    float:left;
+}
+ 
+.normal_input_field .left-edge {
+    background:url("images/editbox_left.png") repeat scroll 0 0 transparent;
+}
+ 
+.normal_input_field .right-edge {
+    background:url("images/editbox_right.png") repeat scroll 0 0 transparent;
+}
+ 
+.normal_input_field .main-area {
+    background:url("images/editbox_middle.png") repeat scroll 0 0 transparent;
+}
+ 
+.normal_input_field input {
+    border:medium none transparent;
+    height:20px;
+    margin-top:5px;
+    color:black;
+}
+ 
+.browse_field .file {
+    height:30px;
+    opacity:0;
+    filter: alpha(opacity = 0);
+    position:absolute;
+    right:0;
+    top:0;
 }

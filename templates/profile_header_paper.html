@@ -109,9 +109,22 @@
 						<label class="label">{T.TICK}</label>
 						
 						<label class="label" for="upload_image">{T.CHANGE_LOGO}:</label>
-						<a href="index.php?pag=exercisepdf_test" target="_blank" id="test_head">
+						<a href="{TEST_URL}" target="_blank" id="test_head">
 							<div style="" id="" class="moreBtn"><span>Test letterhead</span></div></a>
-						<input class="textField" type="file" id="upload_image" name="upload_image" />
+							
+						<div class='browse_field'>
+							<div class='input' style='position:relative;float:left;margin-right:5px;z-index:10;'>
+								<div class="normal_input_field">
+									<input type="text" style="width:172px;" class="curvyCorner" readonly="readonly"></div>
+							</div>
+						 
+							<div class='submit_button' style='float: left;'>
+								<div class="general_submit">
+									<div style="" id="" class="moreBtn">
+										<span>Browse</span></div></div>
+							</div>
+							<input type='file' class='file' id="upload_image" name="upload_image" style='z-index: 5;' />
+						</div>
 						
 						<label class="label">{T.LOCATE_FILE}</label>						
 

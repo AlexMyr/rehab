@@ -183,7 +183,9 @@ doExerciseDetails = function()
 						if(!$('#text_'+details).hasClass('displayBlock'))
 							$('.exercise_text').removeClass('displayBlock');
 						$('#text_'+details).toggleClass('displayBlock');
-						editDescription($(this));
+						if($(this).hasClass('edit')){
+							editDescription($(this));
+						}
 					});	
 				}
 			});
@@ -325,9 +327,15 @@ doExercise = function(jSON)
 								.attr('class','exercise_del')
 								.attr('href','#');
 						
-						var exLI_details = $('<a/>')
-							.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
-							.attr('class','exercise_details');
+						if(window.location.href.indexOf('program_update_exercise')>0){
+							var exLI_details = $('<a/>')
+								.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
+								.attr('class','exercise_details edit');
+						}
+						else{var exLI_details = $('<a/>')
+								.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
+								.attr('class','exercise_details');
+						}
 						var exLI_drag = $('<a/>')
 							.attr('id', 'drag_'+obj.innerHTML.PROGRAM_ID)
 							.attr('class','exercise_drag')
@@ -481,6 +489,11 @@ $(document).ready(function()
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
 		window.location = $(this).attr('href') + '&query=' + $('#filterPatientsValue').val();
+	});
+	$("#filterPatientsValue").keypress(function(e) {
+		if ( e.which == 13 ) {
+			window.location = $('#filterPatientsUrl').attr('href') + '&query=' + $(this).val();
+		}
 	});
 	
 	$('#searchExerciseButton').click(function(e){
@@ -938,6 +951,10 @@ $(document).ready(function()
         descr.removeClass('displayBlock');
         descr.children('div').show();
         descr.children('textarea, span').remove();
+    });
+   
+    $('input[type=file]').change(function (){
+        $('.input input[type=text]', $(this).parent('.browse_field')).val($(this).val());
     });
     
 });

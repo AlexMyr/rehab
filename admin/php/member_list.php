@@ -40,6 +40,8 @@ if($glob['active']==2)
 		$dbu->query("select * from trainer where active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
 		$bannName='Block';
 		$pageTitle='Full Paid Members List';
+        $ft->assign('SHOW_PASS', '<td height="20" bgcolor="#E8E8E8" width="100" align="center"><strong>Password</strong></td>');
+        $show_pass = true;
 	}
 	else
 	{
@@ -137,6 +139,9 @@ while($dbu->move_next()&&$i<$l_r)
 	$ft->assign('IS_TRIAL', $is_trial );
 	$ft->assign('IS_CLINIC', $is_clinic );
 	$ft->assign('EMAIL',$dbu->f('email'));
+    if(isset( $show_pass) && $show_pass)
+        $ft->assign('PASS','<td height="20" align="center" style="color:#777;">'.$dbu->f('password').'</td>');
+    
 
 	if($glob['active']==0) $activation="index.php?pag=member_list&active=0&act=member-trial&trainer_id=".$dbu->f('trainer_id');
 	else if($glob['active']==1) $activation="index.php?pag=member_list&act=member-deactivate&active=1&trainer_id=".$dbu->f('trainer_id');

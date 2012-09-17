@@ -935,7 +935,7 @@ class member
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			
             if(imagesy($cur_image)>$max_height)
-                $this->resize($img_path, 0, $max_height, $f_title, $img_ext);
+                $this->resize($img_path, 0, $max_height, $f_title, $img_ext, 100);
 			
 			$cur_image = $this->createImgFromFile($img_path);
 			
@@ -965,11 +965,11 @@ class member
 		return $img_created;
 	}
 	
-	function createImgFromRes($img_res, $img_path, $img_ext)
+	function createImgFromRes($img_res, $img_path, $img_ext, $quality=80)
 	{
 
 		if(in_array(strtolower($img_ext), array('jpg', 'jpeg')))
-			ImageJPEG($img_res, $img_path) or die("Problem In saving");
+			ImageJPEG($img_res, $img_path, $quality) or die("Problem In saving");
 		elseif(strtolower($img_ext) == 'png')
 			imagepng($img_res, $img_path) or die("Problem In saving");
 		elseif(strtolower($img_ext) == 'gif')
@@ -1018,7 +1018,7 @@ class member
 	* function resize(&$ld)                                         *
 	****************************************************************/
 
-	function resize($original_image, $new_width, $new_height, $image_title, $img_ext) 
+	function resize($original_image, $new_width, $new_height, $image_title, $img_ext, $quality = 80) 
 	{
 		global $script_path;
 		
@@ -1037,7 +1037,7 @@ class member
 		// copy the original image onto the smaller blank 
 		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
 		
-		$this->createImgFromRes($image, $script_path.UPLOAD_PATH.$image_title, $img_ext);
+		$this->createImgFromRes($image, $script_path.UPLOAD_PATH.$image_title, $img_ext, $quality);
 	}
 	
 	

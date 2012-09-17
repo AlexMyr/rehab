@@ -34,11 +34,11 @@ $dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_
 			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 			'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : ($theName ? $theName : ''),
 			'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : '',
-			'CITY' => $dbu->f('city') ? $dbu->f('city') : '',
-			'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : '',
+			'CITY' => $dbu->f('city') ? ', '.$dbu->f('city') : '',
+			'POST_CODE' => $dbu->f('post_code') ? ', '.$dbu->f('post_code') : '',
 			'PHONE' => $dbu->f('phone') ? $dbu->f('phone') : '',
-			'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : $dbu->f('fax'),
-			'FAX' => $dbu->f('mobile') ? '<tr><td>&nbsp;</td><td align="right">'.$dbu->f('fax').'</td></tr>' : '',
+			'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : '',
+			'FAX' => $dbu->f('fax') ? '<tr><td></td><td align="right">'.$dbu->f('fax').'</td></tr>' : '',
 			'EMAIL' => $dbu->f('email') ? $dbu->f('email') : '',
 			'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : '',
 		));
@@ -100,7 +100,12 @@ while($i<count($exercise))
 	$img = "<img src=\"".$print_image."\" width=\"224\" height=\"224\" align=\"left\" />";
 	$ft->assign(array(
 		'IMG' => $img,
-	));	
+	));
+    $get_descr = $dbu->field("SELECT description FROM programs
+                                INNER JOIN programs_custom_descr AS custom_descr ON custom_descr.exercise_id = programs.programs_id
+                                WHERE programs_id='".$exercise[$i]."'
+                                    AND custom_descr.program_id=".$glob['program_id']);
+    
 	$get_data = $dbu->query("
 							SELECT 
 								exercise_plan_set.*, translate.*
@@ -120,10 +125,18 @@ while($i<count($exercise))
 								is_program_plan = 1
 							");
 	$get_data->next();
+    
+    if($get_descr)
+        $description = $get_descr;
+    elseif($get_data->gf('plan_description'))
+        $description = $get_data->gf('plan_description');
+    else
+        $description = $get_program->gf('plan_description');
+    
 	if($get_data->gf('plan_description'))
 	{
 		$programs_title = str_replace('’', '\'', htmlentities($get_data->gf('programs_title')));
-		$plan_description = str_replace('’', '\'', htmlentities($get_data->gf('plan_description')));
+		$plan_description = str_replace('’', '\'', htmlentities($description));
 		
 		$programs_title = mb_eregi_replace('“', '"', $programs_title);
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
@@ -131,12 +144,12 @@ while($i<count($exercise))
 		$plan_description = mb_eregi_replace('”', '"', $plan_description);
 
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_data->gf('programs_title') ? $programs_title : '', ));
-		$ft->assign(array( 'EXERCISE_DESC'=> $get_data->gf('plan_description') ? $plan_description : '', ));
+		$ft->assign(array( 'EXERCISE_DESC'=> $plan_description ? $plan_description : '', ));
 	}
 	else
 	{
 		$programs_title = str_replace('’', '\'', htmlentities($get_program->gf('programs_title')));
-		$plan_description = str_replace('’', '\'', htmlentities($get_program->gf('plan_description')));
+		$plan_description = str_replace('’', '\'', htmlentities($description));
 		
 		$programs_title = mb_eregi_replace('“', '"', $programs_title);
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
@@ -144,7 +157,7 @@ while($i<count($exercise))
 		$plan_description = mb_eregi_replace('”', '"', $plan_description);
 		
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_program->gf('programs_title') ? $programs_title : '', ));
-		$ft->assign(array( 'EXERCISE_DESC'=> $get_program->gf('plan_description') ? $plan_description : '', ));
+		$ft->assign(array( 'EXERCISE_DESC'=> $plan_description ? $plan_description : '', ));
 	}
 	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".htmlentities($get_data->gf('plan_set_no')) : "");
 	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".htmlentities($get_data->gf('plan_repetitions')) : "");
