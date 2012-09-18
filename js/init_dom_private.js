@@ -183,9 +183,7 @@ doExerciseDetails = function()
 						if(!$('#text_'+details).hasClass('displayBlock'))
 							$('.exercise_text').removeClass('displayBlock');
 						$('#text_'+details).toggleClass('displayBlock');
-						if($(this).hasClass('edit')){
-							editDescription($(this));
-						}
+					
 					});	
 				}
 			});
@@ -308,9 +306,7 @@ doExercise = function(jSON)
 						var exLI_text = $('<span/>')
 							.attr('id', 'text_'+obj.innerHTML.PROGRAM_ID)
 							.attr('class','exercise_text');
-						
 						var exLI_textNode = $(document.createTextNode(obj.innerHTML.PROGRAM_DESCRIPTION));
-						
 						var exLI_cat = $('<span/>')
 							.attr('class','exercise_cat');
 //						var exLI_catNode = $(document.createTextNode(obj.innerHTML.PROGRAM_CATEGORY));
@@ -327,15 +323,9 @@ doExercise = function(jSON)
 								.attr('class','exercise_del')
 								.attr('href','#');
 						
-						if(window.location.href.indexOf('program_update_exercise')>0){
-							var exLI_details = $('<a/>')
-								.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
-								.attr('class','exercise_details edit');
-						}
-						else{var exLI_details = $('<a/>')
-								.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
-								.attr('class','exercise_details');
-						}
+						var exLI_details = $('<a/>')
+							.attr('id', 'details_'+obj.innerHTML.PROGRAM_ID)
+							.attr('class','exercise_details');
 						var exLI_drag = $('<a/>')
 							.attr('id', 'drag_'+obj.innerHTML.PROGRAM_ID)
 							.attr('class','exercise_drag')
@@ -355,21 +345,9 @@ doExercise = function(jSON)
 //						exLI_catNode.appendTo(exLI_cat);
 						exLI_cat.html(exLI_catNode);
 						exLI_details.appendTo(exLI);
-						if(window.location.href.indexOf('program_update_exercise')>0)
-							exLI_details.html('Edit info');
-						else
-							exLI_details.html('details');
-							
-						if(window.location.href.indexOf('program_update_exercise')>0){
-							var div = $('<div/>');
-							exLI_text.appendTo(exLI);
-							div.appendTo(exLI_text);
-							exLI_textNode.appendTo(div);
-						}
-						else{
-							exLI_text.appendTo(exLI);
-							exLI_textNode.appendTo(exLI_text);
-						}
+						exLI_details.html('details');
+						exLI_text.appendTo(exLI);
+						exLI_textNode.appendTo(exLI_text);
 						exDIV_clear.appendTo(exLI);
 						exLI.appendTo(exUL);
 
@@ -391,6 +369,34 @@ doExercise = function(jSON)
 		//makeDelete();
 		doExerciseDetails();
 	}
+	
+function AddToFavorites(obj, title, url){
+   	var ua = navigator.userAgent.toLowerCase();
+	var isWebkit = (ua.indexOf('webkit') != - 1);
+	var isMac = (ua.indexOf('mac') != - 1);
+
+  	if(isWebkit || isMac)
+  	{
+  		alert('If you wand add this site to favirotes - click CTRL+D');
+  		return false;
+  	}
+  	else if(window.sidebar){
+    	// Mozilla Firefox Bookmark
+    	window.sidebar.addPanel(title, url,"");
+    	return false;
+  	} else if(window.external){
+    	// IE Favorite
+    	window.external.AddFavorite( url, title);
+    	return false;
+  	} else if(window.opera && window.print){
+    	//Opera Hotlist
+    	obj.setAttribute('href',url);
+    	obj.setAttribute('title',title);
+    	obj.setAttribute('rel','sidebar');
+    	obj.click();
+    	return false;
+  	}
+}
 
 function restoreDefaultPageReload()
 {
@@ -402,15 +408,6 @@ function restoreDefaultBodyClicked()
 	window.bodyClicked = false;
 }
 
-editDescription = function(obj){
-		var id = $(obj).attr('id').split('_').pop();
-		var descr = $('#text_'+id);
-		if($(descr).has($(descr).children('textarea')).length == 0){
-			descr.children('div').hide(0);
-			descr.prepend('<textarea name="custom_descr['+id+']">'+descr.children('div').html()+'</textarea>'+
-				'<span class="save">Save</span><span class="cancel">Cancel</span>');
-		}
-}
 
 // START THE DOCUMENT READY
 $(document).ready(function() 
@@ -489,11 +486,6 @@ $(document).ready(function()
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
 		window.location = $(this).attr('href') + '&query=' + $('#filterPatientsValue').val();
-	});
-	$("#filterPatientsValue").keypress(function(e) {
-		if ( e.which == 13 ) {
-			window.location = $('#filterPatientsUrl').attr('href') + '&query=' + $(this).val();
-		}
 	});
 	
 	$('#searchExerciseButton').click(function(e){
@@ -901,60 +893,16 @@ $(document).ready(function()
 		$('#create_exercise').submit();
 		return true;
 	});
+	$('#advanced').click(function(){ $('#advanced_popup').toggle(100) });
 	
-	$('#advanced').click(function(){ 
-		$('#advanced_popup').show(100, function(){
-			$(document).click(function(e){
-				if( $('#advanced_popup').children().index($(e.target)) == -1 && 
-						$(e.target).attr('id') != 'advanced_popup'){
-					$('#advanced_popup').hide(100);
-					$(document).unbind('click');
-				}
-			});
-		});  
-	});
-	
-	$('#reset_size').click(function(){ 	$('input[name="width"]').val(100); 
-										$('input[name="height"]').val(90);
-	});
-	
-	$('#exercise_desc, #program_desc').click(function(){
+	$('#exercise_desc').click(function(){
 		if( $(this).val() == $(this).attr('jsplaceholder') ){
 			$(this).val('');
 		}
 	});
-	$('#exercise_desc, #program_desc').blur(function(){
+	$('#exercise_desc').blur(function(){
 		if( $(this).val() == '' ){
 			$(this).val( $(this).attr('jsplaceholder') );
 		}
 	});
-    
-    $('span.save').live('click', function(e){
-        var id = $(this).parent('span.exercise_text').attr('id').split('_').pop();
-        var descr = $('#text_'+id);
-        $(descr).removeClass('displayBlock');
-        descr.children('div').html( descr.children('textarea').val() );
-        $.ajax({
-            url: "index_ajax.php",
-            dataType: "json",
-            data: { act: "client-update_custom_description",
-                    ex_id: id,
-                    program_id: $('input[name=program_id]').val(),
-                    descr: descr.children('textarea').val() },
-            success: function(data){
-            }
-        });
-    });
-    $('span.cancel').live('click', function(e){
-        var id = $(this).parent('span.exercise_text').attr('id').split('_').pop();
-        var descr = $('#text_'+id);
-        descr.removeClass('displayBlock');
-        descr.children('div').show();
-        descr.children('textarea, span').remove();
-    });
-   
-    $('input[type=file]').change(function (){
-        $('.input input[type=text]', $(this).parent('.browse_field')).val($(this).val());
-    });
-    
 });
