@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head onkeydown="onKeyDown(event)" oncopy="return false;" oncut="return false;" ondragstart="return false;" onselectstart="return false;">
     <title>{META_TITLE}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <Meta name="Author" content="{META_TITLE}">
@@ -51,7 +51,7 @@
 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	</script>
-</head onkeydown="onKeyDown(event)" oncopy="return false;" oncut="return false;" ondragstart="return false;" onselectstart="return false;">
+</head>
 <body>
 {PAGE}
 {BOTTOM_INCLUDES}
