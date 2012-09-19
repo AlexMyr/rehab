@@ -440,10 +440,20 @@ function AddToFavorites(obj, title, url){
   	}
 }
 
+function onKeyDown(event) {
+// current pressed key
+  var pressedKey = String.fromCharCode(event.keyCode).toLowerCase();
+
+  if (event.ctrlKey && (pressedKey == "c" || 
+					  pressedKey == "v")) {
+	event.returnValue = false;
+  }
+} // onKeyDown
 
 // START THE DOCUMENT READY
 $(document).ready(function() 
 {
+	document.oncontextmenu = function(){ return false;}
 	
 	//get list of subcats for add exercise page
 	$('#categorySelect').change(function(){
