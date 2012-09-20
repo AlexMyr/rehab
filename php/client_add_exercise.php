@@ -183,6 +183,7 @@ else if($glob['view']=="compact")
 	
 $ft->assign('VIEW_MODE',$view_buttons);
 
+
 $ft->define_dynamic($view_mode,'main');
 
 $cat_info = $dbu->row("SELECT `category_name`, `parent_id` FROM `programs_category`
@@ -300,7 +301,7 @@ if(!empty($_SESSION['pids']))
 		}
 }
 
-$ft->assign('EXERCISE_DESC', $glob['exercise_desc']);
+$ft->assign('EXERCISE_DESC', $glob['exercise_desc'] == '' ? 'Notes' : $glob['exercise_desc']);
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);
 $ft->assign('CSS_PAGE', $glob['pag']);
 $ft->assign('SEARCH_LINK', "index.php?pag=client_add_exercise&catID=".$glob['catID']."&client_id=".$glob['client_id']);

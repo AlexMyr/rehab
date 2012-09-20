@@ -165,17 +165,6 @@ if($glob['catID']&&$glob['client_id'])
 
     $ft->assign('VIEW_MODE',$view_buttons);
 
-    $descr = $dbu->query("
-                        SELECT *
-                        FROM exercise_plan
-                        WHERE  exercise_plan_id=".$glob['exercise_plan_id']."
-                            AND trainer_id='".$_SESSION[U_ID]."'
-                            AND client_id= ".$glob['client_id']." 
-                        ");
-    $descr->next();
-    $exer_descr = $descr->f('exercise_desc') != '' ? $descr->f('exercise_desc') : 'Notes';
-    $ft->assign('EXERCISE_DESC', $exer_descr);
-    
     $ft->define_dynamic($view_mode,'main');
     
     $cat_info = $dbu->row("SELECT `category_name`, `parent_id` FROM `programs_category`
@@ -265,6 +254,18 @@ else
                 Please select an exercise category, or search for an exercise in the search box above.</p>';
     $ft->assign('NO_DATA_FOUND', $msg);
 }
+
+$descr = $dbu->query("
+					SELECT *
+					FROM exercise_plan
+					WHERE  exercise_plan_id=".$glob['exercise_plan_id']."
+						AND trainer_id='".$_SESSION[U_ID]."'
+						AND client_id= ".$glob['client_id']." 
+					");
+$descr->next();
+$exer_descr = $descr->f('exercise_desc') != '' ? $descr->f('exercise_desc') : 'Notes';
+
+$ft->assign('EXERCISE_DESC', $exer_descr);
 
 if(!$_SESSION['pids'] || empty($_SESSION['pids']))
 {

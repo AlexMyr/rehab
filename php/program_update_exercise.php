@@ -28,7 +28,7 @@ $change_image_type = $image_type == 'lineart' ? 'image' : 'lineart';
 $dbu->query("SELECT * FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
 $dbu->move_next();
 
-$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') ? $dbu->f('exercise_notes') : 'Notes')) );
+$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') != '' ? $dbu->f('exercise_notes') : 'Notes')) );
 
 /* make the category / subcategory menu */
 
