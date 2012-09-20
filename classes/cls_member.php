@@ -338,7 +338,7 @@ class member
             return false;
         }
 
-        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."'";
+        if($ld['is_clinic']==0) $update = "is_clinic='".$ld['is_clinic']."', first_name='".$ld['single_name']."'";
         else if($ld['is_clinic']==1) $update = "is_clinic='".$ld['is_clinic']."', clinic_name='".$ld['clinic_name']."'";
      
         $this->dbu->query("

@@ -4,25 +4,24 @@
 			<span class="pageTitle">{T.SETUP}</span>
 			<span class="clearAll"></span>
 		</h2>
-		<div class="contactInfo floatLft">
-			<h2>{T.SINGLE}</h2>
+		<div class="contactHeadedInfo floatLft">
+			<h2>{T.SINGLE_NAME}</h2>
 					<form action="index.php" method="post">
 						<input type="hidden" name="act" value="member-update_licence">
-						<input type="hidden" name="pag" value="profile">
+						<input type="hidden" name="pag" value="profile_header_paper">
 						<input type="hidden" name="is_clinic" value="0">
-								
+						<input class="textField curvyCorner" type="text" id="single_name" name="single_name" value="" />
 						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE_SINGLE}</span></button></div>
 					</form>
 		</div>
 		<div class="contactHeadedInfo floatLft">
-			<h2>{T.CLIINIC}</h2>
+			<h2>{T.CLIINIC_NAME}</h2>
 					<form action="index.php" method="post">
 						<input type="hidden" name="act" value="member-update_licence">
-						<input type="hidden" name="pag" value="profile">
+						<input type="hidden" name="pag" value="profile_header_paper">
 						<input type="hidden" name="is_clinic" value="1">
 						
-						<label class="label" for="clinic_name">{T.CLIINIC_NAME}:</label>
-						<input class="textField" type="text" id="clinic_name" name="clinic_name" value="" />
+						<input class="textField curvyCorner" type="text" id="clinic_name" name="clinic_name" value="" />
 								
 						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE_CLINIC}</span></button></div>
 					</form>
