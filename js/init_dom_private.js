@@ -539,6 +539,11 @@ $(document).ready(function()
 		e.preventDefault();
 		window.location = $(this).attr('href') + '&query=' + $('#searchExerciseInput').val();
 	});
+	$("#searchExerciseInput").keypress(function(e) {
+		if ( e.which == 13 ) {
+			window.location = $('#searchExerciseButton').attr('href') + '&query=' + $(this).val();
+		}
+	});
 	
 	$('.changeVideoUrl').click(function(){
 		//var newUrl = "http://www.youtube.com/v/"+$(this).attr('url')+"?version=3&f=videos&app=youtube_gdata&autoplay=0";
