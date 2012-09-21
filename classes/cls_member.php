@@ -703,6 +703,7 @@ class member
 	
 	function update_custom_header(&$ld)
 	{
+
 		$this->check_header_paper_exists();
 		
 		$this->dbu->query("
@@ -724,7 +725,7 @@ class member
 							WHERE 
 								trainer_id='".$_SESSION[U_ID]."'");
         
-        $ld['pag'] = 'dashboard';
+        //$ld['pag'] = 'dashboard';
 		$success = true;
 		if(!$ld['delete_image']&&!empty($_FILES['upload_image']['name']))
 		{
@@ -739,7 +740,7 @@ class member
 			$success &= $this->erasecustompicture($ld);
 			//$ld['error']='checked';
 		}
-        
+
         if($success){
             $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
             return true;
