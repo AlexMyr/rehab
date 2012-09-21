@@ -636,6 +636,12 @@ label.error_validate{
 	height: 515px;
 }
 
+.programListDynamic
+{
+	height: 600px;
+	overflow-y: auto;
+}
+
 .filterSection
 {
 	margin-bottom: 5px;

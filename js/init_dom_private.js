@@ -524,6 +524,9 @@ $(document).ready(function()
 	
 	if(typeof($('.videoList').jScrollPane()) != 'undefined')
 		$('.videoList').jScrollPane();
+		
+	if(typeof($('.programListDynamic').jScrollPane()) != 'undefined')
+		$('.programListDynamic').jScrollPane();
 
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
