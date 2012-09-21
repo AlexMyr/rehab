@@ -28,21 +28,21 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	{
 		$image = "<img width='240' style='border:1px solid #000000;' heigth='30' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
 		$theName = "";
-		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').' '.$dbu->gf('surname').'</div>'; 
-		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').'</div>'; 
-		else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>';
+		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).' '.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>'; 
+		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).'</div>'; 
+		else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>';
 		
 		$ft->assign(array(
 			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
-			'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : ($theName ? $theName : ''),
-			'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : '',
-			'CITY' => $dbu->f('city') ? ', '.$dbu->f('city') : '',
-			'POST_CODE' => $dbu->f('post_code') ? ', '.$dbu->f('post_code') : '',
-			'PHONE' => $dbu->f('phone') ? $dbu->f('phone') : '',
-			'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : $dbu->f('fax'),
-			'FAX' => $dbu->f('fax') ? '<tr><td></td><td align="right">'.$dbu->f('fax').'</td></tr>' : '',
-			'EMAIL' => $dbu->f('email') ? $dbu->f('email') : '',
-			'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : '',
+			'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
+			'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
+			'CITY' => $dbu->f('city') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
+			'POST_CODE' => $dbu->f('post_code') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
+			'PHONE' => $dbu->f('phone') ? str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
+			'MOBILE' => $dbu->f('mobile') ? str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : str_replace('’', '\'', htmlentities($dbu->gf('fax'))),
+			'FAX' => $dbu->f('fax') ? '<tr><td></td><td align="right">'.str_replace('’', '\'', htmlentities($dbu->gf('fax'))).'</td></tr>' : '',
+			'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
+			'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
 		));
 	}
 	else {
@@ -63,10 +63,11 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	}
 	$get_client_infos = $dbu->query("SELECT first_name, surname FROM client WHERE client_id='".$glob['client_id']."' AND trainer_id='".$_SESSION[U_ID]."'");
 	$get_client_infos->next();
-		$ft->assign(array(
-			'CLIENT_NAME' => $get_client_infos->gf('first_name')." ".$get_client_infos->gf('surname'),
-			'CURRENT_DATE' => date('d F Y',time()),
-			));
+
+	$ft->assign(array(
+		'CLIENT_NAME' => str_replace('’', '\'', htmlentities($get_client_infos->gf('first_name')))." ".str_replace('’', '\'', htmlentities($get_client_infos->gf('surname'))),
+		'CURRENT_DATE' => date('d F Y',time()),
+		));
 
 	$get_exercises = $dbu->field("
 							SELECT 
