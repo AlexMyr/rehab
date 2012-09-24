@@ -1,0 +1,113 @@
+<style>
+.list {
+    margin-top: 10px;
+    width: auto;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 25px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    color: #898989;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 9px;
+}
+
+.list .th {
+    background-color:#ebebeb;
+    border-bottom: 1px solid #D7D7D7;
+    color: #474747;
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.list td {
+    border: 1px solid #D7D7D7;
+    padding: 10px 10px 10px 10px;
+   	vertical-align:middle;
+}
+
+.list .even {
+	  background-color: #F5F5F5;
+}
+
+h1 {
+    color: #111111;
+    font-size: 30px;
+    font-weight: bold;
+}
+h2 {
+	color: #3D3D3D;
+    font-size: 30px;
+    font-weight: bold;
+}
+</style>
+<table cellspacing="0" cellpadding="2" width="600" style="font-size: 9pt; table-layout: fixed;">
+	<tr>
+		<td width="320">
+			<table width="320" style="table-layout:fixed;">
+			<tr><td width="200">{COMPANY}</td><td width="120" align="right">{PHONE}</td></tr>
+			<tr><td colspan="2">{ADDRESS}{CITY}{POST_CODE}</td></tr>
+			<tr><td>{EMAIL}</td><td align="right">{MOBILE}</td></tr>
+			{FAX}
+			<tr><td colspan="2">{WEBSITE}</td></tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr><td style="font-size: 10pt;" valign="top">{CLIENT_NAME}</td><td style="font-size: 10pt;" valign="top" align="right">{CURRENT_DATE}</td></tr>
+			</table>
+		</td>
+		<td width="20">&nbsp;</td>
+		<td width="260" align="right">{THE_IMG}</td>
+	</tr>
+	<tr>
+		<td><br/></td>
+	</tr>
+	<!-- BEGIN DYNAMIC BLOCK: exercise_line -->
+	<tr>
+		<td clospan=2>
+			<table width="600" style="border:1px solid #000000;" cellpadding="3">
+				<tr>
+					<td width="223">{IMG}</td>
+					<td width="377">
+						<table>
+							<tr>
+								<td style="font-size: 10pt;"><br/><br/>{EXERCISE_TITLE}<br/><br/>{EXERCISE_DESC}</td>
+							</tr>
+							<tr>
+								<td>
+									<!--<table width="330" style="font-size: 9pt;">
+										<tr >
+											<td width="100">{SETS}</td>
+											<td width="86">{REPETITIONS}</td>
+											<td width="100">{TIME}</td>
+										</tr>
+									</table>-->
+									<div style="font-size: 9pt;">
+											<span>{SETS}</span>&nbsp;
+											<span>{REPETITIONS}</span>&nbsp;
+											<span>{TIME}</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{BREAK_LINE}
+	<!-- END DYNAMIC BLOCK: exercise_line -->
+</table>
+<table cellspacing="0" cellpadding="2" width="600" style="font-size: 9pt;">
+	<tr>
+		<td height="10">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>{EXERCISE_NOTES}</td>
+	</tr>
+</table>
