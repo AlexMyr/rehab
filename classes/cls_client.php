@@ -190,7 +190,6 @@ class client
             $this->dbu->query('SELECT * FROM `programs_custom_descr` WHERE program_id = '.$ld['program_id'].' AND exercise_id ='.$ld['ex_id']);
             $this->dbu->move_next();
             if($this->dbu->f('exercise_id')){
-                $this->dbu->f('exercise_id');
                 $this->dbu->query('UPDATE `programs_custom_descr`
                                     SET description = "'.mysql_real_escape_string($ld['descr']).'"
                                     WHERE exercise_id = "'.$ld['ex_id'].'" AND program_id = "'.$ld['program_id'].'"');
@@ -198,6 +197,14 @@ class client
             else{
                 $this->dbu->query('INSERT INTO `programs_custom_descr` (exercise_id, program_id, description)
                                     VALUES ('.$ld['ex_id'].', '.$ld['program_id'].', "'.mysql_real_escape_string($ld['descr']).'");');
+            }
+
+			$this->dbu->query('SELECT * FROM `exercise_plan_set` WHERE exercise_program_id = '.$ld['ex_id'].' AND exercise_plan_id ='.$ld['program_id']);
+			$this->dbu->move_next();
+			if($this->dbu->f('exercise_program_id')){
+                $this->dbu->query('UPDATE `exercise_plan_set`
+                                    SET plan_description = "'.mysql_real_escape_string($ld['descr']).'"
+                                    WHERE exercise_program_id = "'.$ld['ex_id'].'" AND exercise_plan_id = "'.$ld['program_id'].'"');
             }
         }
         exit;
@@ -209,6 +216,19 @@ class client
 		$i=0;
 		while ($i<count($exercise)) 
 		{
+			
+			$this->dbu->query('SELECT * FROM `programs_custom_descr` WHERE program_id = '.$ld['program_id'].' AND exercise_id ='.$exercise[$i]);
+            $this->dbu->move_next();
+            if($this->dbu->f('exercise_id')){
+                $this->dbu->query('UPDATE `programs_custom_descr`
+                                    SET description = "'.mysql_real_escape_string($ld['description'.$exercise[$i]]).'"
+                                    WHERE exercise_id = "'.$exercise[$i].'" AND program_id = "'.$ld['program_id'].'"');
+            }
+            else{
+                $this->dbu->query('INSERT INTO `programs_custom_descr` (exercise_id, program_id, description)
+                                    VALUES ('.$exercise[$i].', '.$ld['program_id'].', "'.mysql_real_escape_string($ld['description'.$exercise[$i]]).'");');
+            }
+			
 			$this->dbu->query("SELECT * FROM exercise_plan_set WHERE 
 								exercise_plan_id = '".$ld['program_id']."' AND
 								exercise_program_id = '".$exercise[$i]."' AND
