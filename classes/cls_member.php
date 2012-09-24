@@ -721,7 +721,8 @@ class member
 								email='".$ld['email']."',
 								city='".$ld['city']."',
 								fax='".$ld['fax']."',
-								state_zip='".$ld['state_zip']."'
+								state_zip='".$ld['state_zip']."',
+								himage_pos='".$ld['himage_position']."'
 							WHERE 
 								trainer_id='".$_SESSION[U_ID]."'");
         

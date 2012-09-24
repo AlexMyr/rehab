@@ -39,7 +39,7 @@ if($dbu->f('is_trial')==0 && $dbu->f('price_plan_id')!=0)
 else
 {
     $ft->assign('CANCEL_PAYMENT','');
-}	
+}
     $ft->define(array('main' => "profile_header_paper.html"));
     $img_src = $script_path.UPLOAD_PATH.$dbu->gf('logo_image');
     $image = '<img src="'.$img_src.'?rnd='.rand(0,1000).'" alt="trainer_logo" style="display:block;"/>';
@@ -64,6 +64,8 @@ else
         'LANG_US' => $dbu->f('lang') == 'us' ? 'selected' : '',
         'WIDTH' => (is_array($size) && !empty($size) ? $size[0] : 100),
         'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 90),
+		'HIMAGE_POSITION_LEFT' => $dbu->f('himage_pos') == 'left' ? 'checked' : '',
+		'HIMAGE_POSITION_RIGHT' => $dbu->f('himage_pos') == 'right' ? 'checked' : '',
         'TEST_URL' => 'index.php?pag=exercisepdf_test&program_id=2'//Tim's program
     ));
 

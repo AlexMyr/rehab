@@ -5,12 +5,17 @@
 session_start();
 $_SESSION['uploaded_pdf'] = array();
 
+$dbu=new mysql_db();
+$himage_pos = $dbu->field("SELECT himage_pos FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
+
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
-$ft->define( array(main => "exercisepdf.html"));
+if($himage_pos == 'left')
+	$ft->define( array(main => "exercisepdf.html"));
+else
+	$ft->define( array(main => "exercisepdf_right.html"));
 
 $ft->define_dynamic('exercise_line','main');
 
-$dbu=new mysql_db();
 $get_exercise_image_type = $dbu->field("SELECT print_image_type FROM client WHERE trainer_id='".$_SESSION[U_ID]."' AND client.client_id=".$glob['client_id']." ");
 if($get_exercise_image_type==0) $image_type = "lineart";
 else if($get_exercise_image_type==1) $image_type = "image";
@@ -26,7 +31,7 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
 	if($dbu->move_next())
 	{
-		$image = "<img width='240' style='border:1px solid #000000;' heigth='30' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+		$image = "<img style='border:1px solid #000000;' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
 		$theName = "";
 		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).' '.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>'; 
 		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).'</div>'; 

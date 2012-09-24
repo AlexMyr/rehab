@@ -60,37 +60,7 @@
 			<p>&nbsp;</p>
 			<p style="color:red;">{T.HELP_PHOTO}</p>
 			<p>&nbsp;</p>
-					
-						
-						<!--<label class="label" for="company_name">Company Name:</label>
-						<input class="textField" type="text" id="company_name" name="company_name" value="{COMPANY_NAME}" />
-							
-						<label class="label" for="first_name">First Name:</label>
-						<input class="textField" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
-							
-						<label class="label" for="surname">Surname:</label>
-						<input class="textField" type="text" id="surname" name="surname" value="{SURNAME}" />
-								
-						<label class="label" for="address">Address:</label>
-						<textarea class="textArea" id="address" name="address" >{ADDRESS}</textarea>
-							
-						<label class="label" for="post_code">Post Code:</label>
-						<input class="textField" type="text" id="post_code" name="post_code" value="{POST_CODE}" />
-								
-						<label class="label" for="email">Email:</label>
-						<input class="textField" type="text" id="email" name="email" value="{EMAIL}" />
-								
-						<label class="label" for="website">Website:</label>
-						<input class="textField" type="text" id="website" name="website" value="{WEBSITE}" />
-								
-						<label class="label" for="phone">Phone:</label>
-						<input class="textField" type="text" id="phone" name="phone" value="{PHONE}" />
-								
-						<label class="label" for="mobile">Mobile:</label>
-						<input class="textField" type="text" id="mobile" name="mobile" value="{MOBILE}" />
-								
-						<label class="label" for="fax">Fax:</label>
-						<input class="textField" type="text" id="fax" name="fax" value="{FAX}" />-->
+			
 			<div class="clearAll"></div>
 						<div id="image_wrapper">{IMG}</div>
 						<div id="advanced_wrapper">
@@ -126,8 +96,14 @@
 							<input type='file' class='file' id="upload_image" name="upload_image" style='z-index: 5;' />
 						</div>
 						
-						<label class="label">{T.LOCATE_FILE}</label>						
-
+						<label class="label">{T.LOCATE_FILE}</label>
+												
+						<label class="label delete_image">Choose position of header image:</label><br />
+						<label class="label delete_image" for="himage_position">Left side:</label>
+						<input type="radio" id="himage_position" name="himage_position" value="left" {HIMAGE_POSITION_LEFT} />&nbsp;
+						<label class="label delete_image" for="himage_position">Right side:</label>
+						<input type="radio" id="himage_position" name="himage_position" value="right" {HIMAGE_POSITION_RIGHT} />
+						
 						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
 					</form>
 		</div>

@@ -5,12 +5,18 @@
 session_start();
 $_SESSION['uploaded_pdf_program'] = array();
 
+$dbu=new mysql_db();
+$himage_pos = $dbu->field("SELECT himage_pos FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
+
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
-$ft->define( array(main => "exercisepdf.html"));
+
+if($himage_pos == 'left')
+	$ft->define( array(main => "exercisepdf.html"));
+else
+	$ft->define( array(main => "exercisepdf_right.html"));
 
 $ft->define_dynamic('exercise_line','main');
 
-$dbu=new mysql_db();
 $get_exercise_image_type = $dbu->field("SELECT print_image_type FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
 if($get_exercise_image_type==0) $image_type = "lineart";
 else if($get_exercise_image_type==1) $image_type = "image";
@@ -24,7 +30,7 @@ $dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
 	if($dbu->move_next())
 	{
-		$image = "<img width='240' heigth='30' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+		$image = "<img src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
 		$theName = "";
 		
 		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).' '.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>'; 
@@ -102,10 +108,10 @@ while($i<count($exercise))
 	$ft->assign(array(
 		'IMG' => $img,
 	));
-    $get_descr = $dbu->field("SELECT description FROM programs
-                                INNER JOIN programs_custom_descr AS custom_descr ON custom_descr.exercise_id = programs.programs_id
-                                WHERE programs_id='".$exercise[$i]."'
-                                    AND custom_descr.program_id=".$glob['program_id']);
+    //$get_descr = $dbu->field("SELECT description FROM programs
+    //                            INNER JOIN programs_custom_descr AS custom_descr ON custom_descr.exercise_id = programs.programs_id
+    //                            WHERE programs_id='".$exercise[$i]."'
+    //                                AND custom_descr.program_id=".$glob['program_id']);
     
 	$get_data = $dbu->query("
 							SELECT 
@@ -127,13 +133,13 @@ while($i<count($exercise))
 							");
 	$get_data->next();
     
-    if($get_descr)
+    /*if($get_descr)
         $description = $get_descr;
-    elseif($get_data->gf('plan_description'))
+    else*/if($get_data->gf('plan_description'))
         $description = $get_data->gf('plan_description');
     else
-        $description = $get_program->gf('plan_description');
-    
+        $description = $get_program->gf('description');
+  
 	if($get_data->gf('plan_description'))
 	{
 		$programs_title = str_replace('’', '\'', htmlentities($get_data->gf('programs_title')));
