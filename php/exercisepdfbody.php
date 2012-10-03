@@ -29,7 +29,6 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	$dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
 
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
-
 	if($dbu->move_next())
 	{
 		$image = "<img style='border:1px solid #000000;' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
