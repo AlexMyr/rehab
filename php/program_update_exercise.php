@@ -28,7 +28,8 @@ $change_image_type = $image_type == 'lineart' ? 'image' : 'lineart';
 $dbu->query("SELECT * FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
 $dbu->move_next();
 
-$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') != '' ? $dbu->f('exercise_notes') : 'Notes')) );
+$program_desc_default = $tags['T.PROGRAM_DESC_DEFAULT'];
+$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') != '' ? $dbu->f('exercise_notes') : $program_desc_default), 'PROGRAM_DESC_DEFAULT'=> $program_desc_default ) );
 
 /* make the category / subcategory menu */
 
@@ -98,23 +99,16 @@ if($category_array)
 		{
 			$dbu->query("SELECT COUNT(programs_id) AS category_items FROM programs_in_category WHERE 1=1 AND category_id=".$cat_array['category_id']."");
 			$dbu->move_next();
-			$firstSubCat++;
-			if(!isset($glob['catID'])&&$firstSubCat==1)
+		
+			$current_class = '';
+			if($glob['catID'] == $cat_array['category_id'])
 			{
-				//header("location: index.php?pag=program_update_exercise&catID=".$cat_array['category_id']."&program_id=".$glob['program_id']);
-				//exit;
+				$current_class = 'curCategory';
 			}
-			else
-			{
-				$current_class = '';
-				if($glob['catID'] == $cat_array['category_id'])
-				{
-					$current_class = 'curCategory';
-				}
-			    $out_str.="<li id=\"".$cat_array['category_id']."\" ";//category id
-		        $out_str.="><a class=\"$current_class\" href='index.php?pag=program_update_exercise&catID=".$cat_array['category_id']."&program_id=".$glob['program_id']."' >"
-                            .$cat_array['category_name']." (".$cat_array['count'].$current.")</a></li>";
-			}
+		    $out_str.="<li id=\"".$cat_array['category_id']."\" ";//category id
+	        $out_str.="><a class=\"$current_class\" href='index.php?pag=program_update_exercise&catID=".$cat_array['category_id']."&program_id=".$glob['program_id']."' >"
+                        .$cat_array['category_name']." (".$cat_array['count'].$current.")</a></li>";
+
 		}
 		if($parent!=0&&$next==0&&$ul==true) 
 		{
@@ -129,8 +123,112 @@ if(isset($glob['program_id'])){
 }
 
 $ft->assign('LIST',$out_str);
-if($glob['catID']&&$glob['program_id']) 
-{
+
+  if(isset($glob['query']) && $glob['query']) 
+  {
+	// the VIEW programs data
+	if(isset($_COOKIE['currentExerciseViewType']))
+		$glob['view'] = $_COOKIE['currentExerciseViewType'];
+
+	if(!isset($glob['view'])) $glob['view'] = "compact";
+
+	$view_mode = '';
+	$view_url = "index.php?pag=".$glob['pag']
+				."&query=".$glob['query']
+				."&program_id=".$glob['program_id'];
+	
+	$view_buttons = '';
+	if($glob['view']=="details")
+	{
+		$view_mode = 'exercise_details_line';
+	}
+	else if($glob['view']=="compact")
+	{
+		$view_mode = 'exercise_compact_line';
+	}
+
+	$class_view = $glob['view'] == 'details' ? 'class="details current"' : 'class="details"';
+	$class_compact = $glob['view'] == 'compact' ? 'class="compact current"' : 'class="compact"';
+
+	$view_buttons.='<a title="Single View" href="'.$view_url.'&view=details" '.$class_view.'>&nbsp;</a>';
+	$view_buttons.='<a title="Multiple View" href="'.$view_url.'&view=compact" '.$class_compact.'>&nbsp;</a>';
+
+	$change_image_link = "<a class='changeViewBtn' href='$view_url&image_view_type=$change_image_type'><span>Show The ".ucfirst($change_image_type)."</span></a>";
+
+	$ft->assign('VIEW_MODE',$view_buttons);
+	$ft->assign('EXERCISE_PLAN_ID',$glob['exercise_plan_id']);
+	
+	$ft->define_dynamic($view_mode,'main');
+	
+	$where = "translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
+
+	$program = $dbu->query("
+							  SELECT 
+								  programs.*, programs_in_category.category_id, translate.*
+							  FROM
+								  programs
+							  INNER JOIN
+								  programs_in_category on programs.programs_id=programs_in_category.programs_id
+							  INNER JOIN
+								  programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs_in_category.programs_id)
+							  WHERE
+								  ".$where." 
+								  AND programs.active = 1
+								  AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
+							  GROUP BY programs.programs_id
+							  ORDER BY programs.owner, programs.sort_order ASC
+							  ");
+  
+	  $i=0;
+	  
+	  $start_user_exercise = false;
+	  while ($program->next())
+	  {
+		  $title = $program->f('programs_title');
+		  
+		  if($program->f('owner')!=-1 && !$start_user_exercise)
+		  {
+			$start_user_exercise = true;
+			$user_break_line = '<div class="clearAllUser">Own exercises</div>';
+			$i = 0;
+		  }
+		  else
+		  {
+			$user_break_line = '';
+		  }
+		  
+		  if(($i+1)%3==0)
+		  {
+			  $last_css = ' last';
+			  $clear_both = '<div class="clearAll"></div>';
+		  }
+		  else
+		  {
+			  $last_css = "";
+			  $clear_both = "";
+		  }
+		  
+		  $ft->assign(array(
+			  'PROGRAM_ID'=>$program->f('programs_id'),
+			  'PROGRAM_TITLE'=>$program->f('programs_title'),
+			  'PROGRAM_DESCRIPTION'=>$program->f('description'),
+			  'PROGRAM_IMAGE'=>(file_exists('upload/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png'),
+			  'CAT_ID'=>$glob['catID'],
+			  //'PROGRAM_PLAN_ID'=>$glob['program_id'],
+			  'LAST_CSS'=> $last_css,
+			  'CLEAR_BOTH'=> $clear_both,
+			  'USER_BREAK_LINE'=> $user_break_line,
+		  ));
+		  $ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
+		  $i++;
+	  }
+	  if ($i==0) 
+	  {
+		  $glob['error'] = $tags['T.NO_EXERCISE'];
+	  }
+  }
+  elseif($glob['catID']&&$glob['program_id']) 
+  {
 	$ft->assign('BREADCRUMB',get_category_path($glob['catID'],$glob['program_id']));
 
 
