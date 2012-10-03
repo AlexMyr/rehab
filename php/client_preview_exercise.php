@@ -82,7 +82,7 @@ global $script_path;
 		$get_exercise_notes = $dbu->query("SELECT exercise_notes FROM exercise_notes WHERE trainer_id='".$_SESSION[U_ID]."'");
 		$get_exercise_notes->next();
 	}
-
+	
 	if(!empty($glob['exercise_notes']))	$exercise_notes = $glob['exercise_notes'];
 	else if(empty($glob['exercise_notes'])) $exercise_notes = $get_exercise_notes->gf('exercise_notes');
 	

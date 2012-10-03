@@ -74,7 +74,6 @@ $ft->assign(array(
 	));
 
 $get_exercise_notes = $dbu->query("SELECT exercise_notes FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."'  AND exercise_program_plan_id='". $glob['program_id']."' ");
-
 if(!$get_exercise_notes->next()  || !$get_exercise_notes->gf('exercise_notes'))
 {
 	$get_exercise_notes = $dbu->query("SELECT exercise_notes FROM exercise_notes WHERE trainer_id='".$_SESSION[U_ID]."'");
@@ -83,6 +82,7 @@ if(!$get_exercise_notes->next()  || !$get_exercise_notes->gf('exercise_notes'))
 
 if(!empty($glob['exercise_notes']))	$exercise_notes = stripslashes($glob['exercise_notes']);
 else if(empty($glob['exercise_notes'])) $exercise_notes = stripslashes($get_exercise_notes->gf('exercise_notes'));
+
 
 if($glob['mode']== 'edit')
 {
