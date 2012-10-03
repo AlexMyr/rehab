@@ -17,7 +17,8 @@
 <ul id="sortable" class="ui-sortable">
 <!-- BEGIN DYNAMIC BLOCK: selected_line -->
 <li id="{S_PROGRAM_ID}">
-<img alt="{S_PROGRAM_TITLE}" title="{S_PROGRAM_TITLE}" src="phpthumb/phpThumb.php?src=../{S_PROGRAM_IMAGE}&amp;wl=64&amp;hp=64">
+<!--<img alt="{S_PROGRAM_TITLE}" title="{S_PROGRAM_TITLE}" src="phpthumb/phpThumb.php?src=../{S_PROGRAM_IMAGE}&amp;wl=64&amp;hp=64">-->
+<div class="{IMAGE_DIV_CLASS} light_box" style="{S_PROGRAM_IMAGE}"></div>
 <a id="drag_{S_PROGRAM_ID}" class="exercise_drag">&nbsp;</a>
 <a id="del_{S_PROGRAM_ID}" class="exercise_del" href="#">&nbsp;</a>
 <span id="title_{S_PROGRAM_ID}" class="exercise_title">{S_PROGRAM_TITLE}</span>
@@ -51,7 +52,8 @@
 <!-- BEGIN DYNAMIC BLOCK: exercise_details_line -->
 			{USER_BREAK_LINE}
 			<div class="item">
-				<img alt="{PROGRAM_TITLE}" style="width:138px;height:138px;" src="phpthumb/show_thumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138">
+				<div class="{IMAGE_DIV_CLASS} light_box" imgname="{IMAGE_NAME}" style="{PROGRAM_IMAGE}"></div>
+				<!--<img alt="{PROGRAM_TITLE}" style="width:138px;height:138px;" src="phpthumb/show_thumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138">-->
 				<div class="programText">
 					<h2>{PROGRAM_TITLE}</h2>
 					{PROGRAM_DESCRIPTION}
@@ -63,7 +65,8 @@
 <!-- BEGIN DYNAMIC BLOCK: exercise_compact_line -->
 			{USER_BREAK_LINE}
 			<div class="itemCompact{LAST_CSS}" id="compactView_{PROGRAM_ID}">
-				<div style="height:138px;"><img style="height:138px;width: 138px;" alt="{PROGRAM_TITLE}" src="phpthumb/show_thumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138"></div>
+				<div class="{IMAGE_DIV_CLASS} light_box" imgname="{IMAGE_NAME}" style="{PROGRAM_IMAGE}"></div>
+				<!--<div style="height:138px;"><img style="height:138px;width: 138px;" alt="{PROGRAM_TITLE}" src="phpthumb/show_thumb.php?src=../upload/{PROGRAM_IMAGE}&amp;wl=138&amp;hp=138"></div>-->
 				<span class="programCompact">
 				<a href="#" id="{PROGRAM_ID}" cid="{CLIENT_ID}" class="moreBtn"><span>{T.ADD_EXERCISE}</span></a>
 				<a id="compactViewDetails_{PROGRAM_ID}" class="exercise_details"><span>{T.INFO}</span></a>				

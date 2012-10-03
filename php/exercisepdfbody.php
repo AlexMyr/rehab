@@ -29,6 +29,7 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	$dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
 
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
+
 	if($dbu->move_next())
 	{
 		$image = "<img style='border:1px solid #000000;' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
@@ -44,7 +45,7 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 			'CITY' => $dbu->f('city') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
 			'POST_CODE' => $dbu->f('post_code') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
 			'PHONE' => $dbu->f('phone') ? str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
-			'MOBILE' => $dbu->f('mobile') ? str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : str_replace('’', '\'', htmlentities($dbu->gf('fax'))),
+			'MOBILE' => $dbu->f('mobile') ? str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
 			'FAX' => $dbu->f('fax') ? '<tr><td></td><td align="right">'.str_replace('’', '\'', htmlentities($dbu->gf('fax'))).'</td></tr>' : '',
 			'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 			'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',

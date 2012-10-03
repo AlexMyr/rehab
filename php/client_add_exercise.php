@@ -1,7 +1,9 @@
 <?php
 /************************************************************************
 * @Author: MedeeaWeb Works                                              *
-************************************************************************/ 
+************************************************************************/
+define(PATH_TO_IMAGES, dirname(dirname(__FILE__)));
+
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client_add_exercise.html"));
 $tags = get_template_tag($glob['pag'], $glob['lang']);
@@ -85,70 +87,189 @@ foreach($category_array as &$cat){
 $out_str="";
 $parent = "";
 $ul = false;
-$firstSubCat = 0;
 
 if($category_array)
-    foreach ($category_array as $key=>$cat_array)
-    {
-        
-        $parent = $cat_array['parent'];
-        $next = $category_array[$key+1]['parent'];
+  foreach ($category_array as $key=>$cat_array)
+  {
+	$parent = $cat_array['parent'];
+	$next = $category_array[$key+1]['parent'];
 
-        if($cat_array['category_level']==0)
-        {
-			$sub_cat_style = 'display: none;';
-			if(isset($_COOKIE['cat_'.$cat_array['category_id']]) && $_COOKIE['cat_'.$cat_array['category_id']] == 'off')
-			{
-				$sub_cat_style = '';
-				$out_str.="<li class=\"parent\" id=\"cat_".$cat_array['category_id']."\" ";//category id
-			}
-			else
-				$out_str.="<li class=\"parent on\" id=\"cat_".$cat_array['category_id']."\" ";//category id
-			
-    //	    $out_str.=" cat_lvl=\"".$cat_array['category_level']."\" ";
-    //	    $out_str.=" parent=\"".$cat_array['parent']."\" ";
-            $out_str.=">";
-            $out_str.="<span>".$cat_array['category_name']."</span>";
-        }
-        if($parent!=0&&$ul!=true) 
-        {
-            $ul = true;
-            $out_str.="<ul id=\"sCat_".$parent."\" style=\"$sub_cat_style\">";
-        }
-        if($cat_array['category_level']>0)
-        {
-            $dbu->query("SELECT COUNT(programs_id) AS category_items FROM programs_in_category WHERE 1=1 AND category_id=".$cat_array['category_id']."");
-            $dbu->move_next();
-            $firstSubCat++;
-            if(!isset($glob['catID'])&&$firstSubCat==1)
-            {
-                header("location: index.php?pag=client_add_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id'].'&exercise_desc='.urlencode($glob['exercise_desc']));
-            }
-            else
-            {
-				$current_class = '';
-				if($glob['catID'] == $cat_array['category_id'])
-				{
-					$current_class = 'curCategory';
-				}
-                $out_str.="<li id=\"".$cat_array['category_id']."\" ";//category id
-                //$out_str.=" cat_lvl=\"".$cat_array['category_level']."\" ";
-                //$out_str.=" parent=\"".$cat_array['parent']."\" ";
-                $out_str.="><a class=\"$current_class\" href='index.php?pag=client_add_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id']."' >"
-                                    //.$cat_array['category_name']." (".$dbu->f('category_items').")</a></li>";
-                                    .$cat_array['category_name']." (".$cat_array['count'].$current.")</a></li>";
-            }
-        }
-        if($parent!=0&&$next==0&&$ul==true) 
-        {
-            $ul = false;
-            $out_str.="</ul>";
-        }
-        if($next==0) $out_str.="</li>";//category
-    }
-	
+	if($cat_array['category_level']==0)
+	{
+	  $sub_cat_style = 'display: none;';
+	  if(isset($_COOKIE['cat_'.$cat_array['category_id']]) && $_COOKIE['cat_'.$cat_array['category_id']] == 'off')
+	  {
+		  $sub_cat_style = '';
+		  $out_str.="<li class=\"parent\" id=\"cat_".$cat_array['category_id']."\" ";//category id
+	  }
+	  else
+		  $out_str.="<li class=\"parent on\" id=\"cat_".$cat_array['category_id']."\" ";//category id
+	  
+	  $out_str.=">";
+	  $out_str.="<span>".$cat_array['category_name']."</span>";
+	}
+	if($parent!=0&&$ul!=true) 
+	{
+	  $ul = true;
+	  $out_str.="<ul id=\"sCat_".$parent."\" style=\"$sub_cat_style\">";
+	}
+	if($cat_array['category_level']>0)
+	{
+	  $dbu->query("SELECT COUNT(programs_id) AS category_items FROM programs_in_category WHERE 1=1 AND category_id=".$cat_array['category_id']."");
+	  $dbu->move_next();
+
+	  $current_class = '';
+	  if($glob['catID'] == $cat_array['category_id'])
+	  {
+		$current_class = 'curCategory';
+	  }
+	  $out_str.="<li id=\"".$cat_array['category_id']."\" ";//category id
+	  $out_str.="><a class=\"$current_class\" href='index.php?pag=client_add_exercise&catID=".$cat_array['category_id']."&client_id=".$glob['client_id']."' >"
+		.$cat_array['category_name']." (".$cat_array['count'].$current.")</a></li>";
+	}
+	if($parent!=0 && $next==0 && $ul==true) 
+	{
+	  $ul = false;
+	  $out_str.="</ul>";
+	}
+	if($next==0) $out_str.="</li>";//category
+  }
+
+include_once(PATH_TO_IMAGES.'/phpthumb/sprite_thumb.php');
 $ft->assign('LIST',$out_str);
-if($glob['catID']&&$glob['client_id']) 
+
+if(isset($glob['query']) && $glob['query']) 
+{
+// the VIEW programs data
+  if(isset($_COOKIE['currentExerciseViewType']))
+	  $glob['view'] = $_COOKIE['currentExerciseViewType'];
+  
+  if(!isset($glob['view'])) $glob['view'] = "compact";
+    
+  $view_mode = '';
+  $view_url = "index.php?pag=".$glob['pag']
+			  ."&client_id=".$glob['client_id']
+			  ."&query=".$glob['query'];
+			  
+  $view_buttons = '';
+  if($glob['view']=="details")
+  {
+	$view_mode = 'exercise_details_line';
+  }
+  else if($glob['view']=="compact")
+  {
+	$view_mode = 'exercise_compact_line';
+  }
+  
+  $class_view = $glob['view'] == 'details' ? 'class="details current"' : 'class="details"';
+  $class_compact = $glob['view'] == 'compact' ? 'class="compact current"' : 'class="compact"';
+
+  $view_buttons.='<a title="Single View" href="'.$view_url.'&view=details" '.$class_view.'>&nbsp;</a>';
+  $view_buttons.='<a title="Multiple View" href="'.$view_url.'&view=compact" '.$class_compact.'>&nbsp;</a>';
+  
+  $change_image_link = "<a class='changeViewBtn' href='$view_url&image_view_type=$change_image_type'><span>Show The ".ucfirst($change_image_type)."</span></a>";
+	  
+  $ft->assign('VIEW_MODE',$view_buttons);
+  
+  $ft->define_dynamic($view_mode,'main');
+  
+  $where = " translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
+
+  $programs_images = array();
+  $program = $dbu->query("
+				 SELECT 
+				  programs.*, programs_in_category.category_id, translate.*
+			  FROM
+					  programs 
+			  INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
+			  INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+			  WHERE
+				  ".$where."
+				  AND programs.active = 1
+				  AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
+			  GROUP BY programs.programs_id
+			  ORDER BY programs.owner, programs.sort_order ASC
+					 ");
+  
+  while ($program->next())
+  {
+	$programs_images[] = (file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png');
+  }
+ 
+  //create sprite
+  $sprite_names = get_exercises_sprite_names($programs_images);
+  
+  $program = $dbu->query("
+				  SELECT 
+					  programs.*, programs_in_category.category_id, translate.*
+				  FROM
+						  programs 
+				  INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
+				  INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+				  WHERE
+					  ".$where."
+					  AND programs.active = 1
+					  AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
+				  GROUP BY programs.programs_id
+				  ORDER BY programs.owner, programs.sort_order ASC
+					  ");
+  $i=0;
+  
+  $class_sprite_counter = 0;
+  $start_user_exercise = false;
+  while ($program->next())
+  {
+	$image_sprite_name = get_sprite_name_by_image($sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png')));
+	
+	if($program->f('owner')!=-1 && !$start_user_exercise)
+	{
+	  $i = 0;
+	  $start_user_exercise = true;
+	  $user_break_line = '<div class="clearAllUser">Own exercises</div>';
+	}
+	else
+	{
+	  $user_break_line = '';
+	}
+	
+	  if(($i+1)%3==0)
+	  {
+		$last_css = ' last';
+		$clear_both = '<div class="clearAll"></div>';
+	  }
+	  else
+	  {
+		$last_css = "";
+		$clear_both = "";
+	  }
+	  $ft->assign(array(
+		  'PROGRAM_ID'=>$program->f('programs_id'),
+		  'PROGRAM_TITLE'=>$program->f('programs_title'),
+		  'PROGRAM_DESCRIPTION'=>$program->f('description'),
+		  'PROGRAM_IMAGE'=>"background-image: url('../phpthumb/sprite_thumb.php?bimg=$image_sprite_name'); width: 132px; height: 138px;",
+		  //'PROGRAM_IMAGE'=>"background-image: url('../upload/thumbs/$image_sprite_name'); width: 132px; height: 138px;",
+		  'CAT_ID'=>$glob['catID'],
+		  'CLIENT_ID'=>$glob['client_id'],
+		  'CLEAR_BOTH'=> $clear_both,
+		  'LAST_CSS'=> $last_css,
+		  'USER_BREAK_LINE'=> $user_break_line,
+		  'IMAGE_DIV_CLASS'=>'image_div_class_'.$class_sprite_counter,
+		  'IMAGE_NAME'=>(file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png'),
+	  ));
+	  $ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
+	  $i++;
+	  
+	  $class_sprite_counter++;
+	  if($class_sprite_counter == $count_per_sprite)
+		$class_sprite_counter = 0;
+  }
+  if ($i==0) 
+  {
+	$glob['error'] = $tags['T.NO_EXERCISE'];
+  }
+  
+}
+elseif($glob['catID']&&$glob['client_id']) 
 {
 $ft->assign('BREADCRUMB',get_category_path($glob['catID'],$glob['client_id']));
 
@@ -204,6 +325,31 @@ if(isset($glob['query']) && $glob['query'])
   $where = " translate.programs_title LIKE '%".mysql_escape_string($glob['query'])."%' ";
 }
 
+$programs_images = array();
+$program = $dbu->query("
+			   SELECT 
+				programs.*, programs_in_category.category_id, translate.*
+			FROM
+					programs 
+			INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
+			INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+			WHERE
+				".$where."
+				AND programs.active = 1
+				AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
+			GROUP BY programs.programs_id
+			ORDER BY programs.owner, programs.sort_order ASC
+				   ");
+
+while ($program->next())
+{
+	$programs_images[] = (file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png');
+}
+
+//create sprite
+//include_once(PATH_TO_IMAGES.'/phpthumb/sprite_thumb.php');
+$sprite_names = get_exercises_sprite($programs_images);
+
 $program = $dbu->query("
 				SELECT 
 					programs.*, programs_in_category.category_id, translate.*
@@ -220,61 +366,95 @@ $program = $dbu->query("
 					");
 $i=0;
 
+$class_sprite_counter = 0;
 $start_user_exercise = false;
 while ($program->next())
-	{
-	  if($program->f('owner')!=-1 && !$start_user_exercise)
-	  {
-		$i = 0;
-		$start_user_exercise = true;
-		$user_break_line = '<div class="clearAllUser">Own exercises</div>';
-	  }
-	  else
-	  {
-		$user_break_line = '';
-	  }
-	  
-		if(($i+1)%3==0)
-			{
-				$last_css = ' last';
-				$clear_both = '<div class="clearAll"></div>';
-			}
-		else
-			{
-				$last_css = "";
-				$clear_both = "";
-			}
-		$ft->assign(array(
-			'PROGRAM_ID'=>$program->f('programs_id'),
-			'PROGRAM_TITLE'=>$program->f('programs_title'),
-			'PROGRAM_DESCRIPTION'=>$program->f('description'),
-			'PROGRAM_IMAGE'=>(file_exists('upload/'.$program->f($image_type))&& $program->f($image_type)) ? $program->f($image_type) : 'noimage_middle.png',
-			'CAT_ID'=>$glob['catID'],
-			'CLIENT_ID'=>$glob['client_id'],
-			'CLEAR_BOTH'=> $clear_both,
-			'LAST_CSS'=> $last_css,
-			'USER_BREAK_LINE'=> $user_break_line,
-		));
-		$ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
-		$i++;
-	}
+{
+  $image_sprite_name = get_sprite_name_by_image($sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png')));
+  
+  if($program->f('owner')!=-1 && !$start_user_exercise)
+  {
+	$i = 0;
+	$start_user_exercise = true;
+	$user_break_line = '<div class="clearAllUser">Own exercises</div>';
+  }
+  else
+  {
+	$user_break_line = '';
+  }
+  
+	if(($i+1)%3==0)
+		{
+			$last_css = ' last';
+			$clear_both = '<div class="clearAll"></div>';
+		}
+	else
+		{
+			$last_css = "";
+			$clear_both = "";
+		}
+	$ft->assign(array(
+		'PROGRAM_ID'=>$program->f('programs_id'),
+		'PROGRAM_TITLE'=>$program->f('programs_title'),
+		'PROGRAM_DESCRIPTION'=>$program->f('description'),
+		'PROGRAM_IMAGE'=>"background-image: url('../upload/thumbs/$image_sprite_name'); width: 132px; height: 138px;",
+		//'PROGRAM_IMAGE'=>(file_exists('upload/'.$program->f($image_type))&& $program->f($image_type)) ? $program->f($image_type) : 'noimage_middle.png',
+		'CAT_ID'=>$glob['catID'],
+		'CLIENT_ID'=>$glob['client_id'],
+		'CLEAR_BOTH'=> $clear_both,
+		'LAST_CSS'=> $last_css,
+		'USER_BREAK_LINE'=> $user_break_line,
+		'IMAGE_DIV_CLASS'=>'image_div_class_'.$class_sprite_counter,
+		'IMAGE_NAME'=>(file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png'),
+	));
+	$ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
+	$i++;
+	
+	$class_sprite_counter++;
+	if($class_sprite_counter == $count_per_sprite)
+	  $class_sprite_counter = 0;
+}
 if ($i==0) 
-	{
-		//	return '';
-		$glob['error'] = $tags['T.NO_EXERCISE'];
-	}
+{
+	//	return '';
+	$glob['error'] = $tags['T.NO_EXERCISE'];
+}
 // end the VIEW programs data
 }
 else 
 {
-	$glob['error'] = $tags['T.SELECT_CAT'];
+  $glob['error'] = $tags['T.SELECT'];
+  $msg = '<p style="color: white; font-size: 1.5em; margin: 90px 30px;">
+			  Please select an exercise category, or search for an exercise in the search box above.</p>';
+  $ft->assign('NO_DATA_FOUND', $msg);
 }
 if(!empty($_SESSION['pids']))
 {
   $ft->define_dynamic('selected_line','main');
 	
-	$dbu = new mysql_db();
+	$exercises_images = array();
 	
+	foreach($_SESSION['pids'] as $key=>$val)
+	{
+	  if(!$val)continue;
+	  
+	  $program = $dbu->query("
+					  SELECT 
+						  programs.*, translate.*
+					  FROM
+						  programs
+					  INNER JOIN programs_translate_".$glob['lang']." AS translate USING(programs_id)
+					  WHERE
+						  programs.programs_id='".$val."' 
+						  ");
+	  if($program->next())
+		$exercises_images[] = (file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png');
+	}
+	
+	$thumb_sprite_names = get_exercises_sprite_names_thumb($exercises_images);
+	
+	$count_per_sprite=6;
+	$class_sprite_counter = 0;
 	foreach($_SESSION['pids'] as $key=>$val)
 	{
 	  if(!$val)continue;
@@ -290,15 +470,19 @@ if(!empty($_SESSION['pids']))
 						  ");
 	  $program->next();
 		
-		$ft->assign(array(
-			'S_PROGRAM_ID' => $program->f('programs_id'),
-			'S_PROGRAM_TITLE' => strip_tags($program->f('programs_title')),
-			'S_PROGRAM_DESCRIPTION' => strip_tags($program->f('description')),
-			'S_PROGRAM_IMAGE' => (file_exists('upload/'.$program->f($image_type)) && $program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimage_small.png',
-			'S_PROGRAM_CATEGORY' => strip_tags(get_category_path(get_cat_ID($val),0)),
-		));
-	$ft->parse('SELECTED_LINE_OUT','.selected_line');
-		}
+	  $image_sprite_name = get_sprite_name_by_image($thumb_sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png')), true);
+	  
+	  $ft->assign(array(
+		  'S_PROGRAM_ID' => $program->f('programs_id'),
+		  'S_PROGRAM_TITLE' => strip_tags($program->f('programs_title')),
+		  'S_PROGRAM_DESCRIPTION' => strip_tags($program->f('description')),
+		  //'S_PROGRAM_IMAGE' => (file_exists('upload/'.$program->f($image_type)) && $program->f($image_type)) ? $script_path.UPLOAD_PATH.$program->f($image_type) : $script_path.UPLOAD_PATH.'noimage_small.png',
+		  'S_PROGRAM_IMAGE'=>"background-image: url('../phpthumb/sprite_thumb.php?img=$image_sprite_name'); width: 64px; height: 64px; float: left; margin-right:5px;",
+		  'IMAGE_DIV_CLASS'=>'image_thumb_div_class_'.$class_sprite_counter,
+		  'S_PROGRAM_CATEGORY' => strip_tags(get_category_path(get_cat_ID($val),0)),
+	  ));
+	  $ft->parse('SELECTED_LINE_OUT','.selected_line');
+	}
 }
 
 $ft->assign('EXERCISE_DESC', $glob['exercise_desc'] == '' ? 'Notes' : $glob['exercise_desc']);

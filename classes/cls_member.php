@@ -932,18 +932,27 @@ class member
 
             $max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
 			$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
-
             
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			
-            if(imagesy($cur_image)>$max_height)
-                $this->resize($img_path, 0, $max_height, $f_title, $img_ext, 100);
+			if($ld['width'] && $ld['height'])
+			{
+ 				$ld['width'] = $ld['width'] >= $max_width  ? $max_width : $ld['width'];
+				$ld['height'] = $ld['height'] >= $max_height  ? $max_height : $ld['height'];
+				
+				$this->resize($img_path, $ld['width'], $ld['height'], $f_title, $img_ext, 100);
+			}
+			else
+			{
+				if(imagesy($cur_image)>$max_height)
+				    $this->resize($img_path, 0, $max_height, $f_title, $img_ext, 100);
+				
+				$cur_image = $this->createImgFromFile($img_path);
+				
+					if(imagesx($cur_image)>$max_width)
+				$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+			}
 			
-			$cur_image = $this->createImgFromFile($img_path);
-			
-			if(imagesx($cur_image)>$max_width)
-			  $this->resize($img_path, $max_width, 0, $f_title, $img_ext);
-
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
                                logo_image='".$f_title."'

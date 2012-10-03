@@ -160,9 +160,12 @@ class client
 	function update_program_exercise(&$ld)
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
-        if($ld['program_desc'] == 'plan description')
-            $ld['program_desc'] = '';
         
+		$default_program_desc = get_template_tag('program_update_exercise', $ld['lang'], 'T.PROGRAM_DESC_DEFAULT');
+
+		if($ld['program_desc'] == $default_program_desc)
+			$ld['program_desc'] = '';
+		
 		$this->dbu->query("
 							UPDATE 
 								exercise_program_plan 
@@ -608,9 +611,12 @@ class client
 	function update_exercise(&$ld)
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
-        $ld['exercise_desc'] = mysql_real_escape_string(trim(stripslashes($ld['exercise_desc'])));
-        if($ld['exercise_desc'] == 'Notes')
-            $ld['exercise_desc'] = '';
+        
+		$default_program_desc = get_template_tag('program_update_exercise', $ld['lang'], 'T.PROGRAM_DESC_DEFAULT');
+
+		if($ld['exercise_desc'] == $default_program_desc)
+			$ld['exercise_desc'] = '';
+		
 		$this->dbu->query("
 							UPDATE 
 								exercise_plan 
@@ -619,7 +625,7 @@ class client
 								date_modified=NOW(), 
 								trainer_id='".$_SESSION[U_ID]."', 
 								client_id= ".$ld['client_id'].",
-                                exercise_desc = '".$ld['exercise_desc']."'
+                                exercise_notes = '".mysql_escape_string($ld['exercise_desc'])."'
 							WHERE
 								exercise_plan_id='".$ld['exercise_plan_id']."'
 							");

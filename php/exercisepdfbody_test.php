@@ -5,12 +5,17 @@
 session_start();
 $_SESSION['uploaded_pdf'] = array();
 
-$ft=new ft(ADMIN_PATH.MODULE."templates/");
-$ft->define( array(main => "exercisepdf.html"));
+$dbu=new mysql_db();
+$himage_pos = $dbu->field("SELECT himage_pos FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
 
+$ft=new ft(ADMIN_PATH.MODULE."templates/");
+if($himage_pos == 'left')
+	$ft->define( array(main => "exercisepdf.html"));
+else
+	$ft->define( array(main => "exercisepdf_right.html"));
+	
 $ft->define_dynamic('exercise_line','main');
 
-$dbu=new mysql_db();
 $image_type = "image";
 
 if(empty($glob['pag'])) $glob = $ld;
@@ -30,15 +35,15 @@ if($dbu->move_next())
     
     $ft->assign(array(
         'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
-        'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : ($theName ? $theName : ''),
-        'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : '',
-        'CITY' => $dbu->f('city') ? $dbu->f('city') : '',
-        'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : '',
-        'PHONE' => $dbu->f('phone') ? $dbu->f('phone') : '',
-        'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : $dbu->f('fax'),
-        'FAX' => $dbu->f('mobile') ? '<tr><td>&nbsp;</td><td align="right">'.$dbu->f('fax').'</td></tr>' : '',
-        'EMAIL' => $dbu->f('email') ? $dbu->f('email') : '',
-        'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : '',
+		'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
+		'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
+		'CITY' => $dbu->f('city') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
+		'POST_CODE' => $dbu->f('post_code') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
+		'PHONE' => $dbu->f('phone') ? str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
+		'MOBILE' => $dbu->f('mobile') ? str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
+		'FAX' => $dbu->f('fax') ? '<tr><td></td><td align="right">'.str_replace('’', '\'', htmlentities($dbu->gf('fax'))).'</td></tr>' : '',
+		'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
+		'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
     ));
 }
 else {

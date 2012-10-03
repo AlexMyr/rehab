@@ -217,8 +217,9 @@ doExerciseCompactViewDetails = function()
 						var content = $('.siteBody').width();
 						var margins = body-content;
 						var size = $(this).offset();
-						var thetop = size.top-165 + scrolledSize;
-						var theleft = size.left-(margins/2)-355;
+						//sub some constant value to postion
+						var thetop = size.top-80 + scrolledSize;
+						var theleft = size.left-(margins/2)-125;
 						obj.css({
 							'top':thetop,
 							'left':theleft
@@ -288,18 +289,27 @@ doExercise = function(jSON)
 							4.	PROGRAM_IMAGE
 						*/
 						// define all blocks and data
+						var exLI_img = $('<div>').addClass(obj.innerHTML.PROGRAM_POS)
+							.css({
+								"background-image": "url('../upload/thumbs/"+obj.innerHTML.PROGRAM_IMAGE+"')",
+								"width": "64px",
+								"height": "64px",
+								"float": "left",
+								"margin-right": "5px"
+							});
+						
 						var thumbpath = "phpthumb/phpThumb.php?src=../";
 //						var thumbsize = "&amp;wl=50&amp;hp=50"; // this crashes
 						var thumbsize = "&wl=64&hp=64";
 						var exUL = $("#sortable");
 						var exLI = $('<li/>')
 							.attr('id', obj.innerHTML.PROGRAM_ID);
-						var exLI_img = $('<img/>')
-							.attr('alt', obj.innerHTML.PROGRAM_TITLE)
-							.attr('title', obj.innerHTML.PROGRAM_TITLE)
-							.attr('width', 64)
-							.attr('height', 64)
-							.attr('src',thumbpath + obj.innerHTML.PROGRAM_IMAGE + thumbsize);
+						//var exLI_img = $('<img/>')
+						//	.attr('alt', obj.innerHTML.PROGRAM_TITLE)
+						//	.attr('title', obj.innerHTML.PROGRAM_TITLE)
+						//	.attr('width', 64)
+						//	.attr('height', 64)
+						//	.attr('src',thumbpath + obj.innerHTML.PROGRAM_IMAGE + thumbsize);
 //							.attr('src',obj.innerHTML.PROGRAM_IMAGE);
 						var exLI_title = $('<span/>')
 							.attr('id', 'title_'+obj.innerHTML.PROGRAM_ID)
@@ -762,14 +772,12 @@ $(document).ready(function()
 		$.cookies.set(cookieName , cookieVal, cookieOption);
 	});
 	
-	$('.item img, .itemCompact img').click(function(){
-		var clickedImgUrl = $(this).attr('src');
-		clickedImgUrl = clickedImgUrl.match(/upload\/([\w]+?\.\w{3})/);
-
-		if(!clickedImgUrl[1] || clickedImgUrl[1].indexOf('noimage')>-1 || clickedImgUrl[1].indexOf('pdf')>-1)
+	$('.item .light_box, .itemCompact .light_box').click(function(){
+		var img = $(this).attr('imgname');
+		if(!img || img.indexOf('noimage')>-1 || img.indexOf('pdf')>-1)
 			return false;
 		
-		var lightBox = $('<div id="innerLightBoxDiv"><img src="phpthumb/phpThumb.php?src=../upload/'+clickedImgUrl[1]+'&wl=300&hp=300" /></div>');
+		var lightBox = $('<div id="innerLightBoxDiv"><img src="phpthumb/phpThumb.php?src=../upload/'+img+'&wl=300&hp=300" /></div>');
 		$('#imgLightBox').css('left', '500px');
 		$('#imgLightBox').css('top', '200px');
 		$('#imgLightBox').css('z-index', '9999999');
