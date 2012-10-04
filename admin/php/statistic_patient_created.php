@@ -10,6 +10,7 @@ $ft = new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define( array(main => "statistic_patient_created.html"));
 $ft->define_dynamic('member_row','main');
 $l_r=50;//ROW_PER_PAGE;
+$ft->assign('PAG', 'statistic_patient_created');
 
 $dbu=new mysql_db;
 
@@ -28,7 +29,12 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
-$dbu->query("select count(client.client_id), trainer.* from trainer left join client on client.trainer_id = trainer.trainer_id group by trainer.trainer_id order by count(client.client_id) desc, trainer.trainer_id asc");	 
+if($glob['search_key'])
+	$dbu->query("select count(client.client_id), trainer.* from trainer left join client on client.trainer_id = trainer.trainer_id where trainer.username like '%".$glob['search_key']."%' or trainer.email like '%".$glob['search_key']."%' group by trainer.trainer_id order by count(client.client_id) desc, trainer.trainer_id asc");	 
+else
+	$dbu->query("select count(client.client_id), trainer.* from trainer left join client on client.trainer_id = trainer.trainer_id group by trainer.trainer_id order by count(client.client_id) desc, trainer.trainer_id asc");	 
+
+
 $pageTitle='User Login Statistic';
 
 $max_rows=$dbu->records_count();

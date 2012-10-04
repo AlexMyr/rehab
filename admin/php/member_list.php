@@ -28,7 +28,9 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
-//$dbu->query("select * from trainer where active=2 and  or expire_date-".date("Y-m-d H:i:S")." order by trainer_id");
+$where = '';
+if($glob['search_key'])
+	$where = "and username like '%".mysql_escape_string($glob['search_key'])."%' or email like '%".$glob['search_key']."%'";
 
 $order_by = ' order by create_date desc, trainer_id asc';
 
@@ -37,7 +39,7 @@ if($glob['active']==2)
 {
 	if($glob['trial']==0)
 	{
-		$dbu->query("select * from trainer where active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
+		$dbu->query("select * from trainer where 1 $where and active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");
 		$bannName='Block';
 		$pageTitle='Full Paid Members List';
         $ft->assign('SHOW_PASS', '<td height="20" bgcolor="#E8E8E8" width="100" align="center"><strong>Password</strong></td>');
@@ -45,44 +47,23 @@ if($glob['active']==2)
 	}
 	else
 	{
-		$dbu->query("select * from trainer where active=2 and is_trial=1 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
+		$dbu->query("select * from trainer where 1 $where and active=2 and is_trial=1 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
 		$bannName='Block';
 		$pageTitle='Trial Members List';
 	}
 }
 else if($glob['active']==0)
 {
-	$dbu->query("select * from trainer where active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0 $order_by");	
+	$dbu->query("select * from trainer where 1 $where and (active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0) $order_by");	
 	$bannName='Trial';
 	$pageTitle='Blocked Members List';
 }
 else if($glob['active']==1)
 {
-	$dbu->query("select * from trainer where active=1 or(active=2 and expire_date='0000-00-00 00:00:00') $order_by");	 
+	$dbu->query("select * from trainer where 1 $where and (active=1 or(active=2 and expire_date='0000-00-00 00:00:00') $order_by)");	 
 	$bannName='Block';
 	$pageTitle='Members List';
 }
-
-
-
-//if($glob['active']==0)
-//{
-//	$dbu->query("select * from trainer where active=0 order by trainer_id");	
-//	$bannName='Activate';
-//	$pageTitle='New Members List';
-//}
-//else if($glob['active']==2)
-//{
-//	$dbu->query("select * from trainer where active=2 order by trainer_id");	 
-//	$bannName='Block';
-//	$pageTitle='Members List';
-//}
-//else if($glob['active']==1)
-//{
-//	$dbu->query("select * from trainer where active=1 order by trainer_id");	 
-//	$bannName='Block';
-//	$pageTitle='Members List';
-//}
 
 $max_rows=$dbu->records_count();
 
@@ -204,10 +185,13 @@ else
 }
 
 //*****************JUMP TO FORM***************
-$ft->assign('PAG_DD',get_pagination_dd($offset, $max_rows, $l_r, $glob));
+$ft->assign('PAG_DD', get_pagination_dd($offset, $max_rows, $l_r, $glob));
 //*****************JUMP TO FORM***************
 
 $ft->assign('PAGE',$glob['pag']);
+$ft->assign('PAG',$glob['pag']);
+$ft->assign('ACTIVE',$glob['active']);
+$ft->assign('TRIAL',$glob['trial']);
 $ft->assign('PAGE_TITLE',$pageTitle);
 $ft->assign('MESSAGE',$glob['error']);
 $ft->parse('content','main');

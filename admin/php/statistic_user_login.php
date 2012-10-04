@@ -10,6 +10,7 @@ $ft = new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define( array(main => "statistic_user_login.html"));
 $ft->define_dynamic('member_row','main');
 $l_r=50;//ROW_PER_PAGE;
+$ft->assign('PAG', 'statistic_user_login');
 
 $dbu=new mysql_db;
 
@@ -28,7 +29,13 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
-$dbu->query("select * from trainer order by last_login_date desc, trainer_id asc");	 
+//var_dump();exit;
+
+if($glob['search_key'])
+	$dbu->query("select * from trainer where username like '%".$glob['search_key']."%' or email like '%".$glob['search_key']."%' order by last_login_date desc, trainer_id asc");
+else
+	$dbu->query("select * from trainer order by last_login_date desc, trainer_id asc");	 
+
 $pageTitle='User Login Statistic';
 
 $max_rows=$dbu->records_count();

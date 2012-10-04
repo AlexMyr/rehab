@@ -82,7 +82,16 @@ if(isset($glob['search_key']))
           }
       }
       else $is_trial = "<span style='color:#ff0000;'>never used</span>";
-      
+		
+		$extend_3_name = 'Extend to 3 month';
+		$extend_3_link = "index.php?pag=member_list&act=member-extend_trial&to=90&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+		$extend_6_name = 'Extend to 6 month';
+		$extend_6_link = "index.php?pag=member_list&act=member-extend_trial&to=180&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+		$ft->assign('EXTEND_3_NAME',$extend_3_name);
+		$ft->assign('EXTEND_3_LINK',$extend_3_link);
+		$ft->assign('EXTEND_6_NAME',$extend_6_name);
+		$ft->assign('EXTEND_6_LINK',$extend_6_link);
+	  
       if($dbu->f('is_clinic')==2) $is_clinic = "not set";
       else if($dbu->f('is_clinic')==1) $is_clinic = "clinic";
       else if($dbu->f('is_clinic')==0) $is_clinic = "user";
