@@ -160,9 +160,12 @@ class client
 	function update_program_exercise(&$ld)
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
-        if($ld['program_desc'] == 'plan description')
-            $ld['program_desc'] = '';
         
+		$default_program_desc = get_template_tag('program_update_exercise', $ld['lang'], 'T.PROGRAM_DESC_DEFAULT');
+
+		if($ld['program_desc'] == $default_program_desc)
+			$ld['program_desc'] = '';
+		
 		$this->dbu->query("
 							UPDATE 
 								exercise_program_plan 
@@ -347,10 +350,64 @@ class client
 						 client_id = '".$ld['client_id']."',
 						 is_program_plan = 0
 					");		
-				
 			}
-			
-			
+		}
+		else
+		{
+			//try check, if such client exists
+			$this->dbu->query("select * from client where email='".$ld['email']."'");
+			if(!$this->dbu->move_next())
+			{
+				$client_id = $this->dbu->query_get_id("
+									INSERT INTO 
+										client 
+									SET 
+										first_name='".mysql_escape_string($ld['first_name'])."', 
+										surname='".mysql_escape_string($ld['surname'])."',
+										appeal='".mysql_escape_string($ld['appeal'])."',
+										email='".mysql_escape_string($ld['email'])."', 
+										print_image_type='0', 
+										client_note='', 
+										create_date=NOW(),
+										modify_date=NOW(),
+										trainer_id = ".$_SESSION[U_ID]." 
+									");
+				
+				$exercise_plan_id=$this->dbu->query_get_id("
+									INSERT INTO 
+										exercise_plan 
+									SET 
+										exercise_program_id='".$exerciseString."', 
+										date_created=NOW(), 
+										date_modified=NOW(), 
+										trainer_id='".$_SESSION[U_ID]."', 
+										client_id= ".$client_id." 
+									");
+
+				$this->dbu->query("
+					SELECT *
+					FROM exercise_plan_set
+					WHERE exercise_plan_id = ".$ld['program_id']."
+				");
+				
+				while($this->dbu->move_next())
+				{
+					$this->dbu->query("
+						 INSERT INTO
+							exercise_plan_set 
+						 SET
+							exercise_plan_id = '".$exercise_plan_id."',
+							exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+							plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+							plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+							plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+							plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+							trainer_id = '".$_SESSION[U_ID]."',
+							client_id = '".$client_id."',
+							is_program_plan = 0
+						");		
+				}
+			}
 		}
 		
 		
@@ -384,16 +441,10 @@ class client
 			$body=$message_data['text'];
 			
 			if($is_appeal_first_name)
-			{
 				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['first_name'], $body );
-			}
 			else
-			{
 				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['appeal'].' '.$ld['surname'], $body );
-			}
 			
-			//$body=str_replace('[!APPEAL!]',$ld['first_name'], $body );
-			//$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
 			$body=str_replace('[!FIRSTNAME!]',$ld['first_name'], $body );
 			$body=str_replace('[!SURNAME!]',$ld['surname'], $body );
 			$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
@@ -608,9 +659,12 @@ class client
 	function update_exercise(&$ld)
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
-        $ld['exercise_desc'] = mysql_real_escape_string(trim(stripslashes($ld['exercise_desc'])));
-        if($ld['exercise_desc'] == 'Notes')
-            $ld['exercise_desc'] = '';
+        
+		$default_program_desc = get_template_tag('program_update_exercise', $ld['lang'], 'T.PROGRAM_DESC_DEFAULT');
+
+		if($ld['exercise_desc'] == $default_program_desc)
+			$ld['exercise_desc'] = '';
+		
 		$this->dbu->query("
 							UPDATE 
 								exercise_plan 
@@ -619,7 +673,7 @@ class client
 								date_modified=NOW(), 
 								trainer_id='".$_SESSION[U_ID]."', 
 								client_id= ".$ld['client_id'].",
-                                exercise_desc = '".$ld['exercise_desc']."'
+                                exercise_notes = '".mysql_escape_string($ld['exercise_desc'])."'
 							WHERE
 								exercise_plan_id='".$ld['exercise_plan_id']."'
 							");

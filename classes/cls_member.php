@@ -936,13 +936,23 @@ class member
             
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			
-            if(imagesy($cur_image)>$max_height)
-                $this->resize($img_path, 0, $max_height, $f_title, $img_ext, 100);
-			
-			$cur_image = $this->createImgFromFile($img_path);
-			
-			if(imagesx($cur_image)>$max_width)
-			  $this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+			if($ld['width'] && $ld['height'])
+			{
+ 				$ld['width'] = $ld['width'] >= $max_width  ? $max_width : $ld['width'];
+				$ld['height'] = $ld['height'] >= $max_height  ? $max_height : $ld['height'];
+				
+				$this->resize($img_path, $ld['width'], $ld['height'], $f_title, $img_ext, 100);
+			}
+			else
+			{
+				if(imagesy($cur_image)>$max_height)
+				    $this->resize($img_path, 0, $max_height, $f_title, $img_ext, 100);
+				
+				$cur_image = $this->createImgFromFile($img_path);
+				
+					if(imagesx($cur_image)>$max_width)
+				$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+			}
 
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
@@ -1242,7 +1252,11 @@ class member
                         $name = ($this->dbu->f('clinic')) ? $this->dbu->f('clinic_first').' '.$this->dbu->f('clinic_last') : $this->dbu->f('first').' '.$this->dbu->f('surname');
                         $this->send_mail($this->dbu->f('email'), $name, $message_data);
                     }
-                    
+					
+					//send message notification of payments to admin
+					$paid_email = $this->dbu->field("select username from trainer WHERE trainer_id=".$_SESSION[U_ID]."");
+                    $this->send_mail('support@rehabmypatient.com', '', array('subject'=>'User paid', 'text'=>"New client: $paid_email has paid.", 'from_email'=>'support@rehabmypatient.com'));
+					
 					header("Location: /index.php?pag=profile&paym=1");
 				}
 				else{
@@ -1624,6 +1638,5 @@ class member
 
         $mail->AddAddress($ordermail, $send_to_name);
         $mail->Send();	
-
     }
 }//end class

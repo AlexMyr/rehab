@@ -45,16 +45,33 @@ class auth
 		{
 			$trainer_id = $query->f('trainer_id');
 			
-			if($query->f('active')==0 && strtotime($query->f('expire_date'))-time()>0)
+			if($query->f('active')==0)
 			{
+				if(strtotime($query->f('expire_date'))-time()>0)
+				{
+					session_unset();
+					header("Location: /index.php?pag=login&error=".urlencode("Username was banned for a reason. Please contact support for more details!"));
+					exit;
+				}
+				elseif(strtotime($query->f('expire_date'))-time()<0)
+				{
+					session_start();
+					$_SESSION[UID]=1;
+					$_SESSION[U_ID] = $query->f('trainer_id');
+					$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
+					$_SESSION[USER_EMAIL] = $query->f('email');
 				
-				
-				session_unset();
-				header("Location: /index.php?pag=login&error=".urlencode("Username was banned for a reason. Please contact support for more details!"));
-				exit;
-				
-				//$ld['error'] = 'Username was banned for a reason. Please contact support for more details!';
-				//return false;
+					if(isset($ld['store_login']) && $ld['store_login'] == 'on')
+					{
+						setcookie('UID', 1, 0, '/');
+						setcookie('U_ID', $query->f('trainer_id'), 0, '/');
+						setcookie('ACCESS_LEVEL', $query->f('access_level'), 0, '/');
+						setcookie('USER_EMAIL', $query->f('email'), 0, '/');
+					}
+					
+					header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
+					exit;
+				}
 			}
 			else if(($ld['password'] == $query->f('password') || $ld['fb_id'] == $query->f('fb_id')) && $query->f('is_login')==0 && $query->f('active')!=0)
 			{
