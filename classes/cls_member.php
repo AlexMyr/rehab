@@ -752,6 +752,9 @@ class member
 
 				if($cur_image_sx != $ld['width'] || $cur_image_sy != $ld['height'])
 				{
+					if(!file_exists($orig_path))
+						copy($img_path, $orig_path);
+					
 					@unlink($img_path);
 					copy($orig_path, $img_path);
 					
