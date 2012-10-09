@@ -42,7 +42,7 @@ else
 }
     $ft->define(array('main' => "profile_header_paper.html"));
     $img_src = $script_path.UPLOAD_PATH.$dbu->gf('logo_image');
-    $image = '<img src="'.$img_src.'?rnd='.rand(0,1000).'" alt="trainer_logo" style="display:block;"/>';
+    $image = '<img src="'.$img_src.'?rnd='.rand(0,1000).'" alt="trainer_logo" style="display:block; max-width:300px; max-height:150px; float:left;"/>&nbsp;<span id="removeHeaderImage" style="color:#FF0000;cursor:pointer;margin-top:5px;"><img src="img/delete_red.png" /> <span style="font-size:11px;position:relative;top:-10px;">delete</span></span>';
     $size = is_file($img_src) ? getimagesize($img_src) : false;
     $glob['delete_image'] = 0;
     $ft->assign(array(
@@ -62,8 +62,8 @@ else
         'FAX' => $dbu->f('fax'),
         'LANG_EN' => $dbu->f('lang') == 'en' ? 'selected' : '',
         'LANG_US' => $dbu->f('lang') == 'us' ? 'selected' : '',
-        'WIDTH' => (is_array($size) && !empty($size) ? $size[0] : 100),
-        'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 90),
+        'WIDTH' => (is_array($size) && !empty($size) ? $size[0] : 300),
+        'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 100),
 		'HIMAGE_POSITION_LEFT' => $dbu->f('himage_pos') == 'left' ? 'checked' : '',
 		'HIMAGE_POSITION_RIGHT' => $dbu->f('himage_pos') == 'right' ? 'checked' : '',
         'TEST_URL' => 'index.php?pag=exercisepdf_test&program_id=2'//Tim's program

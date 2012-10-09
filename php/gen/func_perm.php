@@ -31,7 +31,8 @@ $func_access = array
                                         'exercise_add' => 3,
                                         'exercise_update' => 3,
                                         'exercise_delete' => 3,
-                                        'delete_image' => 3
+                                        'delete_image' => 3,
+                                        'erasecustompicture' => 3,
 //										'payment' => 3,
 									),
 					'client' => array(

@@ -56,13 +56,15 @@
 			<h2>{T.PERSONALISE}</h2>
 			<p>&nbsp;</p>
 			<p>{T.UPLOAD}</p>
-			<!--<p>{T.JUST_LEAVE}</p>-->
 			<p>&nbsp;</p>
 			<p style="color:red;">{T.HELP_PHOTO}</p>
 			<p>&nbsp;</p>
 			
 			<div class="clearAll"></div>
-						<div id="image_wrapper">{IMG}</div>
+						<div id="image_wrapper">
+							{IMG}
+						</div>
+						<div style="clear:both;"></div>
 						<div id="advanced_wrapper">
 							<div id="advanced_popup" style="display:none;">
 								<span>Resize image to:</span>
@@ -71,8 +73,8 @@
 								<span id="reset_size">Reset to defaults</span>
 							</div>
 							<div class="moreBtn" id="advanced" style=""><span>Advanced</span></div>
-							<label class="label delete_image" for="delete_image">{T.DELETE_IMAGE}:</label>
-							<input type="checkbox" id="delete_image" name="delete_image" value="1" {DELETE_IMAGE} />
+							<!--<label class="label delete_image" for="delete_image">{T.DELETE_IMAGE}:</label>
+							<input type="checkbox" id="delete_image" name="delete_image" value="1" {DELETE_IMAGE} />-->
 						</div>
 						
 						

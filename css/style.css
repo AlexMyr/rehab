@@ -247,7 +247,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .contactHeadedInfo p b { width:108px; display:inline-block; font-weight:bold; }
 .contactHeadedInfo p i { font-style:normal; }
 .contactHeadedInfo .moreBtn { margin:20px 0px 0px 0px; font-family: "MergeRegular"; }
-.contactHeadedInfo img { margin:10px 0px 5px 0px; }
+.contactHeadedInfo img { margin:0px 0px 5px 0px; }
 
 .contactHeadedInfo .label { margin: 7px 0px 5px 0px; display:block; }
 .contactHeadedInfo .label.delete_image { display:inline-block; margin-right:5px; }

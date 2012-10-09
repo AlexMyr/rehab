@@ -728,19 +728,65 @@ class member
         
         //$ld['pag'] = 'dashboard';
 		$success = true;
-		if(!$ld['delete_image']&&!empty($_FILES['upload_image']['name']))
+		if(!empty($_FILES['upload_image']['name']))
 		{
 			if($_FILES['upload_image']['error'] === 0)
 				$success = $this->upload_custom_file($ld);
             $ld['pag'] = 'profile_header_paper';
 			//$ld['error']='unchecked';
 		}
-		elseif($ld['delete_image'])
+		else
 		{
-            $ld['pag'] = 'profile_header_paper';
-			$success &= $this->erasecustompicture($ld);
-			//$ld['error']='checked';
+			$cur_logo = $this->dbu->field("select logo_image from trainer_header_paper where trainer_id='".$_SESSION[U_ID]."'");
+			if($cur_logo)
+			{
+				$file_info = pathinfo($cur_logo);
+				$orig_image=$file_info['filename'].'_orig.'.$file_info['extension'];
+				
+				$orig_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$orig_image;
+				$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$cur_logo;
+				
+				$cur_image = $this->createImgFromFile($img_path);
+				$cur_image_sx = imagesx($cur_image);
+				$cur_image_sy = imagesy($cur_image);
+
+				if($cur_image_sx != $ld['width'] || $cur_image_sy != $ld['height'])
+				{
+					@unlink($img_path);
+					copy($orig_path, $img_path);
+					
+					$cur_image = $this->createImgFromFile($img_path);
+
+					$max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
+					$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
+					
+					$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
+					
+					if($ld['width'] && $ld['height'])
+					{
+						$ld['width'] = $ld['width'] >= $max_width  ? $max_width : $ld['width'];
+						$ld['height'] = $ld['height'] >= $max_height  ? $max_height : $ld['height'];
+						$this->resize($img_path, $ld['width'], $ld['height'], $cur_logo, $img_ext, 75);
+					}
+					else
+					{
+						if(imagesy($cur_image)>$max_height)
+							$this->resize($img_path, 0, $max_height, $f_title, $img_ext, 75);
+						
+						$cur_image = $this->createImgFromFile($img_path);
+						
+						if(imagesx($cur_image)>$max_width)
+							$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+					}
+				}
+			}
 		}
+//		elseif($ld['delete_image'])
+//		{
+//            $ld['pag'] = 'profile_header_paper';
+//			$success &= $this->erasecustompicture($ld);
+//			//$ld['error']='checked';
+//		}
 
         if($success){
             $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
@@ -899,6 +945,7 @@ class member
         }
         
         $f_title="headed_logo_".$_SESSION[U_ID].$f_ext;
+		$f_orig="headed_logo_".$_SESSION[U_ID].'_orig'.$f_ext;
         $f_out=$script_path.UPLOAD_PATH.$f_title;
         
         if(!$_FILES['upload_image']['tmp_name'])
@@ -925,13 +972,17 @@ class member
         else
         {
 			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_title;
-
-			move_uploaded_file($_FILES['upload_image']['tmp_name'], $img_path);
+			$orig_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$f_orig;
+			//save original file
+			move_uploaded_file($_FILES['upload_image']['tmp_name'], $orig_path);
+			
+			copy($orig_path, $img_path);
 			
 			$cur_image = $this->createImgFromFile($img_path);
 
             $max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
 			$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
+
             
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 			
@@ -952,7 +1003,7 @@ class member
 					if(imagesx($cur_image)>$max_width)
 				$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
 			}
-			
+
             @chmod($f_out, 0777);
             $this->dbu->query("UPDATE trainer_header_paper SET
                                logo_image='".$f_title."'
@@ -1019,6 +1070,9 @@ class member
         else 
         {
             global $script_path;
+			
+			$file_info = pathinfo($this->dbu->f('logo_image'));
+			@unlink( $script_path.UPLOAD_PATH.$file_info['filename'].'_orig.'.$file_info['extension']);
             @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('logo_image'));
             $this->dbu->query("UPDATE trainer_header_paper SET logo_image=NULL WHERE trainer_id='".$_SESSION[U_ID]."'");
         }
@@ -1251,7 +1305,11 @@ class member
                         $name = ($this->dbu->f('clinic')) ? $this->dbu->f('clinic_first').' '.$this->dbu->f('clinic_last') : $this->dbu->f('first').' '.$this->dbu->f('surname');
                         $this->send_mail($this->dbu->f('email'), $name, $message_data);
                     }
-                    
+					
+					//send message notification of payments to admin
+					$paid_email = $this->dbu->field("select username from trainer WHERE trainer_id=".$_SESSION[U_ID]."");
+                    $this->send_mail('support@rehabmypatient.com', '', array('subject'=>'User paid', 'text'=>"New client: $paid_email has paid.", 'from_email'=>'support@rehabmypatient.com'));
+					
 					header("Location: /index.php?pag=profile&paym=1");
 				}
 				else{
@@ -1633,6 +1691,5 @@ class member
 
         $mail->AddAddress($ordermail, $send_to_name);
         $mail->Send();	
-
     }
 }//end class
