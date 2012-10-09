@@ -61,8 +61,11 @@ function send_mail($send_to_email,$send_to_name,$message_data, $type='trial')
 
 		if($type == 'never')
 			$body=str_replace('[!EMAIL!]',$send_to_name, $body );
+		elseif($type == 'new')
+			$body=str_replace('[!NAME!]',$send_to_name, $body );
+		else
+			$body=str_replace('[!NAME!]',$send_to_name, $body );
 		
-		$body=str_replace('[!NAME!]',$send_to_name, $body );
 		$body = nl2br($body);
 /*
 		mail($ordermail,$message_data['subject'],$body);
@@ -99,6 +102,7 @@ function send_mail($send_to_email,$send_to_name,$message_data, $type='trial')
 }
 	
 $dbu = new mysql_db();
+$dbu2 = new mysql_db();
 
 $select = "select t.trainer_id as tid, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date, t.create_date, t.username, thp.*, t.active from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1 and t.trainer_id IS NOT NULL";
 
@@ -111,6 +115,7 @@ $ab = array();
 while($dbu->move_next())
 {
 	//if($dbu->f('email_contact') != 'ole_gi@miralex.com.ua') continue;
+	//if($dbu->f('email_contact') != 'oleg_gladchenko@mail.ru') continue;
 
 	if($dbu->f('active')==1 || ($dbu->f('active')==2 && $dbu->f('expire_date')=='0000-00-00 00:00:00'))
 	{
@@ -146,6 +151,41 @@ while($dbu->move_next())
 		
 	}
 
+	if($dbu->f('is_trial')==0 && $dbu->f('active')==2 && $time_now < strtotime($dbu->f('expire_date')))
+	{
+		$first_pay = $dbu2->field("select timestamp from paypal_transactions where ack='Success' and type in('ConfirmPayment', 'CreateRecurringPaymentsProfile') and trainer_id=".$dbu->f('tid')." order by id asc limit 0,1");
+
+		$date_from_reg = ceil(($time_now - strtotime($first_pay)) / (3600 * 24));
+
+		$message_data=get_sys_message('new_'.$date_from_reg.'_days', $dbu->f('lang'));
+		
+		if($dbu->f('is_clinic') == 1)
+			$send_to_name=trim($dbu->f('company_name'));
+		else
+			$send_to_name=trim($dbu->f('first_name'));
+
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('first_name'));
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('company_name'));
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('surname'));
+		if(!$send_to_name)
+			$send_to_name = 'Client';
+		
+		if($message_data['text']!=null) 
+        {
+			send_mail($send_to_email=$dbu->f('email_contact'), $send_to_name, $message_data, 'new');
+            /* USED FOR THE CRON LOG FILE */
+            $ab[$i]['msg_uid'] = $dbu->f('tid');
+            $ab[$i]['msg_email'] = $dbu->f('email_contact');
+            $ab[$i]['reg_date'] = $first_pay;
+            $ab[$i]['time'] = $time_now;
+            $ab[$i]['name'] = 'new_'.$date_from_reg.'_days';
+            $ab[$i]['msg_data'] = $message_data;
+        }
+	}
+
     if($dbu->f('is_trial')!=0)
     {
         $expire_time = (strtotime($dbu->f('expire_date'))-$time_now);
@@ -166,14 +206,9 @@ while($dbu->move_next())
 		$message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
 
 		if($dbu->f('is_clinic') == 1)
-		{
 			$send_to_name=trim($dbu->f('company_name'));
-		}
 		else
-		{
 			$send_to_name=trim($dbu->f('first_name'));
-		}
-		
 		
 		if(!$send_to_name)
 			$send_to_name = trim($dbu->f('first_name'));
