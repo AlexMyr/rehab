@@ -961,8 +961,8 @@ $(document).ready(function()
 		});  
 	});
 	
-	$('#reset_size').click(function(){ 	$('input[name="width"]').val(100); 
-										$('input[name="height"]').val(90);
+	$('#reset_size').click(function(){ 	$('input[name="width"]').val(300); 
+										$('input[name="height"]').val(100);
 	});
 	
 	$('#exercise_desc, #program_desc').click(function(){

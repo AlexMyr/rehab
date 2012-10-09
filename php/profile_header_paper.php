@@ -62,8 +62,8 @@ else
         'FAX' => $dbu->f('fax'),
         'LANG_EN' => $dbu->f('lang') == 'en' ? 'selected' : '',
         'LANG_US' => $dbu->f('lang') == 'us' ? 'selected' : '',
-        'WIDTH' => (is_array($size) && !empty($size) ? $size[0] : 100),
-        'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 90),
+        'WIDTH' => (is_array($size) && !empty($size) ? $size[0] : 300),
+        'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 100),
 		'HIMAGE_POSITION_LEFT' => $dbu->f('himage_pos') == 'left' ? 'checked' : '',
 		'HIMAGE_POSITION_RIGHT' => $dbu->f('himage_pos') == 'right' ? 'checked' : '',
         'TEST_URL' => 'index.php?pag=exercisepdf_test&program_id=2'//Tim's program
