@@ -973,6 +973,26 @@ $(document).ready(function()
 										$('input[name="height"]').val(100);
 	});
 	
+	$('#resize_image').click(function(){
+		var width = $('input[name="width"]').val(); 
+		var height =  $('input[name="height"]').val();
+		
+		$.ajax({
+            url: "index_ajax.php",
+            dataType: "json",
+            data: { act: "member-resize_existing_image",
+                    width: width,
+					height: height
+            },
+            success: function(data){
+				var cur_src = $('#header_image').attr('src');
+				cur_src += Math.round(Math.random()*10);
+				$('#header_image').attr('src', cur_src);
+            }
+        });
+	});
+	
+	
 	$('#exercise_desc, #program_desc').click(function(){
 		if( $(this).val() == $(this).attr('jsplaceholder') ){
 			$(this).val('');

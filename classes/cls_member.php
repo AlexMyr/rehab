@@ -798,6 +798,59 @@ class member
             return false;
         }
 	}
+	
+	function resize_existing_image(&$ld)
+	{
+
+		$cur_logo = $this->dbu->field("select logo_image from trainer_header_paper where trainer_id='".$_SESSION[U_ID]."'");
+
+		if($cur_logo)
+		{
+			$file_info = pathinfo($cur_logo);
+			$orig_image=$file_info['filename'].'_orig.'.$file_info['extension'];
+			
+			$orig_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$orig_image;
+			$img_path = dirname(dirname(__FILE__)).'/'.$script_path.UPLOAD_PATH.$cur_logo;
+			
+			$cur_image = $this->createImgFromFile($img_path);
+			$cur_image_sx = imagesx($cur_image);
+			$cur_image_sy = imagesy($cur_image);
+
+			if($cur_image_sx != $ld['width'] || $cur_image_sy != $ld['height'])
+			{
+
+				if(!file_exists($orig_path))
+					copy($img_path, $orig_path);
+				
+				@unlink($img_path);
+				copy($orig_path, $img_path);
+				
+				$cur_image = $this->createImgFromFile($img_path);
+
+				$max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
+				$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
+				
+				$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
+				
+				if($ld['width'] && $ld['height'])
+				{
+					$ld['width'] = $ld['width'] >= $max_width  ? $max_width : $ld['width'];
+					$ld['height'] = $ld['height'] >= $max_height  ? $max_height : $ld['height'];
+					$this->resize($img_path, $ld['width'], $ld['height'], $cur_logo, $img_ext, 75);
+				}
+				else
+				{
+					if(imagesy($cur_image)>$max_height)
+						$this->resize($img_path, 0, $max_height, $f_title, $img_ext, 75);
+					
+					$cur_image = $this->createImgFromFile($img_path);
+					
+					if(imagesx($cur_image)>$max_width)
+						$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+				}
+			}
+		}
+	}
 		
 	function check_header_paper_exists()
 	{

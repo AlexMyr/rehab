@@ -737,8 +737,17 @@ label.error_validate{
 #advanced_popup > label {
     margin-left: 20px;
 }
+#resize_image {
+    text-decoration: underline;
+	padding-left: 5px !important;
+}
+#resize_image:hover {
+    color: #FFFFFF;
+    cursor: pointer;
+}
 #reset_size {
     text-decoration: underline;
+	padding-left: 5px !important;
 }
 #reset_size:hover {
     color: #FFFFFF;

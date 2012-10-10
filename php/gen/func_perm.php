@@ -33,6 +33,7 @@ $func_access = array
                                         'exercise_delete' => 3,
                                         'delete_image' => 3,
                                         'erasecustompicture' => 3,
+                                        'resize_existing_image' => 3,
 //										'payment' => 3,
 									),
 					'client' => array(
