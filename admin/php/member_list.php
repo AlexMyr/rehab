@@ -28,6 +28,8 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
+$show_logo_column = false;
+
 $where = '';
 if($glob['search_key'])
 	$where = "and (username like '%".mysql_escape_string($glob['search_key'])."%' or email like '%".$glob['search_key']."%')";
@@ -39,11 +41,13 @@ if($glob['active']==2)
 {
 	if($glob['trial']==0)
 	{
-		$dbu->query("select * from trainer where 1 $where and active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");
+		$dbu->query("select trainer.*,trainer_header_paper.logo_image from trainer left join trainer_header_paper on trainer_header_paper.trainer_id=trainer.trainer_id where 1 $where and active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");
 		$bannName='Block';
 		$pageTitle='Full Paid Members List';
         $ft->assign('SHOW_PASS', '<td height="20" bgcolor="#E8E8E8" width="100" align="center"><strong>Password</strong></td>');
+		$ft->assign('SHOW_LOGO', '<td height="20" bgcolor="#E8E8E8" width="60" align="center"><strong>Logo</strong></td>');
         $show_pass = true;
+		$show_logo_column = true;
 	}
 	else
 	{
@@ -120,8 +124,12 @@ while($dbu->move_next()&&$i<$l_r)
 	$ft->assign('IS_TRIAL', $is_trial );
 	$ft->assign('IS_CLINIC', $is_clinic );
 	$ft->assign('EMAIL',$dbu->f('email'));
+	
     if(isset( $show_pass) && $show_pass)
         $ft->assign('PASS','<td height="20" align="center" style="color:#777;">'.$dbu->f('password').'</td>');
+		
+	if($show_logo_column)
+        $ft->assign('HAS_LOGO','<td height="20" align="center">'.($dbu->f('logo_image') ? 'Y' : 'N').'</td>');
     
 
 	if($glob['active']==0) $activation="index.php?pag=member_list&active=0&act=member-trial&trainer_id=".$dbu->f('trainer_id');
