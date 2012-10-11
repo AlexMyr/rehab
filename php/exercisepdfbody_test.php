@@ -34,14 +34,14 @@ if($dbu->move_next())
     else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>';
     
     $ft->assign(array(
-        'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
+		'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 		'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
 		'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
-		'CITY' => $dbu->f('city') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
-		'POST_CODE' => $dbu->f('post_code') ? ', '.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
-		'PHONE' => $dbu->f('phone') ? str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
-		'MOBILE' => $dbu->f('mobile') ? str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
-		'FAX' => $dbu->f('fax') ? '<tr><td></td><td align="right">'.str_replace('’', '\'', htmlentities($dbu->gf('fax'))).'</td></tr>' : '',
+		'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
+		'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
+		'PHONE' => $dbu->f('phone') ? 'Tel: '.str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
+		'MOBILE' => $dbu->f('mobile') ? 'Mobile: '.str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
+		'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
 		'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 		'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
     ));
