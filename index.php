@@ -215,12 +215,38 @@ while($row = mysql_fetch_assoc($q)){
   $ftm->assign($row['tag'], $row['tag_text']);
 }
 
+//get date of css/js files modified
+$css_stat = stat(dirname(__FILE__)."/css/style.css");
+$js_stat = stat(dirname(__FILE__)."/js/init_dom_private.js");
+
+$ftm->assign('CSS_MODIFY', $css_stat['mtime']);
+$ftm->assign('JS_MODIFY', $css_stat['mtime']);
+
 $my_programs = get_template_tag('programs', $glob['lang'], 'T.MY_PROGRAMMES');
 $ftm->assign('T.MY_PROGRAMMES', $my_programs);
 $ftm->assign('PAGE',$page);
 $ftm->assign('BOTTOM_INCLUDES',$bottom_includes);
 $ftm->parse('CONTENT','main');
 $ftm->ft_print('CONTENT');
+
+if(isset($_COOKIE['alexTesting']))
+{
+    require_once 'PapApi.class.php';
+
+    // init session for PAP
+    $session = new Gpf_Api_Session("http://rehabmypatient.com/affiliate/scripts/server.php");
+    
+    // register click
+    $clickTracker = new Pap_Api_ClickTracker($session);
+
+    $clickTracker->setAccountId('default1');
+
+    try {  
+        $clickTracker->track();
+        $clickTracker->saveCookies();
+    } catch (Exception $e) {
+    }
+}
 
 if($debug)
 {

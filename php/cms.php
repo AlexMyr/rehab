@@ -79,6 +79,13 @@ $ftm->assign('META_TITLE', $page_meta_title);
 $ftm->assign('META_KEYWORDS', $page_meta_keywords);
 $ftm->assign('META_DESCRIPTION', $page_meta_description);
 
+//get date of css/js files modified
+$css_stat = stat(dirname(dirname(__FILE__))."/css/style.css");
+$js_stat = stat(dirname(dirname(__FILE__))."/js/init_dom_private.js");
+
+$ftm->assign('CSS_MODIFY', $css_stat['mtime']);
+$ftm->assign('JS_MODIFY', $css_stat['mtime']);
+
 $my_programs = get_template_tag('programs', $glob['lang'], 'T.MY_PROGRAMMES');
 $ftm->assign('T.MY_PROGRAMMES', $my_programs);
 
