@@ -846,3 +846,22 @@ label.error_validate{
 .image_div_thumb_class_6{background-position: 0px -542px; cursor: pointer;}
 .image_div_thumb_class_7{background-position: -64px -542px; cursor: pointer;}
 .image_div_thumb_class_8{background-position: -128px -542px; cursor: pointer;}
+
+.favImg
+{
+	background-image: url('../img/star_sprite.png');
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	margin: 5px;
+}
+
+.starGrey
+{
+	background-position: 0px 0px;
+}
+
+.starGold
+{
+	background-position: 0px -10px;
+}
