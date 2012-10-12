@@ -142,11 +142,7 @@ $ft->assign('LAST_LINK',"index.php?pag=".$glob['pag']."&last=1&offset=".($end-1)
 /// end paginate
 
 $ft->assign('CSS_PAGE', $glob['pag']);
-
-$ft->assign('FIRST_NAME', $glob['first_name']);
-$ft->assign('SURNAME', $glob['surname']);
-$ft->assign('EMAIL', $glob['email']);
-//$ft->assign('IMAGE_TYPE', $glob['print_image_type']);
+$ft->assign('PROGRAM_NAME_ADD', $glob['program_name']);
 $ft->assign('EXERCISE_NOTE', $glob['exercise_notes']);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
