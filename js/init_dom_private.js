@@ -1041,4 +1041,25 @@ $(document).ready(function()
 		});
 	});
 	
+	$('.favImg').click(function(e){
+		e.stopPropagation();
+		if($(this).hasClass('starGold'))
+		{
+			$(this).removeClass('starGold');
+			$(this).addClass('starGrey');
+		}
+		else
+		{
+			$(this).addClass('starGold');
+			$(this).removeClass('starGrey');
+		}
+		
+		var pid = $(this).attr('pid');
+		$.ajax({
+            url: "index_ajax.php",
+            dataType: "json",
+            data: { act: "client-add_to_fav", pid: pid }
+		});
+	})
+	
 });
