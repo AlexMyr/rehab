@@ -53,7 +53,8 @@ $func_access = array
 											'delete_exercise' => 3,
                                             'delete_program_plan' => 3,
                                             'modify_program' => 3,
-                                            'update_custom_description' => 3
+                                            'update_custom_description' => 3,
+                                            'add_to_fav' => 3
 										),
 				);
  
