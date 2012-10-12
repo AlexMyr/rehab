@@ -119,8 +119,8 @@ class client
 		/* CHECK IF Programme EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
 		{
-			$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_EXIST');
-			return true;
+			$ld['error'] = get_template_tag('dashboard', $ld['lang'], 'T.PROG_EXIST');
+			return false;
 		}
 		else 
 		{
@@ -131,16 +131,16 @@ class client
 							SET 
 										program_name='".mysql_escape_string($ld['program_name'])."', 
 										print_image_type='".mysql_real_escape_string($ld['print_image_type'])."', 
-										exercise_notes ='".mysql_real_escape_string($ld['exercise_note'])."', 
+										client_note='".mysql_real_escape_string($ld['exercise_note'])."', 
 										date_created=NOW(),
 										date_modified=NOW(),
 										trainer_id = ".$_SESSION[U_ID]." 
 							");
 			$ld['program_name']=''; 
 			$ld['print_image_type']='';
-			$ld['client_note']='';
+			$ld['exercise_note']='';
 		
-			$ld['error']= get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_SUCCESS');
+			$ld['error']= get_template_tag('dashboard', $ld['lang'], 'T.PROG_SUCCESS');
 		
 			return true;
 		}
@@ -171,7 +171,7 @@ class client
 								exercise_program_plan 
 							SET 
 								exercise_program_id='".$ld['exercise_id']."',
-                                exercise_notes = '".mysql_real_escape_string($ld['program_desc'])."',
+                                client_note = '".mysql_real_escape_string($ld['program_desc'])."',
 								date_modified=NOW()
 							WHERE
 								exercise_program_plan_id='".$ld['program_id']."'

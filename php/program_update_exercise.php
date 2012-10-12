@@ -29,7 +29,7 @@ $dbu->query("SELECT * FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U
 $dbu->move_next();
 
 $program_desc_default = $tags['T.PROGRAM_DESC_DEFAULT'];
-$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') != '' ? $dbu->f('exercise_notes') : $program_desc_default), 'PROGRAM_DESC_DEFAULT'=> $program_desc_default ) );
+$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('client_note') != '' ? $dbu->f('client_note') : $program_desc_default), 'PROGRAM_DESC_DEFAULT'=> $program_desc_default ) );
 
 /* make the category / subcategory menu */
 
