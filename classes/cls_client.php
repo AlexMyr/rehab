@@ -119,8 +119,8 @@ class client
 		/* CHECK IF Programme EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
 		{
-			$ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_EXIST');
-			return true;
+			$ld['error'] = get_template_tag('dashboard', $ld['lang'], 'T.PROG_EXIST');
+			return false;
 		}
 		else 
 		{
@@ -138,9 +138,9 @@ class client
 							");
 			$ld['program_name']=''; 
 			$ld['print_image_type']='';
-			$ld['client_note']='';
+			$ld['exercise_note']='';
 		
-			$ld['error']= get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_SUCCESS');
+			$ld['error']= get_template_tag('dashboard', $ld['lang'], 'T.PROG_SUCCESS');
 		
 			return true;
 		}
@@ -350,10 +350,64 @@ class client
 						 client_id = '".$ld['client_id']."',
 						 is_program_plan = 0
 					");		
-				
 			}
-			
-			
+		}
+		else
+		{
+			//try check, if such client exists
+			$this->dbu->query("select * from client where email='".$ld['email']."'");
+			if(!$this->dbu->move_next())
+			{
+				$client_id = $this->dbu->query_get_id("
+									INSERT INTO 
+										client 
+									SET 
+										first_name='".mysql_escape_string($ld['first_name'])."', 
+										surname='".mysql_escape_string($ld['surname'])."',
+										appeal='".mysql_escape_string($ld['appeal'])."',
+										email='".mysql_escape_string($ld['email'])."', 
+										print_image_type='0', 
+										client_note='', 
+										create_date=NOW(),
+										modify_date=NOW(),
+										trainer_id = ".$_SESSION[U_ID]." 
+									");
+				
+				$exercise_plan_id=$this->dbu->query_get_id("
+									INSERT INTO 
+										exercise_plan 
+									SET 
+										exercise_program_id='".$exerciseString."', 
+										date_created=NOW(), 
+										date_modified=NOW(), 
+										trainer_id='".$_SESSION[U_ID]."', 
+										client_id= ".$client_id." 
+									");
+
+				$this->dbu->query("
+					SELECT *
+					FROM exercise_plan_set
+					WHERE exercise_plan_id = ".$ld['program_id']."
+				");
+				
+				while($this->dbu->move_next())
+				{
+					$this->dbu->query("
+						 INSERT INTO
+							exercise_plan_set 
+						 SET
+							exercise_plan_id = '".$exercise_plan_id."',
+							exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+							plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+							plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+							plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+							plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+							trainer_id = '".$_SESSION[U_ID]."',
+							client_id = '".$client_id."',
+							is_program_plan = 0
+						");		
+				}
+			}
 		}
 		
 		
@@ -387,16 +441,10 @@ class client
 			$body=$message_data['text'];
 			
 			if($is_appeal_first_name)
-			{
 				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['first_name'], $body );
-			}
 			else
-			{
 				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['appeal'].' '.$ld['surname'], $body );
-			}
 			
-			//$body=str_replace('[!APPEAL!]',$ld['first_name'], $body );
-			//$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
 			$body=str_replace('[!FIRSTNAME!]',$ld['first_name'], $body );
 			$body=str_replace('[!SURNAME!]',$ld['surname'], $body );
 			$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
