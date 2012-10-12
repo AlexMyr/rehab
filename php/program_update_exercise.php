@@ -29,7 +29,8 @@ $change_image_type = $image_type == 'lineart' ? 'image' : 'lineart';
 $dbu->query("SELECT * FROM exercise_program_plan WHERE trainer_id='".$_SESSION[U_ID]."' AND exercise_program_plan_id=".$glob['program_id']." ");
 $dbu->move_next();
 
-$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') != '' ? $dbu->f('exercise_notes') : 'Notes')) );
+$program_desc_default = $tags['T.PROGRAM_DESC_DEFAULT'];
+$ft->assign( array('PROGRAM_NAME' => $dbu->f('program_name'), 'PROGRAM_DESC' => ($dbu->f('exercise_notes') != '' ? $dbu->f('exercise_notes') : $program_desc_default), 'PROGRAM_DESC_DEFAULT'=> $program_desc_default ) );
 
 /* make the category / subcategory menu */
 
@@ -328,12 +329,14 @@ elseif($glob['catID']&&$glob['program_id'])
 								programs_in_category on programs.programs_id=programs_in_category.programs_id
                             INNER JOIN
                                 programs_translate_".$glob['lang']." AS translate on (translate.programs_id = programs_in_category.programs_id)
+							LEFT JOIN
+								program_fav ON (program_fav.program_id = programs.programs_id AND program_fav.trainer_id=".$_SESSION[U_ID].")
 							WHERE
 								".$where." 
 								AND programs.active = 1
 								AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
 							GROUP BY programs.programs_id
-							ORDER BY programs.owner, programs.sort_order ASC
+							ORDER BY programs.owner, program_fav.fav_id, programs.sort_order ASC
 							");
 
   while ($program->next())
