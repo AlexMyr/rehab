@@ -82,7 +82,8 @@ $i = 0;
 $count_break = 1;
 foreach($exercises as $exercise)
 {
-    if($count_break%3 == 0 && $count_break < count($exercise))
+
+    if($count_break%3 == 0 && $count_break < count($exercises))
         $ft->assign('BREAK_LINE' ,'<br pagebreak="true" />');
     else
         $ft->assign('BREAK_LINE',"");
