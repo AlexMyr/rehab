@@ -131,7 +131,7 @@ class client
 							SET 
 										program_name='".mysql_escape_string($ld['program_name'])."', 
 										print_image_type='".mysql_real_escape_string($ld['print_image_type'])."', 
-										exercise_notes ='".mysql_real_escape_string($ld['exercise_note'])."', 
+										client_note='".mysql_real_escape_string($ld['exercise_note'])."', 
 										date_created=NOW(),
 										date_modified=NOW(),
 										trainer_id = ".$_SESSION[U_ID]." 
@@ -171,7 +171,7 @@ class client
 								exercise_program_plan 
 							SET 
 								exercise_program_id='".$ld['exercise_id']."',
-                                exercise_notes = '".mysql_real_escape_string($ld['program_desc'])."',
+                                client_note = '".mysql_real_escape_string($ld['program_desc'])."',
 								date_modified=NOW()
 							WHERE
 								exercise_program_plan_id='".$ld['program_id']."'
@@ -934,4 +934,17 @@ class client
         exit();
 		
     }
+	
+	function add_to_fav(&$ld)
+	{
+		if($ld['pid'])
+		{
+			$cur_date = time();
+			if($this->dbu->field("select count(*) from program_fav where program_id=".$ld['pid']." and trainer_id=".$_SESSION[U_ID]))
+				$this->dbu->query("delete from program_fav where program_id=".$ld['pid']." and trainer_id=".$_SESSION[U_ID]);
+			else
+				$this->dbu->query("insert into program_fav set date=$cur_date, program_id=".$ld['pid'].", trainer_id=".$_SESSION[U_ID]);
+		}
+	}
+	
 }//end class

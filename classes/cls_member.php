@@ -761,7 +761,7 @@ class member
 					$cur_image = $this->createImgFromFile($img_path);
 
 					$max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
-					$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
+					$max_height = ($ld['height'] <= 220 ) ? $ld['height'] : 220;
 					
 					$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 					
@@ -828,7 +828,7 @@ class member
 				$cur_image = $this->createImgFromFile($img_path);
 
 				$max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
-				$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
+				$max_height = ($ld['height'] <= 220 ) ? $ld['height'] : 220;
 				
 				$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
 				
@@ -1037,7 +1037,7 @@ class member
 			$cur_image = $this->createImgFromFile($img_path);
 
             $max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
-			$max_height = ($ld['height'] <= 400 ) ? $ld['height'] : 400;
+			$max_height = ($ld['height'] <= 220 ) ? $ld['height'] : 220;
 
             
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		

@@ -183,12 +183,14 @@ if(isset($glob['query']) && $glob['query'])
 					  programs 
 			  INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
 			  INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+			  LEFT JOIN
+						program_fav ON (program_fav.program_id = programs.programs_id AND program_fav.trainer_id=".$_SESSION[U_ID].")
 			  WHERE
 				  ".$where."
 				  AND programs.active = 1
 				  AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
 			  GROUP BY programs.programs_id
-			  ORDER BY programs.owner, programs.sort_order ASC
+			  ORDER BY program_fav.fav_id DESC, programs.owner, programs.sort_order ASC
 					 ");
   
   while ($program->next())
@@ -201,21 +203,24 @@ if(isset($glob['query']) && $glob['query'])
   
   $program = $dbu->query("
 				  SELECT 
-					  programs.*, programs_in_category.category_id, translate.*
+					  programs.*, programs_in_category.category_id, translate.*, program_fav.fav_id
 				  FROM
 						  programs 
 				  INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
 				  INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+				  LEFT JOIN
+						program_fav ON (program_fav.program_id = programs.programs_id AND program_fav.trainer_id=".$_SESSION[U_ID].")
 				  WHERE
 					  ".$where."
 					  AND programs.active = 1
 					  AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
 				  GROUP BY programs.programs_id
-				  ORDER BY programs.owner, programs.sort_order ASC
+				  ORDER BY program_fav.fav_id DESC, programs.owner, programs.sort_order ASC
 					  ");
   $i=0;
   
   $class_sprite_counter = 0;
+  $count_per_sprite = 9;
   $start_user_exercise = false;
   while ($program->next())
   {
@@ -255,6 +260,7 @@ if(isset($glob['query']) && $glob['query'])
 		  'USER_BREAK_LINE'=> $user_break_line,
 		  'IMAGE_DIV_CLASS'=>'image_div_class_'.$class_sprite_counter,
 		  'IMAGE_NAME'=>(file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png'),
+		  'FAV_CLASS'=>($dbu->f('fav_id') ? 'starGold' : 'starGrey'),
 	  ));
 	  $ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
 	  $i++;
@@ -333,12 +339,14 @@ $program = $dbu->query("
 					programs 
 			INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
 			INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+			LEFT JOIN
+						program_fav ON (program_fav.program_id = programs.programs_id AND program_fav.trainer_id=".$_SESSION[U_ID].")
 			WHERE
 				".$where."
 				AND programs.active = 1
 				AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
 			GROUP BY programs.programs_id
-			ORDER BY programs.owner, programs.sort_order ASC
+			ORDER BY program_fav.fav_id DESC, programs.owner, programs.sort_order ASC
 				   ");
 
 while ($program->next())
@@ -348,29 +356,32 @@ while ($program->next())
 
 //create sprite
 //include_once(PATH_TO_IMAGES.'/phpthumb/sprite_thumb.php');
-$sprite_names = get_exercises_sprite($programs_images);
+$sprite_names = get_exercises_sprite_names($programs_images);
 
 $program = $dbu->query("
 				SELECT 
-					programs.*, programs_in_category.category_id, translate.*
+				  programs.*, programs_in_category.category_id, translate.*, program_fav.fav_id
 				FROM
-						programs 
+				  programs 
                 INNER JOIN programs_in_category on programs.programs_id=programs_in_category.programs_id
                 INNER JOIN programs_translate_".$glob['lang']." AS translate ON programs.programs_id = translate.programs_id
+				LEFT JOIN
+				  program_fav ON (program_fav.program_id = programs.programs_id AND program_fav.trainer_id=".$_SESSION[U_ID].")
 				WHERE
 					".$where."
 					AND programs.active = 1
 					AND (programs.owner = -1 OR programs.owner = ".$_SESSION[U_ID].")
                 GROUP BY programs.programs_id
-				ORDER BY programs.owner, programs.sort_order ASC
+				ORDER BY program_fav.fav_id DESC, programs.owner, programs.sort_order ASC
 					");
 $i=0;
 
+$count_per_sprite = 9;
 $class_sprite_counter = 0;
 $start_user_exercise = false;
 while ($program->next())
 {
-  $image_sprite_name = get_sprite_name_by_image($sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png')));
+  $image_sprite_name = get_sprite_name_by_image($sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png')));
   
   if($program->f('owner')!=-1 && !$start_user_exercise)
   {
@@ -397,15 +408,16 @@ while ($program->next())
 		'PROGRAM_ID'=>$program->f('programs_id'),
 		'PROGRAM_TITLE'=>$program->f('programs_title'),
 		'PROGRAM_DESCRIPTION'=>$program->f('description'),
-		'PROGRAM_IMAGE'=>"background-image: url('../upload/thumbs/$image_sprite_name'); width: 132px; height: 138px;",
-		//'PROGRAM_IMAGE'=>(file_exists('upload/'.$program->f($image_type))&& $program->f($image_type)) ? $program->f($image_type) : 'noimage_middle.png',
+		'PROGRAM_IMAGE'=>"background-image: url('../phpthumb/sprite_thumb.php?bimg=$image_sprite_name'); width:132px; height: 138px;",
+		//'PROGRAM_IMAGE'=>"background-image: url('../upload/thumbs/$image_sprite_name'); width: 132px; height: 138px;",
 		'CAT_ID'=>$glob['catID'],
 		'CLIENT_ID'=>$glob['client_id'],
 		'CLEAR_BOTH'=> $clear_both,
 		'LAST_CSS'=> $last_css,
 		'USER_BREAK_LINE'=> $user_break_line,
 		'IMAGE_DIV_CLASS'=>'image_div_class_'.$class_sprite_counter,
-		'IMAGE_NAME'=>(file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png'),
+		'IMAGE_NAME'=>(file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png'),
+		'FAV_CLASS'=>($dbu->f('fav_id') ? 'starGold' : 'starGrey'),
 	));
 	$ft->parse(strtoupper($view_mode).'_OUT','.'.$view_mode);
 	$i++;
@@ -423,7 +435,7 @@ if ($i==0)
 }
 else 
 {
-  $glob['error'] = $tags['T.SELECT'];
+  //$glob['error'] = $tags['T.SELECT'];
   $msg = '<p style="color: white; font-size: 1.5em; margin: 90px 30px;">
 			  Please select an exercise category, or search for an exercise in the search box above.</p>';
   $ft->assign('NO_DATA_FOUND', $msg);
@@ -448,10 +460,10 @@ if(!empty($_SESSION['pids']))
 						  programs.programs_id='".$val."' 
 						  ");
 	  if($program->next())
-		$exercises_images[] = (file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png');
+		$exercises_images[] = (file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png');
 	}
 	
-	$thumb_sprite_names = get_exercises_sprite_names_thumb($exercises_images);
+	$thumb_sprite_names = get_exercises_sprite_names($exercises_images, true);
 	
 	$count_per_sprite=6;
 	$class_sprite_counter = 0;
@@ -470,7 +482,7 @@ if(!empty($_SESSION['pids']))
 						  ");
 	  $program->next();
 		
-	  $image_sprite_name = get_sprite_name_by_image($thumb_sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_middle.png' : 'noimage_middle.png')), true);
+	  $image_sprite_name = get_sprite_name_by_image($thumb_sprite_names, ((file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-middle.png' : 'noimage-middle.png')), true);
 	  
 	  $ft->assign(array(
 		  'S_PROGRAM_ID' => $program->f('programs_id'),
@@ -485,7 +497,11 @@ if(!empty($_SESSION['pids']))
 	}
 }
 
-$ft->assign('EXERCISE_DESC', $glob['exercise_desc'] == '' ? 'Notes' : $glob['exercise_desc']);
+$program_desc_default = $tags['T.PROGRAM_DESC_DEFAULT'];
+
+$ft->assign('EXERCISE_DESC', $glob['exercise_desc'] == '' ? $program_desc_default : $glob['exercise_desc']);
+$ft->assign('EXERCISE_DESC_DEFAULT', $program_desc_default);
+
 $ft->assign('IMAGE_TYPE_CHANGE', $change_image_link);
 $ft->assign('CSS_PAGE', $glob['pag']);
 $ft->assign('SEARCH_LINK', "index.php?pag=client_add_exercise&catID=".$glob['catID']."&client_id=".$glob['client_id']);
