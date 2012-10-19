@@ -47,8 +47,6 @@ class auth
 			
 			if($query->f('active')==0 && strtotime($query->f('expire_date'))-time()>0)
 			{
-				
-				
 				session_unset();
 				header("Location: /index.php?pag=login&error=".urlencode("Username was banned for a reason. Please contact support for more details!"));
 				exit;
@@ -142,7 +140,6 @@ class auth
 				
 				if(strtotime($query->f('expire_date'))-time()<0)
 				{
-					$this->dbu->query("UPDATE trainer SET active=0 WHERE trainer_id=".$trainer_id."");
 					header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
 					exit;
 				}
@@ -159,11 +156,16 @@ class auth
 				
 				return true;
 			}
-			/*else if($query->f('is_login')==1)
-				{
-					$ld['error'] = 'User already logged in';
-					return false;
-				}*/
+			elseif(($query->f('expire_date'))-time()<0)
+			{
+				session_start();
+				$_SESSION[UID]=1;
+				$_SESSION[U_ID] = $query->f('trainer_id');
+				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
+				$_SESSION[USER_EMAIL] = $query->f('email');
+				header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
+				exit;
+			}
 		}
 		$ld['error'] = 'Username or password invalid';
 		return false;

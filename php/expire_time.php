@@ -64,7 +64,29 @@ if($_SESSION[U_ID])
         $ft->parse('CONTENT','main');
         return $ft->fetch('CONTENT');
     }
-    else { return; }
+    else {
+        $expire_time = (strtotime($get_time->f('expire_date'))-time());
+        
+        $expire_days = intval(intval($expire_time) / (3600 * 24));
+        $expire_hours = intval(intval($expire_time) / 3600);
+        $expire_minutes = (intval(intval($expire_time) / 60) % 60);
+        
+        if($expire_days<1 && $expire_minutes<1)
+        {
+            $dbu->query("UPDATE trainer SET active=0 WHERE trainer_id=".$_SESSION[U_ID]." AND active!=0 ");
+            $ft->assign(array(
+                'EXPIRE_DATE' => "<span class='expire_time'><span>".$tags['T.EXPIRE_ALREADY']."</span></span>",
+            ));
+        }
+        
+        if((strtotime($get_time->f('expire_date'))<time()) && $glob['pag'] != "profile_payment") { $ft->assign('REDIRECT', page_redirect('index.php?pag=profile_payment')); }
+        else if((strtotime($get_time->f('expire_date'))<time()) && $get_time->f('active')==0 && $glob['pag'] != "profile_payment") { $ft->assign('REDIRECT', page_redirect('index.php?pag=profile_payment')); }
+        else { $ft->assign('REDIRECT', ''); }
+        
+        $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
+        $ft->parse('CONTENT','main');
+        return $ft->fetch('CONTENT');
+    }
 }
 else { return; }
 ?>
