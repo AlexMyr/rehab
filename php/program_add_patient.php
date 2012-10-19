@@ -29,7 +29,7 @@ if(!$exerciseString)
 if(isset($glob['client_id']) && $glob['client_id'] != '')
 {
   //$button_line = '<a style="width:50px; float:left; margin:0px;" '.$blank.' class="moreBtn" href="'.$alert.'"><span>Print</span></a><button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span>Send Email</span></button>';
-    $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
+    $button_line = '<button style="display:inline;" type="submit" name="print" class="printpdf"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
                     <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
   
     $dbu->query("select first_name, surname, email, appeal

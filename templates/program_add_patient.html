@@ -9,26 +9,26 @@
 				<a href="javascript: void(0);" pid="{PROGRAM_ID}" ptitle="{T.POPUP_TITLE}" id="add_patient_button" class="moreBtn"><span>{ADD_PATIENT}</span></a>
 				{MODIFY_PROGRAM}
 				<!--<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id={PROGRAM_ID}&client_id={CLIENT_ID}" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>-->
-				<form action="index.php" method="post">
-				<input type="hidden" name="act" value="client-send_program_email">
-				<input type="hidden" name="pag" value="program_add_patient">
-				<input type="hidden" name="program_id" value="{PROGRAM_ID}">
-				<input type="hidden" name="client_id" value="{CLIENT_ID}">
-				
-				<label class="label" for="first_name">{T.FIRST_NAME}:</label>
-				<input class="textField curvyCorner" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+				<form action="index.php" method="post" id="program_add_patient_form">
+					<input type="hidden" name="act" value="client-send_program_email">
+					<input type="hidden" name="pag" value="program_add_patient">
+					<input type="hidden" name="program_id" value="{PROGRAM_ID}">
+					<input type="hidden" name="client_id" value="{CLIENT_ID}">
 					
-				<label class="label" for="surname">{T.SURNAME}:</label>
-				<input class="textField curvyCorner" type="text" id="surname" name="surname" value="{SURNAME}" />
-				
-				<label class="label" for="appeal">Title:</label>
-				<input class="textField curvyCorner" type="text" id="appeal" name="appeal" value="{APPEAL}" />
-				
-				<label class="label" for="email">{T.EMAIL}:</label>
-				<input class="textField curvyCorner" type="text" id="email" name="email" value="{EMAIL}" />
-				
-				<!--<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Send Email</span></button></div>-->
-				<div class="buttons login">{BUTTON_LINE}</div>
+					<label class="label" for="first_name">{T.FIRST_NAME}:</label>
+					<input class="textField curvyCorner" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+						
+					<label class="label" for="surname">{T.SURNAME}:</label>
+					<input class="textField curvyCorner" type="text" id="surname" name="surname" value="{SURNAME}" />
+					
+					<label class="label" for="appeal">Title:</label>
+					<input class="textField curvyCorner" type="text" id="appeal" name="appeal" value="{APPEAL}" />
+					
+					<label class="label" for="email">{T.EMAIL}:</label>
+					<input class="textField curvyCorner" type="text" id="email" name="email" value="{EMAIL}" />
+					
+					<!--<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>Send Email</span></button></div>-->
+					<div class="buttons login">{BUTTON_LINE}</div>
 				</form>
 				
 			</div>

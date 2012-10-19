@@ -1088,4 +1088,11 @@ $(document).ready(function()
 		});
 	})
 	
+    //on ProgamAddPatient page open PDF file for printing in new tab
+    $('#program_add_patient_form [type=submit]').click(function(){
+        if($(this).is('.printpdf'))
+            $(this).parents('form:first').attr('target', '_blank');
+        else
+            $(this).parents('form:first').removeAttr('target');
+    });
 });
