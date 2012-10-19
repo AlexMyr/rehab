@@ -40,17 +40,28 @@ if($dbu->move_next())
 	else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>'; 
 
 	$ft->assign(array(
-		'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : ($theName ? '<div>'.$theName.'</div>' : '<div>&nbsp;</div>'),
-		'NAME' => $theName,
-		'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.$dbu->gf('address').'</div>' : '<div>&nbsp;</div>',
-		'CITY' => $dbu->gf('city') ? '<div>'.$dbu->gf('city').'</div>' : '<div>&nbsp;</div>',
-		'POST_CODE' => $dbu->gf('post_code') ? '<div>'.$dbu->gf('post_code').'</div>' : '<div>&nbsp;</div>',
-		'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.$dbu->gf('phone').'</div>' : '<div>&nbsp;</div>',
-		'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.$dbu->gf('mobile').'</div>' : '<div>&nbsp;</div>',
-		'FAX' => $dbu->gf('fax') ? '<div>Fax: '.$dbu->gf('fax').'</div>' : '<div>&nbsp;</div>',
-		'EMAIL' => $dbu->gf('email') ? '<div>'.$dbu->gf('email').'</div>' : '<div>&nbsp;</div>',
-		'WEBSITE' => $dbu->gf('website') ? '<div>'.$dbu->gf('website').'</div>' : '<div>&nbsp;</div>',
-		'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
+		
+		'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
+		'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
+		'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
+		'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
+		'PHONE' => $dbu->f('phone') ? 'Tel: '.str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
+		'MOBILE' => $dbu->f('mobile') ? 'Mobile: '.str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
+		'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
+		'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
+		'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
+		
+		//'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : ($theName ? '<div>'.$theName.'</div>' : '<div>&nbsp;</div>'),
+		//'NAME' => $theName,
+		//'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.$dbu->gf('address').'</div>' : '<div>&nbsp;</div>',
+		//'CITY' => $dbu->gf('city') ? '<div>'.$dbu->gf('city').'</div>' : '<div>&nbsp;</div>',
+		//'POST_CODE' => $dbu->gf('post_code') ? '<div>'.$dbu->gf('post_code').'</div>' : '<div>&nbsp;</div>',
+		//'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.$dbu->gf('phone').'</div>' : '<div>&nbsp;</div>',
+		//'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.$dbu->gf('mobile').'</div>' : '<div>&nbsp;</div>',
+		//'FAX' => $dbu->gf('fax') ? '<div>Fax: '.$dbu->gf('fax').'</div>' : '<div>&nbsp;</div>',
+		//'EMAIL' => $dbu->gf('email') ? '<div>'.$dbu->gf('email').'</div>' : '<div>&nbsp;</div>',
+		//'WEBSITE' => $dbu->gf('website') ? '<div>'.$dbu->gf('website').'</div>' : '<div>&nbsp;</div>',
+		//'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 	));
 }
 else

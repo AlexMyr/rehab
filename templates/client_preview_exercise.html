@@ -21,8 +21,17 @@
       </span>
 	  <span class="header_infos"> 
 		<div class="contact-wrapper">
-	  {THE_IMG}
-			<div class="contact">
+	  		{THE_IMG}
+	  		<table width="330" style="table-layout:fixed;float: right;">
+				<tr><td width="210">{COMPANY}</td><td width="120" align="right">{PHONE}</td></tr>
+				<tr><td width="210">{ADDRESS}</td><td width="120" align="right">{MOBILE}</td></tr>
+				<tr><td width="210">{CITY}</td><td width="120" align="right">{FAX}</td></tr>
+				<tr><td colspan="2" width="330">{POST_CODE}</td></tr>
+				<tr><td colspan="2" width="330" align="right">{EMAIL}</td></tr>
+				<tr><td colspan="2" width="330" align="right">{WEBSITE}</td></tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+			</table>
+			<!--<div class="contact">
 				{COMPANY}
 				{ADDRESS}
 				{CITY}
@@ -36,7 +45,7 @@
 				{EMAIL}
 				{WEBSITE}
 				<br>
-			</div>
+			</div>-->
 			<div class="clearAll"></div>
 			<div class="contact1">
 				{CLIENT_NAME}

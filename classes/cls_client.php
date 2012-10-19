@@ -26,7 +26,21 @@ class client
 		}
 		global $user_level;
 	    
-	    $this->dbu->query("
+	//    $this->dbu->query("
+	//						SELECT 
+	//							client.client_id
+	//						FROM 
+	//							client 
+	//						WHERE 
+	//							1=1 
+	//							AND trainer_id = ".$_SESSION[U_ID]." 
+	//							AND first_name = '".mysql_real_escape_string($ld['first_name'])."'
+	//							AND surname = '".mysql_real_escape_string($ld['surname'])."'
+	//							AND email = '".mysql_real_escape_string($ld['email'])."'
+	//							AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
+	//					");
+	    
+		$this->dbu->query("
 							SELECT 
 								client.client_id
 							FROM 
@@ -34,12 +48,9 @@ class client
 							WHERE 
 								1=1 
 								AND trainer_id = ".$_SESSION[U_ID]." 
-								AND first_name = '".mysql_real_escape_string($ld['first_name'])."'
-								AND surname = '".mysql_real_escape_string($ld['surname'])."'
 								AND email = '".mysql_real_escape_string($ld['email'])."'
-								AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
 						");
-	    /* CHECK IF Client EXIST IN DB, IF NOT, SAVE IT IN DB */
+		/* CHECK IF Client EXIST IN DB, IF NOT, SAVE IT IN DB */
 		if($this->dbu->move_next())
 		{
             $ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.EXIST');
@@ -290,6 +301,7 @@ class client
 	function send_program_email(&$ld)
 	{
 		$is_appeal_first_name = true;
+		
 		$this->dbu->query("SELECT title_set, email_set from trainer WHERE trainer_id=".$_SESSION[U_ID]);
         $this->dbu->move_next();
         $appeal_settings = $this->dbu->f('title_set');
@@ -316,7 +328,10 @@ class client
 
 		if(isset($ld['client_id']) && $ld['client_id'] != '')
 		{
-			$exercise_plan_id=$this->dbu->query_get_id("
+			//check exist such program for clienbt
+			if(!$this->dbu->field("select count(*) from exercise_plan where exercise_program_id='".$exerciseString."' and client_id= ".$ld['client_id'].""))
+			{
+				$exercise_plan_id=$this->dbu->query_get_id("
 							INSERT INTO 
 										exercise_plan 
 							SET 
@@ -327,29 +342,29 @@ class client
 										client_id= ".$ld['client_id']." 
 							");
 
-			$this->dbu->query("
-				SELECT *
-				FROM exercise_plan_set
-				WHERE exercise_plan_id = ".$ld['program_id']."
-			");
-			
-			while($this->dbu->move_next())
-			{
-
 				$this->dbu->query("
-					 INSERT INTO
-						 exercise_plan_set 
-					 SET
-						 exercise_plan_id = '".$exercise_plan_id."',
-						 exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
-						 plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
-						 plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
-						 plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
-						 plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
-						 trainer_id = '".$_SESSION[U_ID]."',
-						 client_id = '".$ld['client_id']."',
-						 is_program_plan = 0
-					");		
+					SELECT *
+					FROM exercise_plan_set
+					WHERE exercise_plan_id = ".$ld['program_id']."
+				");
+				
+				while($this->dbu->move_next())
+				{
+					$this->dbu->query("
+						 INSERT INTO
+							 exercise_plan_set 
+						 SET
+							 exercise_plan_id = '".$exercise_plan_id."',
+							 exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+							 plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+							 plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+							 plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+							 plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+							 trainer_id = '".$_SESSION[U_ID]."',
+							 client_id = '".$ld['client_id']."',
+							 is_program_plan = 0
+						");		
+				}
 			}
 		}
 		else
@@ -406,6 +421,49 @@ class client
 							client_id = '".$client_id."',
 							is_program_plan = 0
 						");		
+				}
+			}
+			else
+			{
+				$client_id = $this->dbu->f('client_id');
+				$trainer_id = $this->dbu->f('trainer_id');
+
+				if(!$this->dbu->field("select count(*) from exercise_plan where exercise_program_id='".$exerciseString."' and client_id=$client_id"))
+				{
+					$exercise_plan_id=$this->dbu->query_get_id("
+										INSERT INTO 
+											exercise_plan 
+										SET 
+											exercise_program_id='".$exerciseString."', 
+											date_created=NOW(), 
+											date_modified=NOW(), 
+											trainer_id='".$trainer_id."', 
+											client_id= ".$client_id." 
+										");
+	
+					$this->dbu->query("
+						SELECT *
+						FROM exercise_plan_set
+						WHERE exercise_plan_id = ".$ld['program_id']."
+					");
+					
+					while($this->dbu->move_next())
+					{
+						$this->dbu->query("
+							 INSERT INTO
+								exercise_plan_set 
+							 SET
+								exercise_plan_id = '".$exercise_plan_id."',
+								exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+								plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+								plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+								plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+								plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+								trainer_id = '".$trainer_id."',
+								client_id = '".$client_id."',
+								is_program_plan = 0
+							");		
+					}
 				}
 			}
 		}

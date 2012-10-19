@@ -483,6 +483,18 @@ $(document).ready(function()
 		
 	});
 	
+	$('.navMenu .item1').click(function(e){
+		if(navigator.userAgent.match(/iPad/i) != null)
+		{
+			var el = $(this);
+			if(el.attr('href') == 'index.php?pag=profile' || el.attr('href') == 'index.php?pag=programs')
+			{
+				e.preventDefault();
+			}
+		}
+	});
+
+	
 	$('#clientsList').dialog({  autoOpen: false, resizable: false })
 	$('#pdfInfo').dialog({  autoOpen: false, resizable: false, title: "Info" })
 	
