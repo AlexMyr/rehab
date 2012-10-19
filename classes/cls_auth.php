@@ -140,8 +140,9 @@ class auth
 											trainer_id = ".$trainer_id." 
 									");
 				
-				if(strtotime($query->f('expire_date'))-time()<0 && $query->f('active')==0)
+				if(strtotime($query->f('expire_date'))-time()<0)
 				{
+					$this->dbu->query("UPDATE trainer SET active=0 WHERE trainer_id=".$trainer_id."");
 					header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
 					exit;
 				}
