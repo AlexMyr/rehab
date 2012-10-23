@@ -12,7 +12,8 @@
 			<div class="greyBorderBox">
 				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
 				<div class="greyBorderBoxContent">
-					<h2>{T.ADD_NEW}</h2>
+					<div class="curvyCorner" style="background-image: url('../img/green_btn.png');margin-right: 10px;height:31px;"><h2 style="padding-top:5px;color: #FFFFFF;">{T.ADD_NEW}</h2></div>
+					<!--<h2>{T.ADD_NEW}</h2>-->
 					<form action="index.php" method="post">
 						<input type="hidden" name="act" value="client-add_program_plan">
 						<input type="hidden" name="pag" value="programs">
@@ -28,8 +29,9 @@
 						
 						<label class="label" for="exercise_note">{T.DESCR_PROG}:</label>
 						<textarea class="textArea curvyCorner" id="exercise_note" name="exercise_note" >{EXERCISE_NOTE}</textarea>
-							
-						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.ADD_PROG}</span></button></div>
+						
+						<div class="buttons login"><button type="submit"><span class="curvyCorner" style="padding-left:10px;height:31px; background-image: url('../img/green_btn.png');">Save & Add Exercises<!--{T.ADD_PROG}--></span></button></div>
+						<!--<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.ADD_PROG}</span></button></div>-->
 					</form>
 				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
 			</div>
