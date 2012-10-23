@@ -12,6 +12,7 @@ $func_access = array
                                     'login_fb' => 4,
 									'login' => 4,
 									'logout' => 4,
+                                    'login_ajax' => 4,
 								),
 					'member' => array(
 										'join_now' => 4,

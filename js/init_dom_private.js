@@ -450,15 +450,29 @@ function AddToFavorites(obj, title, url){
   	}
 }
 
-function onKeyDown(event) {
-// current pressed key
-  var pressedKey = String.fromCharCode(event.keyCode).toLowerCase();
+/**
+ * disallow data copying using Ctrl+C
+ */
+function onKeyDown(event)
+{
+    var pressedKey = String.fromCharCode(event.keyCode).toLowerCase();
 
-  if (event.ctrlKey && (pressedKey == "c" || 
-					  pressedKey == "v")) {
-	event.returnValue = false;
-  }
-} // onKeyDown
+    if (event.ctrlKey && (pressedKey == "c"))
+        event.returnValue = false;
+}
+/**
+ * disallow data copying using HTML attributes
+ * oncopy="return false;" oncut="return false;" ondragstart="return false;"
+ * 
+ * @TODO: change it to events listening through bind method
+ * @TODO remove all these attributes from HTML files
+ */
+$(function(){
+    $('body')
+        .attr('oncopy', 'return false;')
+        .attr('oncut', 'return false;')
+        .attr('ondragstart', 'return false;');
+})
 
 // START THE DOCUMENT READY
 $(document).ready(function() 
@@ -1072,6 +1086,30 @@ $(document).ready(function()
             dataType: "json",
             data: { act: "client-add_to_fav", pid: pid }
 		});
-	})
+	});
+	
+	$('#ajaxLoginBtn').click(function(){
+		var username = $('#usernameAjax').val();
+		var password = $('#passwordAjax').val();
+		var store_login = $('#store_loginAjax').attr('checked') ? 'on' : '';
+
+		$.ajax({
+            url: "index_ajax.php",
+            dataType: "json",
+            data: { act: "auth-login_ajax", username: username, password: password, store_login: store_login },
+			success: function(res)
+			{
+				if(!res.failure)
+				{
+					if(res.pag_redir)
+						window.location = '/index.php?pag='+res.pag_redir;
+				}
+				else
+				{
+					alert(res.error);
+				}
+			}
+		});
+	});
 	
 });

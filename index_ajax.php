@@ -12,17 +12,20 @@ if(!$debug){
 session_register(UID);
 if(isset($_POST['test']))
 {
+	if(!$_SESSION[U_ID])
+		echo 'error';exit;
+	
 	$dbu = new mysql_db();
 	$dbu->query("select trainer.* from trainer where trainer.trainer_id=".$_SESSION[U_ID]." ");
 	$dbu->move_next();
 	$profile_id = $dbu->f('trainer_id');
-	var_dump($profile_id);exit;
+	//var_dump($profile_id);exit;
 	if(!$profile_id) $profile_id = 'error';
 	print_r($profile_id);exit;
 }
 $user_level = $_SESSION[ACCESS_LEVEL] ? $_SESSION[ACCESS_LEVEL] : 4;
 $glob['failure'] = false;
-//var_dump($glob);exit;
+
 if($glob['act'] && !$glob['skip_action'])
 {
 	list($cls_name,$func_name )=split("-",$glob['act']);
@@ -62,7 +65,6 @@ if(!$glob['failure']){
 	    {
 	    	$page = include("php/".$glob['pag'].".php");
 	    	$glob['innerHTML'] = $page;
-//var_dump($glob);exit;
 	    }
 	    else
 	    {
@@ -75,6 +77,7 @@ if(!$glob['failure']){
     	$glob['error']= "You are not allowed to run this function4 !"; 
 	}
 }
+
 header('Content-type:text/plain');
 $json = new Services_JSON();
 
