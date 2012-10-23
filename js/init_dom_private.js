@@ -1107,6 +1107,8 @@ $(document).ready(function()
 				else
 				{
 					alert(res.error);
+					if(res.pag_redir)
+						window.location = '/index.php?pag='+res.pag_redir;
 				}
 			}
 		});

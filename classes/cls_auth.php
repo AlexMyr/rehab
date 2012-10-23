@@ -255,7 +255,7 @@ class auth
 									");
 					
 					if($query->f('is_clinic')==2) $ld['pag_redir'] = 'profile_choose_clinic';
-					else if($query->f('is_clinic')!=2) $ld['pag_redir'] = 'profile';
+					else if($query->f('is_clinic')!=2) $ld['pag_redir'] = 'dashboard';
 				}
 				else if($query->f('active')!=0)
 				{
@@ -269,7 +269,7 @@ class auth
 											trainer_id = ".$query->f('trainer_id')." 
 									");
 					if($query->f('is_clinic')==2) $ld['pag_redir'] = 'profile_choose_clinic';
-					else if($query->f('is_clinic')!=2) $ld['pag_redir'] = 'profile';
+					else if($query->f('is_clinic')!=2) $ld['pag_redir'] = 'dashboard';
 				}
 				
 				$this->dbu->query("
@@ -284,6 +284,7 @@ class auth
 				if(strtotime($query->f('expire_date'))-time()<0)
 				{
 					$ld['error'] = 'Your account has been expired!';
+					$ld['pag_redir'] = 'profile_payment';
 					return false;
 				}
 				
@@ -297,6 +298,7 @@ class auth
 				$_SESSION[ACCESS_LEVEL] = $query->f('access_level');
 				$_SESSION[USER_EMAIL] = $query->f('email');
 				$ld['error'] = 'Your account has been expired!';
+				$ld['pag_redir'] = 'profile_payment';
 				return false;
 			}
 		}
