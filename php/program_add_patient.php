@@ -10,7 +10,16 @@ foreach($tags as $name => $row){
 $ft->define_dynamic('client_line','main');
 $dbu=new mysql_db();
 
-$exerciseString = $dbu->field("SELECT exercise_program_id
+if(isset($glob['custom_prog_id']))
+  $exerciseString = $dbu->field("SELECT exercise_program_id
+					FROM 
+						exercise_program_plan 
+					WHERE 
+						1=1
+					AND
+						exercise_program_plan_id=".$glob['custom_prog_id']." ");
+else
+  $exerciseString = $dbu->field("SELECT exercise_program_id
 					FROM 
 						exercise_program_plan 
 					WHERE 
@@ -31,7 +40,21 @@ if(isset($glob['client_id']) && $glob['client_id'] != '')
   //$button_line = '<a style="width:50px; float:left; margin:0px;" '.$blank.' class="moreBtn" href="'.$alert.'"><span>Print</span></a><button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span>Send Email</span></button>';
     $button_line = '<button style="display:inline;" type="submit" name="print"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.PRINT'].'</span></button>
                     <button style="display:inline;" type="submit" name="mail"><b>&nbsp;</b><span style="margin-right:10px;">'.$tags['T.SEND_EMAIL'].'</span></button>';
-  
+	
+	$custom_plan = $dbu->field('SELECT exercise_program_plan_id
+                                    FROM exercise_program_plan 
+                                    WHERE trainer_id = '.$_SESSION[U_ID].'
+                                        AND client_id = '.$glob['client_id']);
+    
+	if($custom_plan)
+	{
+	  $cusom_plan_line = 'Choose <a href="index.php?pag=program_add_patient&custom_prog_id='.$custom_plan.'&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'">modified</a> (new) programme, or <a href="index.php?pag=program_add_patient&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'">original</a> programme.<br/><br/>';
+	  $ft->assign('CUSTOM_LINE', $cusom_plan_line);
+	}
+	else
+	  $ft->assign('CUSTOM_LINE', '');
+	
+	  
     $dbu->query("select first_name, surname, email, appeal
              FROM client WHERE client_id = {$glob['client_id']} ");
     
@@ -67,7 +90,10 @@ else
 $add_patient = get_template_tag('dashboard', $glob['lang'], 'T.ADD_PATIENT');
 $popup_title = get_template_tag('programs', $glob['lang'], 'T.POPUP_TITLE');
 
-$dbu->query("select * from exercise_program_plan where exercise_program_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_program_plan_id='".$glob['program_id']."' ORDER BY program_name ASC ");
+if(isset($glob['custom_prog_id']))
+  $dbu->query("select * from exercise_program_plan where exercise_program_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_program_plan_id='".$glob['custom_prog_id']."' ORDER BY program_name ASC ");
+else
+  $dbu->query("select * from exercise_program_plan where exercise_program_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_program_plan_id='".$glob['program_id']."' ORDER BY program_name ASC ");
 
 if($dbu->move_next())
 {
@@ -78,7 +104,7 @@ if($dbu->move_next())
             'ADD_PATIENT' => $add_patient,
             'T.POPUP_TITLE' => $popup_title,
             'MODIFY_PROGRAM' => isset($glob['client_id'])
-								? '<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>'
+								? '<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id='.$glob['program_id'].'&client_id='.$glob['client_id'].'" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>'.($custom_plan ? '<span style="position:absolute;left:310px;top:255px;">&nbsp;Note that if you modify program, it\'ll overwrite previously modified one for this user.</span>' : '')
 								: '<a href="javascript:void(0);" id="modify_program_button" class="moreBtn" style="clear: both; opacity:0.5; filter:alpha(opacity=50);"><span>Modify</span></a>'
 		));
 	$ft->parse('CLIENT_LINE_OUT','.client_line');

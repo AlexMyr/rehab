@@ -228,6 +228,40 @@ class client
     
 	function update_program_exercise_plan(&$ld)
 	{
+		$is_custom = $this->dbu->field("select parent_plan from exercise_program_plan where trainer_id=".$_SESSION[U_ID]." and exercise_program_plan_id=".$ld['program_id']) ? true : false;
+		
+		//update secondary
+		$this->dbu->query("select exercise_program_plan_id, client_id from exercise_program_plan where trainer_id=".$_SESSION[U_ID]." and parent_plan=".$ld['program_id']);
+		while($this->dbu->move_next())
+		{
+			$secondary_program[] = array('client_id'=> $this->dbu->f('client_id'), 'program_id'=>$this->dbu->f('exercise_program_plan_id'));
+		}
+//var_dump($secondary_program);exit;
+		if(count($secondary_program) && !$is_custom)
+		{
+			$this->dbu->query("select * from exercise_program_plan where exercise_program_plan_id=".$ld['program_id']);
+			$this->dbu->move_next();
+			$program_name = $this->dbu->f('program_name');
+			$exercise_program_id = $this->dbu->f('exercise_program_id');
+			$exercise_notes = $this->dbu->f('exercise_notes');
+			$print_image_type = $this->dbu->f('print_image_type');
+			$client_note = $this->dbu->f('client_note');
+			
+			for($i=0; $i<count($secondary_program);$i++)
+			{
+				$this->dbu->query("update exercise_program_plan
+									set program_name='".$program_name."',
+										exercise_program_id='".$exercise_program_id."',
+										exercise_notes='".$exercise_notes."',
+										print_image_type='".$print_image_type."',
+										client_note='".$client_note."'
+								  where exercise_program_plan_id=".$secondary_program[$i]['program_id']);
+				
+				$this->dbu->query("delete from exercise_plan_set where exercise_plan_id=".$secondary_program[$i]['program_id']);
+				$this->dbu->query("delete from programs_custom_descr where program_id=".$secondary_program[$i]['program_id']);
+			}
+		}
+		
 		$exercise = explode(',',$ld['exercise_id']);
 		$i=0;
 		while ($i<count($exercise)) 
@@ -244,6 +278,15 @@ class client
                 $this->dbu->query('INSERT INTO `programs_custom_descr` (exercise_id, program_id, description)
                                     VALUES ('.$exercise[$i].', '.$ld['program_id'].', "'.mysql_real_escape_string($ld['description'.$exercise[$i]]).'");');
             }
+			
+			if(count($secondary_program) && !$is_custom)
+			{
+				for($j=0; $j<count($secondary_program);$j++)
+				{
+					$this->dbu->query('INSERT INTO `programs_custom_descr` (exercise_id, program_id, description)
+                                    VALUES ('.$exercise[$i].', '.$secondary_program[$j]['program_id'].', "'.mysql_real_escape_string($ld['description'.$exercise[$i]]).'");');
+				}
+			}
 			
 			$this->dbu->query("SELECT * FROM exercise_plan_set WHERE 
 								exercise_plan_id = '".$ld['program_id']."' AND
@@ -285,9 +328,32 @@ class client
 						is_program_plan = 1
 					");			
 			}
-			$i++;			
+			
+			//update secondary
+			if(count($secondary_program) && !$is_custom)
+			{
+				for($j=0; $j<count($secondary_program);$j++)
+				{
+					$this->dbu->query("
+						 INSERT INTO
+							exercise_plan_set 
+						 SET
+							exercise_plan_id = '".$secondary_program[$j]['program_id']."',
+							exercise_program_id = '".$exercise[$i]."',
+							plan_description = '".mysql_escape_string($ld['description'.$exercise[$i]])."',
+							plan_set_no = '".mysql_escape_string($ld['sets'.$exercise[$i]])."',
+							plan_repetitions = '".mysql_escape_string($ld['repetitions'.$exercise[$i]])."',
+							plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
+							trainer_id = '".$_SESSION[U_ID]."',
+							client_id = '".$secondary_program[$j]['program_id']."',
+							is_program_plan = 1
+						");
+				}
+			}
+			
+			$i++;
 		}
-		
+
 		$this->dbu->query("UPDATE exercise_program_plan 
 							SET 
 								exercise_notes = '".mysql_real_escape_string($ld['exercise_notes'])."',
@@ -991,7 +1057,7 @@ class client
             $plan_copy = $this->dbu->query_get_id("INSERT INTO exercise_program_plan SELECT * FROM foo;");
             $this->dbu->query("DROP TABLE foo;");
         }
-        $_SESSION['modify_program_return_url'] = 'index.php?pag=program_add_patient&client_id='.$ld['client_id'].'&program_id='.$plan_copy.$first.$surname.$appeal.$email.$mode;
+        $_SESSION['modify_program_return_url'] = 'index.php?pag=program_add_patient&client_id='.$ld['client_id'].'&custom_prog_id='.$plan_copy.'&program_id='.$ld['program_id'].$first.$surname.$appeal.$email.$mode;
         
         header("location: /index.php?pag=program_update_exercise&program_id=".$plan_copy);exit;
         exit();
