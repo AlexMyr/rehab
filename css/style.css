@@ -404,8 +404,12 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 
 .preview_buttons { display: block; width:712px; padding: 10px; position:fixed; top:0px; border-bottom: 1px solid #797979; background: url("../img/previewBtnsBg.png") repeat scroll 0 0; margin:0px 0px 0px -36px; }
 
-.preview_buttons .moreBtn { display: block; margin:0px 20px 0px 0px; width:auto; float:left; font-family: "MergeRegular"; }
+.preview_buttons .moreBtn { display: block; margin:0px 20px 0px 0px; width:auto; float:left; font-family: "MergeRegular"; background: url("../img/moreBtnGreenLft.png") no-repeat scroll left center;}
+.preview_buttons .moreBtn span { background: url("../img/moreBtnGreen.png") no-repeat scroll right top;}
+
 .preview_buttons .buttons { display: block; margin:0px 20px 0px 0px; width:auto; float:left; }
+.preview_buttons .buttons b { background: url("../img/moreBtnGreenLft.png") no-repeat scroll left center; }
+.preview_buttons .buttons span { background: url("../img/moreBtnGreen.png") no-repeat scroll right top;}
 
 .header_infos .header_logo {max-height:300px; max-width:300px; display:block; float:left; margin:0px 10px 10px 0px; }
 
