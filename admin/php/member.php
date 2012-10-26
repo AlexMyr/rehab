@@ -28,11 +28,12 @@ else
 
 if(isset($glob['search_key']))
 {
+  $search_key = mysql_escape_string(trim($glob['search_key']));
   
   $dbu=new mysql_db;
   if($glob['search_key'])
   {
-    $dbu->query("select * from trainer where username like '%".$glob['search_key']."%' or email like '%".$glob['search_key']."%' order by create_date desc, trainer_id asc");
+    $dbu->query("select * from trainer where username like '%".$search_key."%' or email like '%".$search_key."%' order by create_date desc, trainer_id asc");
     
     $max_rows=$dbu->records_count();
 

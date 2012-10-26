@@ -31,8 +31,8 @@ else
 $show_logo_column = false;
 
 $where = '';
-if($glob['search_key'])
-	$where = "and (username like '%".mysql_escape_string($glob['search_key'])."%' or email like '%".$glob['search_key']."%')";
+//if($glob['search_key'])
+//	$where = "and (trainer.username like '%".mysql_escape_string($glob['search_key'])."%' or trainer.email like '%".mysql_escape_string($glob['search_key'])."%')";
 
 $order_by = ' order by create_date desc, trainer_id asc';
 
@@ -64,7 +64,7 @@ else if($glob['active']==0)
 }
 else if($glob['active']==1)
 {
-	$dbu->query("select * from trainer where 1  and (active=1 or (active=2 and expire_date='0000-00-00 00:00:00') $where) $order_by");
+	$dbu->query("select * from trainer where 1  and (active=1 or (active=2 and expire_date='0000-00-00 00:00:00')) $where $order_by");
 	$bannName='Block';
 	$pageTitle='Members List';
 }
@@ -171,7 +171,7 @@ while($dbu->move_next()&&$i<$l_r)
 if($i==0)
 {
     unset($ft);
-	return get_error_message("Empty database.");
+	return get_error_message("Search list empty.");
 }
 
 if($offset>=$l_r)
