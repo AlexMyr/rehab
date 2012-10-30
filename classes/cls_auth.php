@@ -16,7 +16,15 @@ class auth
 	function login(&$ld)
 	{
 		global $user_level;
-
+		$ld['username'] = trim($ld['username']);
+		$ld['password'] = trim($ld['password']);
+		
+		if(!$ld['username'] || !$ld['password'])
+		{
+			$ld['error'] = 'Username or password invalid';
+			return false;
+		}
+		
 		$query = $this->dbu;
 		
 		if(isset($ld['fb_id']))
