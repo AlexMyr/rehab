@@ -439,52 +439,55 @@ class client
 		{
 			//try check, if such client exists
 			$user_exists = false;
-			$this->dbu->query("select * from client where email='".$ld['email']."'");
-			while($this->dbu->move_next())
+			if(trim($ld['email']))
 			{
-				$user_exists = true;
-				$client_id = $this->dbu->f('client_id');
-				$trainer_id = $this->dbu->f('trainer_id');
-
-				if(!$this->dbu2->field("select count(*) from exercise_plan where exercise_program_id='".$exerciseString."' and client_id=$client_id"))
+				$this->dbu->query("select * from client where email='".$ld['email']."'");
+				while($this->dbu->move_next())
 				{
-					$exercise_plan_id=$this->dbu2->query_get_id("
-										INSERT INTO 
-											exercise_plan 
-										SET 
-											exercise_program_id='".$exerciseString."', 
-											date_created=NOW(), 
-											date_modified=NOW(), 
-											trainer_id='".$trainer_id."', 
-											client_id= ".$client_id." 
-										");
+					$user_exists = true;
+					$client_id = $this->dbu->f('client_id');
+					$trainer_id = $this->dbu->f('trainer_id');
 	
-					$this->dbu2->query("
-						SELECT *
-						FROM exercise_plan_set
-						WHERE exercise_plan_id = ".$ld['program_id']."
-					");
-					
-					while($this->dbu2->move_next())
+					if(!$this->dbu2->field("select count(*) from exercise_plan where exercise_program_id='".$exerciseString."' and client_id=$client_id"))
 					{
-						$this->dbu3->query("
-							 INSERT INTO
-								exercise_plan_set 
-							 SET
-								exercise_plan_id = '".$exercise_plan_id."',
-								exercise_program_id = '".$this->dbu2->f('exercise_program_id')."',
-								plan_description = '".mysql_escape_string($this->dbu2->f('plan_description'))."',
-								plan_set_no = '".mysql_escape_string($this->dbu2->f('plan_set_no'))."',
-								plan_repetitions = '".mysql_escape_string($this->dbu2->f('plan_repetitions'))."',
-								plan_time = '".mysql_escape_string($this->dbu2->f('plan_time'))."',
-								trainer_id = '".$trainer_id."',
-								client_id = '".$client_id."',
-								is_program_plan = 0
-							");		
+						$exercise_plan_id=$this->dbu2->query_get_id("
+											INSERT INTO 
+												exercise_plan 
+											SET 
+												exercise_program_id='".$exerciseString."', 
+												date_created=NOW(), 
+												date_modified=NOW(), 
+												trainer_id='".$trainer_id."', 
+												client_id= ".$client_id." 
+											");
+		
+						$this->dbu2->query("
+							SELECT *
+							FROM exercise_plan_set
+							WHERE exercise_plan_id = ".$ld['program_id']."
+						");
+						
+						while($this->dbu2->move_next())
+						{
+							$this->dbu3->query("
+								 INSERT INTO
+									exercise_plan_set 
+								 SET
+									exercise_plan_id = '".$exercise_plan_id."',
+									exercise_program_id = '".$this->dbu2->f('exercise_program_id')."',
+									plan_description = '".mysql_escape_string($this->dbu2->f('plan_description'))."',
+									plan_set_no = '".mysql_escape_string($this->dbu2->f('plan_set_no'))."',
+									plan_repetitions = '".mysql_escape_string($this->dbu2->f('plan_repetitions'))."',
+									plan_time = '".mysql_escape_string($this->dbu2->f('plan_time'))."',
+									trainer_id = '".$trainer_id."',
+									client_id = '".$client_id."',
+									is_program_plan = 0
+								");		
+						}
 					}
 				}
 			}
-
+			
 			if(!$user_exists)
 			{
 				$client_id = $this->dbu->query_get_id("
