@@ -60,7 +60,7 @@ a { cursor:pointer; color:#ffffff; }
 .topForSubMenu span { background: url(../img/mainNavHOver.jpg) no-repeat top right; }
 
 .navMenu { width:640px; float:left; display:block; }
-.navMenu ul { padding:52px 0px 0px 0px; text-align:right; }
+.navMenu ul { padding:65px 0px 0px 0px; text-align:right; }
 .navMenu ul li { display:inline-block; *display:inline; list-style-type:none; list-style-position:outside; margin:0px 2px 0px 2px; position:relative; width:auto; }
 .navMenu a { font-size: 14px; color:#ffffff; text-decoration:none; text-transform:capitalize; line-height:31px; padding:0px 0px 0px 5px; display:inline-block; width:auto; }
 .navMenu a span { padding:0px 5px 0px 0px;	display:inline-block; line-height:31px; width:auto; }
@@ -256,36 +256,40 @@ p.redBold { color:#f00; font-weight:bold; }
 
 .add_ico { background: url("../img/add_ico.jpg") no-repeat left top transparent; display:inline-block; width:16px; height:16px; }
 
-.clientList .clientListTitle { background: url("../img/bar_blue.png") no-repeat left top transparent; width:700px; font-size:18px; font-family: "MergeRegular"; text-shadow:#fff 1px 1px 0px; color:#c2c2c2; background-color: transparent; line-height:33px; color:#000000; }
+.clientList .clientListTitle { background: url("../img/bar_blue.png") no-repeat left top transparent; width:700px; font-size:18px; font-family: "MergeRegular"; text-shadow:#fff 1px 1px 0px; color:#c2c2c2; background-color: transparent; line-height:35px; color:#000000; }
 .clientList .clientListTitle .add_exercise { display:inline-block; width:37px; }
 .clientList .clientListTitle .name { display:inline-block; width:273px; }
 .clientList .clientListTitle .name_program { padding-left:10px; display:inline-block; width:250px; }
+.clientList .clientListTitle .name_exercise { padding-left:10px; display:inline-block; width:150px; }
 .clientList .clientListTitle .count { display:inline-block; width:110px; }
 .clientList .clientListTitle .dateTime { display:inline-block; width:174px; }
-.clientList .clientListTitle .creationDate { padding-left:10px; display:inline-block; width:221px; padding-right:10px; }
+.clientList .clientListTitle .creationDate { padding-left:10px; display:inline-block; width:200px; padding-right:10px; }
 /*.clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:349px; }
 .clientList .clientListTitle .actions { display:inline-block; width:84px; }*/
-.clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:286px; }
+.clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:150px; }
 .clientList .clientListTitle .actions { display:inline-block; width:114px; }
 .clientList .clientListTitle .description { display:inline-block; width:250px; }
 .clientList .clientListTitle a { text-decoration: none; text-shadow: none;}
 
-.clientList .clientListRow { padding: 12px 0 3px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
-.clientList .clientListRow.clientRecord { height:auto; padding-bottom:12px; }
+.clientList .clientListRow { padding: 0px 0 3px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
+.clientList .clientListRow span { padding: 12px 0 12px; }
+.clientList .clientListRow.clientRecord { height:auto; padding-bottom:0px; min-height:86px; }
 .clientList .clientListRow .add_exercise { padding:0px 10px; display:inline-block; width:17px; }
 .clientList .clientListRow .name { display:inline-block; width:275px; }
 .clientList .clientListRow .name_program { display:inline-block; width:250px; vertical-align: top;}
+.clientList .clientListRow .name_exercise { display:block; float: left; width:150px; padding-left:5px; min-height:86px;}
 .clientList .clientListRow .description { padding-left:4px; display:inline-block; width:250px; color:#666666; color:#343434;  }
 .clientList .clientListRow .count { padding-left:3px; display:inline-block; width:107px; color:#666666; color:#343434; }
 .clientList .clientListRow .dateTime { padding-left:4px; display:inline-block; width:171px; color:#666666; color:#343434; }
-.clientList .clientListRow .creationDate { padding-left:10px; display:inline-block; width:221px; color:#666666; color:#343434; padding-right:10px; vertical-align: top; }
+.clientList .clientListRow .creationDate { padding-left:10px; display:block; float: left; width:200px; color:#666666; color:#343434; padding-right:5px; vertical-align: top; border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF; min-height:86px;}
 .clientList .clientListRow .creationDate h2 { font-size:18px; }
 .clientList .clientListRow .creationDate p { font-size:11px; color:#999999; color:#343434; }
 /*.clientList .clientListRow .notes { padding-right:10px; display:inline-block; width:353px; color:#666666; color:#343434; vertical-align: top; }
 .clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:80px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:16px; height:16px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }*/
-.clientList .clientListRow .notes { padding-right:10px; display:inline-block; width:286px; color:#666666; color:#343434; vertical-align: top; }
-.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:130px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .notes { padding-right:10px; display:block; float: left; width:150px; color:#666666; color:#343434; vertical-align: top; border-right: 1px solid #FFFFFF;  min-height:86px;}
+.clientList .clientListRow .actions { padding-left:0px; width:130px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .actions.clientActions { padding-left:0px; display:block; float: left; width:130px; color:#666666; vertical-align: top;  min-height:86px;}
 .clientList .clientListRow .actions.programActions { padding-left:0px; display:inline-block; width:160px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions a { display:inline-block; width:24px; height:24px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }
 .clientList .clientListRow .actions a span { display:none; }
