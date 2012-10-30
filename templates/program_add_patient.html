@@ -7,10 +7,10 @@
 				<h3>{T.SEND_PROG} {PROGRAM_NAME} {T.TO_YOUR_PATIENT}</h3>
 				<br />
 				{CUSTOM_LINE}
-				<a href="javascript: void(0);" pid="{PROGRAM_ID}" ptitle="{T.POPUP_TITLE}" id="add_patient_button" class="moreBtn"><span>{ADD_PATIENT}</span></a>
+				<a href="javascript: void(0);" pid="{PROGRAM_ID_ORIG}" ptitle="{T.POPUP_TITLE}" id="add_patient_button" class="moreBtn"><span>{ADD_PATIENT}</span></a>
 				{MODIFY_PROGRAM}
 				<!--<a href="index.php?pag=program_update_exercise&act=client-modify_program&program_id={PROGRAM_ID}&client_id={CLIENT_ID}" id="modify_program_button" class="moreBtn" style="clear: both;"><span>Modify</span></a>-->
-				<form action="index.php" method="post" target="_blank">
+				<form action="index.php" method="post" id="program_add_patient_form">
 				<input type="hidden" name="act" value="client-send_program_email">
 				<input type="hidden" name="pag" value="program_add_patient">
 				<input type="hidden" name="program_id" value="{PROGRAM_ID}">

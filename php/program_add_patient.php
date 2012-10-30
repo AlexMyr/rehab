@@ -115,6 +115,7 @@ $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywor
 $site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 
+$ft->assign('PROGRAM_ID_ORIG', $glob['program_id']);
 $ft->assign('CSS_PAGE', $glob['pag']);
 $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 $ft->parse('CONTENT','main');
