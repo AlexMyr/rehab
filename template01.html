@@ -58,29 +58,35 @@
                     <a id="lang_us" href="/us/index.php" value="us"><img src="/img/us.gif"/></a>
                 </div>
                 
-                <div style="position: absolute; left: 730px; {DISPLAY_LOGIN_BLOCK}">
+                <div style="float:right; padding-right:5px; font-size: 14px; {DISPLAY_LOGIN_BLOCK}">
 					<form action="index.php" method="post">
 					<input type="hidden" name="act" value="auth-login">
 					<input type="hidden" name="pag" value="login">
 					<div style="float:left;margin-right:10px;">
-						<span style="color: #FFFFFF;">{T.USERNAME}</span><br/>
+						<span style="color: #FFFFFF;">User Name</span><br/>
 						<span>
-							<input class="textField" type="text" id="usernameAjax" name="username" value="" />
+							<input style="height:20px; line-height:20px; border: 1px solid #1E3658;" class="textField" type="text" id="usernameAjax" name="username" value="" />
 						</span><br/>
-						<span style="color: #FFFFFF;">
-							<input type="checkbox" name="store_login" id="store_loginAjax" />&nbsp;Keep me logged in
+						<span style="display: block; color: #FFFFFF;">
+							<span style="display: block; float: left; padding-top:5px;">
+								<input type="checkbox" name="store_login" id="store_loginAjax" />
+							</span>
+							<span style="display: block; float: left; padding-top:4px;">
+								&nbsp;Keep me logged in
+							</span>
 						</span>
 						
 					</div>
 					<div style="float:left;">
 						<span style="color: #FFFFFF;">{T.PASS}</span><br/>
 						<span>
-							<input class="textField" type="password" id="passwordAjax" name="password" value="" />
+							<input style="height:20px; line-height:20px; border: 1px solid #1E3658;" class="textField" type="password" id="passwordAjax" name="password" value="" />
 						</span><br/>
-						<span style="color: #FFFFFF; cursor: pointer;">{T.FORGOT}</span>
+						<span id="forgotPass" style="color: #FFFFFF; cursor: pointer; display: block; padding-top:4px;">
+							Forgot Password?
+						</span>
 					</div>
-					
-					<div style="padding:8px 0px 0px 325px;"><a id="ajaxLoginBtn" href="javascript: void(0);" style="color: #FFFFFF;display: inline-block;font-size: 14px;line-height: 31px;padding: 0 0 0 5px;text-decoration: none;text-transform: capitalize;width: auto;"><span style="display: inline-block; line-height: 31px; padding: 0 5px 0 0; width: auto;">Log In</span></a></div>
+					<div style="padding:11px 0px 0px 325px;"><button id="ajaxLoginBtn" style="cursor:pointer; background: none repeat scroll 0 0 transparent; color: #FFFFFF;display: inline-block;font-size: 14px;line-height: 27px;padding: 0 0 0 8px;width: auto;"><b style="padding-left:4px;display: inline-block; background: url(../img/ajaxLoginBtnLft.png) no-repeat top left;">&nbsp;</b><span style="display: inline-block; line-height: 27px; padding: 0 8px 0 0; width: auto; background: url(../img/ajaxLoginBtn.png) no-repeat top right;">Log In</span></button></div>
 					<br/>
 					
 				</form>

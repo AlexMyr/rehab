@@ -2,23 +2,18 @@
 		{MESSAGE}
 		<h2 class="bottomLine"><span class="pageTitle">{T.MY_PATIENS}</span></h2>
 		<div class="sidebar">
-			<!-- div class="blueBox">
-				<div class="blueBoxContent">
-					<h2>Quick tip</h2>
-					<p>To create a patient exercise plan, click the <span class="add_ico">&nbsp;</span> Add New icon next to the appropriate client record</p>
-				</div>
-				<img src="img/sidebarLightBlueBottom.jpg" class="blueBoxBottom">
-			</div -->
-			<div class="greyBorderBox">
-				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
-				<div class="greyBorderBoxContent">
-					<div class="curvyCorner" style="background-image: url('../img/green_btn.png');margin-right: 10px;height:31px;"><h2 style="padding-top:5px;color: #FFFFFF;">{T.ADD_NEW}</h2></div>
+			<div style="background: url('../img/greenHeaderTop.png') no-repeat scroll center top transparent;">
+				<h2 style="padding:15px 0px 0px 45px;color: #FFFFFF;height:31px;">{T.ADD_NEW}</h2>
+			</div>
+			<div class="greyBorderBox" style="margin-bottom:0px;">
+				<div class="greyBorderBoxContent" style="background: url('../img/exercises_middle_new.png') repeat-y scroll center top transparent; width: auto;">
+					
 					<form action="index.php" method="post">
 						<input type="hidden" name="act" value="client-add_client">
 						<input type="hidden" name="pag" value="dashboard">
 						<input type="hidden" name="client_id" value="">
 						
-						<label class="label" for="first_name">{T.FIRST_NAME}<sup>*</sup>:</label>
+						<label class="label" for="first_name" style="margin-top:0px;">{T.FIRST_NAME}<sup>*</sup>:</label>
 						<input class="textField curvyCorner" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
 							
 						<label class="label" for="surname">{T.SURNAME}<sup>*</sup>:</label>
@@ -35,13 +30,11 @@
 							{IMAGE_TYPE}
 						</select>
 						
-						<!--<label class="label" for="client_note">{T.DESCR_PROG}:</label>
-						<textarea class="textArea curvyCorner" id="client_note" name="client_note" >{CLIENT_NOTE}</textarea>-->
-						
-						<div class="buttons login"><button type="submit"><b style="height:31px; background-image: url('../img/green_btn_lft.png');">&nbsp;</b><span style="height:31px; background-image: url('../img/green_btn.png');">Save & Go to patient's page<!--{T.ADD_PATIENT}--></span></button></div>
+						<div class="buttons login" style="padding-top:15px;"><button type="submit"><b style="height:31px; background-image: url('../img/green_btn_lft.png');">&nbsp;</b><span style="height:31px; background-image: url('../img/green_btn.png'); font-size:13px;">Save & Go to Patient's page<!--{T.ADD_PATIENT}--></span></button></div>
 					</form>
-				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
+				</div>
 			</div>
+			<div style="background: url('../img/greenHeaderBottom.png')  no-repeat scroll center top transparent;">&nbsp;</div>
 		</div>
 		<div class="filterSection">&nbsp;&nbsp;<input id="filterPatientsValue" class="curvyCorner" type="text" value="{FILTER_VALUE}" /><a class="moreBtn" id="filterPatientsUrl" href="{FILTER_LINK}"><span>Filter</span></a></div>
 		<div>

@@ -1,82 +1,92 @@
-	<div id="content" class="siteContent dashboard">
-		{MESSAGE}
-		<h2 class="bottomLine"><span class="pageTitle">{CLIENT_NAME}</span> / {T.RECORD}</h2>
-		<div class="sidebar">
-			<form action="index.php" method="post" id="create_exercise">
-				<!-- input type="hidden" name="act" value="client-add_exercise" -->
-				<input type="hidden" name="pag" value="client_add_exercise">
-				<input type="hidden" name="client_id" value="{CLIENT_ID}">
-				<input type="hidden" id="exercise_desc" name="exercise_desc" value="">
-				<!--<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>-->
-			</form>
-			<div class="greyBorderBox">
-				<img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
-				<div class="greyBorderBoxContent">
-					<h2>{T.INFO}</h2>
-					<form action="index.php" method="post">
-						<input type="hidden" name="act" value="client-update_client">
-						<input type="hidden" name="pag" value="client">
-						<input type="hidden" name="client_id" value="{CLIENT_ID}">
-						
-						<label class="label" for="first_name">{T.FIRST_NAME}<sup>*</sup>:</label>
-						<input class="textField curvyCorner" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
-							
-						<label class="label" for="surname">{T.SURNAME}<sup>*</sup>:</label>
-						<input class="textField curvyCorner" type="text" id="surname" name="surname" value="{SURNAME}" />
-						
-						<label class="label" for="appeal">Title:</label>
-						<input class="textField curvyCorner" type="text" name="appeal" value="{APPEAL}">
-								
-						<label class="label" for="email">{T.EMAIL}:</label>
-						<input class="textField curvyCorner" type="text" id="email" name="email" value="{EMAIL}" />
-								
-						<label class="label" for="print_image_type">{T.IMAGE_TYPE}:</label>
-						<select id="print_image_type curvyCorner" class="textField" name="print_image_type">
-							{IMAGE_TYPE}
-						</select>
-							
-						<div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
-					</form>
-				</div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
-			</div>
-			<form action="index.php" method="post">
-				<input type="hidden" name="act" value="client-delete_client">
-				<input type="hidden" name="pag" value="client_delete">
-				<input type="hidden" name="client_id" value="{CLIENT_ID}">
-				<input type="hidden" name="client_name" value="{CLIENT_NAME}">
-						
-				<div class="buttons deleteClient"><button class="del" type="submit"><b>&nbsp;</b><span>x {T.DELETE}</span></button></div>
-			</form>
-		</div>
-		<div class="clientList">
-			<div class="clientListTitle">
-				<span class="creationDate">{T.DATE_CREATED}</span>
-				<span class="notes">{T.NOTES}</span>
-				<span class="actions">{T.ACTIONS}</span>
-			</div>
+    <div id="content" class="siteContent dashboard">
+        {MESSAGE}
+        <h2 class="bottomLine"><span class="pageTitle">{CLIENT_NAME}</span> / {T.RECORD}</h2>
+        <div class="sidebar">
+            <form action="index.php" method="post" id="create_exercise">
+                <!-- input type="hidden" name="act" value="client-add_exercise" -->
+                <input type="hidden" name="pag" value="client_add_exercise">
+                <input type="hidden" name="client_id" value="{CLIENT_ID}">
+                <input type="hidden" id="exercise_desc" name="exercise_desc" value="">
+                <!--<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>-->
+            </form>
+            <div class="greyBorderBox">
+                <img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
+                <div class="greyBorderBoxContent">
+                    <h2>{T.INFO}</h2>
+                    <form action="index.php" method="post">
+                        <input type="hidden" name="act" value="client-update_client">
+                        <input type="hidden" name="pag" value="client">
+                        <input type="hidden" name="client_id" value="{CLIENT_ID}">
+                        
+                        <label class="label" for="first_name">{T.FIRST_NAME}<sup>*</sup>:</label>
+                        <input class="textField curvyCorner" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
+                            
+                        <label class="label" for="surname">{T.SURNAME}<sup>*</sup>:</label>
+                        <input class="textField curvyCorner" type="text" id="surname" name="surname" value="{SURNAME}" />
+                        
+                        <label class="label" for="appeal">Title:</label>
+                        <input class="textField curvyCorner" type="text" name="appeal" value="{APPEAL}">
+                                
+                        <label class="label" for="email">{T.EMAIL}:</label>
+                        <input class="textField curvyCorner" type="text" id="email" name="email" value="{EMAIL}" />
+                                
+                        <label class="label" for="print_image_type">{T.IMAGE_TYPE}:</label>
+                        <select id="print_image_type curvyCorner" class="textField" name="print_image_type">
+                            {IMAGE_TYPE}
+                        </select>
+                            
+                        <div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
+                    </form>
+                </div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
+            </div>
+            <form action="index.php" method="post">
+                <input type="hidden" name="act" value="client-delete_client">
+                <input type="hidden" name="pag" value="client_delete">
+                <input type="hidden" name="client_id" value="{CLIENT_ID}">
+                <input type="hidden" name="client_name" value="{CLIENT_NAME}">
+                        
+                <div class="buttons deleteClient"><button class="del" type="submit"><span style="background: url('../img/delPatient.png') no-repeat scroll right top transparent;
+    color: #FFFFFF; text-align: center; line-height: 25px; padding-right: 0px;">x {T.DELETE}</span></button></div>
+            </form>
+        </div>
+        <div class="clientList">
+            <div class="clientListTitle">
+            	<span class="name_exercise">Name</span>
+                <span class="creationDate">{T.DATE_CREATED}</span>
+                <span class="notes">{T.NOTES}</span>
+                <span class="actions">{T.ACTIONS}</span>
+            </div>
+            <div class="clientListDynamic">
 <!-- BEGIN DYNAMIC BLOCK: client_record_line -->
-			<div class="clientListRow clientRecord" id="{EXERCISE_ID}">
-				<span class="creationDate">
-					<h2>{CREATE_DATE}</h2>
-					<p>{T.LAST_MOD}: {MODIFY_DATE}</p>
-				</span>
-				<span class="notes">{EXERCISE_DESC}</span>
-				<span class="actions">
-					<a title="Email" style="display: {HIDE_EMAIL};" href="index.php?pag=client_email&act=client-mail_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="mail"><span>mail</span></a>
-					<a title="Print" href="index.php?pag=exercisepdf&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="print" target="_blank" ><span>print</span></a>
-					<a title="Edit" href="index.php?pag=client_update_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="edit"><span>edit</span></a>
-					<a title="Delete" href="index.php?pag=client&act=client-delete_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="delete"><span>delete</span></a>
-				</span>
-			</div>
+            <div class="clientListRow clientRecord" id="{EXERCISE_ID}">
+            	<div class="name_exercise"><div style="margin: 10px;">&nbsp;{EXERCISE_NAME}</div></div>
+                <div class="creationDate">
+                	<div style="margin: 10px;">
+                    	<h2>{CREATE_DATE}</h2>
+                    	<p>{T.LAST_MOD}: {MODIFY_DATE}</p>
+                    </div>
+                </div>
+                <div class="notes"><div style="margin: 10px;">{EXERCISE_DESC}</div></div>
+                <div class="actions clientActions">
+                	<div style="margin: 10px 0 0 10px;">
+	                    <a title="Email" style="display: {HIDE_EMAIL};" href="index.php?pag=client_email&act=client-mail_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="mail"><span>mail</span></a>
+	                    <a title="Print" href="index.php?pag=exercisepdf&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="print" target="_blank" ><span>print</span></a>
+	                    <a title="Edit" href="index.php?pag=client_update_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="edit"><span>edit</span></a>
+	                    <a title="Delete" href="index.php?pag=client&act=client-delete_exercise&client_id={CLIENT_ID}&exercise_plan_id={EXERCISE_PLAN_ID}" class="delete"><span>delete</span></a>
+	                </div>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
 <!-- END DYNAMIC BLOCK: client_record_line -->
+        </div>
 <div class="buttons deleteClient" style="margin-top:10px;"><button id="addExerciseToClient" type="submit"><span class="curvyCorner" style="padding-left:10px;height:31px; background-image: url('../img/green_btn.png');">{T.ADD_EXERCISE}</span></button></div>
-<ul class="paginate {HIDE_NAV}">
+<!--<ul class="paginate {HIDE_NAV}">
 <li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
 {PAGG}
 <li class="{CSS_NEXTLINK}"><a class="moreBtn" href="{NEXTLINK}"><span>{T.NEXT} &gt;</span></a></li>
 <li class="{CSS_LAST_LINK}"><a class="moreBtn" href="{LAST_LINK}"><span>{T.LAST}</span></a></li>
-</ul>
+</ul>-->
 
-		</div>
-		<div class="clearAll"></div>
-	</div>
+        </div>
+        <div class="clearAll"></div>
+    </div>
