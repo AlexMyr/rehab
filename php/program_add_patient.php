@@ -44,6 +44,7 @@ if(isset($glob['client_id']) && $glob['client_id'] != '')
 	$custom_plan = $dbu->field('SELECT exercise_program_plan_id
                                     FROM exercise_program_plan 
                                     WHERE trainer_id = '.$_SESSION[U_ID].'
+										AND parent_plan = '.$glob['program_id'].'
                                         AND client_id = '.$glob['client_id']);
     
 	if($custom_plan)

@@ -482,7 +482,7 @@ class client
 									trainer_id = '".$trainer_id."',
 									client_id = '".$client_id."',
 									is_program_plan = 0
-								");		
+							");		
 						}
 					}
 				}
@@ -490,7 +490,9 @@ class client
 			
 			if(!$user_exists)
 			{
-				$client_id = $this->dbu->query_get_id("
+				if($ld['first_name'] || $ld['surname'])
+				{
+					$client_id = $this->dbu->query_get_id("
 									INSERT INTO 
 										client 
 									SET 
@@ -505,39 +507,40 @@ class client
 										trainer_id = ".$_SESSION[U_ID]." 
 									");
 				
-				$exercise_plan_id=$this->dbu->query_get_id("
-									INSERT INTO 
-										exercise_plan 
-									SET 
-										exercise_program_id='".$exerciseString."', 
-										date_created=NOW(), 
-										date_modified=NOW(), 
-										trainer_id='".$_SESSION[U_ID]."', 
-										client_id= ".$client_id." 
-									");
-
-				$this->dbu->query("
-					SELECT *
-					FROM exercise_plan_set
-					WHERE exercise_plan_id = ".$ld['program_id']."
-				");
-				
-				while($this->dbu->move_next())
-				{
+					$exercise_plan_id=$this->dbu->query_get_id("
+										INSERT INTO 
+											exercise_plan 
+										SET 
+											exercise_program_id='".$exerciseString."', 
+											date_created=NOW(), 
+											date_modified=NOW(), 
+											trainer_id='".$_SESSION[U_ID]."', 
+											client_id= ".$client_id." 
+										");
+	
 					$this->dbu->query("
-						 INSERT INTO
-							exercise_plan_set 
-						 SET
-							exercise_plan_id = '".$exercise_plan_id."',
-							exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
-							plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
-							plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
-							plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
-							plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
-							trainer_id = '".$_SESSION[U_ID]."',
-							client_id = '".$client_id."',
-							is_program_plan = 0
+						SELECT *
+						FROM exercise_plan_set
+						WHERE exercise_plan_id = ".$ld['program_id']."
+					");
+					
+					while($this->dbu->move_next())
+					{
+						$this->dbu->query("
+							 INSERT INTO
+								exercise_plan_set 
+							 SET
+								exercise_plan_id = '".$exercise_plan_id."',
+								exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+								plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+								plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+								plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+								plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+								trainer_id = '".$_SESSION[U_ID]."',
+								client_id = '".$client_id."',
+								is_program_plan = 0
 						");		
+					}
 				}
 			}
 		}
@@ -1060,7 +1063,7 @@ class client
             $plan_copy = $this->dbu->query_get_id("INSERT INTO exercise_program_plan SELECT * FROM foo;");
             $this->dbu->query("DROP TABLE foo;");
         }
-        $_SESSION['modify_program_return_url'] = 'index.php?pag=program_add_patient&client_id='.$ld['client_id'].'&custom_prog_id='.$plan_copy.'&program_id='.$ld['program_id'].$first.$surname.$appeal.$email.$mode;
+        $_SESSION['modify_program_return_url'] = 'index.php?pag=program_add_patient&client_id='.$ld['client_id'].'&custom_prog_id='.$plan_copy.'&program_id='.$ld['program_id'];//.$first.$surname.$appeal.$email.$mode;
         
         header("location: /index.php?pag=program_update_exercise&program_id=".$plan_copy);exit;
         exit();
