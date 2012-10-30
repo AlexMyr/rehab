@@ -1088,30 +1088,18 @@ $(document).ready(function()
 		});
 	});
 	
-	$('#ajaxLoginBtn').click(function(){
-		var username = $('#usernameAjax').val();
-		var password = $('#passwordAjax').val();
-		var store_login = $('#store_loginAjax').attr('checked') ? 'on' : '';
-
-		$.ajax({
-            url: "index_ajax.php",
-            dataType: "json",
-            data: { act: "auth-login_ajax", username: username, password: password, store_login: store_login },
-			success: function(res)
-			{
-				if(!res.failure)
-				{
-					if(res.pag_redir)
-						window.location = '/index.php?pag='+res.pag_redir;
-				}
-				else
-				{
-					alert(res.error);
-					if(res.pag_redir)
-						window.location = '/index.php?pag='+res.pag_redir;
-				}
-			}
-		});
+	$('#ajaxLoginBtn').click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		loginAjax(e);
+	});
+	
+	$("#usernameAjax, #passwordAjax").keypress(function(e) {
+		if ( e.which == 13 ) {
+			e.preventDefault();
+			e.stopPropagation();
+			loginAjax(e);
+		}
 	});
 	
     //on ProgamAddPatient page open PDF file for printing in new tab
@@ -1121,4 +1109,37 @@ $(document).ready(function()
         else
             $(this).parents('form:first').removeAttr('target');
     });
+	
+	$('#forgotPass').click(function(){
+		window.location = '/index.php?pag=forgotpass';
+	});
 });
+
+function loginAjax(e)
+{
+	
+		
+	var username = $('#usernameAjax').val();
+	var password = $('#passwordAjax').val();
+	var store_login = $('#store_loginAjax').attr('checked') ? 'on' : '';
+
+	$.ajax({
+		url: "index_ajax.php",
+		dataType: "json",
+		data: { act: "auth-login_ajax", username: username, password: password, store_login: store_login },
+		success: function(res)
+		{
+			if(!res.failure)
+			{
+				if(res.pag_redir)
+					window.location = '/index.php?pag='+res.pag_redir;
+			}
+			else
+			{
+				alert(res.error);
+				if(res.pag_redir)
+					window.location = '/index.php?pag='+res.pag_redir;
+			}
+		}
+	});
+}
