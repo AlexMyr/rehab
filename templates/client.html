@@ -2,23 +2,18 @@
         {MESSAGE}
         <h2 class="bottomLine"><span class="pageTitle">{CLIENT_NAME}</span> / {T.RECORD}</h2>
         <div class="sidebar">
-            <form action="index.php" method="post" id="create_exercise">
-                <!-- input type="hidden" name="act" value="client-add_exercise" -->
-                <input type="hidden" name="pag" value="client_add_exercise">
-                <input type="hidden" name="client_id" value="{CLIENT_ID}">
-                <input type="hidden" id="exercise_desc" name="exercise_desc" value="">
-                <!--<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>-->
-            </form>
+        	<div style="background: url('../img/greenHeaderTop.png') no-repeat scroll center top transparent;">
+				<h2 style="padding:15px 0px 0px 0px;color: #FFFFFF;height:31px; text-align:center;">{T.INFO}</h2>
+			</div>
+            
             <div class="greyBorderBox">
-                <img src="img/brandingTopBg.jpg" class="greyBorderBoxTop">
-                <div class="greyBorderBoxContent">
-                    <h2>{T.INFO}</h2>
+                <div class="greyBorderBoxContent" style="background: url('../img/exercises_middle_new.png') repeat-y scroll center top transparent; width: auto;">
                     <form action="index.php" method="post">
                         <input type="hidden" name="act" value="client-update_client">
                         <input type="hidden" name="pag" value="client">
                         <input type="hidden" name="client_id" value="{CLIENT_ID}">
                         
-                        <label class="label" for="first_name">{T.FIRST_NAME}<sup>*</sup>:</label>
+                        <label class="label" for="first_name" style="margin-top:0px;">{T.FIRST_NAME}<sup>*</sup>:</label>
                         <input class="textField curvyCorner" type="text" id="first_name" name="first_name" value="{FIRST_NAME}" />
                             
                         <label class="label" for="surname">{T.SURNAME}<sup>*</sup>:</label>
@@ -34,10 +29,12 @@
                         <select id="print_image_type curvyCorner" class="textField" name="print_image_type">
                             {IMAGE_TYPE}
                         </select>
-                            
-                        <div class="buttons login"><button type="submit"><b>&nbsp;</b><span>{T.SAVE}</span></button></div>
+                           
+                        <div class="buttons login" style="padding-top:15px;"><button type="submit"><span class="curvyCorner" style="height:31px; background-image: url('../img/green_btn.png'); font-size:13px; padding: 0px 15px;text-align: center; width: 160px;">{T.SAVE}</span></button></div>
+                        
                     </form>
-                </div><img src="img/brandingBottomBg.jpg" class="greyBorderBoxBottom">
+                </div>
+                <div style="background: url('../img/greenHeaderBottom.png')  no-repeat scroll center top transparent;">&nbsp;</div>
             </div>
             <form action="index.php" method="post">
                 <input type="hidden" name="act" value="client-delete_client">
@@ -51,7 +48,7 @@
         </div>
         <div class="clientList">
             <div class="clientListTitle">
-            	<span class="name_exercise">Name</span>
+            	<!--<span class="name_exercise">Name</span>-->
                 <span class="creationDate">{T.DATE_CREATED}</span>
                 <span class="notes">{T.NOTES}</span>
                 <span class="actions">{T.ACTIONS}</span>
@@ -59,7 +56,7 @@
             <div class="clientListDynamic">
 <!-- BEGIN DYNAMIC BLOCK: client_record_line -->
             <div class="clientListRow clientRecord" id="{EXERCISE_ID}">
-            	<div class="name_exercise"><div style="margin: 10px;">&nbsp;{EXERCISE_NAME}</div></div>
+            	<!--<div class="name_exercise"><div style="margin: 10px;">&nbsp;{EXERCISE_NAME}</div></div>-->
                 <div class="creationDate">
                 	<div style="margin: 10px;">
                     	<h2>{CREATE_DATE}</h2>
@@ -79,7 +76,14 @@
             </div>
 <!-- END DYNAMIC BLOCK: client_record_line -->
         </div>
-<div class="buttons deleteClient" style="margin-top:10px;"><button id="addExerciseToClient" type="submit"><span class="curvyCorner" style="padding-left:10px;height:31px; background-image: url('../img/green_btn.png');">{T.ADD_EXERCISE}</span></button></div>
+        <form action="index.php" method="post" id="create_exercise">
+                <!-- input type="hidden" name="act" value="client-add_exercise" -->
+                <input type="hidden" name="pag" value="client_add_exercise">
+                <input type="hidden" name="client_id" value="{CLIENT_ID}">
+                <input type="hidden" id="exercise_desc" name="exercise_desc" value="">
+                <!--<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>-->
+                <div class="buttons deleteClient" style="margin-top:10px;"><button id="addExerciseToClient" type="submit"><span class="curvyCorner" style="padding-left:10px;height:31px; background: url('../img/green_btn.png') no-repeat scroll center top transparent;text-align:center;">{T.ADD_EXERCISE}</span></button></div>
+        </form>
 <!--<ul class="paginate {HIDE_NAV}">
 <li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
 {PAGG}

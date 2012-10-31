@@ -41,6 +41,7 @@ if($dbu->move_next())
 
 	$ft->assign(array(
 		
+		'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 		'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
 		'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
 		'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',

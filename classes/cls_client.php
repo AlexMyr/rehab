@@ -112,6 +112,7 @@ class client
 	{
 		if(!$this->validate_add_program_plan($ld))
 		{
+			$ld['pag'] = 'programs';
 			return false;
 		}
 		global $user_level;
@@ -133,12 +134,13 @@ class client
 		if($this->dbu->move_next())
 		{
 			$ld['error'] = get_template_tag('dashboard', $ld['lang'], 'T.PROG_EXIST');
+			$ld['pag'] = 'programs';
 			return false;
 		}
 		else 
 		{
 
-			$ld['client_id']=$this->dbu->query_get_id("
+			$ld['program_id']=$this->dbu->query_get_id("
 							INSERT INTO 
 										exercise_program_plan 
 							SET 
@@ -149,6 +151,7 @@ class client
 										date_modified=NOW(),
 										trainer_id = ".$_SESSION[U_ID]." 
 							");
+
 			$ld['program_name']=''; 
 			$ld['print_image_type']='';
 			$ld['exercise_note']='';
@@ -633,7 +636,7 @@ class client
 		$is_ok=true;
 		if(!$ld['program_name'])
 		{
-			$ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.FILL_NAME')."<br>";
+			$ld['error'].=get_template_tag('programs', $ld['lang'], 'T.FILL_NAME')."<br>";
 			$is_ok=false;
 		}
 		return $is_ok;
