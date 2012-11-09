@@ -85,86 +85,94 @@ while($query->next())
 //form payment table
 
 $payment_table =
-'<div class="cornerTable"><table class="pricePlanTable">
-        <tr>
-            <th class="priceTableHead"></th>
-';
+'<div class="cornerTable" style="border:none;">
+  <div class="paymTableHeaderDiv" style="background: url(\'../img/paymTableHeaderDivBordered.png\') no-repeat scroll top center transparent; display: block; float: right; height: 30px; width: 640px;">';
+  $column_width = 159;
+  for($i=0;$i<$payment_count;$i++)
+  {
+	$border_style = 'border-right:1px solid #444444;';
+	if($i>2)
+	  $border_style = '';
+	$payment_table .= '<span style="color:#FFFFFF; text-shadow: none; display: inline-block; text-align: center; padding-top:5px; height:26px;; '.$border_style.' width:'.$column_width.'px;">'.$price_plan_name[$i].'</span>';
+	//$column_width--;
+  }
+$payment_table .= '</div>
+  <div style="clear:both;"></div>
+  <div style="background: url(\'../img/paymTableLeftDivBordered.png\') no-repeat scroll top center transparent; display: block; float: left; height: 305px; width: 160px;">
+	<div style="color:#FFFFFF; text-shadow: none; height:27px; border-bottom: 1px solid #444444;"><div style="padding:5px;">'.$tags['T.LOGO'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:42px; border-bottom: 1px solid #444444;"><div style="padding-left:5px;">'.$tags['T.CREATE_PROGRAM'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:27px; border-bottom: 1px solid #444444;"><div style="padding:5px;">'.$tags['T.EMAIL'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:27px; border-bottom: 1px solid #444444;"><div style="padding:5px;">'.$tags['T.PHOTO'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:42px; border-bottom: 1px solid #444444;"><div style="padding-left:5px;">'.$tags['T.NUMBER_USERS'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:28px; border-bottom: 1px solid #444444;"><div style="padding:5px;">'.$tags['T.EXPIRY'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:28px; border-bottom: 1px solid #444444;"><div style="padding:5px;">'.$tags['T.COST'].'</div></div>
+	<div style="color:#FFFFFF; text-shadow: none; height:75px;"><div style="padding:25px 5px;">'.$tags['T.CHOOSE'].'</div></div>
+  </div>';
+  
+$payment_table .= '<table class="pricePlanTable" style="border-right: 2px solid #444444; border-bottom: 2px solid #444444;height: 305px; width: 639px;">';
+
+$payment_table .= '<tr style="height:28px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<th class="priceTableHead">'.$price_plan_name[$i].'</th>';
+    $payment_table .= '<td class="priceTableHead" style="padding:0px;'.($i==0 ? 'border-left:none;' : '').'">'.($has_logo[$i] ? '<span style="background: url(\'../img/tick_green_middle.png\') no-repeat scroll right center transparent;display: inline-block;height: 26px;width: 26px;"></span>' : '').'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.LOGO'].'</td>';
+$payment_table .= '<tr style="height:43px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<td>'.($has_logo[$i] ? '&#10004;' : '').'</td>';
+    $payment_table .= '<td style="padding:0px;'.($i==0 ? 'border-left:none;' : '').'">'.($can_create_exercise[$i] ? '<span style="background: url(\'../img/tick_green_middle.png\') no-repeat scroll right center transparent;display: inline-block;height: 26px;width: 26px;"></span>' : '').'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.CREATE_PROGRAM'].'</td>';
+$payment_table .= '<tr style="height:28px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<td>'.($can_create_exercise[$i] ? '&#10004;' : '').'</td>';
+  $payment_table .= '<td style="padding:0px;'.($i==0 ? 'border-left:none;' : '').'">'.($email[$i] ? '<span style="background: url(\'../img/tick_green_middle.png\') no-repeat scroll right center transparent;display: inline-block;height: 26px;width: 26px;"></span>' : '').'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.EMAIL'].'</td>';
+$payment_table .= '<tr style="height:28px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<td>'.($email[$i] ? '&#10004;' : '').'</td>';
+    $payment_table .= '<td style="padding:0px;'.($i==0 ? 'border-left:none;' : '').'">'.($photo_lineart[$i] ? '<span style="background: url(\'../img/tick_green_middle.png\') no-repeat scroll right center transparent;display: inline-block;height: 26px;width: 26px;"></span>' : '').'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.PHOTO'].'</td>';
+$payment_table .= '<tr style="height:43px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<td>'.($photo_lineart[$i] ? '&#10004;' : '').'</td>';
+    $payment_table .= '<td style="'.($i==0 ? 'border-left:none;' : '').'">'.$user_count[$i].'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.NUMBER_USERS'].'</td>';
+$payment_table .= '<tr style="height:28px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<td>'.$user_count[$i].'</td>';
+    $payment_table .= '<td style="'.($i==0 ? 'border-left:none;' : '').'">'.$licence_period[$i].'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.EXPIRY'].'</td>';
+$payment_table .= '<tr style="height:28px;">';
 for($i=0;$i<$payment_count;$i++)
 {
-    $payment_table .= '<td>'.$licence_period[$i].'</td>';
+    $payment_table .= '<td style="'.($i==0 ? 'border-left:none;' : '').'">'.$price_value[$i].'</td>';
 }
 $payment_table .= '</tr>';
 
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.COST'].'</td>';
-for($i=0;$i<$payment_count;$i++)
-{
-    $payment_table .= '<td>'.$price_value[$i].'</td>';
-}
-$payment_table .= '</tr>';
-
-$payment_table .= '<tr>
-            <td class="priceTableLeftColumn">'.$tags['T.CHOOSE'].'</td>';
+$payment_table .= '<tr>';
 
 for($i=0;$i<$payment_count;$i++)
 {//$tags['T.CHOOSE']
     if($price_amount[$i] === '0'){
-        $payment_table .= '<td><a id="submitPayment" class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
-                            <span>'.$tags['T.CHOOSE'].'</span>
+        $payment_table .= '<td style="'.($i==0 ? 'border-left:none;' : '').'"><a id="submitPayment" class="moreBtn" style="width:105px; background:none;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+                            <span style="padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.CHOOSE'].'</span>
                         </a></td>';
         continue;
     }
     if(substr_count($price_value[$i],'POA')){
-        $payment_table .= '<td><a class="moreBtn" id="contactus" style="margin-left:25px; margin-right: 25px; width:85px;" href="index.php?pag=cms&p=contact_us">
-                                    <span>'.$tags['T.CONTACT'].'</span>
+        $payment_table .= '<td style="'.($i==0 ? 'border-left:none;' : '').'"><a class="moreBtn" id="contactus" style="width:105px; background:none;" href="index.php?pag=cms&p=contact_us">
+                                    <span class="curvyCorner" style="padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;">'.$tags['T.CONTACT'].'</span>
                                 </a></td>';
         continue;
     }
@@ -172,15 +180,12 @@ for($i=0;$i<$payment_count;$i++)
         $payment_table .= '<td><span>'.$tags['T.ALREADY'].'</span></td>';
         continue;
     }
-    $payment_table .= '<td>'./*
-						'<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
-                            <span>'.$tags['T.YEAR'].'</span>
-                        </a>'.*/
-                        '<a class="moreBtn" style="margin-bottom: 5px; margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
-                            <span>'.$tags['T.YEARLY'].'</span>
+    $payment_table .= '<td style="'.($i==0 ? 'border-left:none;' : '').'">
+                        <a class="moreBtn" style="background:none; width:105px; margin-bottom:5px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+                            <span style="padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.YEARLY'].'</span>
                         </a>
-                        <a class="moreBtn" style="margin-left:10px; width:105px;" href="index.php?act=member-pay&pay_type=monthly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
-                            <span>'.$tags['T.MONTH'].'</span>
+                        <a class="moreBtn" style="background:none;width:105px;" href="index.php?act=member-pay&pay_type=monthly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+                            <span style="padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.MONTH'].'</span>
                         </a>
                     </td>';
 }
