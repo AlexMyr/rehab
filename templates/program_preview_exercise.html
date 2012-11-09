@@ -9,10 +9,12 @@
       <input type="hidden" name="exercise_plan_id" value="{EXERCISE_PLAN_ID}">
       <input type="hidden" name="mode" value="{MODE}">
       <span class="preview_buttons"> 
-			<a class="moreBtn" id="2" href="{ADD_EXERCISE}"><span class="curvyCorner">{LINK_TEXT_3}</span></a>
-			<a class="moreBtn" id="2" href="{MAKE_MORE_CHANGES}" style="display:{VIS};" ><span class="curvyCorner">{LINK_MAKE MORE_CHANGES}</span></a>			
-			<div class="buttons" {VISIBILITY}>
-				<button type="submit"><span class="curvyCorner">{T.SAVE}</span></button>
+      		<div style="margin-left:{MARGIN_BUTTONS};">
+				<a class="moreBtn" id="2" href="{ADD_EXERCISE}"><span class="curvyCorner">{LINK_TEXT_3}</span></a>
+				<a class="moreBtn" id="2" href="{MAKE_MORE_CHANGES}" style="display:{VIS};" ><span class="curvyCorner">{LINK_MAKE MORE_CHANGES}</span></a>			
+				<div class="buttons" {VISIBILITY}>
+					<button type="submit"><span class="curvyCorner">{T.SAVE}</span></button>
+				</div>
 			</div>
 			<a class="moreBtn discardBtn" id="2" style="display:{HIDE_PDF};" href={DISCARD} target="{TARGET}"><span class="curvyCorner">{LINK_TEXT}</span></a>
 			<a class="moreBtn" href="{EMAIL_URL}" style="display:{VIS}{HIDE_EMAIL};" ><span class="curvyCorner">{T.EMAIL}</span></a>

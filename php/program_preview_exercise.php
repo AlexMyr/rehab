@@ -51,18 +51,6 @@ if($dbu->move_next())
 		'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
 		'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 		'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
-		
-		//'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : ($theName ? '<div>'.$theName.'</div>' : '<div>&nbsp;</div>'),
-		//'NAME' => $theName,
-		//'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.$dbu->gf('address').'</div>' : '<div>&nbsp;</div>',
-		//'CITY' => $dbu->gf('city') ? '<div>'.$dbu->gf('city').'</div>' : '<div>&nbsp;</div>',
-		//'POST_CODE' => $dbu->gf('post_code') ? '<div>'.$dbu->gf('post_code').'</div>' : '<div>&nbsp;</div>',
-		//'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.$dbu->gf('phone').'</div>' : '<div>&nbsp;</div>',
-		//'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.$dbu->gf('mobile').'</div>' : '<div>&nbsp;</div>',
-		//'FAX' => $dbu->gf('fax') ? '<div>Fax: '.$dbu->gf('fax').'</div>' : '<div>&nbsp;</div>',
-		//'EMAIL' => $dbu->gf('email') ? '<div>'.$dbu->gf('email').'</div>' : '<div>&nbsp;</div>',
-		//'WEBSITE' => $dbu->gf('website') ? '<div>'.$dbu->gf('website').'</div>' : '<div>&nbsp;</div>',
-		//'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 	));
 }
 else
@@ -108,7 +96,8 @@ if($glob['mode']== 'edit')
 		'VISIBILITY' 				=> '',
 		'SPAN_VISIBILITY'	 		=> 'style="display:none;"',
 		'VIS' 						=> 'none',
-		'TARGET'					=> '_self'
+		'TARGET'					=> '_self',
+		'MARGIN_BUTTONS'			=> '150px'
 	));	
 	$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, stripcslashes($exercise_notes), 'exercise_notes', ''), ));
 }
@@ -128,7 +117,8 @@ if($glob['mode'] == 'preview')
 		'EMAIL_URL' 				=> 'index.php?pag=client_email&act=client-mail_exercise&client_id='.$glob['client_id'].'&exercise_plan_id='.$glob['exercise_plan_id'],
 		'TARGET'					=> '_blank',
 		'HIDE_EMAIL'				=> 'none',
-        'FINISH_URL'                => isset($_SESSION['modify_program_return_url']) ? $_SESSION['modify_program_return_url'] : 'index.php?pag=programs'
+        'FINISH_URL'                => isset($_SESSION['modify_program_return_url']) ? $_SESSION['modify_program_return_url'] : 'index.php?pag=programs',
+		'MARGIN_BUTTONS'			=> '150px'
 		
 	));
 	$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.stripcslashes($exercise_notes).'</strong></span>', ));

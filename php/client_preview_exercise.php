@@ -7,7 +7,7 @@ $ft->define( array('main' => "client_preview_exercise.html"));
 $ft->define_dynamic('exercise_line','main');
 
 $dbu = new mysql_db;
-//$get_exercise_image_type = $dbu->field("SELECT print_image_type FROM trainer_profile WHERE trainer_id='".$_SESSION[U_ID]."'");
+
 $get_exercise_image_type = $dbu->field("SELECT print_image_type FROM client WHERE trainer_id='".$_SESSION[U_ID]."' AND client.client_id=".$glob['client_id']." ");
 if($get_exercise_image_type==0) $image_type = "lineart";
 else if($get_exercise_image_type==1) $image_type = "image";
@@ -27,7 +27,6 @@ global $script_path;
 		'PAG' => $glob['pag'],
 	));
 	
-	//$dbu->query("SELECT * FROM trainer_profile WHERE trainer_id='".$_SESSION[U_ID]."'");
 	$dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
 	$default_image = "<img class=\"header_logo\" src=\"".$script_path."tcpdf/images/pdfheader.jpg\" />";
 	if($dbu->move_next())
@@ -49,18 +48,6 @@ global $script_path;
 			'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
 			'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 			'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
-			
-			//'COMPANY' => $dbu->gf('company_name') ? '<div>'.$dbu->gf('company_name').'</div>' : ($theName ? '<div>'.stripcslashes($theName).'</div>' : '<div>&nbsp;</div>'),
-			//'NAME' => stripcslashes($theName),
-			//'ADDRESS' => $dbu->gf('address') ? '<div class="address">'.stripcslashes($dbu->gf('address')).'</div>' : '<div>&nbsp;</div>',
-			//'CITY' => $dbu->gf('city') ? '<div>'.stripcslashes($dbu->gf('city')).'</div>' : '<div>&nbsp;</div>',
-			//'POST_CODE' => $dbu->gf('post_code') ? '<div>'.stripcslashes($dbu->gf('post_code')).'</div>' : '<div>&nbsp;</div>',
-			//'PHONE' => $dbu->gf('phone') ? '<div>Tel: '.stripcslashes($dbu->gf('phone')).'</div>' : '<div>&nbsp;</div>',
-			//'MOBILE' => $dbu->gf('mobile') ? '<div>Mobile: '.stripcslashes($dbu->gf('mobile')).'</div>' : '<div>&nbsp;</div>',
-			//'FAX' => $dbu->gf('fax') ? '<div>Fax: '.stripcslashes($dbu->gf('fax')).'</div>' : '<div>&nbsp;</div>',
-			//'EMAIL' => $dbu->gf('email') ? '<div>'.stripcslashes($dbu->gf('email')).'</div>' : '<div>&nbsp;</div>',
-			//'WEBSITE' => $dbu->gf('website') ? '<div>'.stripcslashes($dbu->gf('website')).'</div>' : '<div>&nbsp;</div>',
-			//'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 		));
 	}
 	else
@@ -108,7 +95,8 @@ global $script_path;
 			'VISIBILITY' 				=> '',
 			'SPAN_VISIBILITY'	 		=> 'style="display:none;"',
 			'VIS' 						=> 'none',
-			'TARGET'					=> '_self'
+			'TARGET'					=> '_self',
+			'MARGIN_BUTTONS'			=> '150px'
 		));	
 
 		$ft->assign(array( 'EXERCISE_NOTES'=> get_content_input_area(3, stripcslashes($exercise_notes), 'exercise_notes', ''), ));
@@ -128,7 +116,7 @@ global $script_path;
 			'TARGET'					=> '_blank',
 			'HIDE_EMAIL'				=> $has_email ? '' : 'none',
 			'FINISH'					=> 'index.php?pag=client&client_id='.$glob['client_id'],
-			
+			'MARGIN_BUTTONS'			=> $has_email ? '35px' : '100px',
 		));
 		$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.stripcslashes($exercise_notes).'</strong></span>', ));
 	}
