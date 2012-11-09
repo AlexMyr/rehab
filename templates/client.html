@@ -75,15 +75,14 @@
                 <div style="clear:both;"></div>
             </div>
 <!-- END DYNAMIC BLOCK: client_record_line -->
+				<form action="index.php" method="post" id="create_exercise">
+	                <input type="hidden" name="pag" value="client_add_exercise">
+	                <input type="hidden" name="client_id" value="{CLIENT_ID}">
+	                <input type="hidden" id="exercise_desc" name="exercise_desc" value="">
+	                <div class="buttons deleteClient" style="margin-top:10px;"><button id="addExerciseToClient" type="submit"><span class="curvyCorner" style="padding-left:10px;height:31px; background: url('../img/green_btn.png') no-repeat scroll center top transparent;text-align:center;">{T.ADD_EXERCISE}</span></button></div>
+       			</form>
         </div>
-        <form action="index.php" method="post" id="create_exercise">
-                <!-- input type="hidden" name="act" value="client-add_exercise" -->
-                <input type="hidden" name="pag" value="client_add_exercise">
-                <input type="hidden" name="client_id" value="{CLIENT_ID}">
-                <input type="hidden" id="exercise_desc" name="exercise_desc" value="">
-                <!--<div class="buttons deleteClient"><button id="addExerciseToClient" type="button"><b>&nbsp;</b><span>{T.ADD_EXERCISE}</span></button></div>-->
-                <div class="buttons deleteClient" style="margin-top:10px;"><button id="addExerciseToClient" type="submit"><span class="curvyCorner" style="padding-left:10px;height:31px; background: url('../img/green_btn.png') no-repeat scroll center top transparent;text-align:center;">{T.ADD_EXERCISE}</span></button></div>
-        </form>
+        
 <!--<ul class="paginate {HIDE_NAV}">
 <li class="{CSS_BACKLINK}"><a class="moreBtn" href="{BACKLINK}"><span>&lt; {T.PREV}</span></a></li>
 {PAGG}
