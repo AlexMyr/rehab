@@ -146,7 +146,7 @@ class auth
 											trainer_id = ".$trainer_id." 
 									");
 				
-				if(strtotime($query->f('expire_date'))-time()<0)
+				if(strtotime($query->f('expire_date')) && strtotime($query->f('expire_date'))-time()<0)
 				{
 					header("Location: /index.php?pag=profile_payment&error=".urlencode("Your account has been expired!"));
 					exit;
@@ -164,7 +164,7 @@ class auth
 				
 				return true;
 			}
-			elseif(($query->f('expire_date'))-time()<0)
+			elseif(strtotime($query->f('expire_date'))-time()<0)
 			{
 				session_start();
 				$_SESSION[UID]=1;
@@ -289,7 +289,7 @@ class auth
 											trainer_id = ".$trainer_id." 
 									");
 				
-				if(strtotime($query->f('expire_date'))-time()<0)
+				if(strtotime($query->f('expire_date')) && (strtotime($query->f('expire_date'))-time()<0))
 				{
 					$ld['error'] = 'Your account has been expired!';
 					$ld['pag_redir'] = 'profile_payment';
@@ -298,7 +298,7 @@ class auth
 				
 				return true;
 			}
-			elseif(($query->f('expire_date'))-time()<0)
+			elseif(strtotime($query->f('expire_date'))-time()<0)
 			{
 				session_start();
 				$_SESSION[UID]=1;
