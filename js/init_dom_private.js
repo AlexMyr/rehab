@@ -827,6 +827,8 @@ $(document).ready(function()
 		if($(this).data('planChosen')!=true)
 		{
 			var alertValue = $('span.expire_time span').text();
+			if(alertValue == '')
+				alertValue = 'You can\'t choose trail plan.';
 			alert(alertValue);
 			return false;
 		}
