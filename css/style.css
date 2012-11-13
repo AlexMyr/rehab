@@ -110,15 +110,10 @@ button#exerciseAdd {margin:auto; width: 135px; text-align: center;}
 
 /*.whatwedo { margin-top:3px; padding-bottom:10px; border-bottom:1px solid #eeeeee; }*/
 
-/*.brandit { background:url(../img/brandingBg.jpg) top left repeat-y; width:198px; padding:7px 11px; margin:0px auto; }
-.brandit .moreBtn { margin:10px 0px 0px 0px; }
-.brandit h2 { color: #898989; font-size:18px; text-shadow:#fff 1px 1px 0px; }
-.brandit h3 { color: #6099e7; font-size:17px; text-shadow:#fff 1px 1px 0px; padding-top:0px; }
-.branditTop { width:220px; height:4px; display:block; margin:0px auto; }
-.branditBottom { width:220px; height:4px; display:block; margin:0px auto; margin-bottom:15px; }*/
 .brandit { background:url(../img/brand_plan_new.png) top left repeat-x transparent; /*width:192px; padding:7px 11px;*/ margin:0px auto;}
 .brandit.us { background:url(../img/brand_plan_new_US.png) top left repeat-x transparent; /*width:192px; padding:7px 11px;*/ margin:0px auto;}
-.brandit .moreBtn { margin:5px 0px 10px 0px; }
+.brandit .moreBtn { margin:5px 0px 10px 0px; font-size: 12px; padding-left: 10px; background: none;}
+.brandit .moreBtn span, .changeViewBtn span {font-size: 12px; padding-right: 20px;height: 31px; padding-left: 10px; background: url("../img/blueGlassBtn.png") no-repeat scroll center top transparent;}
 .brandit h2 { color: #898989; font-size:18px; text-shadow:#fff 1px 1px 0px; }
 .brandit h3 { color: #6099e7; font-size:17px; text-shadow:#fff 1px 1px 0px; padding-top:0px; }
 .branditTop { width:220px; height:74px; display:block; margin:0px auto; }
@@ -128,9 +123,7 @@ button#exerciseAdd {margin:auto; width: 135px; text-align: center;}
 .brandit .banner_border_left{width: 3px; background:url(../img/banner_border_left.png) top left no-repeat #FEFEFE;}
 .brandit .banner_border_right{width: 4px; background:url(../img/banner_border_right.png) top left no-repeat #FEFEFE;}
 
-.brandit div {padding-left: 12px; padding-top: 205px;}
-.brandit .moreBtn {font-size: 12px; padding-left: 10px;}
-.brandit .moreBtn span, .changeViewBtn span {font-size: 12px; padding-right: 20px;}
+.brandit div {padding-left: 2px; padding-top: 205px;}
 
 .join { background:url(../img/joinBoxBg.jpg) top left repeat-x #6099e7; width:200px; padding:0px 0px; margin:0px auto; }
 .join h3 { color:#ffffff; font-size:42px; width:195px; padding:6px 3px; border-bottom:1px solid #4a77b3; text-shadow:#4e7ec0 1px 1px 0px; }
@@ -264,44 +257,32 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListTitle .count { display:inline-block; width:110px; }
 .clientList .clientListTitle .dateTime { display:inline-block; width:174px; }
 .clientList .clientListTitle .creationDate { padding-left:10px; display:inline-block; width:200px; padding-right:10px; }
-/*.clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:349px; }
-.clientList .clientListTitle .actions { display:inline-block; width:84px; }*/
-.clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:200px; }
+
+.clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:250px; }
 .clientList .clientListTitle .actions { display:inline-block; width:114px; }
 .clientList .clientListTitle .description { display:inline-block; width:250px; }
 .clientList .clientListTitle a { text-decoration: none; text-shadow: none;}
 
-.clientList .clientListRow { padding: 0px 0 3px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
+.clientList .clientListRow { padding: 0px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
 .clientList .clientListRow span { padding: 12px 0 12px; }
 .clientList .clientListRow.clientRecord { height:auto; padding-bottom:0px; min-height:86px; }
 .clientList .clientListRow .add_exercise { padding:0px 10px; display:inline-block; width:17px; }
 .clientList .clientListRow .name { display:inline-block; width:275px; }
-.clientList .clientListRow .name_program { display:inline-block; width:250px; vertical-align: top;}
+.clientList .clientListRow .name_program { padding-left:10px; display:block; float: left; width:250px; color:#666666; color:#343434; padding-right:5px; vertical-align: top; min-height:86px;}
 .clientList .clientListRow .name_exercise { display:block; float: left; width:150px; padding-left:5px; min-height:86px;}
-.clientList .clientListRow .description { padding-left:4px; display:inline-block; width:250px; color:#666666; color:#343434;  }
+.clientList .clientListRow .description { padding-right:10px; display:block; float: left; width:250px; color:#666666; color:#343434; vertical-align: top; border-right: 1px solid #FFFFFF; border-left: 1px solid #FFFFFF; min-height:86px;  }
 .clientList .clientListRow .count { padding-left:3px; display:inline-block; width:107px; color:#666666; color:#343434; }
 .clientList .clientListRow .dateTime { padding-left:4px; display:inline-block; width:171px; color:#666666; color:#343434; }
-.clientList .clientListRow .creationDate { padding-left:10px; display:block; float: left; width:200px; color:#666666; color:#343434; padding-right:5px; vertical-align: top; /*border-left: 1px solid #FFFFFF;*/ border-right: 1px solid #FFFFFF; min-height:86px;}
+.clientList .clientListRow .creationDate { padding-left:10px; display:block; float: left; width:200px; color:#666666; color:#343434; padding-right:5px; vertical-align: top; min-height:86px;}
 .clientList .clientListRow .creationDate h2 { font-size:18px; }
 .clientList .clientListRow .creationDate p { font-size:11px; color:#999999; color:#343434; }
-/*.clientList .clientListRow .notes { padding-right:10px; display:inline-block; width:353px; color:#666666; color:#343434; vertical-align: top; }
-.clientList .clientListRow .actions { padding-left:0px; display:inline-block; width:80px; color:#666666; vertical-align: top; }
-.clientList .clientListRow .actions a { display:inline-block; width:16px; height:16px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }*/
-.clientList .clientListRow .notes { padding-right:10px; display:block; float: left; width:200px; color:#666666; color:#343434; vertical-align: top; border-right: 1px solid #FFFFFF;  min-height:86px;}
+
+.clientList .clientListRow .notes { padding-right:10px; display:block; float: left; width:250px; color:#666666; color:#343434; vertical-align: top; border-right: 1px solid #FFFFFF; border-left: 1px solid #FFFFFF; min-height:86px;}
 .clientList .clientListRow .actions { padding-left:0px; width:130px; color:#666666; vertical-align: top; }
 .clientList .clientListRow .actions.clientActions { padding-left:0px; display:block; float: left; width:130px; color:#666666; vertical-align: top;  min-height:86px;}
-.clientList .clientListRow .actions.programActions { padding-left:0px; display:inline-block; width:160px; color:#666666; vertical-align: top; }
+.clientList .clientListRow .actions.programActions { padding-left:0px; display:block; float: left; width:160px; color:#666666; vertical-align: top; min-height:86px;}
 .clientList .clientListRow .actions a { display:inline-block; width:24px; height:24px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }
 .clientList .clientListRow .actions a span { display:none; }
-
-/*.clientList .clientListRow .actions a.edit { background: url("../img/client_edit_ico.png") no-repeat 0px 0px; }
-.clientList .clientListRow .actions a.edit:hover { background: url("../img/client_edit_ico.png") no-repeat 0px -16px; }
-.clientList .clientListRow .actions a.print { background: url("../img/client_print_ico.png") no-repeat 0px 0px; }
-.clientList .clientListRow .actions a.print:hover { background: url("../img/client_print_ico.png") no-repeat 0px -16px; }
-.clientList .clientListRow .actions a.mail { background: url("../img/client_mail_ico.png") no-repeat 0px 0px; }
-.clientList .clientListRow .actions a.mail:hover { background: url("../img/client_mail_ico.png") no-repeat 0px -16px; }
-.clientList .clientListRow .actions a.delete { background: url("../img/client_delete_ico.png") no-repeat 0px 0px; }
-.clientList .clientListRow .actions a.delete:hover { background: url("../img/client_delete_ico.png") no-repeat 0px -16px; }*/
 
 .clientList .clientListRow .actions a.edit { background: url("../img/client_edit_large_ico1.png") no-repeat 0px 0px; }
 .clientList .clientListRow .actions a.edit:hover { background: url("../img/client_edit_large_ico2.png") no-repeat 0px 0px; }
@@ -785,7 +766,7 @@ label.error_validate{
  
 .general_submit{
     cursor:pointer;
-    height:29px;
+    height:31px;
     position:relative;
     float: left;
 }
@@ -882,4 +863,54 @@ label.error_validate{
 .moreBtnGreen span
 {
 	background-image: url("../img/moreBtnGreen.png");
+}
+
+
+.greenGlassBtn.new_join
+{
+	margin-top: 10px;
+}
+
+.greenGlassBtn, .blueGlassBtn
+{
+	background: none;
+	padding: 0px;
+}
+
+.greenGlassBtn span, .greenGlassBtn button span
+{
+	background: url('../img/greenGlassBtn.png') no-repeat scroll center top transparent;
+	height:31px;
+	padding-left:10px;
+	color: #FFFFFF;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    padding-right: 12px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #666666;
+    white-space: pre;
+    width: auto;
+}
+
+.blueGlassBtn span, .blueGlassBtn button span
+{
+	background: url('../img/blueGlassBtn.png') no-repeat scroll center top transparent;
+	height:31px;
+	padding-left:10px;
+	color: #FFFFFF;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    padding-right: 12px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #666666;
+    white-space: pre;
+    width: auto;
+	text-align: center;
+}
+
+.contactInfo .blueGlassBtn span
+{
+	width:105px;
 }
