@@ -31,7 +31,28 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
 	if($dbu->move_next())
 	{
-		$image = "<img style='border:1px solid #000000;' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+		$image = "<img src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+		
+		//dynamic change of image size
+		$defaultPDFSizeContactsColumnX = 330;
+		$defaultPDFSizeContactsLeftX = 210;
+		$maxPDFImageSizeX = 260;
+		$maxRealImageSizeX = 400;
+		
+		$imgCreated = ImageCreateFromJPEG($script_path.UPLOAD_PATH.$dbu->f('logo_image'));
+		$curImgSizeX = imagesx($imgCreated);
+		$newImgSizeX = floor(($maxPDFImageSizeX * $curImgSizeX) / $maxRealImageSizeX);
+		$newPDFSizeContactsColumnX = $defaultPDFSizeContactsColumnX + ($maxPDFImageSizeX - $newImgSizeX);
+		$newPDFSizeContactsLeftX = $defaultPDFSizeContactsLeftX + ($maxPDFImageSizeX - $newImgSizeX);
+//var_dump($newImgSizeX, $newPDFSizeContactsColumnX, $newPDFSizeContactsLeftX);exit;
+		$ft->assign(
+			array(
+				'IMG_SIZE' => $newImgSizeX,
+				'CONTACT_COL_SIZE' => $newPDFSizeContactsColumnX,
+				'LEFT_CONTACT_SIZE' => $newPDFSizeContactsLeftX
+				)
+		);
+		
 		$theName = "";
 		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).' '.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>'; 
 		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).'</div>'; 

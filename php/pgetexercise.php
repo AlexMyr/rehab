@@ -26,27 +26,23 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 							");
 	$glo = array();
 	$program->next();
-	$the_image = (file_exists(PATH_TO_IMAGES.'/upload/thumbs/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_small.png' : 'noimage_small.png');
-
+	$the_image = (file_exists(PATH_TO_IMAGES.'/upload/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_small.png' : 'noimage_small.png');
+	
 	$img = str_replace('.jpg', '', $the_image);
 
 	$img_array = array();
-	$dHandler = opendir(PATH_TO_IMAGES.'/upload/thumbs/');
-	while (false !== ($entry = readdir($dHandler))) {
-		if (strpos($entry, $img)>-1 && $entry != "." && $entry != ".." && strpos($entry, 'sprite')>-1) {
-			$sprite_images = explode('_', str_replace('_sprite.jpg', '', $entry));
-
-			foreach($sprite_images as $key => $value)
-			{
-				if($sprite_images[$key] == $img)
-					$pos_of_img = $key;
-			}
-
-			$img_array = array('sprite'=>$entry, 'pos'=>$pos_of_img);
+	$sprite_name = $glob['spritename'];
+	$sprite_images = explode('_', str_replace('_sprite', '', $sprite_name));
+	foreach($sprite_images as $key => $value)
+	{
+		if($sprite_images[$key] == $img)
+		{
+			$pos_of_img = $key;
 			break;
 		}
 	}
-	closedir($dHandler);
+	$img_array = array('sprite'=>$entry, 'pos'=>$pos_of_img);
+
 	$pos_class = "image_div_thumb_class_".$img_array['pos'];
 	
 	$glo['PROGRAM_ID'] = $program->f('programs_id');
@@ -54,6 +50,7 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 	$glo['PROGRAM_DESCRIPTION'] = strip_tags($program->f('description'));
 	//$glo['PROGRAM_IMAGE'] = $script_path.UPLOAD_PATH.$the_image;
 	$glo['PROGRAM_IMAGE'] = $img_array['sprite'];
+	$glo['SPRITE_NAME'] = $sprite_name;
 	$glo['PROGRAM_POS'] = $pos_class;
 	$glo['PROGRAM_CATEGORY'] = strip_tags(get_category_path(get_cat_ID($glob['pid']),0));
 	$glo['err'] = '200';

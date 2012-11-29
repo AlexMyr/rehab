@@ -55,6 +55,7 @@ function get_sprite($sprite_name)
       $sprite_names[] = $current_sprite_name;
       
       $dest = imagecreatetruecolor($image_side_size_x*$sprite_width, $image_side_size_y*$sprite_height+$sprite_width*$image_side_thumb_size_y);
+      $tmp_bimg = imagecreatetruecolor($image_side_size_x, $image_side_size_y);
       $tmp_img = imagecreatetruecolor($image_side_thumb_size_x, $image_side_thumb_size_y);
       
       $counter = 0;
@@ -64,11 +65,14 @@ function get_sprite($sprite_name)
         {
           if(!isset($exercises_images_sprite[$counter]))
             break 2;
-          $src = imagecreatefromjpeg(dirname(dirname(__FILE__)).'/upload/thumbs/'.$exercises_images_sprite[$counter].'.jpg');
+
+          $src = imagecreatefromjpeg(dirname(dirname(__FILE__)).'/upload/'.$exercises_images_sprite[$counter].'.jpg');
+          imagecopyresampled($tmp_bimg, $src, 0, 0, 0, 0, $image_side_size_x, $image_side_size_y, imagesx($src), imagesy($src));
+          imagecopymerge($dest, $tmp_bimg, $j*$image_side_size_x, $i*$image_side_size_y, 0, 0, $image_side_size_x, $image_side_size_y, 100);
+          
           imagecopyresampled($tmp_img, $src, 0, 0, 0, 0, $image_side_thumb_size_x, $image_side_thumb_size_y, imagesx($src), imagesy($src));
           imagecopymerge($dest, $tmp_img, $j*$image_side_thumb_size_x, $i*$image_side_thumb_size_y+$image_side_size_y*$sprite_width, 0, 0, $image_side_thumb_size_x, $image_side_thumb_size_y, 100);
           
-          imagecopymerge($dest, $src, $j*$image_side_size_x, $i*$image_side_size_y, 0, 0, $image_side_size_x, $image_side_size_y, 100);
           imagedestroy($src);
           $counter++;
         }
@@ -127,7 +131,7 @@ function get_sprite_thumb($sprite_name)
         {
           if(!isset($exercises_images_sprite[$counter]))
             break 2;
-          $src = imagecreatefromjpeg(dirname(dirname(__FILE__)).'/upload/thumbs/'.$exercises_images_sprite[$counter].'.jpg');
+          $src = imagecreatefromjpeg(dirname(dirname(__FILE__)).'/upload/'.$exercises_images_sprite[$counter].'.jpg');
           imagecopyresampled($tmp_img, $src, 0, 0, 0, 0, $image_side_size_x, $image_side_size_y, imagesx($src), imagesy($src));
           imagecopymerge($dest, $tmp_img, $j*$image_side_size_x, $i*$image_side_size_y, 0, 0, $image_side_size_x, $image_side_size_y, 100);
           imagedestroy($src);
@@ -220,7 +224,7 @@ function get_exercises_sprite_thumb($images_array)
         {
           if(!isset($exercises_images_sprite[$counter]))
             break 2;
-          $src = imagecreatefromjpeg(LOCAL_PATH_TO_IMAGES.'/upload/thumbs/'.$exercises_images_sprite[$counter]);
+          $src = imagecreatefromjpeg(LOCAL_PATH_TO_IMAGES.'/upload/'.$exercises_images_sprite[$counter]);
           imagecopyresampled($tmp_img, $src, 0, 0, 0, 0, $image_side_size_x, $image_side_size_y, imagesx($src), imagesy($src));
           imagecopymerge($dest, $tmp_img, $j*$image_side_size_x, $i*$image_side_size_y, 0, 0, $image_side_size_x, $image_side_size_y, 100);
           imagedestroy($src);
@@ -288,7 +292,7 @@ function get_exercises_sprite($programs_images)
       {
         if(!isset($programs_images_sprite[$counter]))
           break 2;
-        $src = imagecreatefromjpeg(LOCAL_PATH_TO_IMAGES.'/upload/thumbs/'.$programs_images_sprite[$counter]);
+        $src = imagecreatefromjpeg(LOCAL_PATH_TO_IMAGES.'/upload/'.$programs_images_sprite[$counter]);
         
         imagecopyresampled($tmp_img, $src, 0, 0, 0, 0, $image_side_thumb_size_x, $image_side_thumb_size_y, imagesx($src), imagesy($src));
         imagecopymerge($dest, $tmp_img, $j*$image_side_thumb_size_x, $i*$image_side_thumb_size_y+$image_side_size_y*$sprite_width, 0, 0, $image_side_thumb_size_x, $image_side_thumb_size_y, 100);

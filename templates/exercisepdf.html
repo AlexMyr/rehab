@@ -50,16 +50,16 @@ h2 {
 </style>
 <table cellspacing="0" cellpadding="2" width="600" style="font-size: 9pt; table-layout: fixed;">
 	<tr>
-		<td width="260">{THE_IMG}</td>
+		<td width="{IMG_SIZE}">{THE_IMG}</td>
 		<td width="10"></td>
-		<td width="330">
-			<table width="330" style="table-layout:fixed;">
-				<tr><td width="210">{COMPANY}</td><td width="120" align="right">{PHONE}</td></tr>
-				<tr><td width="210">{ADDRESS}</td><td width="120" align="right">{MOBILE}</td></tr>
-				<tr><td width="210">{CITY}</td><td width="120" align="right">{FAX}</td></tr>
-				<tr><td colspan="2" width="330">{POST_CODE}</td></tr>
-				<tr><td colspan="2" width="330" align="right">{EMAIL}</td></tr>
-				<tr><td colspan="2" width="330" align="right">{WEBSITE}</td></tr>
+		<td width="{CONTACT_COL_SIZE}">
+			<table width="{CONTACT_COL_SIZE}" style="table-layout:fixed;">
+				<tr><td width="{LEFT_CONTACT_SIZE}">{COMPANY}</td><td width="120" align="right">{PHONE}</td></tr>
+				<tr><td width="{LEFT_CONTACT_SIZE}">{ADDRESS}</td><td width="120" align="right">{MOBILE}</td></tr>
+				<tr><td width="{LEFT_CONTACT_SIZE}">{CITY}</td><td width="120" align="right">{FAX}</td></tr>
+				<tr><td colspan="2" width="{CONTACT_COL_SIZE}">{POST_CODE}</td></tr>
+				<tr><td colspan="2" width="{CONTACT_COL_SIZE}" align="right">{EMAIL}</td></tr>
+				<tr><td colspan="2" width="{CONTACT_COL_SIZE}" align="right">{WEBSITE}</td></tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
 				<tr><td style="font-size: 10pt;" valign="top">{CLIENT_NAME}</td><td style="font-size: 10pt;" valign="top" align="right">{CURRENT_DATE}</td></tr>
 			</table>

@@ -60,7 +60,7 @@ a { cursor:pointer; color:#ffffff; }
 .topForSubMenu span { background: url(../img/mainNavHOver.jpg) no-repeat top right; }
 
 .navMenu { width:640px; float:left; display:block; }
-.navMenu ul { padding:65px 0px 0px 0px; text-align:right; }
+.navMenu ul { padding:60px 0px 0px 0px; text-align:right; }
 .navMenu ul li { display:inline-block; *display:inline; list-style-type:none; list-style-position:outside; margin:0px 2px 0px 2px; position:relative; width:auto; }
 .navMenu a { font-size: 14px; color:#ffffff; text-decoration:none; text-transform:capitalize; line-height:31px; padding:0px 0px 0px 5px; display:inline-block; width:auto; }
 .navMenu a span { padding:0px 5px 0px 0px;	display:inline-block; line-height:31px; width:auto; }
@@ -113,7 +113,8 @@ button#exerciseAdd {margin:auto; width: 135px; text-align: center;}
 .brandit { background:url(../img/brand_plan_new.png) top left repeat-x transparent; /*width:192px; padding:7px 11px;*/ margin:0px auto;}
 .brandit.us { background:url(../img/brand_plan_new_US.png) top left repeat-x transparent; /*width:192px; padding:7px 11px;*/ margin:0px auto;}
 .brandit .moreBtn { margin:5px 0px 10px 0px; font-size: 12px; padding-left: 10px; background: none;}
-.brandit .moreBtn span, .changeViewBtn span {font-size: 12px; padding-right: 20px;height: 31px; padding-left: 10px; background: url("../img/blueGlassBtn.png") no-repeat scroll center top transparent;}
+.brandit .moreBtn span, .changeViewBtn span {font-size: 12px; background: url("../img/moreBtn.png") no-repeat scroll center top transparent;}
+.brandit .moreBtn span {font-size: 12px; padding-right: 20px;height: 31px; padding-left: 10px; background: url("../img/blueGlassBtn.png") no-repeat scroll center top transparent;}
 .brandit h2 { color: #898989; font-size:18px; text-shadow:#fff 1px 1px 0px; }
 .brandit h3 { color: #6099e7; font-size:17px; text-shadow:#fff 1px 1px 0px; padding-top:0px; }
 .branditTop { width:220px; height:74px; display:block; margin:0px auto; }
@@ -417,7 +418,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .faq a.faqStyle { font-family: "MergeRegular"; font-size:18px; text-decoration:underline; color:#6099e7; }
 .faq h2 { margin-bottom:17px; }
 
-.expire_time { color:#fff; top:-92px; right:0px; position:absolute; display:block; width:auto; background: url("../img/expireAlert.png") no-repeat top left; padding-left:37px; line-height:31px; }
+.expire_time { color:#fff; top:-75px; right:0px; position:absolute; display:block; width:auto; background: url("../img/expireAlert.png") no-repeat top left; padding-left:37px; line-height:31px; }
 .expire_time span { display:block; width:auto; background: url("../img/expireAlertBg.png") no-repeat top right; padding-right:14px; }
 
 .priceList { font-size:18px; font-family: "MergeRegular"; text-shadow:#ccc 1px 1px 0px; color:#444; }
@@ -615,6 +616,9 @@ label.error_validate{
 .lang{
 	position:relative;
 	top:5px;
+	float: right;
+	padding-right:10px;
+	z-index: 1000;
 }
 .lang a:hover{
 	background: none;
@@ -913,4 +917,23 @@ label.error_validate{
 .contactInfo .blueGlassBtn span
 {
 	width:105px;
+}
+
+.loginSection
+{
+	position: relative;
+	top:-5px;
+	float:right;
+	padding-right:5px;
+	font-size: 13px; 
+}
+
+.loginSection .loginTextInput
+{
+	opacity:0.80; height:20px; line-height:20px; border: 1px solid #1E3658;
+}
+
+.ownProgramsRow
+{
+	min-height: 86px;
 }

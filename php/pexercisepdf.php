@@ -37,7 +37,7 @@ $pdf->setHtmlVSpace($tagvs);
 $pdf->AddPage();
 
 $html = include_once('php/pexercisepdfbody.php');
-
+//var_dump($html);exit;
 $pdf->writeHTML($html, true, false, true, false, '');
 
 $pdf->lastPage();

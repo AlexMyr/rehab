@@ -227,11 +227,37 @@ doExerciseCompactViewDetails = function()
 						if(!$('#itemCompactText_'+details).hasClass('displayBlock'))
 							$('.programCompactText').removeClass('displayBlock');
 						$('#itemCompactText_'+details).toggleClass('displayBlock');
+						if($('#itemCompactText_'+details).hasClass('displayBlock'))
+							checkDetailsUnder(details);
 					});	
 				}
 			});
 		}
 	}
+
+function checkDetailsUnder(detailId)
+{
+	var paneHeight = 700;
+	var dateilPadding = 22;
+	
+	var detailHeight = $('#itemCompactText_' + detailId).height();
+	var dateilTop = $('#itemCompactText_' + detailId).offset().top;
+	var paneTop = $('.scrolledList').offset().top;
+	var paneBottom = paneTop + paneHeight;
+	var detailBottom = dateilTop + dateilPadding + detailHeight;
+	
+	if(detailBottom > paneBottom)
+	{
+		var oldPaneCSSTop = $('.jspPane').css('top').match(/[^a-z]+/i);
+		oldPaneCSSTop = oldPaneCSSTop[0];
+		
+		var newPaneCSSTopSub = oldPaneCSSTop - (detailBottom - paneBottom);
+		
+		
+		$('.jspPane').css('top',newPaneCSSTopSub);
+	}
+	return true;
+}
 
 doExercise = function(jSON)
 	{
@@ -291,7 +317,7 @@ doExercise = function(jSON)
 						// define all blocks and data
 						var exLI_img = $('<div>').addClass(obj.innerHTML.PROGRAM_POS)
 							.css({
-								"background-image": "url('../upload/thumbs/"+obj.innerHTML.PROGRAM_IMAGE+"')",
+								"background-image": "url('../phpthumb/sprite_thumb.php?bimg="+obj.innerHTML.SPRITE_NAME+"')",
 								"width": "64px",
 								"height": "64px",
 								"float": "left",
@@ -564,6 +590,55 @@ $(document).ready(function()
 	if(typeof($('.programListDynamic').jScrollPane()) != 'undefined')
 		$('.programListDynamic').jScrollPane();
 
+	//add dragscroll
+	$('.dragScroll').mousedown(function(e){
+		window.mouseCoordinatesY = e.clientY;
+		window.oldPaneCSSTop = window.oldPaneCSSTop || $('.jspPane').offset().top;
+		window.startDragScroll = true;
+		window.previousPosition = 0 || window.previousPosition;
+	});
+	
+	$('.dragScroll').mouseup(function(e){
+		window.startDragScroll = false;
+	});	
+	
+	$('.dragScroll').mouseleave(function(e){
+		window.startDragScroll = false;
+	});
+	
+	$('.dragScroll').mousemove(function(e){
+		var scrollElHeight = 700;
+		
+		var element = $('.dragScroll').jScrollPane();
+		var api = element.data('jsp');
+		
+		if(window.startDragScroll)
+		{
+			var dy = e.clientY - window.mouseCoordinatesY;
+			if(dy != 0)
+			{
+				if(parseInt(window.oldPaneCSSTop) > parseInt($('.jspPane').css('top')) * (-1) && parseInt($('.jspPane').css('top')) != 0)
+				{
+					dy = 0;
+					window.oldPaneCSSTop = window.previousPosition - 5;
+				}
+				if((parseInt($('.jspPane').css('top')) * (-1) == 0 && window.oldPaneCSSTop < 0))
+				{
+					dy = 0;
+					window.oldPaneCSSTop = window.previousPosition + 5;
+				}
+				
+				window.oldPaneCSSTop -= dy/4;
+				window.previousPosition = window.oldPaneCSSTop;
+				api.scrollToY(window.oldPaneCSSTop);
+				
+				return true;
+			}
+		}
+	});
+
+
+
 	$('#filterPatientsUrl').click(function(e){
 		e.preventDefault();
 		window.location = $(this).attr('href') + '&query=' + $('#filterPatientsValue').val();
@@ -835,19 +910,7 @@ $(document).ready(function()
 		else
 			window.location = $(this).attr('href');
 	});
-	
-	//$('.showLimitError').click(function(e){
-	//	e.preventDefault();
-	//	if(confirm("Trial user can't add more than 5 programs. Do you want to upgrade your plan?"))
-	//	{
-	//		window.location = 'index.php?pag=profile_payment';
-	//	}
-	//	else
-	//	{
-	//		return false;
-	//	}
-	//});
-	
+
 		// error messages box
 	$(".info a,.success a,.warning a,.error a").live('click',function(e)
 	{
@@ -878,17 +941,19 @@ $(document).ready(function()
 			{
 				var pid = $(this).attr('id');
 				var epid = $(this).attr('epid');
+				var sprite = $(this).attr('spritename');
 				e.stopPropagation();	
 				e.preventDefault();
-				$.post("index_ajax.php", { pag: "pgetexercise", pid: pid, epid: epid }, function(data){ doExercise(data); });
+				$.post("index_ajax.php", { pag: "pgetexercise", pid: pid, epid: epid, spritename: sprite }, function(data){ doExercise(data); });
 			}
 			else
 			{
 				var pid = $(this).attr('id');
 				var cid = $(this).attr('cid');
+				var sprite = $(this).attr('spritename');
 				e.stopPropagation();	
 				e.preventDefault();
-				$.post("index_ajax.php", { pag: "xgetexercise", pid: pid, cid: cid }, function(data){ doExercise(data); });
+				$.post("index_ajax.php", { pag: "xgetexercise", pid: pid, cid: cid, spritename: sprite }, function(data){ doExercise(data); });
 			}
 				//	$.getJSON('index_ajax.php?pag=xgetexercise&pid='+pid, function(data) { doExercise(data); });
 		});	
@@ -902,17 +967,19 @@ $(document).ready(function()
 			{
 				var pid = $(this).attr('id');
 				var epid = $(this).attr('epid');
+				var sprite = $(this).attr('spritename');
 				e.stopPropagation();	
 				e.preventDefault();
-				$.post("index_ajax.php", { pag: "pgetexercise", pid: pid, epid: epid }, function(data){ doExercise(data); });
+				$.post("index_ajax.php", { pag: "pgetexercise", pid: pid, epid: epid, spritename: sprite }, function(data){ doExercise(data); });
 			}
 			else
 			{
 				var pid = $(this).attr('id');
 				var cid = $(this).attr('cid');
+				var sprite = $(this).attr('spritename');
 				e.stopPropagation();	
 				e.preventDefault();
-				$.post("index_ajax.php", { pag: "xgetexercise", pid: pid, cid: cid }, function(data){ doExercise(data); });
+				$.post("index_ajax.php", { pag: "xgetexercise", pid: pid, cid: cid, spritename: sprite }, function(data){ doExercise(data); });
 			}
 			//	$.getJSON('index_ajax.php?pag=xgetexercise&pid='+pid, function(data) { doExercise(data); });
 		});	

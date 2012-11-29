@@ -11,13 +11,13 @@
 				<span class="actions">{T.ACTIONS}</span>
 			</div>
 <!-- BEGIN DYNAMIC BLOCK: client_line -->
-			<div class="clientListRow">
-				<span class="name_program"><span class="add_program">{PROGRAM_NAME}</span></span>
-				<span class="description">{PROGRAM_DESC}</span>
-				<span class="actions programActions">
+			<div class="clientListRow ownProgramsRow">
+				<div class="name_program"><span class="add_program">{PROGRAM_NAME}</span></div>
+				<div class="description"><div style="margin: 10px;">{PROGRAM_DESC}</div></div>
+				<div class="actions programActions"><div style="margin: 10px;">
 					<a title="Edit" href="index.php?pag=profile_exercise_update&programs_id={PROGRAM_ID}" class="edit"><span>edit</span></a>
 					<a title="Delete" href="index.php?pag=programs_user&programs_id={PROGRAM_ID}&act=member-exercise_delete" class="delete exerciseDelete"><span>delete</span></a>
-				</span>
+				</div></div>
 			</div>
 <!-- END DYNAMIC BLOCK: client_line -->
 

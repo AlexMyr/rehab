@@ -1,17 +1,10 @@
 <?php
 include "config.php";
 include "functions.php";
+error_reporting(E_ALL);
 
 $connection = connect_to_db();
-grab_categories("categs.txt");
-//new_grab_programs("exercises - UK_edited.txt");
-//save_pictures("exercises_new_3.02.2012_upd.txt");
-save_pictures("exercises - UK_edited.txt");// last string should be followed by \r\n adnd triple \t for correct parsing
-//save_pictures("test.txt");
+//save_exercises("exercises - UK_21.11.2012.txt");
+save_us_description("exercises - US_21.11.2012.txt");
 
-//grab_categories("categs.txt");
-//save_pictures("prog_block/block13.txt");
-//error_reporting(E_ALL);
-
-//save_pictures("exercises_work.txt");
 ?>

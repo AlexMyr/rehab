@@ -57,32 +57,32 @@
 					<a id="lang_en" href="/index.php" value="en"><img src="/img/gb.gif"/></a>
 					<a id="lang_us" href="/us/index.php" value="us"><img src="/img/us.gif"/></a>
 				</div>
-				
-                <div style="float:right; padding-right:5px; font-size: 13px; {DISPLAY_LOGIN_BLOCK}">
+				<div style="clear:both;"></div>
+                <div class="loginSection" style="{DISPLAY_LOGIN_BLOCK}">
 					<form action="index.php" method="post">
 					<input type="hidden" name="act" value="auth-login">
 					<input type="hidden" name="pag" value="login">
 					<div style="float:left;margin-right:10px;">
 						<span style="color: #FFFFFF;">Username</span><br/>
 						<span>
-							<input class="curvyCorner" style="height:20px; line-height:20px; border: 1px solid #1E3658;" class="textField" type="text" id="usernameAjax" name="username" value="" tabindex="1" />
+							<input class="curvyCorner loginTextInput" type="text" id="usernameAjax" name="username" value="" tabindex="1" />
 						</span><br/>
 						<span style="display: block; color: #FFFFFF;">
 							<span style="display: block; float: left; padding-top:5px;">
-								<input type="checkbox" name="store_login" id="store_loginAjax" />
+								<input style="opacity:0.80;" type="checkbox" name="store_login" id="store_loginAjax" />
 							</span>
-							<span style="display: block; float: left; padding-top:4px;">
+							<span style="display: block; float: left; padding-top:4px; color: #1D4873;">
 								&nbsp;Keep me logged in
 							</span>
 						</span>
 						
 					</div>
 					<div style="float:left;">
-						<span style="color: #FFFFFF;">{T.PASS}</span><br/>
+						<span style="color: #FFFFFF;">Password<!--{T.PASS}--></span><br/>
 						<span>
-							<input class="curvyCorner" style="height:20px; line-height:20px; border: 1px solid #1E3658;" class="textField" type="password" id="passwordAjax" name="password" value="" tabindex="2" />
+							<input class="curvyCorner loginTextInput" type="password" id="passwordAjax" name="password" value="" tabindex="2" />
 						</span><br/>
-						<span id="forgotPass" style="color: #FFFFFF; cursor: pointer; display: block; padding-top:4px;">
+						<span id="forgotPass" style="color: #FFFFFF; cursor: pointer; display: block; padding-top:4px; color: #1D4873;">
 							Forgot Password?
 						</span>
 					</div>

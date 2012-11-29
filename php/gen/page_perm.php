@@ -38,6 +38,16 @@
 									'module' => 'page',
 									'session' => 1
 									),
+                        'price' => array(
+									'perm' => 4,
+									'module' => 'page',
+									'session' => 1
+									),
+                        'partners' => array(
+									'perm' => 4,
+									'module' => 'page',
+									'session' => 1
+									),
 //--------------------------- Logged in Member page access -----------------------------
                         'programs' => array(
 									'perm' => 3,
