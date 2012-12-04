@@ -388,12 +388,12 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .preview { position:relative; padding:0px 0px 40px 0px; color:#666666; }
 .preview p { color:#666666; }
 
-.preview_buttons { display: block; width:712px; padding: 10px; position:fixed; bottom:0px; border-bottom: 1px solid #797979; background: url("../img/previewBtnsBg.png") repeat scroll 0 0; margin:0px 0px 0px -36px; }
+.preview_buttons { display: block; width:712px; padding: 10px; position:fixed; bottom:0px; border-bottom: 1px solid #797979; background: url("../img/previewBtnsBg.png") repeat scroll 0 0; margin:0px 0px 0px -36px; z-index: 999;}
 
 .preview_buttons .moreBtn { display: block; margin:0px 20px 0px 0px; width:auto; float:left; font-family: "MergeRegular"; background: none;}
 .preview_buttons .moreBtn span { background: url("../img/green_btn.png") no-repeat scroll center top; padding-left:10px;}
 
-.preview_buttons .buttons { display: block; margin:0px 20px 0px 0px; width:auto; float:left; }
+.preview_buttons .buttons { display: block; margin:0px 20px 0px 0px; width:auto; float:left; z-index: 1000; }
 .preview_buttons .buttons b { background: url("../img/moreBtnGreenLft.png") no-repeat scroll left center; }
 .preview_buttons .buttons span { background: url("../img/green_btn.png") no-repeat scroll center top; padding-left:10px;}
 
@@ -421,7 +421,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .expire_time { color:#fff; top:-75px; right:0px; position:absolute; display:block; width:auto; background: url("../img/expireAlert.png") no-repeat top left; padding-left:37px; line-height:31px; }
 .expire_time span { display:block; width:auto; background: url("../img/expireAlertBg.png") no-repeat top right; padding-right:14px; }
 
-.priceList { font-size:18px; font-family: "MergeRegular"; text-shadow:#ccc 1px 1px 0px; color:#444; }
+.priceList { font-size:18px; font-family: "MergeRegular"; /*text-shadow:#ccc 1px 1px 0px; color:#444;*/ }
 .priceList .priceListTitle { background: url("../img/dashboardGreyTitle.jpg") no-repeat left top transparent; width:700px; font-size:18px; font-family: "MergeRegular"; text-shadow:#fff 1px 1px 0px; color:#999; background-color: #f5f5f5; line-height:33px; }
 .priceList .priceListTitle .licence { display:inline-block; width:175px; padding-left:15px; }
 .priceList .priceListTitle .month { display:inline-block; width:250px; }
@@ -490,7 +490,6 @@ label.error_validate{
 .pricePlanTable
 {
 	margin: auto;
-	font-family: "avgardn";
 	border: 0px none;
 }
 
@@ -937,3 +936,8 @@ label.error_validate{
 {
 	min-height: 86px;
 }
+
+/*.dragScroll
+{
+	cursor: url(../img/cursorGrab.cur), default !important;
+}*/
