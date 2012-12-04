@@ -350,9 +350,13 @@ class member
                                 trainer_id=".$_SESSION[U_ID]." 
                         ");
 		
-		$this->dbu->query("SELECT first_name, surname, username, clinic_name FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
-		$this->dbu->move_next();
-		$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('surname')."', email='".$this->dbu->f('username')."', company_name='".$this->dbu->f('clinic_name')."' ");
+		//check existing header paper
+		if(!$this->dbu->field("select count(*) from trainer_header_paper where trainer_id='".$_SESSION[U_ID]."'"))
+		{
+			$this->dbu->query("SELECT first_name, surname, username, clinic_name FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."' ");
+			$this->dbu->move_next();
+			$this->dbu->query("INSERT INTO trainer_header_paper SET trainer_id='".$_SESSION[U_ID]."', first_name='".$this->dbu->f('first_name')."', surname='".$this->dbu->f('surname')."', email='".$this->dbu->f('username')."', company_name='".$this->dbu->f('clinic_name')."' ");
+		}
     
         $ld['error']="Licence Succesfully Saved.";
 
