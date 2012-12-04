@@ -135,7 +135,7 @@ $payment_table .= '</div>
 	  $border_style = '';
 	  $column_width = 158;
 	}
-	$payment_table .= '<div class="priceTableHead" style="float: left; height:42px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;">'.($can_create_exercise[$i] ? '<span style="background: url(\'../img/tick_green_middle.png\') no-repeat scroll right center transparent;display: inline-block;height: 26px;width: 26px; padding-top:12px;"></span>' : '<span style="display: inline-block;height: 26px;width: 26px;"></span>').'</div>';
+	$payment_table .= '<div class="priceTableHead" style="float: left; height:42px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;">'.($can_create_exercise[$i] ? '<span style="background: url(\'../img/tick_green_middle.png\') no-repeat scroll right center transparent;display: inline-block;height: 26px;width: 26px; margin-top:12px;"></span>' : '<span style="display: inline-block;height: 26px;width: 26px;"></span>').'</div>';
   }
   $payment_table .= '</div>';
   
@@ -177,7 +177,7 @@ $payment_table .= '</div>
 	  $border_style = '';
 	  $column_width = 158;
 	}
-	$payment_table .= '<div class="priceTableHead" style="float: left; height:42px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:16px; display: block; padding-top:10px;font-weight: normal;">'.$user_count[$i].'</span></div>';
+	$payment_table .= '<div class="priceTableHead" style="float: left; height:42px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:17px; display: block; margin-top:10px;font-weight: normal;">'.$user_count[$i].'</span></div>';
   }
   $payment_table .= '</div>';
   
@@ -191,7 +191,7 @@ $payment_table .= '</div>
 	  $border_style = '';
 	  $column_width = 158;
 	}
-	$payment_table .= '<div class="priceTableHead" style="float: left; height:28px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:16px; display: block; font-weight: normal;">'.$licence_period[$i].'</span></div>';
+	$payment_table .= '<div class="priceTableHead" style="float: left; height:28px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:17px; display: block; font-weight: normal; margin-top:5px;">'.$licence_period[$i].'</span></div>';
   }
   $payment_table .= '</div>';
   
@@ -205,7 +205,7 @@ $payment_table .= '</div>
 	  $border_style = '';
 	  $column_width = 158;
 	}
-	$payment_table .= '<div class="priceTableHead" style="float: left; height:28px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:16px; display: block; font-weight: normal;">'.$price_value[$i].'</span></div>';
+	$payment_table .= '<div class="priceTableHead" style="float: left; height:28px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:17px; display: block; font-weight: normal; margin-top:5px;">'.$price_value[$i].'</span></div>';
   }
   $payment_table .= '</div>';
   
@@ -219,7 +219,6 @@ $payment_table .= '</div>
 	  $border_style = '';
 	  $column_width = 158;
 	}
-	
 
 	if($price_amount[$i] === '0'){
 	  $payment_table .= '<div class="priceTableHead" style="float: left; height:75px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><a id="submitPayment" class="moreBtn" style="width:105px; background:none;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
@@ -229,7 +228,7 @@ $payment_table .= '</div>
 	}
 	if(substr_count($price_value[$i],'POA')){
 	  $payment_table .= '<div class="priceTableHead" style="float: left; height:75px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;">
-						  <a id="submitPayment" class="moreBtn" style="width:105px; background:none;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+						  <a id="submitPayment" class="moreBtn" style="width:105px; background:none;" href="index.php?pag=cms&p=contact_us">
 							<span style="font-weight: normal;margin-top:20px; padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.CONTACT'].'</span>
 						  </a>
 						</div>';
@@ -237,7 +236,7 @@ $payment_table .= '</div>
 	}
 	if(($current_price_id != $price_plan_id[$i] && $active == 2 && !$is_trial) OR ($is_trial && $price_amount[$i] === '0')){
 	  $payment_table .= '<div class="priceTableHead" style="float: left; height:75px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;">
-							  <span style="font-size:16px; display: block; font-weight: normal; margin-top:15px;">'.$tags['T.ALREADY'].'</span>
+							  <span style="font-size:17px; display: block; font-weight: normal; margin-top:15px;">'.$tags['T.ALREADY'].'</span>
 						  </div>';
 	  continue;
 	}
@@ -249,7 +248,6 @@ $payment_table .= '</div>
 						  <span style="font-weight: normal;padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.MONTH'].'</span>
 						</a>
 						</a></div>';
-	$payment_table .= '<div class="priceTableHead" style="float: left; height:75px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;"><span style="font-size:16px; display: block; font-weight: normal;">'.$price_value[$i].'</span></div>';
   }
   $payment_table .= '</div>';
   
