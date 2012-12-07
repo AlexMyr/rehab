@@ -1799,8 +1799,6 @@ If you have any questions with an exercise, just email the clinic.";
 		$ld['time328'] = '';
 		$ld['time315'] = '5 mins';
 		
-		$ld['exercise_notes'] = 'Tennis elbow weeks 3-4';
-		
 		//get description for exercise
 		$exercise_ids = explode(',', $ld['exercise_id']);
 		foreach($exercise_ids as $exercise_id)
