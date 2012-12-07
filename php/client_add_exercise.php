@@ -6,6 +6,9 @@ define(PATH_TO_IMAGES, dirname(dirname(__FILE__)));
 
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client_add_exercise.html"));
+
+if(!isset($glob['lang'])) $glob['lang'] = 'en';
+
 $tags = get_template_tag($glob['pag'], $glob['lang']);
 foreach($tags as $name => $row){
   $ft->assign($name, $row);
