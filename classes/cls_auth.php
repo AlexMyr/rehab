@@ -49,7 +49,7 @@ class auth
 		{
 			$query->query("
 						SELECT 
-							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date
+							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date,lang
 						FROM 
 							trainer 
 						WHERE 
@@ -59,7 +59,7 @@ class auth
 		else{
 			$query->query("
 						SELECT 
-							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date
+							trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date,lang
 						FROM 
 							trainer 
 						WHERE 
@@ -72,7 +72,6 @@ class auth
 			$trainer_id = $query->f('trainer_id');
 			$lang = $this->dbu->f('lang');
             setcookie('language', $lang, 0, '/');
-
 			if($query->f('active')==0)
 			{
 				if(strtotime($query->f('expire_date'))-time()<=0)
@@ -186,7 +185,7 @@ class auth
 		
 		$query->query("
 					SELECT 
-						trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date
+						trainer_id,username,password,access_level,active,profile_id,is_clinic,email,fb_id,is_login,expire_date,lang
 					FROM 
 						trainer 
 					WHERE 
