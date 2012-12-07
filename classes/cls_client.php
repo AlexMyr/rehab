@@ -21,13 +21,14 @@ class client
 
 	function add_client(&$ld)
 	{
-
 		if(!$this->validate_add_client($ld))
 		{
 			return false;
 		}
 		global $user_level;
 	    
+		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
 	//    $this->dbu->query("
 	//						SELECT 
 	//							client.client_id
@@ -49,7 +50,7 @@ class client
 								client 
 							WHERE 
 								1=1 
-								AND trainer_id = ".$_SESSION[U_ID]." 
+								AND trainer_id = ".$trainer_id." 
 								AND email = '".mysql_real_escape_string($ld['email'])."'
 						");
 		/* CHECK IF Client EXIST IN DB, IF NOT, SAVE IT IN DB */
@@ -72,7 +73,7 @@ class client
 											client_note='".mysql_escape_string($ld['client_note'])."', 
 											create_date=NOW(),
 											modify_date=NOW(),
-											trainer_id = ".$_SESSION[U_ID]." 
+											trainer_id = ".$trainer_id." 
 								");
 			$ld['first_name']=''; 
 			$ld['surname']='';
@@ -81,7 +82,7 @@ class client
 			$ld['client_note']='';
 			
 			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.SUCCESS');
-			header("location: /index.php?pag=client&client_id=".$ld['client_id']."&success=true&error=".$ld['error']);exit;
+			$ld['pag'] = 'client';
 		    return true;
 		}
 	}
@@ -110,6 +111,8 @@ class client
 
 	function add_program_plan(&$ld)
 	{
+		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
 		if(!$this->validate_add_program_plan($ld))
 		{
 			$ld['pag'] = 'programs';
@@ -124,7 +127,7 @@ class client
 								exercise_program_plan 
 							WHERE 
 								1=1 
-								AND trainer_id = ".$_SESSION[U_ID]." 
+								AND trainer_id = ".$trainer_id." 
 								AND program_name = '".mysql_real_escape_string($ld['program_name'])."'
 								AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
 						");
@@ -149,7 +152,7 @@ class client
 										client_note='".mysql_real_escape_string($ld['exercise_note'])."', 
 										date_created=NOW(),
 										date_modified=NOW(),
-										trainer_id = ".$_SESSION[U_ID]." 
+										trainer_id = ".$trainer_id." 
 							");
 
 			$ld['program_name']=''; 
@@ -231,10 +234,12 @@ class client
     
 	function update_program_exercise_plan(&$ld)
 	{
-		$is_custom = $this->dbu->field("select parent_plan from exercise_program_plan where trainer_id=".$_SESSION[U_ID]." and exercise_program_plan_id=".$ld['program_id']) ? true : false;
+		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
+		$is_custom = $this->dbu->field("select parent_plan from exercise_program_plan where trainer_id=".$trainer_id." and exercise_program_plan_id=".$ld['program_id']) ? true : false;
 		
 		//update secondary
-		$this->dbu->query("select exercise_program_plan_id, client_id from exercise_program_plan where trainer_id=".$_SESSION[U_ID]." and parent_plan=".$ld['program_id']);
+		$this->dbu->query("select exercise_program_plan_id, client_id from exercise_program_plan where trainer_id=".$trainer_id." and parent_plan=".$ld['program_id']);
 		while($this->dbu->move_next())
 		{
 			$secondary_program[] = array('client_id'=> $this->dbu->f('client_id'), 'program_id'=>$this->dbu->f('exercise_program_plan_id'));
@@ -293,7 +298,7 @@ class client
 			$this->dbu->query("SELECT * FROM exercise_plan_set WHERE 
 								exercise_plan_id = '".$ld['program_id']."' AND
 								exercise_program_id = '".$exercise[$i]."' AND
-								trainer_id = '".$_SESSION[U_ID]."' AND
+								trainer_id = '".$trainer_id."' AND
 								client_id = '".$ld['program_id']."' AND
 								is_program_plan = 1
 								");
@@ -310,7 +315,7 @@ class client
 					WHERE
 						exercise_plan_id = '".$ld['program_id']."' AND
 						exercise_program_id = '".$exercise[$i]."' AND
-						trainer_id = '".$_SESSION[U_ID]."' AND
+						trainer_id = '".$trainer_id."' AND
 						client_id = '".$ld['program_id']."' 
 					");
 			}
@@ -326,7 +331,7 @@ class client
 						plan_set_no = '".mysql_escape_string($ld['sets'.$exercise[$i]])."',
 						plan_repetitions = '".mysql_escape_string($ld['repetitions'.$exercise[$i]])."',
 						plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
-						trainer_id = '".$_SESSION[U_ID]."',
+						trainer_id = '".$trainer_id."',
 						client_id = '".$ld['program_id']."',
 						is_program_plan = 1,
 						both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
@@ -348,7 +353,7 @@ class client
 							plan_set_no = '".mysql_escape_string($ld['sets'.$exercise[$i]])."',
 							plan_repetitions = '".mysql_escape_string($ld['repetitions'.$exercise[$i]])."',
 							plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
-							trainer_id = '".$_SESSION[U_ID]."',
+							trainer_id = '".$trainer_id."',
 							client_id = '".$secondary_program[$j]['program_id']."',
 							is_program_plan = 1,
 							both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
@@ -364,7 +369,7 @@ class client
 								exercise_notes = '".mysql_real_escape_string($ld['exercise_notes'])."',
 								date_modified = NOW()
 							WHERE
-								trainer_id = '".$_SESSION[U_ID]."' AND
+								trainer_id = '".$trainer_id."' AND
 								exercise_program_plan_id = '".$ld['program_id']."' 
 							");
 		
@@ -764,6 +769,8 @@ class client
 	
 	function add_exercise(&$ld)
 	{
+		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
         $ld['exercise_desc'] = mysql_real_escape_string(trim(stripslashes($ld['exercise_desc'])));
 		
@@ -778,7 +785,7 @@ class client
 								exercise_program_id='".$ld['exercise_id']."', 
 								date_created=NOW(), 
 								date_modified=NOW(), 
-								trainer_id='".$_SESSION[U_ID]."', 
+								trainer_id='".$trainer_id."', 
 								client_id= ".$ld['client_id'].",
 								exercise_desc = '".$ld['exercise_desc']."'
 							");
@@ -791,7 +798,7 @@ class client
 							WHERE 
 								client_id = ".$ld['client_id']."
 							AND
-								trainer_id = ".$_SESSION[U_ID]." 
+								trainer_id = ".$trainer_id." 
 							");
 		
 		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
@@ -844,6 +851,8 @@ class client
 	
 	function update_exercise_plan(&$ld)
 	{
+		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
 		if(!$this->validate_update_exercise_plan($ld))
 		{
 			return false;
@@ -856,7 +865,7 @@ class client
 			$this->dbu->query("SELECT * FROM exercise_plan_set WHERE 
 					 exercise_plan_id = '".$ld['exercise_plan_id']."' AND
 					 exercise_program_id = '".$exercise[$i]."' AND
-					 trainer_id = '".$_SESSION[U_ID]."' AND
+					 trainer_id = '".$trainer_id."' AND
 					 client_id = '".$ld['client_id']."' AND
 					 is_program_plan = 0
 					 ");
@@ -873,7 +882,7 @@ class client
 					WHERE
 						exercise_plan_id = '".$ld['exercise_plan_id']."' AND
 						exercise_program_id = '".$exercise[$i]."' AND
-						trainer_id = '".$_SESSION[U_ID]."' AND
+						trainer_id = '".$trainer_id."' AND
 						client_id = '".$ld['client_id']."' 
 					");
 			}
@@ -889,7 +898,7 @@ class client
 						 plan_set_no = '".mysql_escape_string($ld['sets'.$exercise[$i]])."',
 						 plan_repetitions = '".mysql_escape_string($ld['repetitions'.$exercise[$i]])."',
 						 plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
-						 trainer_id = '".$_SESSION[U_ID]."',
+						 trainer_id = '".$trainer_id."',
 						 client_id = '".$ld['client_id']."',
 						 is_program_plan = 0,
 						 both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
@@ -903,13 +912,12 @@ class client
 				exercise_notes = '".mysql_escape_string($ld['exercise_notes'])."'
 			WHERE
 				exercise_plan_id = '".$ld['exercise_plan_id']."' AND
-				trainer_id = '".$_SESSION[U_ID]."' AND
+				trainer_id = '".$trainer_id."' AND
 				client_id = '".$ld['client_id']."' 
 			");
 		
 		$this->dbu->query("UPDATE client SET modify_date=NOW() WHERE client_id=".$ld['client_id']." AND
-											trainer_id = ".$_SESSION[U_ID]." ");
-		//$ld['pag'] = 'pagina de pdf';
+											trainer_id = ".$trainer_id." ");
 		return true;	
 	}
 	

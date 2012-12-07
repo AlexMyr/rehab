@@ -111,6 +111,7 @@ class member
                                             affiliate_refferer_id = '".$refferer_UID."',
                                             lang = '".$ld['join_language']."'
                                 ");
+			$ld['trainer_id'] = $trainer_id;
 			
 			//create default additional notes
 			$add_notes = "Stop any exercise that causes pain.
@@ -122,6 +123,9 @@ If you have any questions with an exercise, just email the clinic.";
 									trainer_id='$trainer_id', 
 									exercise_notes='$add_notes'
                                 ");
+			
+			//add test data
+			$this->add_test_data_to_new_user($ld);
 			
             // mail here
             $message_data=get_sys_message('nmjoin');
@@ -1764,4 +1768,88 @@ If you have any questions with an exercise, just email the clinic.";
         $mail->AddAddress($ordermail, $send_to_name);
         $mail->Send();	
     }
+	
+	function add_test_data_to_new_user(&$ld)
+	{
+		include 'cls_client.php';
+		
+		//get client instance
+		$client = new client();
+		
+		//add test client
+		$ld['first_name'] = 'Test'; 
+		$ld['surname'] = 'Patient';
+		$ld['email'] = 'test@patient.com'; 
+		$ld['print_image_type'] = '1';
+		$ld['client_note'] = '';
+
+		$client->add_client($ld);
+
+		$ld['exercise_id'] = '294,328,315';
+        $ld['exercise_desc'] = '';
+		$client->add_exercise($ld);
+		
+		$ld['sets294'] = '3';
+		$ld['sets328'] = '3';
+		$ld['sets315'] = '5';
+		$ld['repetitions294'] = '3';
+		$ld['repetitions328'] = '10';
+		$ld['repetitions315'] = '';
+		$ld['time294'] = '30';
+		$ld['time328'] = '';
+		$ld['time315'] = '5 mins';
+		
+		$ld['exercise_notes'] = 'Tennis elbow weeks 3-4';
+		
+		//get description for exercise
+		$exercise_ids = explode(',', $ld['exercise_id']);
+		foreach($exercise_ids as $exercise_id)
+		{
+			$ld['description'.$exercise_id] = $this->get_exercise_desc($ld, $exercise_id);
+		}
+		$client->update_exercise_plan($ld);
+		
+		$ld['program_name'] = 'Acute Lower Back Pain';
+		$ld['print_image_type'] = '1';
+		$ld['program_desc'] = '1-2 weeks duration';
+		$client->add_program_plan($ld);
+		
+		$ld['exercise_id'] = '448,460,392,493';
+        $ld['exercise_desc'] = '';
+		$client->update_program_exercise($ld);
+		$ld['sets448'] = '3';
+		$ld['sets460'] = '3';
+		$ld['sets392'] = '';
+		$ld['sets493'] = '3';
+		$ld['repetitions448'] = '10';
+		$ld['repetitions460'] = '10';
+		$ld['repetitions392'] = '';
+		$ld['repetitions493'] = '';
+		$ld['time448'] = '';
+		$ld['time460'] = '';
+		$ld['time392'] = '';
+		$ld['time493'] = '5 mins';
+		$ld['both_sides448'] = '1';
+		$ld['both_sides460'] = '1';
+		
+		$ld['exercise_notes'] = "Stop any exercise that causes pain.
+If you have any questions with an exercise, just email the clinic.";
+		
+		//get description for exercise
+		$exercise_ids = explode(',', $ld['exercise_id']);
+		foreach($exercise_ids as $exercise_id)
+		{
+			$ld['description'.$exercise_id] = $this->get_exercise_desc($ld, $exercise_id);
+		}
+		$client->update_program_exercise_plan($ld);
+		
+	}
+	
+	function get_exercise_desc($ld, $exercise_id)
+	{
+		$lang = isset($ld['lang']) ? $ld['lang'] : 'en';
+		$query = "select description from  programs_translate_$lang where programs_id=$exercise_id";
+		$result = mysql_result($query, 0) ? mysql_result($query, 0) : '';
+		return $result;
+	}
 }//end class
