@@ -239,7 +239,6 @@ class client
 		{
 			$secondary_program[] = array('client_id'=> $this->dbu->f('client_id'), 'program_id'=>$this->dbu->f('exercise_program_plan_id'));
 		}
-//var_dump($secondary_program);exit;
 		if(count($secondary_program) && !$is_custom)
 		{
 			$this->dbu->query("select * from exercise_program_plan where exercise_program_plan_id=".$ld['program_id']);
@@ -306,7 +305,8 @@ class client
 						plan_description = '".mysql_escape_string($ld['description'.$exercise[$i]])."',
 						plan_set_no = '".mysql_escape_string($ld['sets'.$exercise[$i]])."',
 						plan_repetitions = '".mysql_escape_string($ld['repetitions'.$exercise[$i]])."',
-						plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."'
+						plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
+						both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
 					WHERE
 						exercise_plan_id = '".$ld['program_id']."' AND
 						exercise_program_id = '".$exercise[$i]."' AND
@@ -328,7 +328,8 @@ class client
 						plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
 						trainer_id = '".$_SESSION[U_ID]."',
 						client_id = '".$ld['program_id']."',
-						is_program_plan = 1
+						is_program_plan = 1,
+						both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
 					");			
 			}
 			
@@ -349,7 +350,8 @@ class client
 							plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
 							trainer_id = '".$_SESSION[U_ID]."',
 							client_id = '".$secondary_program[$j]['program_id']."',
-							is_program_plan = 1
+							is_program_plan = 1,
+							both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
 						");
 				}
 			}
@@ -811,7 +813,7 @@ class client
 								date_modified=NOW(), 
 								trainer_id='".$_SESSION[U_ID]."', 
 								client_id= ".$ld['client_id'].",
-                                exercise_notes = '".mysql_escape_string($ld['exercise_desc'])."'
+                                exercise_desc = '".mysql_escape_string($ld['exercise_desc'])."'
 							WHERE
 								exercise_plan_id='".$ld['exercise_plan_id']."'
 							");
@@ -863,7 +865,8 @@ class client
 						plan_description = '".mysql_escape_string($ld['description'.$exercise[$i]])."',
 						plan_set_no = '".mysql_escape_string($ld['sets'.$exercise[$i]])."',
 						plan_repetitions = '".mysql_escape_string($ld['repetitions'.$exercise[$i]])."',
-						plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."'
+						plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
+						both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
 					WHERE
 						exercise_plan_id = '".$ld['exercise_plan_id']."' AND
 						exercise_program_id = '".$exercise[$i]."' AND
@@ -885,7 +888,8 @@ class client
 						 plan_time = '".mysql_escape_string($ld['time'.$exercise[$i]])."',
 						 trainer_id = '".$_SESSION[U_ID]."',
 						 client_id = '".$ld['client_id']."',
-						 is_program_plan = 0
+						 is_program_plan = 0,
+						 both_sides = '".(isset($ld['both_sides'.$exercise[$i]]) ? 1 : 0)."'
 					");			
 			}
 			$i++;			
