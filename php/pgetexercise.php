@@ -3,7 +3,7 @@
 * @Author: MedeeaWeb Works                                              *
 ************************************************************************/
 define('PATH_TO_IMAGES', dirname(dirname(__FILE__)));
-
+$lang = isset($_COOKIE['language']) ? $_COOKIE['language'] : 'en';
 if(!$_SESSION['ppids']) $_SESSION['ppids'] = array();
 if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSION['ppids']))
 {
@@ -13,7 +13,7 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 	if($get_exercise_image_type==0) $image_type = "lineart";
 	else if($get_exercise_image_type==1) $image_type = "image";
 	
-	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
+	$left_join = " LEFT JOIN programs_translate_".$lang." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
 	
 	$program = $dbu->query("
 							SELECT 
