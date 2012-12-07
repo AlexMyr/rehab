@@ -766,8 +766,11 @@ class client
 	{
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
         $ld['exercise_desc'] = mysql_real_escape_string(trim(stripslashes($ld['exercise_desc'])));
-        if($ld['exercise_desc'] == 'Notes')
-            $ld['exercise_desc'] = '';
+		
+		$default_program_desc = get_template_tag('program_update_exercise', $ld['lang'], 'T.PROGRAM_DESC_DEFAULT');
+		if($ld['exercise_desc'] == $default_program_desc)
+			$ld['exercise_desc'] = '';
+        
 		$ld['exercise_plan_id']=$this->dbu->query_get_id("
 							INSERT INTO 
 								exercise_plan 
