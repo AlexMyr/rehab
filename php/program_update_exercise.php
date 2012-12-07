@@ -7,6 +7,8 @@ define(PATH_TO_IMAGES, dirname(dirname(__FILE__)));
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "program_update_exercise.html"));
 
+if(!isset($glob['lang'])) $glob['lang'] = 'en';
+
 $tags = get_template_tag($glob['pag'], $glob['lang']);
 foreach($tags as $name => $row){
   $ft->assign($name, $row);
@@ -472,7 +474,7 @@ if(!empty($_SESSION['ppids']))
 	//$dbu = new mysql_db();
 	$exercises_images = array();
 	
-	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id
+	$left_join = " LEFT JOIN programs_translate_".$glob['lang']." AS programs_loc ON programs_loc.programs_id=programs.programs_id
                    LEFT JOIN programs_custom_descr AS custom_descr ON custom_descr.exercise_id = programs.programs_id";
 				   
 	foreach($_SESSION['ppids'] as $key=>$val)

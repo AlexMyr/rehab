@@ -7,10 +7,9 @@ define(PATH_TO_IMAGES, dirname(dirname(__FILE__)));
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client_update_exercise.html"));
 
-//$page_title='Login Member';
-//$next_function ='auth-login';
-
 $dbu = new mysql_db();
+
+if(!isset($glob['lang'])) $glob['lang'] = 'en';
 
 $tags = get_template_tag($glob['pag'], $glob['lang']);
 foreach($tags as $name => $row){
@@ -439,7 +438,7 @@ $descr = $dbu->query("
 						AND client_id= ".$glob['client_id']." 
 					");
 $descr->next();
-$exer_descr = $descr->f('exercise_notes') != '' ? $descr->f('exercise_notes') : $program_desc_default;
+$exer_descr = $descr->f('exercise_desc') != '' ? $descr->f('exercise_desc') : $program_desc_default;
 
 $ft->assign('EXERCISE_DESC', $exer_descr);
 $ft->assign('EXERCISE_DESC_DEFAULT', $program_desc_default);
@@ -478,7 +477,7 @@ if(!empty($_SESSION['pids']))
 	
 	$exercises_images = array();
 	
-	$left_join = " LEFT JOIN programs_translate_".$_COOKIE['language']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
+	$left_join = " LEFT JOIN programs_translate_".$glob['lang']." AS programs_loc ON programs_loc.programs_id=programs.programs_id";
 	foreach($_SESSION['pids'] as $key=>$val)
 	{
 		
