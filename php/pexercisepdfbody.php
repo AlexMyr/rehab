@@ -41,14 +41,24 @@ $dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_
 			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 			'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
 			'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
-			'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
-			'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
+			/*'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
+			'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',*/
 			'PHONE' => $dbu->f('phone') ? 'Tel: '.str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
 			'MOBILE' => $dbu->f('mobile') ? 'Mobile: '.str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
 			'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
 			'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 			'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
+			
+			
+			'CITY' => $dbu->f('city') ? '<td width="210">'.str_replace('’', '\'', htmlentities($dbu->gf('city'))).'</td>' : '<td width="210"></td>',
+			'POST_CODE' => $dbu->f('post_code') ? '<td width="330">'.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))).'</td>' : '<td width="330"></td>',
 		));
+		
+		if(isset($glob['lang']) && $glob['lang'] == 'us')
+			$ft->assign(array(
+				'CITY' => '<td width="210"></td>',
+				'POST_CODE' => '<td width="330"></td>',
+			));
 	}
 	else {
 		$ft->assign(array(
@@ -169,6 +179,7 @@ while($i<count($exercise))
 	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".htmlentities($get_data->gf('plan_set_no')) : "");
 	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".htmlentities($get_data->gf('plan_repetitions')) : "");
 	$ft->assign('TIME' , $get_data->gf('plan_time') ? "Time: ".$get_data->gf('plan_time') : "");
+	$ft->assign('BOTH_SIDES', $get_data->gf('both_sides') ? "Perform both sides" : "");
     $ft->parse('EXERCISE_LINE_OUT','.exercise_line');
     
     $i++;
@@ -182,7 +193,7 @@ while($i<count($exercise))
 		$get_exercise_notes->next();
 	}
 	
-	$ft->assign(array( 'EXERCISE_NOTES'=> $get_exercise_notes->gf('exercise_notes')));	
+	$ft->assign(array( 'EXERCISE_NOTES'=> nl2br($get_exercise_notes->gf('exercise_notes'))));	
 			
 $ft->parse('CONTENT','main');
 

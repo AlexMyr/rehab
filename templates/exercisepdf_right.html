@@ -54,8 +54,8 @@ h2 {
 			<table width="330" style="table-layout:fixed;">
 				<tr><td width="210">{COMPANY}</td><td width="120" align="right">{PHONE}</td></tr>
 				<tr><td width="210">{ADDRESS}</td><td width="120" align="right">{MOBILE}</td></tr>
-				<tr><td width="210">{CITY}</td><td width="120" align="right">{FAX}</td></tr>
-				<tr><td colspan="2" width="330">{POST_CODE}</td></tr>
+				<tr>{CITY}<td width="120" align="right">{FAX}</td></tr>
+				<tr>{POST_CODE}</tr>
 				<tr><td colspan="2" width="330" align="right">{EMAIL}</td></tr>
 				<tr><td colspan="2" width="330" align="right">{WEBSITE}</td></tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
@@ -92,6 +92,7 @@ h2 {
 											<span>{SETS}</span>&nbsp;
 											<span>{REPETITIONS}</span>&nbsp;
 											<span>{TIME}</span>
+											<span><b>{BOTH_SIDES}</b></span>
 									</div>
 								</td>
 							</tr>
