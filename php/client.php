@@ -6,18 +6,16 @@ $ft=new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define(array('main' => "client.html"));
 //$ft->assign('MESSAGE', get_error($glob['error']));
 
-//$page_title='Login Member';
-//$next_function ='auth-login';
 
 $max_rows = '';
 $l_r = ROW_PER_PAGE;
-//$l_r = 2;
+
 
 $dbu = new mysql_db();
 
 if(($glob['ofs']) || (is_numeric($glob['ofs'])))
 {
-$glob['offset']=$glob['ofs'];
+		$glob['offset']=$glob['ofs'];
 }
 if((!$glob['offset']) || (!is_numeric($glob['offset'])))
 {
@@ -29,15 +27,11 @@ else
     $ft->assign('OFFSET',$glob['offset']);
 }
 
-//$dbu->query("select name from cms_menu where menu_id=".$glob['menu_id']);
 $chk_trial = $dbu->field("SELECT is_trial FROM trainer WHERE trainer_id='".$_SESSION[U_ID]."'");
 $dbu->query("select count(exercise_plan_id) as cnt from exercise_plan where trainer_id=".$_SESSION[U_ID]." AND client_id=".$glob['client_id']." ");
 if($dbu->move_next()) $out=$dbu->f('cnt');
 
-//if(intval($out)>4 && $chk_trial)
-//    $show_limit_error = 'class="showLimitError"';
-//else
-    $show_limit_error = '';
+$show_limit_error = '';
 
 $ft->assign('SHOW_LIMIT_ERROR', $show_limit_error);
 
@@ -82,8 +76,6 @@ $max_rows=$programs->records_count();
 $programs->move_to($offset*$l_r);
 while ($programs->next()&&$i<$l_r)
 {
-//	$dbu->query("select count(exercise_plan_id) as cnt from exercise_plan where trainer_id=".$_SESSION[U_ID]." AND client_id=".$dbu->f('client_id')." ");
-//	$dbu->move_next();
 		$ft->assign(array(
 		    'HIDE_EMAIL'=>$has_email ? '' : 'none',
 			'EXERCISE_PLAN_ID'=>$programs->f('exercise_plan_id'),
