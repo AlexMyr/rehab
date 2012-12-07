@@ -73,6 +73,10 @@ if($glob['lang']=='en')
 {
   $ft->assign('DISPLAY_ZIP','none');
 }
+if($glob['lang']=='us')
+{
+  $ft->assign('DISPLAY_CITYPOST','none');
+}
 
 $site_meta_title=$meta_title." - Profile Header Paper";
 $site_meta_keywords=$meta_keywords.", Profile Header Paper";
