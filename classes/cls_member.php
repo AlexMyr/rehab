@@ -1786,7 +1786,7 @@ If you have any questions with an exercise, just email the clinic.";
 		$client->add_client($ld);
 
 		$ld['exercise_id'] = '294,328,315';
-        $ld['exercise_desc'] = '';
+        $ld['exercise_desc'] = 'Tennis Elbow exercsies';
 		$client->add_exercise($ld);
 		
 		$ld['sets294'] = '3';
