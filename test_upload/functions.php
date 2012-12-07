@@ -253,10 +253,10 @@ function save_exercises($fileProgramsName)
         
         foreach($programs as $top_cat_name => $res_array)
         {
-            //foreach($res_array as $program_info_array)
-            //{
-            //    copy_images($program_info_array);
-            //}
+            foreach($res_array as $program_info_array)
+            {
+                copy_images($program_info_array);
+            }
             save_updated_program_to_db($top_cat_name, $res_array, $top_categories, 'en');
         }
     }
