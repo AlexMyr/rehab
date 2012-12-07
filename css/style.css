@@ -253,7 +253,7 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListTitle { background: url("../img/bar_blue.png") no-repeat left top transparent; width:700px; font-size:18px; font-family: "MergeRegular"; text-shadow:#fff 1px 1px 0px; color:#c2c2c2; background-color: transparent; line-height:35px; color:#000000; }
 .clientList .clientListTitle .add_exercise { display:inline-block; width:37px; }
 .clientList .clientListTitle .name { display:inline-block; width:273px; }
-.clientList .clientListTitle .name_program { padding-left:10px; display:inline-block; width:250px; }
+.clientList .clientListTitle .name_program { padding-left:10px; display:inline-block; width:260px; }
 .clientList .clientListTitle .name_exercise { padding-left:10px; display:inline-block; width:150px; }
 .clientList .clientListTitle .count { display:inline-block; width:110px; }
 .clientList .clientListTitle .dateTime { display:inline-block; width:174px; }
@@ -261,7 +261,7 @@ p.redBold { color:#f00; font-weight:bold; }
 
 .clientList .clientListTitle .notes { padding-right:10px; display:inline-block; width:250px; }
 .clientList .clientListTitle .actions { display:inline-block; width:114px; }
-.clientList .clientListTitle .description { display:inline-block; width:250px; }
+.clientList .clientListTitle .description { display:inline-block; width:280px; }
 .clientList .clientListTitle a { text-decoration: none; text-shadow: none;}
 
 .clientList .clientListRow { padding: 0px; /*height:26px;*/ border-bottom:1px solid #eeeeee; width:700px; }
@@ -284,6 +284,15 @@ p.redBold { color:#f00; font-weight:bold; }
 .clientList .clientListRow .actions.programActions { padding-left:0px; display:block; float: left; width:160px; color:#666666; vertical-align: top; min-height:86px;}
 .clientList .clientListRow .actions a { display:inline-block; width:24px; height:24px; font-size:0px; text-decoration:none; margin-right:1px; vertical-align: top; }
 .clientList .clientListRow .actions a span { display:none; }
+
+.programListDynamic .clientListRow .name_program { min-height: 0px; }
+.programListDynamic .clientListRow .description { min-height: 50px; width: 280px; }
+.programListDynamic .clientListRow .actions.programActions { min-height: 0px; width: 130px; }
+
+.clientList .ownProgramsRow .name_program { min-height: 0px; }
+.clientList .ownProgramsRow .description { min-height: 50px; }
+.clientList .ownProgramsRow .actions.programActions { min-height: 0px; }
+
 
 .clientList .clientListRow .actions a.edit { background: url("../img/client_edit_large_ico1.png") no-repeat 0px 0px; }
 .clientList .clientListRow .actions a.edit:hover { background: url("../img/client_edit_large_ico2.png") no-repeat 0px 0px; }
@@ -403,7 +412,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .exercise .exercise-desc {width:357px; padding-left:5px; height:141px;display:inline-block; margin:0 0 15px 5px; border: 1px solid #EFEFFF; background-color: #F8F8FF; font-family:avgardn;}
 .exercise .input_exercise {width:35px; border: 1px solid #CCC;}
 .exercise .input_exercise_ {width:100px; border: 1px solid #CCC;}
-.spacing { padding: 0 10px; display: inline-block; }
+.spacing { padding: 10px; display: inline-block; }
 
 .contact-wrapper .contact {float:left; width: 220px;}
 .contact-wrapper .contact1 {float:left; width: 220px; margin-left:210px;}
@@ -848,37 +857,19 @@ label.error_validate{
 	margin: 5px;
 }
 
-.starGrey
-{
-	background-position: 0px 0px;
-}
+.starGrey {	background-position: 0px 0px; }
 
-.starGold
-{
-	background-position: 0px -10px;
-}
+.starGold { background-position: 0px -10px; }
 
-.moreBtnGreen
-{
-	background-image: url("../img/moreBtnGreenLft.png");
-}
+.moreBtnGreen {	background-image: url("../img/moreBtnGreenLft.png"); }
 
-.moreBtnGreen span
-{
-	background-image: url("../img/moreBtnGreen.png");
-}
+.moreBtnGreen span { background-image: url("../img/moreBtnGreen.png"); }
 
+.greenGlassBtn.new_join { margin-top: 10px; }
 
-.greenGlassBtn.new_join
-{
-	margin-top: 10px;
-}
+.greenGlassBtn.new_join button { cursor: pointer; }
 
-.greenGlassBtn, .blueGlassBtn
-{
-	background: none;
-	padding: 0px;
-}
+.greenGlassBtn, .blueGlassBtn { background: none; padding: 0px; }
 
 .greenGlassBtn span, .greenGlassBtn button span
 {
@@ -930,11 +921,6 @@ label.error_validate{
 .loginSection .loginTextInput
 {
 	opacity:0.80; height:20px; line-height:20px; border: 1px solid #1E3658;
-}
-
-.ownProgramsRow
-{
-	min-height: 86px;
 }
 
 /*.dragScroll
