@@ -97,7 +97,7 @@ class member
             global $site_url, $site_name;
             $passwd = $ld['join_pass'];
             
-            $this->dbu->query("
+            $trainer_id = $this->dbu->query_get_id("
                                 INSERT INTO 
                                             trainer 
                                 SET 
@@ -111,6 +111,18 @@ class member
                                             affiliate_refferer_id = '".$refferer_UID."',
                                             lang = '".$ld['join_language']."'
                                 ");
+			
+			//create default additional notes
+			$add_notes = "Stop any exercise that causes pain.
+If you have any questions with an exercise, just email the clinic.";
+			$this->dbu->query("
+                                INSERT INTO 
+                                    exercise_notes 
+                                SET 
+									trainer_id='$trainer_id', 
+									exercise_notes='$add_notes'
+                                ");
+			
             // mail here
             $message_data=get_sys_message('nmjoin');
             $ordermail = $ld['join_email'];
