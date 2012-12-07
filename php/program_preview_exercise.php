@@ -121,7 +121,7 @@ if($glob['mode'] == 'preview')
 		'MARGIN_BUTTONS'			=> '150px'
 		
 	));
-	$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.stripcslashes($exercise_notes).'</strong></span>', ));
+	$ft->assign(array( 'EXERCISE_NOTES'=> '<span class="exercise-desc" style="border:0px solid #ccc; width: 655px;"><strong>'.nl2br(stripcslashes($exercise_notes)).'</strong></span>', ));
 }
 
 $exercise = explode(',',$glob['exercise_id']);
@@ -164,6 +164,7 @@ while($i<count($exercise))
 							");
                             
 	$get_data->next();
+
     $description = $get_descr->f('description') ? $get_descr->f('description') : $get_program->gf('description');
     
 	if($glob['mode']== 'edit')
@@ -178,6 +179,8 @@ while($i<count($exercise))
 			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
 			$ft->assign(array( 'EXERCISE_DESC'=> get_content_input_area(3, $description, 'description'.$exercise[$i],$params), ));	
 		}
+		if(!empty($glob['both_sides'.$exercise[$i]])) $ft->assign('BOTH_SIDES' , ($glob['both_sides'.$exercise[$i]] ? 'checked' : ''));
+		else if(empty($glob['both_sides'.$exercise[$i]])) $ft->assign('BOTH_SIDES', ($get_data->gf('both_sides') ? 'checked' : ''));
 	}
 	elseif($glob['mode'] == 'preview')
 	{
@@ -191,6 +194,8 @@ while($i<count($exercise))
 			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
 			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$description.'</strong></span>', ));
 		}
+		if(!empty($glob['both_sides'.$exercise[$i]])) $ft->assign('BOTH_SIDES_TEXT' , ($glob['both_sides'.$exercise[$i]] ? 'Perform both sides' : ''));
+		else if(empty($glob['both_sides'.$exercise[$i]])) $ft->assign('BOTH_SIDES_TEXT', ($get_data->gf('both_sides') ? 'Perform both sides' : ''));
 	}
 	if(!empty($glob['sets'.$exercise[$i]]))	$ft->assign('SETS' , $glob['sets'.$exercise[$i]]);
 	else if(empty($glob['sets'.$exercise[$i]])) $ft->assign('SETS' , $get_data->gf('plan_set_no'));
@@ -198,7 +203,8 @@ while($i<count($exercise))
 	else if(empty($glob['repetitions'.$exercise[$i]])) $ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions'));
 	if(!empty($glob['time'.$exercise[$i]])) $ft->assign('TIME' , $glob['time'.$exercise[$i]]);
 	else if(empty($glob['time'.$exercise[$i]])) $ft->assign('TIME' , $get_data->gf('plan_time'));
-    $ft->parse('EXERCISE_LINE_OUT','.exercise_line');
+    
+	$ft->parse('EXERCISE_LINE_OUT','.exercise_line');
     if($glob['mode'] == 'preview' && $glob['sets'.$exercise[$i]] == '0' && $glob['repetitions'.$exercise[$i]] == '0' && $glob['time'.$exercise[$i]] == '0' ){
     	$ft->assign(array(
     		'SPAN_VISIBILITY' => 'style="display:none;"',
