@@ -30,3 +30,6 @@ RewriteRule us/$ index.php [NE]
 RewriteRule us/index\.php.* index.php?lang=us&%{QUERY_STRING} [NE]
 RewriteRule us/(.*) $1 [NE]
 
+#RewriteCond %{QUERY_STRING} pag=partners
+#RewriteRule (.*)index.php /$1partners? [R=301]
+RewriteRule (.*)partners index.php?pag=partners [L]
