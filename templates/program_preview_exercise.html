@@ -24,22 +24,6 @@
 	  <span class="header_infos"> 
 		<div class="contact-wrapper">
 	  		{THE_IMG}
-			<!--<div class="contact">
-				{COMPANY}
-				{ADDRESS}
-				{CITY}
-				{POST_CODE}
-				<br>
-			</div>
-			<div class="tel">
-				{PHONE}
-				{MOBILE}
-				{FAX}
-				<br/>
-				{EMAIL}
-				{WEBSITE}
-				<br>
-			</div>-->
 			<table width="330" style="table-layout:fixed;float: right;">
 				<tr><td width="200">{COMPANY}</td><td width="130" align="right">{PHONE}</td></tr>
 				<tr><td width="200">{ADDRESS}</td><td width="130" align="right">{MOBILE}</td></tr>
@@ -61,23 +45,28 @@
       </span>
       <!-- BEGIN DYNAMIC BLOCK: exercise_line -->
       <div class="exercise" id="exercise_preview_{PROGRAM_ID}"> 
-      <img src="upload/{IMG}" alt="exercise image" width="256" height="256" align="left" class="displayBlock"/> 
-      {EXERCISE_TITLE}
-      {EXERCISE_DESC}
-	  <div class="spacing">
-        <label for="sets">{T.SETS}</label>
-        <input type="text" name="sets{PROGRAM_ID}" value="{SETS}" class="input_exercise"  {VISIBILITY} />
-        <span {SPAN_VISIBILITY}>{SETS}</span>
-        <label for="repetitions">{T.REPETITIONS}</label>
-        <input type="text" name="repetitions{PROGRAM_ID}" value="{REPETITIONS}" class="input_exercise" {VISIBILITY} />
-        <span {SPAN_VISIBILITY}>{REPETITIONS}</span>
-        <label for="time">{T.TIME}</label>
-        <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" {VISIBILITY} />
-        <span {SPAN_VISIBILITY}>{TIME}</span> </div>
+	      <img src="upload/{IMG}" alt="exercise image" width="256" height="256" align="left" class="displayBlock"/> 
+	      {EXERCISE_TITLE}
+	      {EXERCISE_DESC}
+		  <div class="spacing">
+	        <label for="sets">{T.SETS}</label>
+	        <input type="text" name="sets{PROGRAM_ID}" value="{SETS}" class="input_exercise"  {VISIBILITY} />
+	        <span {SPAN_VISIBILITY}>{SETS}</span>
+	        <label for="repetitions">{T.REPETITIONS}</label>
+	        <input type="text" name="repetitions{PROGRAM_ID}" value="{REPETITIONS}" class="input_exercise" {VISIBILITY} />
+	        <span {SPAN_VISIBILITY}>{REPETITIONS}</span>
+	        <label for="time">{T.TIME}</label>
+	        <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" {VISIBILITY} />
+	        <span {SPAN_VISIBILITY}>{TIME}</span>
+	        <label {VISIBILITY} for="time">{T.BOTH_SIDES}</label>
+	        <input type="checkbox" name="both_sides{PROGRAM_ID}" {BOTH_SIDES} {VISIBILITY} style="width:auto;"  />
+	        <span {SPAN_VISIBILITY}><b>{BOTH_SIDES_TEXT}</b></span>
+		  </div>
 	  </div>
       <!-- END DYNAMIC BLOCK: exercise_line -->
 	  <p>{T.NOTES}</p>
       {EXERCISE_NOTES}
+
     </form>
   </div>
   <div class="clearAll"></div>

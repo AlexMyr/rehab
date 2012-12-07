@@ -73,6 +73,9 @@
         <label for="time">{T.TIME}</label>
         <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" {VISIBILITY} />
         <span {SPAN_VISIBILITY}>{TIME}</span> </div>
+        <label {VISIBILITY} for="time">{T.BOTH_SIDES}</label>
+	    <input type="checkbox" name="both_sides{PROGRAM_ID}" {BOTH_SIDES} {VISIBILITY} style="width:auto;"  />
+	    <span {SPAN_VISIBILITY}><b>{BOTH_SIDES_TEXT}</b></span>
 	  </div>
       <!-- END DYNAMIC BLOCK: exercise_line -->
 	  <p>{T.NOTES}</p>
