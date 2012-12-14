@@ -10,7 +10,12 @@ foreach($tags as $name => $row){
 }
 
 $dbu = new mysql_db();
-			global $script_path;
+global $script_path;
+
+//get test url
+$programs = $dbu->query("select exercise_plan.* from exercise_plan where 1=1 AND exercise_plan.trainer_id=".$_SESSION[U_ID]." AND exercise_plan.client_id=(select client_id from client where trainer_id=".$_SESSION[U_ID]." order by create_date asc limit 0,1) order by exercise_plan.date_created asc limit 0,1");
+$dbu->move_next();
+$test_url = "index.php?pag=exercisepdf&client_id=".$programs->f('client_id')."&exercise_plan_id=".$programs->f('exercise_plan_id')."";
 
 //$dbu->query("select trainer.*, trainer_profile.*, trainer.email as main_mail from trainer 
 //				INNER JOIN trainer_profile ON trainer.profile_id=trainer_profile.profile_id
@@ -66,7 +71,8 @@ else
         'HEIGHT' => (is_array($size) && !empty($size) ? $size[1] : 100),
 		'HIMAGE_POSITION_LEFT' => $dbu->f('himage_pos') == 'left' ? 'checked' : '',
 		'HIMAGE_POSITION_RIGHT' => $dbu->f('himage_pos') == 'right' ? 'checked' : '',
-        'TEST_URL' => 'index.php?pag=exercisepdf_test&program_id=2'//Tim's program
+        //'TEST_URL' => 'index.php?pag=exercisepdf_test&program_id=2',//Tim's program
+		'TEST_URL' => $test_url,//Tim's program
     ));
 
 if($glob['lang']=='en')
