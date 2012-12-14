@@ -1,0 +1,31 @@
+	<div id="content" class="siteContent login">
+		{MESSAGE}
+		 <html>
+	    
+		<div class="joinForm">
+			<div class="top"></div>
+			<div class="content">
+				<h2>{T.NEW_USER}</h2>
+				<p>{T.30_DAYS}</p>
+				<form action="index.php" method="POST">
+					<input type="hidden" name="act" value="member-join_now">
+					<input type="hidden" name="pag" value="login">
+					<label>{T.EMAIL}</label>
+					<input class="textField curvyCorner" type="text" name="join_email" value="{JOIN_MAIL}">
+					<label>{T.PASS}</label>
+					<input class="textField curvyCorner" type="password" name="join_pass" value="">
+					<label>{T.CONFIRM}</label>
+					<input class="textField curvyCorner" type="password" name="join_pass_repeat" value="">
+					<label>{T.LANGUAGE}</label>
+					<select name="join_language" style="width:120px;display: block;">
+						<option value="en">British</option>
+						<option value="us">American</option>
+					</select>
+					<div class="greenGlassBtn new_join"><button type="submit"><span class="curvyCorner ">{T.CREATE}</span></button></div>
+				</form>
+			</div>
+			<div class="bottom"></div>
+		</div>
+		
+		<div class="clearAll"></div>
+	</div>
