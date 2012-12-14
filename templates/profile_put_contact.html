@@ -1,0 +1,35 @@
+<div id="content" class="siteContent dashboard">
+	{MESSAGE}
+	<h2 class="bottomLine">
+		<span class="pageTitle">Setup Your Letterhead</span>
+		<span class="clearAll"></span>
+	</h2>
+	
+	<div class="contactHeadedInfo">
+		<h2>Put in your other Contact Information</h2>
+	</div>
+	<form action="index.php" method="post">
+		<input type="hidden" name="act" value="member-update_contact">
+		<input type="hidden" name="pag" value="profile_put_logo">
+		<div class="contactHeadedInfo floatLft">
+			<label class="label" for="phone">Phone:</label>
+			<input class="textField curvyCorner" type="text" id="phone" name="phone" value="{PHONE}" />
+					
+			<label class="label" for="mobile">Mobile:</label>
+			<input class="textField curvyCorner" type="text" id="mobile" name="mobile" value="{MOBILE}" />
+					
+			<label class="label" for="fax">Fax:</label>
+			<input class="textField curvyCorner" type="text" id="fax" name="fax" value="{FAX}" />
+		</div>
+		<div class="contactHeadedInfo floatLft">
+			<label class="label" for="email">Email:</label>
+			<input class="textField curvyCorner" type="text" id="email" name="email" value="{EMAIL}" />
+					
+			<label class="label" for="website">Website:</label>
+			<input class="textField curvyCorner" type="text" id="website" name="website" value="{WEBSITE}" />
+			
+			<div class="buttons login blueGlassBtn"><button type="submit"><span class="curvyCorner">Save</span></button></div>
+		</div>
+		<div class="clearAll"></div>
+	</form>
+</div>

@@ -1,0 +1,21 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<span class="pageTitle">Setup Your Letterhead</span>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="contactHeadedInfo">
+			<h2>Put in your Address</h2>
+			<form action="index.php" method="post">
+				<input type="hidden" name="act" value="member-update_address">
+				<input type="hidden" name="pag" value="profile_put_contact">
+				<label class="label" for="address">Address:</label>
+				<input class="textField curvyCorner" type="text" id="address" name="address" value="" />
+				<label class="label" for="state_zip">State/Zip:</label>
+				<input class="textField curvyCorner" type="text" id="state_zip" name="state_zip" value="" />
+				<div class="buttons login blueGlassBtn"><button type="submit"><span class="curvyCorner">Save</span></button></div>
+			</form>
+		</div>
+		
+		<div class="clearAll"></div>
+	</div>

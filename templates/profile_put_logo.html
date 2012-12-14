@@ -1,0 +1,78 @@
+<div id="content" class="siteContent dashboard">
+	{MESSAGE}
+	<h2 class="bottomLine">
+		<span class="pageTitle">Setup Your Letterhead</span>
+		<span class="clearAll"></span>
+	</h2>
+	<div class="contactHeadedInfo">
+		<h2>Upload your Logo</h2>
+		<p>&nbsp;</p>
+		<p style="color:red;">Please note: If you have any problems uploading your logo, just email it to <a href="mailto:support@rehabmypatient.com" style="color:red;">support@rehabmypatient.com</a> and we will add it to your letterhead.</p>
+		<p>&nbsp;</p>
+		
+		<div class="clearAll"></div>
+			<form action="index.php" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="act" value="member-update_logo">
+				<input type="hidden" name="pag" value="profile_header_paper">
+			<div id="image_wrapper">
+				{IMG}
+			</div>
+			
+			<div style="clear:both;"></div>
+			<div id="advanced_wrapper">
+							<div id="advanced_popup" style="display:none;">
+								<span>Resize image to:</span>
+								<label for="width">Width: </label><input type="text" value="{WIDTH}" name="width"><br>
+								<label for="height">Height:</label><input type="text" value="{HEIGHT}" name="height">
+								<span id="resize_image">Save</span><span id="reset_size">Reset to defaults</span>
+							</div>
+							<div class="moreBtn blueGlassBtn" id="advanced" style=""><span class="curvyCorner" style="width:100px;text-align:center;">Advanced</span></div>
+						</div>
+						<div style="clear:both;"></div>
+						
+						<label class="label">Tick to Delete this image. Do not tick if you are uploading a replacement image</label>
+						
+						<label class="label" for="upload_image">Change your logo:</label>
+						<a href="{TEST_URL}" target="_blank" id="test_head">
+							<div style="" id="" class="moreBtn blueGlassBtn"><span class="curvyCorner" >Test letterhead</span></div>
+						</a>
+						<div class='browse_field'>
+							<div class='input' style='position:relative;float:left;margin-right:5px;z-index:10;'>
+								<div class="normal_input_field">
+									<input type="text" style="width:172px;" class="curvyCorner" readonly="readonly"></div>
+							</div>
+						 
+							<div class='submit_button' style='float: left;'>
+								<div class="general_submit">
+									<div style="" id="" class="moreBtn blueGlassBtn">
+										<span class="curvyCorner">Browse</span>
+									</div>
+								</div>
+							</div>
+							<input type='file' class='file' id="upload_image" name="upload_image" style='z-index: 5;' />
+						</div>
+						
+						<label class="label">Locate the file to upload. This will replace any existing image. The logo will automatically be resized. Accepted file formats are .jpg, .gif. png.</label>
+						<div>
+							<div style="margin-top:20px; float: left;">					
+								<label class="label delete_image">Choose position of header image:</label><br />
+								<label class="label delete_image" for="himage_position">Left side:</label>
+								<input type="radio" id="himage_position" name="himage_position" value="left" {HIMAGE_POSITION_LEFT} />&nbsp;
+								<label class="label delete_image" for="himage_position">Right side:</label>
+								<input type="radio" id="himage_position" name="himage_position" value="right" {HIMAGE_POSITION_RIGHT} />
+							</div>
+							
+							<div style="clear:both;"></div>
+						</div>
+						<div>
+							<div style="float:left;" class="buttons login greenGlassBtn"><button type="submit"><span class="curvyCorner" style="text-align: center;">Save</span></button></div>
+							<a href="index.php?pag=profile_header_paper" ><div style="float:left; margin:10px 0 0 20px;" class="moreBtn blueGlassBtn"><span class="curvyCorner">Upload Later</span></div></a>
+							<div class="clearAll"></div>
+						</div>
+					</form>
+		</div>
+		<div class="clearAll"></div>
+	</div>
+	
+	<div class="clearAll"></div>
+</div>
