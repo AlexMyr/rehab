@@ -380,17 +380,125 @@ If you have any questions with an exercise, just email the clinic.";
     }
 		
 	function validate_update_licence(&$ld)
-		{
-			$is_ok=true;
+	{
+		$is_ok=true;
 /*	
-			if(!$ld['clinic_name'])
-				{
-					$ld['error'].="Please fill in the 'Clinic Name' field."."<br>";
-					$is_ok=false;
-				}
+		if(!$ld['clinic_name'])
+			{
+				$ld['error'].="Please fill in the 'Clinic Name' field."."<br>";
+				$is_ok=false;
+			}
 */
-			return $is_ok;
+		return $is_ok;
+	}
+	
+	function update_address(&$ld)
+    {
+		if(!$this->validate_update_address($ld))
+        {
+            $ld['pag']= "profile_put_address"; 
+            return false;
+        }
+		
+		$trainer_id = $_SESSION[U_ID] ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
+		$update_str = "address = '".mysql_escape_string($ld['address'])."',";
+		
+		if(isset($ld['lang']) && ($ld['lang'] == 'us'))
+			$update_str .= "state_zip = '".mysql_escape_string($ld['state_zip'])."'";
+		else
+			$update_str .= "city = '".mysql_escape_string($ld['city'])."', post_code = '".mysql_escape_string($ld['post_code'])."'";
+
+		$this->dbu->query("
+			update trainer_header_paper
+			set $update_str
+			where trainer_id = $trainer_id
+		");
+		
+		return true;
+	}
+	
+	function validate_update_address(&$ld)
+	{
+		$is_ok=true;
+		
+		return $is_ok;
+	}
+	
+	function update_contact(&$ld)
+    {
+		if(!$this->validate_update_contact($ld))
+        {
+            $ld['pag']= "profile_put_contact"; 
+            return false;
+        }
+		
+		$trainer_id = $_SESSION[U_ID] ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
+		$update_str = "email = '".mysql_escape_string($ld['email'])."',";
+		$update_str .= "website = '".mysql_escape_string($ld['website'])."',";
+		$update_str .= "phone = '".mysql_escape_string($ld['phone'])."',";
+		$update_str .= "mobile = '".mysql_escape_string($ld['mobile'])."',";
+		$update_str .= "fax = '".mysql_escape_string($ld['fax'])."'";
+		
+
+		$this->dbu->query("
+			update trainer_header_paper
+			set $update_str
+			where trainer_id = $trainer_id
+		");
+		
+		return true;
+	}
+	
+	function validate_update_contact(&$ld)
+	{
+		$is_ok=true;
+		if(!$ld['email'])
+		{
+			$ld['error'].="Please fill in the 'Email' field."."<br>";
+			$is_ok=false;
 		}
+		return $is_ok;
+	}
+	
+	function update_logo(&$ld)
+    {
+		if(!$this->validate_update_logo($ld))
+        {
+            $ld['pag']= "profile_put_logo"; 
+            return false;
+        }
+		
+		$trainer_id = $_SESSION[U_ID] ? $_SESSION[U_ID] : $ld['trainer_id'];
+		
+		if(!empty($_FILES['upload_image']['name']))
+		{
+			if($_FILES['upload_image']['error'] === 0)
+				$success = $this->upload_custom_file($ld);
+            $ld['pag'] = 'profile_header_paper';
+		}
+		
+		$update_str = "himage_pos = '".mysql_escape_string($ld['himage_position'])."'";
+		
+		$this->dbu->query("
+			update trainer_header_paper
+			set $update_str
+			where trainer_id = $trainer_id
+		");
+		return true;
+	}
+	
+	function validate_update_logo(&$ld)
+	{
+		$is_ok=true;
+		if($_FILES['upload_image']['error'] == 4)
+		{
+			$ld['error'].="Please select 'Logo' to upload."."<br>";
+			$is_ok=false;
+		}
+		return $is_ok;
+	}
 
 	function add_profile(&$ld)
 		{
@@ -988,12 +1096,14 @@ If you have any questions with an exercise, just email the clinic.";
 
 	function upload_custom_file(&$ld)
 	{
+
         global $_FILES, $script_path, $is_live;
         $allowed['.gif']=1;
         $allowed['.jpg']=1;
         $allowed['.jpeg']=1;
         $allowed['.png']=1;
         $f_ext=substr($_FILES['upload_image']['name'],strrpos($_FILES['upload_image']['name'],"."));
+
         if(!$allowed[strtolower($f_ext)])
         {
             $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.ONLY');
@@ -1008,6 +1118,7 @@ If you have any questions with an exercise, just email the clinic.";
         else 
         {
             $this->dbu->query("SELECT trainer_id, logo_image FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
+
             if(!$this->dbu->move_next())
             {
                 $ld['error'].=get_template_tag($ld['pag'], $ld['lang'], 'T.ERROR').'<br>';
@@ -1019,7 +1130,7 @@ If you have any questions with an exercise, just email the clinic.";
                 $this->dbu->query("UPDATE trainer_header_paper SET logo_image=NULL WHERE trainer_id='".$_SESSION[U_ID]."'");
             }
         }
-        
+
         $f_title="headed_logo_".$_SESSION[U_ID].$f_ext;
 		$f_orig="headed_logo_".$_SESSION[U_ID].'_orig'.$f_ext;
         $f_out=$script_path.UPLOAD_PATH.$f_title;
@@ -1053,15 +1164,14 @@ If you have any questions with an exercise, just email the clinic.";
 			move_uploaded_file($_FILES['upload_image']['tmp_name'], $orig_path);
 			
 			copy($orig_path, $img_path);
-			
+
 			$cur_image = $this->createImgFromFile($img_path);
 
-            $max_width = ($ld['width'] <= 400 ) ? $ld['width'] : 400;
-			$max_height = ($ld['height'] <= 220 ) ? $ld['height'] : 220;
+            $max_width = (intval($ld['width']) <= 400 && $ld['width']) ? $ld['width'] : 400;
+			$max_height = (intval($ld['height']) <= 220 && $ld['height']) ? $ld['height'] : 220;
 
-            
 			$img_ext = pathinfo($img_path, PATHINFO_EXTENSION);		
-			
+
 			if($ld['width'] && $ld['height'])
 			{
  				$ld['width'] = $ld['width'] >= $max_width  ? $max_width : $ld['width'];
@@ -1071,13 +1181,23 @@ If you have any questions with an exercise, just email the clinic.";
 			}
 			else
 			{
+				$resized = false;
 				if(imagesy($cur_image)>$max_height)
+				{
+					$resized = true;
 				    $this->resize($img_path, 0, $max_height, $f_title, $img_ext, 100);
+				}
 				
 				$cur_image = $this->createImgFromFile($img_path);
 				
-					if(imagesx($cur_image)>$max_width)
-				$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+				if(imagesx($cur_image)>$max_width)
+				{
+					$resized = true;
+					$this->resize($img_path, $max_width, 0, $f_title, $img_ext);
+				}
+				
+				if(!$resized)
+					$this->resize($img_path, imagesx($cur_image), imagesy($cur_image), $f_title, $img_ext);
 			}
 
             @chmod($f_out, 0777);
