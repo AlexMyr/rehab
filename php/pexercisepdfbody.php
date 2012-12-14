@@ -38,7 +38,7 @@ $dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_
 		else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>';
 		
 		$ft->assign(array(
-			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
+			'THE_IMG'=> ($dbu->gf('logo_image') && file_exists($script_path.UPLOAD_PATH.$dbu->f('logo_image'))) ? $image : $default_image,
 			'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
 			'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
 			/*'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
@@ -56,7 +56,7 @@ $dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_
 		
 		if(isset($glob['lang']) && $glob['lang'] == 'us')
 			$ft->assign(array(
-				'CITY' => '<td width="210"></td>',
+				'CITY' => $dbu->f('state_zip') ? '<td width="210">'.$dbu->f('state_zip').'</td>' : '<td width="210"></td>',
 				'POST_CODE' => '<td width="330"></td>',
 			));
 	}

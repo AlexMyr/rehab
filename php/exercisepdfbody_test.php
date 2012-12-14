@@ -27,24 +27,30 @@ $dbu->query("SELECT * FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_
 $default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
 if($dbu->move_next())
 {
-    $image = "<img width='240' style='border:1px solid #000000;' heigth='30' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+	$image = "<img style='border:1px solid #000000;' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
     $theName = "";
     if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').' '.$dbu->gf('surname').'</div>'; 
     else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('first_name').'</div>'; 
     else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.$dbu->gf('surname').'</div>';
     
     $ft->assign(array(
-		'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
+		'THE_IMG'=> ($dbu->gf('logo_image') && file_exists($script_path.UPLOAD_PATH.$dbu->f('logo_image'))) ? $image : $default_image,
 		'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
 		'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
-		'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
-		'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
 		'PHONE' => $dbu->f('phone') ? 'Tel: '.str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
 		'MOBILE' => $dbu->f('mobile') ? 'Mobile: '.str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
 		'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
 		'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 		'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
+		'CITY' => $dbu->f('city') ? '<td width="210">'.str_replace('’', '\'', htmlentities($dbu->gf('city'))).'</td>' : '<td width="210"></td>',
+		'POST_CODE' => $dbu->f('post_code') ? '<td width="330">'.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))).'</td>' : '<td width="330"></td>',
     ));
+	if(isset($glob['lang']) && $glob['lang'] == 'us')
+			$ft->assign(array(
+				'CITY' => '<td width="210"></td>',
+				'POST_CODE' => '<td width="330"></td>',
+			));
+	
 }
 else {
     $ft->assign(array(
