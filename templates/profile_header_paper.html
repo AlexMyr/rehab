@@ -26,7 +26,7 @@
 			<textarea class="textArea curvyCorner" id="address" name="address" style="height:30px;" >{ADDRESS}</textarea>
 			
 			<div style="display:{DISPLAY_ZIP};">
-				<label class="label" for="address">State/Zip:</label>
+				<label class="label" for="state_zip">State/Zip:</label>
 				<input class="textField curvyCorner" type="text" id="state_zip" name="state_zip" value="{STATE_ZIP}" />
 			</div>
 			<div style="display:{DISPLAY_CITYPOST};">
@@ -75,7 +75,7 @@
 							</div>
 							<div class="moreBtn blueGlassBtn" id="advanced" style=""><span class="curvyCorner" style="width:100px;text-align:center;">Advanced</span></div>
 						</div>
-						
+						<div style="clear:both;"></div>
 						
 						<label class="label">{T.TICK}</label>
 						
@@ -100,13 +100,17 @@
 						</div>
 						
 						<label class="label">{T.LOCATE_FILE}</label>
-												
-						<label class="label delete_image">Choose position of header image:</label><br />
-						<label class="label delete_image" for="himage_position">Left side:</label>
-						<input type="radio" id="himage_position" name="himage_position" value="left" {HIMAGE_POSITION_LEFT} />&nbsp;
-						<label class="label delete_image" for="himage_position">Right side:</label>
-						<input type="radio" id="himage_position" name="himage_position" value="right" {HIMAGE_POSITION_RIGHT} />
-						
+						<div>
+							<div style="margin-top:20px; float: left;">					
+								<label class="label delete_image">Choose position of header image:</label><br />
+								<label class="label delete_image" for="himage_position">Left side:</label>
+								<input type="radio" id="himage_position" name="himage_position" value="left" {HIMAGE_POSITION_LEFT} />&nbsp;
+								<label class="label delete_image" for="himage_position">Right side:</label>
+								<input type="radio" id="himage_position" name="himage_position" value="right" {HIMAGE_POSITION_RIGHT} />
+							</div>
+							
+							<div style="clear:both;"></div>
+						</div>
 						<div class="buttons login greenGlassBtn"><button type="submit"><span class="curvyCorner" style="text-align: center;">{T.SAVE}</span></button></div>
 					</form>
 		</div>
