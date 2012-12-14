@@ -132,6 +132,23 @@
 									'module' => 'trainer_dashboard',
 									'session' => 1
 									),
+                        
+                        'profile_put_address' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        'profile_put_contact' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        'profile_put_logo' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        
 
 						'profile_licence' => array(
 									'perm' => 2,
