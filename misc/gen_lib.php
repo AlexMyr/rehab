@@ -846,12 +846,12 @@ function build_header_paper_button($has_access, $curr_lang = 'en'){
     $out_str.="<h2>".(isset($tags['T.PERSONALISE']) ? $tags['T.PERSONALISE'] : 'Personalise your Headed Paper')."</h2>";
     if($has_access==true)
     {
-        $out_str.= "<a class=\"blueGlassBtn moreBtn\" href=\"index.php?pag=profile_header_paper\"><span class=\"curvyCorner\">".(isset($tags['T.EDIT']) ? $tags['T.EDIT'] : 'Edit Header Paper')."</span></a>";
+        $out_str.= "<a class=\"blueGlassBtn moreBtn\" href=\"index.php?pag=profile_header_paper\"><span class=\"curvyCorner\">".(isset($tags['T.EDIT']) ? $tags['T.EDIT'] : 'Edit Headed Paper')."</span></a>";
     }
     else if($has_access==false)
     {
         $error_msg = isset($tags['T.PAID']) ? $tags['T.PAID'] : 'Only paid accounts have access to this section!';
-        $out_str.= "<a class=\"blueGlassBtn moreBtn\" href=\"javascript: void(0);\" onclick=\"alert('".$error_msg."');\"><span class=\"curvyCorner\">".(isset($tags['T.EDIT']) ? $tags['T.EDIT'] : 'Edit Header Paper')."</span></a>";
+        $out_str.= "<a class=\"blueGlassBtn moreBtn\" href=\"javascript: void(0);\" onclick=\"alert('".$error_msg."');\"><span class=\"curvyCorner\">".(isset($tags['T.EDIT']) ? $tags['T.EDIT'] : 'Edit Headed Paper')."</span></a>";
     }
 	return $out_str;
 }
