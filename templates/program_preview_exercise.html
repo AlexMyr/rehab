@@ -48,19 +48,25 @@
 	      <img src="upload/{IMG}" alt="exercise image" width="256" height="256" align="left" class="displayBlock"/> 
 	      {EXERCISE_TITLE}
 	      {EXERCISE_DESC}
-		  <div class="spacing">
+		  <div class="spacing" {VISIBILITY}>
 	        <label for="sets">{T.SETS}</label>
-	        <input type="text" name="sets{PROGRAM_ID}" value="{SETS}" class="input_exercise"  {VISIBILITY} />
-	        <span {SPAN_VISIBILITY}>{SETS}</span>
+	        <input type="text" name="sets{PROGRAM_ID}" value="{SETS}" class="input_exercise" />
 	        <label for="repetitions">{T.REPETITIONS}</label>
-	        <input type="text" name="repetitions{PROGRAM_ID}" value="{REPETITIONS}" class="input_exercise" {VISIBILITY} />
-	        <span {SPAN_VISIBILITY}>{REPETITIONS}</span>
+	        <input type="text" name="repetitions{PROGRAM_ID}" value="{REPETITIONS}" class="input_exercise" />
 	        <label for="time">{T.TIME}</label>
-	        <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" {VISIBILITY} />
-	        <span {SPAN_VISIBILITY}>{TIME}</span>
+	        <input type="text" name="time{PROGRAM_ID}" value="{TIME}" class="input_exercise" />
 	        <label {VISIBILITY} for="time">{T.BOTH_SIDES}</label>
-	        <input type="checkbox" name="both_sides{PROGRAM_ID}" {BOTH_SIDES} {VISIBILITY} style="width:auto;"  />
-	        <span {SPAN_VISIBILITY}><b>{BOTH_SIDES_TEXT}</b></span>
+	        <input type="checkbox" name="both_sides{PROGRAM_ID}" {BOTH_SIDES} style="width:auto;"  />
+		  </div>
+		  <div class="spacing" {SPAN_VISIBILITY}>
+	        <label for="sets"><b>{T.SETS}</b></label>
+	        <span>{SETS}</span><br/>
+	        <label for="repetitions"><b>{T.REPETITIONS}</b></label>
+	        <span>{REPETITIONS}</span><br/>
+	        <label for="time"><b>{T.TIME}</b></label>
+	        <span>{TIME}</span><br/>
+	        <br/>
+	        <span><b>{BOTH_SIDES_TEXT}</b></span>
 		  </div>
 	  </div>
       <!-- END DYNAMIC BLOCK: exercise_line -->
