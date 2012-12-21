@@ -73,7 +73,7 @@ a { cursor:pointer; color:#ffffff; }
 .jsScrollDiv{ overflow-y: auto; height: 700px;}
 .faqScrollDiv{ max-height:650px;}
 
-.contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px;}
+.contentContainerBox { background: url("../img/glass.png") no-repeat scroll left top transparent; padding-bottom:15px; position:relative;height: 750px; font-size: 13px; z-index:999;}
 .contentContainerBox h2 { color:#6099e7; font-size: 36px; color:#3868aa; }
 .contentContainerBox .text h2 { padding-bottom:10px; }
 .contentContainerBox h3 { color:#6099e7; font-size: 18px; padding-top:16px; color:#3868AA; /*font-weight:bold;*/ }
@@ -409,7 +409,7 @@ a.add_client:hover { color:#afccf3; color:#6099e7; }
 .header_infos .header_logo {max-height:300px; max-width:300px; display:block; float:left; margin:0px 10px 10px 0px; }
 
 .exercise {width:630px; padding:10px; border:1px solid #000000; height:auto; overflow:auto; margin:5px auto 15px;}
-.exercise .exercise-desc {width:357px; padding-left:5px; height:141px;display:inline-block; margin:0 0 15px 5px; border: 1px solid #EFEFFF; background-color: #F8F8FF; font-family:avgardn;}
+.exercise .exercise-desc {width:357px; padding-left:5px; height:141px;display:inline-block; margin:0 0 15px 5px; border: 1px solid #EFEFFF; background-color: #F8F8FF; font-family:avgardn; overflow-y:auto;}
 .exercise .input_exercise {width:35px; border: 1px solid #CCC;}
 .exercise .input_exercise_ {width:100px; border: 1px solid #CCC;}
 .spacing { padding: 10px; display: inline-block; }
@@ -710,9 +710,12 @@ label.error_validate{
 }
 #advanced_wrapper {
     display: block;
-    height: 30px;
 	position: relative;
-    width: 450px;
+	float: right;
+    /*
+	 height: 30px;
+	 width: 450px;
+    */
 }
 #advanced_popup {
     background-color: #5090FF;
@@ -724,7 +727,7 @@ label.error_validate{
     padding-top: 5px;
     position: absolute;
     right: 0;
-    top: -110px;
+    top: -130px;
     width: 150px;
 }
 #advanced_popup > span {
@@ -756,8 +759,7 @@ label.error_validate{
 }
 #advanced {
     cursor: pointer;
-    float: right;
-   margin: 0 150px 0 0;
+	margin: -15px 30px 0 0;
 }
 #test_head {
     float: right;
@@ -885,6 +887,7 @@ label.error_validate{
     text-shadow: 1px 1px 0 #666666;
     white-space: pre;
     width: auto;
+	z-index:1000;
 }
 
 .blueGlassBtn span, .blueGlassBtn button span
