@@ -25,6 +25,8 @@ $programs = $dbu->query("select exercise_plan.* from exercise_plan where 1=1 AND
 $dbu->move_next();
 $test_url = "index.php?pag=exercisepdf&client_id=".$programs->f('client_id')."&exercise_plan_id=".$programs->f('exercise_plan_id')."";
 
+$ft->assign('WIDTH', '300');
+$ft->assign('HEIGHT', '100');
 $ft->assign('HIMAGE_POSITION_LEFT', 'checked');
 $ft->assign('HIMAGE_POSITION_RIGHT', '');
 $ft->assign('TEST_URL', $test_url);
