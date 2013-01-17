@@ -3,13 +3,21 @@
 * @Author: MedeeaWeb Works                                              *
 ************************************************************************/ 
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
+$ft->define(array('main' => "profile_payment_non_recurring.html"));
 
 $dbu = new mysql_db();
 
-$tags = get_template_tag($glob['pag'], $glob['lang']);
+$tags = get_template_tag('profile_payment', $glob['lang']);
+
 foreach($tags as $name => $row){
   $ft->assign($name, $row);
 }
+
+
+$pag = isset($glob['pag']) ? $glob['pag'] : pathinfo(__FILE__, PATHINFO_FILENAME);
+//$tags = get_template_tag($glob['pag'], $glob['lang']);
+
+$ft->assign('CSS_PAGE', $glob['pag']);
 
 $dbu->query("select * from trainer where trainer_id=".$_SESSION[U_ID]." ");
 $dbu->move_next();
@@ -36,12 +44,7 @@ $dbu->move_next();
 $current_price_id = $dbu->f('price_id');
 
 
-$ft->define(array('main' => "profile_payment.html"));
 
-$pag = isset($glob['pag']) ? $glob['pag'] : pathinfo(__FILE__, PATHINFO_FILENAME);
-$tags = get_template_tag($glob['pag'], $glob['lang']);
-
-$ft->assign('CSS_PAGE', $glob['pag']);
 if($active==0)
     $page_title = isset($tags['T.EXPIRED']) ? $tags['T.EXPIRED'] : 'Your Trial Account Has Expired';
 else 
@@ -241,11 +244,8 @@ $payment_table .= '</div>
 	  continue;
 	}
 	$payment_table .= '<div class="priceTableHead" style="float: left; height:75px; text-align: center; padding:0px; '.$border_style.' width:'.$column_width.'px;">
-						  <a class="moreBtn" style="background:none; width:105px; margin:5px 0px;" href="index.php?act=member-pay&pay_type=yearly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
-						  <span style="font-weight: normal;padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.YEARLY'].'</span>
-						</a>
-						<a class="moreBtn" style="background:none;width:105px;" href="index.php?act=member-pay&pay_type=monthly&pag=profile_payment&price_id='.$price_plan_id[$i].'">
-						  <span style="font-weight: normal;padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">'.$tags['T.MONTH'].'</span>
+						  <a class="moreBtn" style="background:none; width:105px;margin-top:20px;" href="index.php?act=member-pay&pay_type=per_year&pag=profile_payment&price_id='.$price_plan_id[$i].'">
+						  <span style="font-weight: normal;padding-left:10px;height:31px; background: url(\'../img/green_btn.png\') no-repeat scroll center top transparent;text-align:center;" class="curvyCorner">Pay per year</span>
 						</a>
 						</a></div>';
   }

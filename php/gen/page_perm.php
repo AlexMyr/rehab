@@ -91,7 +91,12 @@
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
 									'session' => 1
-									),               
+									),
+                        'profile_payment_non_recurring' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
 						'profile_do_payment' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
