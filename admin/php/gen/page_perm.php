@@ -335,6 +335,16 @@
 						  				'menu'=>'programs',
 						  				'tag' => 'PROGRAM_CATEGORY',
 						  				),
+                          'programs_add_generate_row' =>array(
+                          			   'perm'=>1,
+                          			   'menu'=>'programs',
+                          			   'tag'=>'PROGRAM'
+                          			  ),
+                          'programs_add_new' =>array(
+                          			   'perm'=>1,
+                          			   'menu'=>'programs',
+                          			   'tag'=>'PROGRAM'
+                          			  ),
                           			  
 /************ Member ****************/
 						

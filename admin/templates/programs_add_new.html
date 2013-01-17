@@ -1,0 +1,104 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><div class="PageTitle">{PAGE_TITLE}</div></td>
+	</tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+<form action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="pag" value="{PAG}" />
+<input type="hidden" name="act" value="{ACT}" />
+<input type="hidden" name="programs_id" value="{PROGRAMS_ID}" />
+<br />
+<table width="620" border="0" cellspacing="0" cellpadding="0" id="exercise_table">
+<tr><td>
+	<table width="620" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5"><strong>Count of exercise to add:</strong></td>
+			<td bgcolor="#F5F5F5" colspan="2">{COUNT_EXERCISE_SELECT}</td>
+		</tr>
+	</table>
+</td></tr>
+<tr><td>
+	<table width="620" border="0" cellspacing="0" cellpadding="0" class="exercise_row_counter">
+		<tr>
+			<td>&nbsp;</td>
+			<td ><strong>Program Title : </strong></td>
+			<td colspan="2" style="padding-top: 5px;"><input type="text" name="programs_title[]" value="" class="txtField" size="38" /></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5" valign="top"><strong>Program Text : </strong></td>
+			<td bgcolor="#F5F5F5" colspan="2"><textarea name="description[]"></textarea></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5" valign="top"><strong>Show US section : </strong></td>
+			<td bgcolor="#F5F5F5" colspan="2"><input type="checkbox" class="section_us_display" /></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr class="section_us section_hide">
+			<td>&nbsp;</td>
+			<td ><strong>Program Title US: </strong></td>
+			<td colspan="2"><input type="text" name="programs_title_us[]" value="" class="txtField" size="38" /></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr class="section_us section_hide">
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5" valign="top"><strong>Program Text US: </strong></td>
+			<td bgcolor="#F5F5F5" colspan="2"><textarea name="description_us[]"></textarea></td>
+			<td>&nbsp;</td>
+		</tr>
+		
+		<tr>
+			<td>&nbsp;</td>
+			<td><strong>Category :</strong></td>
+			<td colspan="2">
+				{CATEGORY}
+			</td>
+			<td>&nbsp;</td>
+		</tr>
+	  	
+		<tr>
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5"><strong>Program Code :</strong></td>
+			<td bgcolor="#F5F5F5" colspan="2"><input type="text" name="programs_code[]" value="" class="txtField" size="38" /></td>
+			<td>&nbsp;</td>
+		</tr>
+		
+		<tr>
+			<td>&nbsp;</td>
+			<td><strong>Browse for lineart image : </strong></td>
+			<td><input type="file" name="lineart[]" maxlength="255" size="30"  class="txtField" /></td>
+			<td align="right"></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5"><strong>Browse for exercise image : </strong></td>
+			<td bgcolor="#F5F5F5"><input type="file" name="image[]" maxlength="255" size="30"  class="txtField" /></td>
+			<td bgcolor="#F5F5F5" align="right"></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td style="border-bottom: 1px solid;" bgcolor="#F5F5F5" colspan="3" height="5">&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+</td></tr>
+<tr><td>
+<tr>
+	<table>
+			<td>&nbsp;</td>
+			<td bgcolor="#F5F5F5" colspan="3"><input type="submit" name="send" value="add new program" class="button" /></td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+</td></tr>
+</table>
+</form>

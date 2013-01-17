@@ -218,6 +218,8 @@
 
                                         'add'=>1,
 
+                                        'add_mult'=>1,
+                                        
                                         'update'=>1,
 
                                         'delete'=>1,

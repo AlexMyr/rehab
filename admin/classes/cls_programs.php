@@ -15,8 +15,183 @@ class programs
 	* function add(&$ld)                                            *
 	****************************************************************/
 	
+	function add_mult(&$ld)
+	{
+	  if(isset($ld['count_exercise']) && $ld['count_exercise'])
+	  {
+		$count_exercises = $ld['count_exercise'];
+		$not_added_programs = array();
+		
+		for($i=0;$i<$count_exercises;$i++)
+		{
+		  $programs_code = mysql_real_escape_string($ld['programs_code'][$i]);
+		  $programs_title = mysql_real_escape_string($ld['programs_title'][$i]);
+		  $description = mysql_real_escape_string($ld['description'][$i]);
+		  $programs_title_us = mysql_real_escape_string($ld['programs_title_us'][$i]);
+		  $description_us = mysql_real_escape_string($ld['description_us'][$i]);
+		  $category_id = mysql_real_escape_string($ld['category_id'][$i]);
+
+		  //check program code
+		  if($this->dbu->field("select count(*) from programs where programs_code='$programs_code'"))
+		  {
+			$not_added_programs[] = $programs_code;
+			continue;
+		  }
+		  
+		  $ld['programs_id'][$i] = $programs_id = $this->dbu->query_get_id("
+													  INSERT INTO 
+																  programs 
+													  SET 
+																  programs_code='".$programs_code."', 
+																  sort_order='0', 
+																  active = '1' 
+													  ");
+		  $this->dbu->query("insert into programs_translate_en set programs_id=$programs_id, programs_title='$programs_title', description='$description'");
+		  if($programs_title_us)
+			$this->dbu->query("insert into programs_translate_us set programs_id=$programs_id, programs_title='$programs_title_us', description='$description_us'");
+		  else
+			$this->dbu->query("insert into programs_translate_us set programs_id=$programs_id, programs_title='$programs_title', description='$description'");
+			
+		  $this->dbu->query("update programs set sort_order=".($programs_id*10)." where programs_id=$programs_id");
+		  
+		  $this->dbu->query("insert into programs_in_category (
+													  programs_id,
+													  category_id,
+													  main )
+													  values (
+													  '".$programs_id."',
+													  '".$category_id."',
+													  '1'
+													  )
+							  ");
+		  $this->upload_file_mult($ld, $i);
+		}
+		if(!empty($not_added_programs))
+		{
+		  $ld['error']="Not added programs: ".implode($not_added_programs);
+		  return true;
+		}
+	  }
+	  $ld['error']="Program Succesfully added.";
+	  return true;
+	}
+	
+	function upload_file_mult(&$ld, $position)
+	{
+	  //var_dump($_FILES, $ld);exit;
+	  global $_FILES, $script_path;
+	  $allowed['.jpg']=1;
+	  $allowed['.jpeg']=1;
+	  $allowed['.png']=1;
+	  
+	  if(!is_numeric($_SESSION[U_ID]))
+	  {
+		$ld['error'].="Error.".'<br>';
+		return false;
+	  }
+	//  else 
+	//  {
+	//	$this->dbu->query("select programs_id, lineart, thumb_lineart, image, thumb_image from programs where programs_id='".$ld['programs_id'][$position]."'");
+	//	if(!$this->dbu->move_next())
+	//	{
+	//	  $ld['error'].="Error.".'<br>';
+	//	  return false;
+	//	}
+	//	else 
+	//	{
+	//	  if(!empty($_FILES['lineart']['tmp_name'][$position]))
+	//	  {
+	//		@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('lineart') );
+	//		@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_lineart') );
+	//		$this->dbu->query("UPDATE programs SET lineart=NULL, thumb_lineart=NULL where programs_id='".$ld['programs_id'][$position]."'");
+	//	  }
+	//	  elseif(!empty($_FILES['image']['tmp_name'][$position]))
+	//	  {
+	//		@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('image') );
+	//		@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_image') );
+	//		$this->dbu->query("UPDATE programs SET image=NULL, thumb_image=NULL where programs_id='".$ld['programs_id'][$position]."'");
+	//	  }
+	//	}
+	//  }
+	//
+	  $has_lineart = false;
+	  $has_image = false;
+	  
+	  if(!empty($_FILES['lineart']['tmp_name'][$position]))
+		$has_lineart = true;
+	  if(!empty($_FILES['image']['tmp_name'][$position])) 
+		$has_image = true;
+	  
+	  if($has_lineart) 
+		$f_lineart_ext=substr($_FILES['lineart']['name'][$position],strrpos($_FILES['lineart']['name'][$position],"."));
+	  else
+		$f_lineart_ext='.jpg';
+		
+	  if($has_image)
+		$f_image_ext=substr($_FILES['image']['name'][$position],strrpos($_FILES['image']['name'][$position],"."));
+	  else
+		$f_image_ext='.jpg';
+	  
+	  $f_lineart_title=$ld['programs_code'][$position].'L'.$f_lineart_ext;
+	  $t_lineart_title=$ld['programs_code'][$position].'L (small)'.$f_lineart_ext;
+	  $f_lineart_out=$script_path.UPLOAD_PATH.$f_lineart_title;
+	  $t_lineart_out=$script_path.UPLOAD_PATH.$t_lineart_title;
+	  $this->dbu->query("update programs set
+						   lineart='".$f_lineart_title."',
+						   thumb_lineart='".$t_lineart_title."'
+						   where programs_id='".$ld['programs_id'][$position]."'" 
+						  );
+	  
+	  $f_image_title=$ld['programs_code'][$position].'P'.$f_image_ext;
+	  $t_image_title=$ld['programs_code'][$position].'P (small)'.$f_image_ext;
+	  $f_image_out=$script_path.UPLOAD_PATH.$f_image_title;
+	  $t_image_out=$script_path.UPLOAD_PATH.$t_image_title;
+	  $this->dbu->query("update programs set
+						   image='".$f_image_title."',
+						   thumb_image='".$t_image_title."'
+						   where programs_id='".$ld['programs_id'][$position]."'" 
+						  );
+	  
+	  $owner = $this->dbu->field("select owner from programs where programs_id='".$ld['programs_id'][$position]."'");
+	
+	  if($has_lineart)
+	  {
+		$this->resize($_FILES['lineart']['tmp_name'][$position], 500, 0, $f_lineart_title);
+		$this->resize($_FILES['lineart']['tmp_name'][$position], 150, 0, $t_lineart_title);
+		@chmod($f_lineart_out, 0777);
+		@chmod($t_lineart_out, 0777);
+		
+		if(!$has_image)
+		{
+		  $this->resize($_FILES['lineart']['tmp_name'][$position], 500, 0, $f_image_title);
+		  $this->resize($_FILES['lineart']['tmp_name'][$position], 150, 0, $t_image_title);
+		  @chmod($f_lineart_out, 0777);
+		  @chmod($t_lineart_out, 0777);
+		}
+	  }
+	  if($has_image)
+	  {
+		$this->resize($_FILES['image']['tmp_name'][$position], 500, 0, $f_image_title);
+		$this->resize($_FILES['image']['tmp_name'][$position], 150, 0, $t_image_title);
+		@chmod($f_image_out, 0777);
+		@chmod($t_image_out, 0777);
+		
+		if(!$has_lineart)
+		{
+		  $this->resize($_FILES['image']['tmp_name'][$position], 500, 0, $f_lineart_title);
+		  $this->resize($_FILES['image']['tmp_name'][$position], 150, 0, $t_lineart_title);
+		  @chmod($f_image_out, 0777);
+		  @chmod($t_image_out, 0777);
+		}
+	  }
+	  
+	  
+	  return true;
+	}
+	
 	function add(&$ld)
 	{
+
 		if(!$this->add_validate($ld))
 		{
 			return false;
