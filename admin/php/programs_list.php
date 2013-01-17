@@ -7,6 +7,38 @@ $ft->define(array('main' => "programs_list.html"));
 $ft->define_dynamic('programs_list','main');
 
 $dbu = new mysql_db();
+$dbu2 = new mysql_db();
+$categories = array();
+
+$select_top_cat = "select category_id, category_name, category_level
+from programs_category where category_level=0 order by sort_order asc
+";
+$dbu->query($select_top_cat);
+while ($dbu->move_next())
+{
+	$categories[] = array('category_id'=>$dbu->f('category_id'),'category_name'=>$dbu->f('category_name'),'category_level'=>$dbu->f('category_level'),);
+	
+	$select_sub_cat = "select pc.category_id, pc.category_name, pc.category_level
+	from programs_category pc left join programs_category_subcategory pcs on pc.category_id=pcs.category_id
+	where category_level=1 and pcs.parent_id='".$dbu->f('category_id')."' order by sort_order asc
+	";
+	$dbu2->query($select_sub_cat);
+	while ($dbu2->move_next())
+	{
+		$categories[] = array('category_id'=>$dbu2->f('category_id'),'category_name'=>$dbu2->f('category_name'),'category_level'=>$dbu2->f('category_level'),);
+	}
+}
+
+$category_select = '<select name="select_category">';
+foreach($categories as $cat)
+{
+	$disabled = '';
+	if($cat['category_level'] == '0') $disabled = 'disabled';
+	
+	$category_select .= "<option $disabled value='".$cat['category_id']."'>".$cat['category_name']."</option>";
+}
+$category_select .= '</select>';
+
 
 $select_all_programs = "SELECT DISTINCT
 							programs.*, programs_category.category_name, programs_category.category_id , translate.*
@@ -27,12 +59,19 @@ if ($glob['search_key']) {
 	$dbu->query($select_all_programs." AND ( programs_title LIKE '%".$glob['search_key']."%' OR description LIKE '%".$glob['search_key']."%' ) " .$order_by );
 }
 else {
-	$dbu->query($select_all_programs ." ".$order_by );
+	$search_cat = 2;
+	if ($glob['select_category']) {
+		$search_cat = $glob['select_category'];
+	}
+	$search_by_cat = " and programs_in_category.category_id=$search_cat";
+	
+	$dbu->query($select_all_programs . $search_by_cat ." ".$order_by );
 }
 
 $ft->assign(array(
 	'MESSAGE' => $glob['error'],
 	'PAGE_TITLE' => 'Program list',
+	'CATEGORY_SELECT' => $category_select,
 ));
 
 $i=0;

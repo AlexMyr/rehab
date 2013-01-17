@@ -7,10 +7,14 @@
 		 	<div class="GrayBorder">
 				<div class="MenuTitle">
 					<form method="post" action="index.php">
+						<span style="font-size:12px; font-weight:normal">Select category:</span>
+						{CATEGORY_SELECT}
+						<br/><br/>
 						<span style="font-size:12px; font-weight:normal">Search:</span>
 						<input type="hidden" name="pag" value="{PAG}" />
 						<input type="text" name="search_key" value="{SEARCH}" maxLength="255" size="30" class="txtField" />
 						<input type="submit" name="search" class="button" value="Search" />
+						<br/><br/>
 					</form>
 					<form method="post">
 						<input type="submit" value="Change sort order" />
