@@ -21,14 +21,18 @@ RewriteEngine On
 
 RewriteBase /
 
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api(.*)$ index.php [L,QSA]
+
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 
-RewriteRule us/$ index.php?lang=us [NE]
-RewriteRule us/$ index.php [NE]
+RewriteRule ^us/$ index.php?lang=us [NE]
+RewriteRule ^us/$ index.php [NE]
 
-RewriteRule us/index\.php.* index.php?lang=us&%{QUERY_STRING} [NE]
-RewriteRule us/(.*) $1 [NE]
+RewriteRule ^us/index\.php.* index.php?lang=us&%{QUERY_STRING} [NE]
+RewriteRule ^us/(.*) $1 [NE]
 
 #RewriteCond %{QUERY_STRING} pag=partners
 #RewriteRule (.*)index.php /$1partners? [R=301]
