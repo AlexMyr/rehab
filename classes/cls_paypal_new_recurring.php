@@ -207,9 +207,12 @@ function paypal_init()
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE=" . $shipToCountryCode;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_SHIPTOZIP=" . $shipToZip;
 		$nvpstr = $nvpstr . "&PAYMENTREQUEST_0_SHIPTOPHONENUM=" . $phoneNum;
+		
 		if($is_recurring)
 			$nvpstr = $nvpstr . "&L_BILLINGTYPE0=RecurringPayments";
-		
+		else
+			$nvpstr = $nvpstr . "&SOLUTIONTYPE=Sole";
+			
 		$_SESSION["currencyCodeType"] = $currencyCodeType;	  
 		$_SESSION["PaymentType"] = $paymentType;
 
