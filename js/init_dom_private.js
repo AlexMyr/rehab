@@ -207,8 +207,8 @@ doExerciseCompactViewDetails = function()
 					obj.appendTo($(this).parent().parent().parent());
 					$(this).bind('click',function(e)
 					{
-						//var scrolledSize = $('#content').scrollTop();
-						var scrolledSize = (-1)*parseInt($('.jspPane').css('top'));
+						var scrolledSize = $('#content').scrollTop();
+						//var scrolledSize = (-1)*parseInt($('.jspPane').css('top'));
 						
 						var details = parseInt($(this).attr('id').split('compactViewDetails_')[1]);
 						e.stopPropagation();
@@ -227,8 +227,8 @@ doExerciseCompactViewDetails = function()
 						if(!$('#itemCompactText_'+details).hasClass('displayBlock'))
 							$('.programCompactText').removeClass('displayBlock');
 						$('#itemCompactText_'+details).toggleClass('displayBlock');
-						if($('#itemCompactText_'+details).hasClass('displayBlock'))
-							checkDetailsUnder(details);
+						//if($('#itemCompactText_'+details).hasClass('displayBlock'))
+						//	checkDetailsUnder(details);
 					});	
 				}
 			});
@@ -317,7 +317,7 @@ doExercise = function(jSON)
 						// define all blocks and data
 						var exLI_img = $('<div>').addClass(obj.innerHTML.PROGRAM_POS)
 							.css({
-								"background-image": "url('../phpthumb/sprite_thumb.php?bimg="+obj.innerHTML.SPRITE_NAME+"')",
+								"background": obj.innerHTML.SPRITE_NAME,
 								"width": "64px",
 								"height": "64px",
 								"float": "left",
@@ -535,6 +535,7 @@ $(document).ready(function()
 	});
 
 	
+	$('#outMsgInfoDialog').dialog({  autoOpen: false, resizable: false, title: "Info" })
 	$('#clientsList').dialog({  autoOpen: false, resizable: false })
 	$('#pdfInfo').dialog({  autoOpen: false, resizable: false, title: "Info" })
 	
@@ -567,28 +568,43 @@ $(document).ready(function()
 		$('#clientsList').dialog('open');
 	});
 	
-	$('#pdfInfoImg').click(function(){
-		$('#pdfInfo').dialog('open');
-	});
-	
-	
 	$( "#clientsList div" ).bind( "dialogclose", function(event, ui) {
 		$('#clientsList div').html('');
 	});
 	
+	$('#pdfInfoImg').click(function(){
+		$('#pdfInfo').dialog('open');
+	});
+	
+	$('#outMsgPopup').click(function(){
+		$('#outMsgInfoDialog').dialog('open');
+	});
+	
 	//add scroll
-	if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
-		$('.clientListDynamic').jScrollPane();
+	//if($('.clientListDynamic').length > 0)
+	//	$('.clientListDynamic').jScrollPane();
 		
-	if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
-		$('.jsScrollDiv').jScrollPane();
-	
-	
-	if(typeof($('.videoList').jScrollPane()) != 'undefined')
-		$('.videoList').jScrollPane();
+	//if($('.jsScrollDiv').length > 0)
+	//	$('.jsScrollDiv').jScrollPane({'autoReinitialise': true});
+	//	
+	//if($('.videoList').length > 0)
+	//	$('.videoList').jScrollPane();
+	//	
+	//if($('.programListDynamic').length > 0)
+	//	$('.programListDynamic').jScrollPane();
 		
-	if(typeof($('.programListDynamic').jScrollPane()) != 'undefined')
-		$('.programListDynamic').jScrollPane();
+	//if(typeof($('.clientListDynamic').jScrollPane()) != 'undefined')
+	//	$('.clientListDynamic').jScrollPane();
+	//
+	//if(typeof($('.jsScrollDiv').jScrollPane()) != 'undefined')
+	//	$('.jsScrollDiv').jScrollPane();
+	//
+	//
+	//if(typeof($('.videoList').jScrollPane()) != 'undefined')
+	//	$('.videoList').jScrollPane();
+	//	
+	//if(typeof($('.programListDynamic').jScrollPane()) != 'undefined')
+	//	$('.programListDynamic').jScrollPane();
 
 	//add dragscroll
 	$('.dragScroll').mousedown(function(e){
@@ -752,13 +768,13 @@ $(document).ready(function()
 		{
 			var redirect = redirect_url;
 			redirect_url = null;
-			window.location = redirect;
+			//window.location = redirect;
 		}
 		else if(jQuery('input[name="act"]').val()=='client-update_exercise' && redirect_url != null)
 		{
 			var redirect = redirect_url;
 			redirect_url = null;
-			window.location = redirect;
+			//window.location = redirect;
 		}
 	});
 	
@@ -991,6 +1007,7 @@ $(document).ready(function()
 		e.stopPropagation();	
 		e.preventDefault();
 		doSave();
+                return true;
 	});
 	makeSortable();
 	makeDelete();
@@ -1124,7 +1141,13 @@ $(document).ready(function()
     });
    
     $('input[type=file]').change(function (){
-        $('.input input[type=text]', $(this).parent('.browse_field')).val($(this).val());
+		var path = $(this).val();
+		if(path.indexOf('fakepath') > -1)
+		{
+			path = path.match(/C:\\fakepath\\([^\.]+\.\w+)/);
+			path = path[1];
+		}
+        $('.input input[type=text]', $(this).parent('.browse_field')).val(path);
     });
 	
 	$('#removeHeaderImage').click(function(){
@@ -1186,8 +1209,6 @@ $(document).ready(function()
 
 function loginAjax(e)
 {
-	
-		
 	var username = $('#usernameAjax').val();
 	var password = $('#passwordAjax').val();
 	var store_login = $('#store_loginAjax').attr('checked') ? 'on' : '';
