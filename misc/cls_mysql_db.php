@@ -445,11 +445,55 @@ class mysql_db{
          mysql_db_query($this->database,"ROLLBACK");
          mysql_db_query($this->database,"set AUTOCOMMIT=1");
         }
-      echo "<center><table border=0 cellpadding=2 cellspacing=2>";
-      echo "<tr><td><font color=\"red\" face=\"Times New Roman\"> ";
-      echo "Error:".$f." failed.ERROR MESSAGE IS: ".$errMsg;
-      echo "</font></td></tr></center>";
-      die("Process Halted!");
+	  $this->log_error(debug_backtrace());
+      //echo "<center><table border=0 cellpadding=2 cellspacing=2>";
+      //echo "<tr><td><font color=\"red\" face=\"Times New Roman\"> ";
+      //echo "Error:".$f." failed.ERROR MESSAGE IS: ".$errMsg;
+      //echo "</font></td></tr></center>";
+      //
+      //die("Process Halted!");
     }
+	
+	function log_error($debug)
+	{
+	  $root_path = dirname(dirname(__FILE__));
+	  //require_once ($root_path.'/config/config.php');
+	  require_once ($root_path.'/classes/class.phpmailer.php');        
+	  include_once ($root_path."/classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
+	  
+	  $file_name = dirname(dirname(__FILE__))."\error_log_mysql";
+	  $error_report = "";
+	  $error_report_old = file_get_contents($file_name);
+	  foreach($debug as $debug_element)
+	  {
+			$cur_date = date("m/d/Y H:i:s");
+			if($debug_element['args'])
+				  $error_report .= "(time: $cur_date)=> file: '".$debug_element['file']."', line: '".$debug_element['line']."', function: '".$debug_element['function']."', args: '".str_replace(array('\r', '\t', '\n'), '', json_encode($debug_element['args']))."';<br/>";
+	  }
+	  
+	  $mail = new PHPMailer();
+	  $mail->Mailer = 'sendmail';
+	  $mail->IsHTML(true);
+	  $mail->IsSMTP(); // telling the class to use SMTP
+	  $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
+	  $mail->SMTPAuth = true; // enable SMTP authentication
+	  $mail->Host = SMTP_HOST; // sets the SMTP server
+	  $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
+	  $mail->Username = SMTP_USERNAME; // SMTP account username
+	  $mail->Password = SMTP_PASSWORD; // SMTP account password
+	  $mail->SetFrom('support@rehabmypatient.com', 'support@rehabmypatient.com');
+	  $mail->Subject = 'Mysql Error!';
+	  $mail->Body = $error_report;
+	  $mail->AddAddress('ole_gi@rehabmypatient.com', 'ole_gi@rehabmypatient.com');
+	  //$mail->AddAddress('support@rehabmypatient.com', 'support@rehabmypatient.com');
+	  $mail->Send();	
+	  
+	  $fp = fopen($file_name, "r+");
+	  $fp = fopen(dirname(dirname(__FILE__))."\error_log_mysql", "r+");
+	  fwrite($fp, $error_report.$error_report_old);
+	  fclose($fp);
+	  
+	}
+	
  }//end class
  ?>

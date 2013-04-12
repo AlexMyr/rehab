@@ -650,6 +650,9 @@ function build_active_category_list_blank() //use this to generate the global ca
  */
 function get_category_path($catID, $client_id)
 {
+	if(!$catID)
+		return '';
+	
     $db=new mysql_db;
     $i=0;
     $path_array='';
