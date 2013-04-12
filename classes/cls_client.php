@@ -2,6 +2,7 @@
 /************************************************************************
 * @Author: Tinu Coman                                                   *
 ************************************************************************/
+//error_reporting(E_ALL);
 class client
 {
 	var $dbu;
@@ -29,32 +30,21 @@ class client
 	    
 		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
 		
-	//    $this->dbu->query("
-	//						SELECT 
-	//							client.client_id
-	//						FROM 
-	//							client 
-	//						WHERE 
-	//							1=1 
-	//							AND trainer_id = ".$_SESSION[U_ID]." 
-	//							AND first_name = '".mysql_real_escape_string($ld['first_name'])."'
-	//							AND surname = '".mysql_real_escape_string($ld['surname'])."'
-	//							AND email = '".mysql_real_escape_string($ld['email'])."'
-	//							AND print_image_type = '".mysql_real_escape_string($ld['print_image_type'])."'
-	//					");
-	    
 		$this->dbu->query("
 							SELECT 
 								client.client_id
 							FROM 
 								client 
 							WHERE 
-								1=1 
-								AND trainer_id = ".$trainer_id." 
-								AND email = '".mysql_real_escape_string($ld['email'])."'
+								1=1 AND
+								(
+									trainer_id = ".$trainer_id."
+									AND first_name = '".mysql_real_escape_string($ld['first_name'])."'
+									AND surname = '".mysql_real_escape_string($ld['surname'])."'
+								)
 						");
 		/* CHECK IF Client EXIST IN DB, IF NOT, SAVE IT IN DB */
-		if(false) //$this->dbu->move_next())
+		if($this->dbu->move_next())
 		{
             $ld['error'] = get_template_tag($ld['pag'], $ld['lang'], 'T.EXIST');
             return false;
@@ -75,6 +65,14 @@ class client
 											modify_date=NOW(),
 											trainer_id = ".$trainer_id." 
 								");
+			
+			if($ld['client_id'])
+			{
+				//log to history
+				$this->dbu->query("insert into client_history (trainer_id, client_id, date, action, client_name)
+									values('".$trainer_id."', '".$ld['client_id']."', '".time()."', 'Added.', '".mysql_escape_string($ld['first_name'])." ".mysql_escape_string($ld['surname'])."')");
+			}
+			
 			$ld['first_name']=''; 
 			$ld['surname']='';
 			$ld['email']=''; 
@@ -411,13 +409,13 @@ class client
 			{
 				$exercise_plan_id=$this->dbu->query_get_id("
 							INSERT INTO 
-										exercise_plan 
+								exercise_plan 
 							SET 
-										exercise_program_id='".$exerciseString."', 
-										date_created=NOW(), 
-										date_modified=NOW(), 
-										trainer_id='".$_SESSION[U_ID]."', 
-										client_id= ".$ld['client_id']." 
+								exercise_program_id='".$exerciseString."', 
+								date_created=NOW(), 
+								date_modified=NOW(), 
+								trainer_id='".$_SESSION[U_ID]."', 
+								client_id= ".$ld['client_id']." 
 							");
 
 				$this->dbu->query("
@@ -429,19 +427,19 @@ class client
 				while($this->dbu->move_next())
 				{
 					$this->dbu->query("
-						 INSERT INTO
-							 exercise_plan_set 
-						 SET
-							 exercise_plan_id = '".$exercise_plan_id."',
-							 exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
-							 plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
-							 plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
-							 plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
-							 plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
-							 trainer_id = '".$_SESSION[U_ID]."',
-							 client_id = '".$ld['client_id']."',
-							 is_program_plan = 0
-						");		
+						INSERT INTO
+							exercise_plan_set 
+						SET
+							exercise_plan_id = '".$exercise_plan_id."',
+							exercise_program_id = '".$this->dbu->f('exercise_program_id')."',
+							plan_description = '".mysql_escape_string($this->dbu->f('plan_description'))."',
+							plan_set_no = '".mysql_escape_string($this->dbu->f('plan_set_no'))."',
+							plan_repetitions = '".mysql_escape_string($this->dbu->f('plan_repetitions'))."',
+							plan_time = '".mysql_escape_string($this->dbu->f('plan_time'))."',
+							trainer_id = '".$_SESSION[U_ID]."',
+							client_id = '".$ld['client_id']."',
+							is_program_plan = 0
+					");		
 				}
 			}
 		}
@@ -458,6 +456,54 @@ class client
 					$client_id = $this->dbu->f('client_id');
 					$trainer_id = $this->dbu->f('trainer_id');
 	
+					if(!$this->dbu2->field("select count(*) from exercise_plan where exercise_program_id='".$exerciseString."' and client_id=$client_id"))
+					{
+						$exercise_plan_id=$this->dbu2->query_get_id("
+											INSERT INTO 
+												exercise_plan 
+											SET 
+												exercise_program_id='".$exerciseString."', 
+												date_created=NOW(), 
+												date_modified=NOW(), 
+												trainer_id='".$trainer_id."', 
+												client_id= ".$client_id." 
+											");
+		
+						$this->dbu2->query("
+							SELECT *
+							FROM exercise_plan_set
+							WHERE exercise_plan_id = ".$ld['program_id']."
+						");
+						
+						while($this->dbu2->move_next())
+						{
+							$this->dbu3->query("
+								 INSERT INTO
+									exercise_plan_set 
+								 SET
+									exercise_plan_id = '".$exercise_plan_id."',
+									exercise_program_id = '".$this->dbu2->f('exercise_program_id')."',
+									plan_description = '".mysql_escape_string($this->dbu2->f('plan_description'))."',
+									plan_set_no = '".mysql_escape_string($this->dbu2->f('plan_set_no'))."',
+									plan_repetitions = '".mysql_escape_string($this->dbu2->f('plan_repetitions'))."',
+									plan_time = '".mysql_escape_string($this->dbu2->f('plan_time'))."',
+									trainer_id = '".$trainer_id."',
+									client_id = '".$client_id."',
+									is_program_plan = 0
+							");		
+						}
+					}
+				}
+			}
+			elseif($ld['first_name'] || $ld['surname'])
+			{
+				$this->dbu->query("select * from client where first_name='".$ld['first_name']."' and surname='".$ld['surname']."' and trainer_id='".$_SESSION[U_ID]."'");
+				while($this->dbu->move_next())
+				{
+					$user_exists = true;
+					$client_id = $this->dbu->f('client_id');
+					$trainer_id = $this->dbu->f('trainer_id');
+					
 					if(!$this->dbu2->field("select count(*) from exercise_plan where exercise_program_id='".$exerciseString."' and client_id=$client_id"))
 					{
 						$exercise_plan_id=$this->dbu2->query_get_id("
@@ -567,7 +613,11 @@ class client
 			return false;
 		}
 		
-		$this->dbu->query("SELECT trainer_header_paper.company_name, trainer_header_paper.email AS trainer_email, trainer_header_paper.website, trainer_header_paper.phone
+		$this->dbu->query("SELECT
+							trainer_header_paper.company_name, trainer_header_paper.email AS trainer_email,
+							trainer_header_paper.website, trainer_header_paper.phone, trainer_header_paper.address,
+							trainer_header_paper.mobile, trainer_header_paper.fax
+							,trainer_header_paper.first_name as user_first_name, trainer_header_paper.surname as user_surname, trainer_header_paper.logo_image
 							FROM 
 								trainer_header_paper 
 							WHERE 
@@ -583,18 +633,49 @@ class client
 			$replyMail = $message_data['from_email'];
             $company_name = $this->dbu->gf('company_name');
 	
-			$body=$message_data['text'];
+			$outgoing_message = '';
 			
-			if($is_appeal_first_name)
-				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['first_name'], $body );
+			$this->dbu2->query("select * from custom_out_message where trainer_id='".$_SESSION[U_ID]."' ");
+			if($this->dbu2->move_next())
+			  $outgoing_message = $this->dbu2->field("select message_content from custom_out_message where trainer_id='".$_SESSION[U_ID]."' and in_use='1' ");
 			else
-				$body=str_replace('[!APPEAL!]', 'Dear '.$ld['appeal'].' '.$ld['surname'], $body );
+			{
+			  if($ld['lang'] == 'us')
+				$outgoing_message = $this->dbu2->field("select message_content from custom_out_message where trainer_id='0' and in_use='1' and  message_id='1' ");
+			  else
+				$outgoing_message = $this->dbu2->field("select message_content from custom_out_message where trainer_id='0' and in_use='1' and  message_id='0' ");
+			}
 			
-			$body=str_replace('[!FIRSTNAME!]',$ld['first_name'], $body );
-			$body=str_replace('[!SURNAME!]',$ld['surname'], $body );
-			$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
-			$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
-			$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
+			$info = array(
+				'first_name' => $ld['first_name'],
+				'last_name' => $ld['surname'],
+				'title' => $ld['appeal'],
+				'clinic_name' => $this->dbu->f('company_name'),
+				'clinic_address' => $this->dbu->f('address'),
+				'website' => $this->dbu->f('website'),
+				'email' => $this->dbu->f('trainer_email'),
+				'phone' => $this->dbu->f('phone'),
+				'mobile' => $this->dbu->f('mobile'),
+				'fax' => $this->dbu->f('fax'),
+				'user_first_name' => $this->dbu->f('user_first_name'),
+				'user_surname' => $this->dbu->f('user_surname'),
+				'logo' => $this->dbu->f('logo_image'),
+			);
+			$outgoing_message = $this->prepare_outgoing_message($outgoing_message, $info);
+			$body = $outgoing_message;
+
+			//$body=$message_data['text'];
+			//
+			//if($is_appeal_first_name)
+			//	$body=str_replace('[!APPEAL!]', 'Dear '.$ld['first_name'], $body );
+			//else
+			//	$body=str_replace('[!APPEAL!]', 'Dear '.$ld['appeal'].' '.$ld['surname'], $body );
+			//
+			//$body=str_replace('[!FIRSTNAME!]',$ld['first_name'], $body );
+			//$body=str_replace('[!SURNAME!]',$ld['surname'], $body );
+			//$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
+			//$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
+			//$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
                 
 	        require_once ('class.phpmailer.php');        
 	        include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
@@ -607,7 +688,9 @@ class client
 	        $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
 	        $mail->Username = SMTP_USERNAME; // SMTP account username
 	        $mail->Password = SMTP_PASSWORD; // SMTP account password
+
 	        $mail->SetFrom($fromMail, $fromMail);
+			//$mail->SetFrom('info@rehabmypatient.com', 'RehabMyPatient');
 	        $mail->Subject = $message_data['subject'];
 			$mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['program_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
 			
@@ -749,6 +832,15 @@ class client
 			return false;
 		}
 		
+		if($ld['client_id'])
+		{
+			$trainer_id = $_SESSION[U_ID] ? $_SESSION[U_ID] : $ld['trainer_id'];
+			$client_name = mysql_real_escape_string($this->dbu->field("select concat(first_name, ' ', surname) from client where client_id='".$ld['client_id']."'"));
+			//log to history
+			$this->dbu->query("insert into client_history (trainer_id, client_id, date, action, client_name)
+								values('".$trainer_id."', '".$ld['client_id']."', '".time()."', 'Deleted.', '$client_name')");
+		}
+		
 		$this->dbu->query("DELETE FROM exercise_plan_set WHERE client_id='".$ld['client_id']."'");
 		$this->dbu->query("DELETE FROM exercise_plan WHERE client_id='".$ld['client_id']."'");
 		$this->dbu->query("DELETE FROM client WHERE client_id='".$ld['client_id']."'");
@@ -769,6 +861,7 @@ class client
 	
 	function add_exercise(&$ld)
 	{
+
 		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
 		
 		$ld['exercise_id'] = rtrim($ld['exercise_id'],',');
@@ -777,8 +870,19 @@ class client
 		$default_program_desc = get_template_tag('program_update_exercise', $ld['lang'], 'T.PROGRAM_DESC_DEFAULT');
 		if($ld['exercise_desc'] == $default_program_desc)
 			$ld['exercise_desc'] = '';
-        
-		$ld['exercise_plan_id']=$this->dbu->query_get_id("
+			
+		//check currently added
+		$this->dbu->query("
+		select * from exercise_plan where
+			exercise_program_id='".$ld['exercise_id']."'
+		and trainer_id='".$trainer_id."'
+		and client_id='".$ld['client_id']."'
+		and exercise_desc = '".$ld['exercise_desc']."'
+		");
+		
+		if(!$this->dbu->move_next())
+		{
+			$ld['exercise_plan_id']=$this->dbu->query_get_id("
 							INSERT INTO 
 								exercise_plan 
 							SET 
@@ -786,24 +890,37 @@ class client
 								date_created=NOW(), 
 								date_modified=NOW(), 
 								trainer_id='".$trainer_id."', 
-								client_id= ".$ld['client_id'].",
+								client_id='".$ld['client_id']."',
 								exercise_desc = '".$ld['exercise_desc']."'
 							");
-	
-		$this->dbu->query("
-							UPDATE
-								client 
-							SET 
-								modify_date=NOW()
-							WHERE 
-								client_id = ".$ld['client_id']."
-							AND
-								trainer_id = ".$trainer_id." 
-							");
+			
+			if($ld['exercise_plan_id'])
+			{
+				//log to history
+				$desc = mysql_real_escape_string($this->dbu->field("select exercise_desc from exercise_plan where exercise_plan_id=".$ld['exercise_plan_id']));
+				$client_name = mysql_real_escape_string($this->dbu->field("select concat(first_name, ' ', surname) from  client where client_id='".$ld['client_id']."'"));
+				$this->dbu->query("insert into client_history (trainer_id, client_id, date, action, client_name)
+									values('".$trainer_id."', '".$ld['client_id']."', '".time()."', 'Exercise $desc created.', '$client_name')");
+			}
+			
+			$this->dbu->query("
+								UPDATE
+									client 
+								SET 
+									modify_date=NOW()
+								WHERE 
+									client_id='".$ld['client_id']."'
+								AND
+									trainer_id='".$trainer_id."'
+								");
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
+		}
+		else
+		{
+			$ld['exercise_plan_id'] = $this->dbu->f('exercise_plan_id');
+		}
 		
-		$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.PROG_ADDED');
-
-		return true;
+        return true;
 	}
 
 	function update_exercise(&$ld)
@@ -971,7 +1088,11 @@ class client
 			$is_appeal_first_name = false;
 		}
 		
-		$this->dbu->query("SELECT client.*, trainer_header_paper.company_name, trainer_header_paper.email AS trainer_email, trainer_header_paper.website, trainer_header_paper.phone
+		$this->dbu->query("SELECT
+							client.*, trainer_header_paper.company_name, trainer_header_paper.email AS trainer_email,
+							trainer_header_paper.website, trainer_header_paper.phone, trainer_header_paper.address,
+							trainer_header_paper.mobile, trainer_header_paper.fax
+							,trainer_header_paper.first_name as user_first_name, trainer_header_paper.surname as user_surname, trainer_header_paper.logo_image
 							FROM 
 								client 
 							INNER JOIN 
@@ -991,56 +1112,100 @@ class client
 			$fromMail = $this->dbu->gf('trainer_email');
 			$replyMail = $message_data['from_email'];
             $company_name = $this->dbu->gf('company_name');
-    
-			$body=$message_data['text'];
-
-			if($is_appeal_first_name)
-			{
-				$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('first_name'), $body );
-			}
+			
+			
+			/**/
+			$this->dbu2->query("select * from custom_out_message where trainer_id='".$_SESSION[U_ID]."' ");
+			if($this->dbu2->move_next())
+			  $outgoing_message = $this->dbu2->field("select message_content from custom_out_message where trainer_id='".$_SESSION[U_ID]."' and in_use='1' ");
 			else
 			{
-				$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('appeal').' '.$this->dbu->f('surname'), $body );
+			  if($ld['lang'] == 'us')
+				$outgoing_message = $this->dbu2->field("select message_content from custom_out_message where trainer_id='0' and in_use='1' and  message_id='1' ");
+			  else
+				$outgoing_message = $this->dbu2->field("select message_content from custom_out_message where trainer_id='0' and in_use='1' and  message_id='0' ");
 			}
-	
-			$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
-			$body=str_replace('[!FIRSTNAME!]',$this->dbu->f('first_name'), $body );
-			$body=str_replace('[!SURNAME!]',$this->dbu->f('last_name'), $body );
-			$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
-			$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
-			$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
+			  
+			$info = array(
+				'first_name' => $this->dbu->f('first_name'),
+				'last_name' => $this->dbu->f('surname'),
+				'title' => $this->dbu->f('appeal'),
+				'clinic_name' => $this->dbu->f('company_name'),
+				'clinic_address' => $this->dbu->f('address'),
+				'website' => $this->dbu->f('website'),
+				'email' => $this->dbu->f('trainer_email'),
+				'phone' => $this->dbu->f('phone'),
+				'mobile' => $this->dbu->f('mobile'),
+				'fax' => $this->dbu->f('fax'),
+				'user_first_name' => $this->dbu->f('user_first_name'),
+				'user_surname' => $this->dbu->f('user_first_name'),
+				'logo' => $this->dbu->f('logo_image'),
+			);
+
+			$outgoing_message = $this->prepare_outgoing_message($outgoing_message, $info);
+			
+			$body = $outgoing_message;
+
+			/**/
+
+			//$body=$message_data['text'];
+			//
+			//if($is_appeal_first_name)
+			//{
+			//	$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('first_name'), $body );
+			//}
+			//else
+			//{
+			//	$body=str_replace('[!APPEAL!]', 'Dear '.$this->dbu->f('appeal').' '.$this->dbu->f('surname'), $body );
+			//}
+			//
+			//$body=str_replace('[!NAME!]',$this->dbu->f('first_name')." ".$this->dbu->f('last_name'), $body );
+			//$body=str_replace('[!FIRSTNAME!]',$this->dbu->f('first_name'), $body );
+			//$body=str_replace('[!SURNAME!]',$this->dbu->f('last_name'), $body );
+			//$body=str_replace('[!COMPANYNAME!]',$this->dbu->f('company_name'), $body );
+			//$body=str_replace('[!CLINICNUMBER!]',$this->dbu->f('phone'), $body );
+			//$body=str_replace('[!CLINICWEBSITE!]',$this->dbu->f('website'), $body );
                 
-            require_once ('class.phpmailer.php');        
-            include_once ("classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
-            
-            $mail = new PHPMailer();
-            $mail->IsSMTP(); // telling the class to use SMTP
-            $mail->SMTPDebug = 1; // enables SMTP debug information (for testing)
-            // 1 = errors and messages
-            // 2 = messages only
-            $mail->SMTPAuth = true; // enable SMTP authentication
-            $mail->Host = SMTP_HOST; // sets the SMTP server
+            require_once ('phpmailer/class.phpmailer.php');        
+            require_once ('phpmailer/class.smtp.php'); // optional, gets called from within class.phpmailer.php if not already loaded
+			$mail             = new PHPMailer();
+			
+			$mail->IsSMTP();
+			$mail->SMTPAuth   = true;                  // enable SMTP authentication
+			
+			$mail->Host = SMTP_HOST; // sets the SMTP server
             $mail->Port = SMTP_PORT; // set the SMTP port for the GMAIL server
             $mail->Username = SMTP_USERNAME; // SMTP account username
             $mail->Password = SMTP_PASSWORD; // SMTP account password
-
-            $mail->SetFrom($fromMail, $fromMail);
-            //$mail->AddReplyTo($replyMail, $replyMail);
-            $mail->Subject = $message_data['subject'];
-            
-            $mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
+			
+			//$mail->SetFrom('info@rehabmypatient.com', 'RehabMyPatient');
+			$mail->SetFrom($fromMail, $fromMail);
+			$mail->Subject = $message_data['subject'];
+			$mail->IsHTML(true); // send as HTML
+			$mail->MsgHTML($body);
+			
+            $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
+			if($sendCopy) $mail->AddCC($fromMail, $company_name);
+			
+			$mail->AddAttachment("pdf/exercisepdf.pdf", 'exercise_'.$ld['exercise_plan_id'].'.pdf'); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
 			if(!empty($_SESSION['uploaded_pdf']))
 				foreach($_SESSION['uploaded_pdf'] as $att_pdf)
 					$mail->AddAttachment("pdf/uploaded_pdf/".$att_pdf, $att_pdf); // attach files/invoice-user-1234.pdf, and rename it to invoice.pdf
 			unset($_SESSION['uploaded_pdf']);
 			
-            $mail->MsgHTML($body);
-            
-            $mail->AddAddress($ordermail, $this->dbu->gf('first_name')." ".$this->dbu->gf('surname'));
-            if($sendCopy) $mail->AddCC($fromMail, $company_name);
+			$mail->Send();
+			$ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_SENT');
 
-            $mail->Send();
-                $ld['error']=get_template_tag($ld['pag'], $ld['lang'], 'T.EXERCISE_SENT');
+			if(!$mail->IsError())
+			{
+				//log to history
+				$desc = mysql_real_escape_string($this->dbu->field("select exercise_desc from exercise_plan where exercise_plan_id=".$ld['exercise_plan_id']));
+				$client_name = mysql_real_escape_string($this->dbu->field("select concat(first_name, ' ', surname) from  client where client_id='".$ld['client_id']."'"));
+
+				$this->dbu->query("insert into client_history (trainer_id, client_id, date, action, client_name)
+									values('".$_SESSION[U_ID]."', '".$ld['client_id']."', '".time()."', 'Exercise $desc emailed.', '$client_name')");
+			}
+			
             return true;					
         }
         else
@@ -1098,6 +1263,39 @@ class client
 			else
 				$this->dbu->query("insert into program_fav set date=$cur_date, program_id=".$ld['pid'].", trainer_id=".$_SESSION[U_ID]);
 		}
+	}
+	
+	function clear_exercise_history(&$ld)
+	{
+		$trainer_id = isset($_SESSION[U_ID]) ? $_SESSION[U_ID] : $ld['trainer_id'];
+ 		if($trainer_id)
+		{
+			$this->dbu->query("delete from client_history where trainer_id=$trainer_id");
+			$ld['error'] = "History cleared.";
+			return true;
+		}
+		$ld['error'] = "Can't to clear history, please contact support.";
+		return true;
+	}
+	
+	function prepare_outgoing_message($msg, $info)
+	{
+		$msg=str_replace('[!SALUTATION!]', ($info['title'] ? $info['title'].' '.$info['last_name'] : $info['first_name']) , $msg );
+		$msg=str_replace('[!FIRST_NAME!]', ($info['first_name'] ? $info['first_name'] : '') , $msg );
+		$msg=str_replace('[!LAST_NAME!]', ($info['last_name'] ? $info['last_name'] : '') , $msg );
+		$msg=str_replace('[!TITLE!]', ($info['title'] ? $info['title'] : '') , $msg );
+		$msg=str_replace('[!CLINIC_NAME!]', ($info['clinic_name'] ? $info['clinic_name'] : '') , $msg );
+		$msg=str_replace('[!CLINIC_ADDRESS!]', ($info['clinic_address'] ? $info['clinic_address'] : '') , $msg );
+		$msg=str_replace('[!WEBSITE!]', ($info['website'] ? $info['website'] : '') , $msg );
+		$msg=str_replace('[!EMAIL!]', ($info['email'] ? $info['email'] : '') , $msg );
+		$msg=str_replace('[!PHONE!]', ($info['phone'] ? $info['phone'] : '') , $msg );
+		$msg=str_replace('[!MOBILE!]', ($info['mobile'] ? $info['mobile'] : '') , $msg );
+		$msg=str_replace('[!FAX!]', ($info['fax'] ? $info['fax'] : '') , $msg );
+		$msg=str_replace('[!USER_FIRST_NAME!]', ($info['user_first_name'] ? $info['user_first_name'] : '') , $msg );
+		$msg=str_replace('[!USER_SURNAME!]', ($info['user_surname'] ? $info['user_surname'] : '') , $msg );
+		$msg=str_replace('[!LOGO!]', ($info['logo'] ? '<img src="http://rehabmypatient.com/upload/'.$info['logo'].'" />' : '') , $msg );
+		$msg = nl2br($msg);
+		return $msg;
 	}
 	
 }//end class

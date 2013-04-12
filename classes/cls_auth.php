@@ -28,6 +28,18 @@ class auth
 		setcookie('USER_EMAIL', $email, 0, '/');
 	}
 	
+	function update_login_date($trainer_id)
+	{
+		$this->dbu->query("
+										UPDATE 
+											trainer 
+										SET  
+											last_login_date='".time()."' 
+										WHERE 
+											trainer_id = ".$trainer_id." 
+									");
+	}
+	
 	/****************************************************************
 	* function login(&$ld)                                          *
 	****************************************************************/
@@ -37,9 +49,10 @@ class auth
 		$ld['username'] = trim($ld['username']);
 		$ld['password'] = trim($ld['password']);
 		
-		if(!$ld['username'] || !$ld['password'])
+		if((!$ld['username'] || !$ld['password']) && !isset($ld['fb_id']))
 		{
 			$ld['error'] = 'Username or password invalid';
+			$ld['pag'] = 'signup';
 			return false;
 		}
 		
@@ -66,12 +79,15 @@ class auth
 							username = '".mysql_real_escape_string($ld['username'])."' AND password = '".mysql_real_escape_string($ld['password'])."'
 						");
 		}
-		
+	
 		if($query->move_next())
 		{
 			$trainer_id = $query->f('trainer_id');
-			$lang = $this->dbu->f('lang');
+			$lang = $query->f('lang');
             setcookie('language', $lang, 0, '/');
+			
+			$this->update_login_date($trainer_id);
+			
 			if($query->f('active')==0)
 			{
 				if(strtotime($query->f('expire_date'))-time()<=0)
@@ -102,16 +118,16 @@ class auth
 										trainer 
 									SET 
 										active=2, 
-										expire_date='".$set_trial_time."',
-										ip='".$_SERVER['REMOTE_ADDR']."'  
+										expire_date='".mysql_real_escape_string($set_trial_time)."',
+										ip='".mysql_real_escape_string($_SERVER['REMOTE_ADDR'])."'  
 									WHERE 
-										trainer_id = ".$query->f('trainer_id')." 
+										trainer_id = ".mysql_real_escape_string($trainer_id)." 
 								");
 				
 				//if account just registered
-				$this->login_session($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+				$this->login_session($trainer_id, $query->f('access_level'), $query->f('email'));
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
-					$this->login_cookie($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+					$this->login_cookie($trainer_id, $query->f('access_level'), $query->f('email'));
 				
 				global $user_level;
 				$user_level = $_SESSION[ACCESS_LEVEL];
@@ -131,10 +147,10 @@ class auth
 			elseif($query->f('active')==2)
 			{
 				//if account trial or payed
-				$this->login_session($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+				$this->login_session($trainer_id, $query->f('access_level'), $query->f('email'));
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
-					$this->login_cookie($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
-				
+					$this->login_cookie($trainer_id, $query->f('access_level'), $query->f('email'));
+
 				global $user_level;
 				$user_level = $_SESSION[ACCESS_LEVEL];
 				
@@ -195,15 +211,17 @@ class auth
 		if($query->move_next())
 		{
 			$trainer_id = $query->f('trainer_id');
-			$lang = $this->dbu->f('lang');
+			$lang = $query->f('lang');
             setcookie('language', $lang, 0, '/');
-
+			
+			$this->update_login_date($trainer_id);
+			
 			if($query->f('active')==0)
 			{
 				if(strtotime($query->f('expire_date'))-time()<=0)
 				{
 					//if account expired
-					$this->login_session($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+					$this->login_session($trainer_id, $query->f('access_level'), $query->f('email'));
 
 					global $user_level;
 					$user_level = $_SESSION[ACCESS_LEVEL];
@@ -223,33 +241,34 @@ class auth
 			elseif($query->f('active')==1)
 			{
 				$set_trial_time = date('Y-m-d H:i:s',strtotime('+14days'));
+				
 				$this->dbu->query("
 									UPDATE 
 										trainer 
 									SET 
 										active=2, 
-										expire_date='".$set_trial_time."',
-										ip='".$_SERVER['REMOTE_ADDR']."'  
+										expire_date='".mysql_real_escape_string($set_trial_time)."',
+										ip='".mysql_real_escape_string($_SERVER['REMOTE_ADDR'])."'  
 									WHERE 
-										trainer_id = ".$query->f('trainer_id')." 
+										trainer_id = ".mysql_real_escape_string($trainer_id)." 
 								");
 				
 				//if account just registered
-				$this->login_session($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+				$this->login_session($trainer_id, $query->f('access_level'), $query->f('email'));
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
-					$this->login_cookie($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+					$this->login_cookie($trainer_id, $query->f('access_level'), $query->f('email'));
 				
 				global $user_level;
 				$user_level = $_SESSION[ACCESS_LEVEL];
 				
 				if($query->f('is_clinic') == 2)
 				{
-					$ld['pag'] = 'profile_choose_clinic';
+					$ld['pag_redir'] = 'profile_choose_clinic';
 					$ld['error'] = 'Please fill this field.';
 				}
 				else
 				{
-					$ld['pag'] = 'dashboard';
+					$ld['pag_redir'] = 'dashboard';
 					$ld['error'] = 'You logged in succesfully!';
 				}
 				return true;
@@ -257,9 +276,9 @@ class auth
 			elseif($query->f('active')==2)
 			{
 				//if account trial or payed
-				$this->login_session($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+				$this->login_session($trainer_id, $query->f('access_level'), $query->f('email'));
 				if(isset($ld['store_login']) && $ld['store_login'] == 'on')
-					$this->login_cookie($query->f('trainer_id'), $query->f('access_level'), $query->f('email'));
+					$this->login_cookie($trainer_id, $query->f('access_level'), $query->f('email'));
 				
 				global $user_level;
 				$user_level = $_SESSION[ACCESS_LEVEL];
@@ -307,19 +326,19 @@ class auth
 							WHERE 
 								trainer_id = '".$_SESSION[U_ID]."' 
 						");
-		session_register(UID);
+		//session_register(UID);
 		$_SESSION[UID]=0;
 		$_SESSION[U_ID]=0;
-		//$_SESSION[ACCESS_LEVEL]=4;
 		$_SESSION[ACCESS_LEVEL]=4;
-		if (isset($_COOKIE[session_name()])){
-			$params = session_get_cookie_params();
-			if(!setcookie(session_name(), 'trt',time()-1,$params["path"], $params["domain"], $params["secure"], $params["httponly"])){
-				$ld['error'] = 'not deleted';
-				return false;
-			}
-		}
-		session_destroy();
+		
+		//if (isset($_COOKIE[session_name()])){
+		//	$params = session_get_cookie_params();
+		//	if(!setcookie(session_name(), 'trt',time()-1,$params["path"], $params["domain"], $params["secure"], $params["httponly"])){
+		//		$ld['error'] = 'not deleted';
+		//		return false;
+		//	}
+		//}
+		//session_destroy();
 		
 		setcookie('UID', "", time() - 3600, '/');
 		setcookie('U_ID', "", time() - 3600, '/');
@@ -336,6 +355,7 @@ class auth
 	
 	function login_fb()
 	{
+
 		require 'fb/facebook.php';
 
 		$facebook = new Facebook(array(
