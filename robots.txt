@@ -1,0 +1,7 @@
+#
+# robots.txt for http://rehabmypatient.com
+#
+
+User-agent: *
+Disallow: /admin/
+1

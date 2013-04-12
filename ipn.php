@@ -9,7 +9,7 @@
 /* end of PAP4 integration */
 logPayment('', $_GET, 'IPN_message_GET');
 logPayment('', $_POST, 'IPN_message');
-mail('cardioprint@miralex.com.ua', 'IPN message', 'PayPal IPN message is received at Rehabmypatient. Log is at paypal_transactions table', 'From: paypal@rehabmypatient.com' );
+//mail('cardioprint@miralex.com.ua', 'IPN message', 'PayPal IPN message is received at Rehabmypatient. Log is at paypal_transactions table', 'From: paypal@rehabmypatient.com' );
 
 function logPayment($request, $answer, $type){
     include('config/config.php');

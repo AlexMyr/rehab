@@ -33,9 +33,6 @@
 	<script type="text/javascript" src="js/libs/jScrollPane/jquery.mousewheel.js"></script>
 	<script type="text/javascript" src="js/libs/jScrollPane/jquery.jscrollpane.min.js"></script>
 	
-	<script type="text/javascript" src="js/libs/dragscrollable/dragscrollable.js"></script>
-	
-	
 	<script type="text/javascript" src="js/libs/jquery.corner.js"></script>
 	
 	<script type="text/javascript" src="js/gdslider.js"></script>
@@ -53,7 +50,7 @@
 	  })();
 	</script>
 </head>
-<body onkeydown="onKeyDown(event)" oncopy="return false;" oncut="return false;" ondragstart="return false;">
+<body onkeydown="onKeyDown(event)">
 	<div class="whirl">
 	<div class="siteBody">
 		<div class="header">
@@ -63,6 +60,11 @@
 					<a id="lang_en" href="/index.php" value="en"><img src="/img/gb.gif"/></a>
 					<a id="lang_us" href="/us/index.php" value="us"><img src="/img/us.gif"/></a>
 				</div>
+				<div style="clear:both;"></div>
+                <div class="loginSection msgBanner" style="{DISPLAY_MSG_BANNER}">
+	                <p style="text-align:center; height:65%;">{BANNER_CONTENT}</p>
+	                <p style="text-align:right;">RehabMyPatient team</p>
+                </div>
 			{LOGGED_IN_MENU}
 			</div>
 			<div style="display:none; position: absolute;" id="submenuProgramList">
@@ -77,6 +79,7 @@
 					<li class="changeURL"><a href="index.php?pag=profile_header_paper"><div class="subMenuLinkSpan">{T.EDIT_HEADER}</div></a></li>
 					<li class="changeURL"><a href="index.php?pag=profile_edit_email"><div class="subMenuLinkSpan">{T.CHANGE_EMAIL}</div></a></li>
 					<li class="changeURL"><a href="index.php?pag=profile_edit_password"><div class="subMenuLinkSpan">{T.CHANGE_PASS}</div></a></li>
+					<li class="changeURL"><a href="index.php?pag=exercise_history"><div class="subMenuLinkSpan">History</div></a></li>
 				</ul>
 			</div>
 			<div class="clearAll"></div>
@@ -93,17 +96,17 @@
 		</div>
     </div>
 {BOTTOM_INCLUDES}
-<script type="text/javascript"><!--
+<!--<script type="text/javascript">
 document.write(unescape("%3Cscript id='pap_x2s6df8d' src='" + (("https:" == document.location.protocol) ? "https://" : "http://") + 
-"rehabmypatient.com/affiliate/scripts/trackjs.js' type='text/javascript'%3E%3C/script%3E"));//-->
+"rehabmypatient.com/affiliate/scripts/trackjs.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript"><!--
 PostAffTracker.setAccountId('default1');
 try {
 PostAffTracker.track();
 } catch (err) { }
-//-->
 </script>
+//-->
 <script type="text/javascript">
 	jQuery('.delete').click(function(event){
 		if(jQuery(this).hasClass('programDelete'))
@@ -143,6 +146,12 @@ PostAffTracker.track();
 	});
 </script>
 </div>
-
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"7DLjh1a0k700oR", domain:"rehabmypatient.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=7DLjh1a0k700oR" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
 </body>
 </html>

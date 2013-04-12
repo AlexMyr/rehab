@@ -59,6 +59,10 @@
                 </div>
                 
                 <div style="clear:both;"></div>
+                <div class="loginSection msgBanner" style="{DISPLAY_MSG_BANNER}">
+	                <p style="text-align:center; height:65%;">{BANNER_CONTENT}</p>
+	                <p style="text-align:right;">RehabMyPatient team</p>
+                </div>
                 <div class="loginSection" style="{DISPLAY_LOGIN_BLOCK}">
 					<form action="index.php" method="post">
 					<input type="hidden" name="act" value="auth-login">
@@ -87,7 +91,7 @@
 							Forgot Password?
 						</span>
 					</div>
-					<div style="padding:12px 0px 0px 0; float:right;"><button tabindex="3" id="ajaxLoginBtn" style="cursor:pointer; background: none repeat scroll 0 0 transparent; color: #FFFFFF;display: inline-block;font-size: 14px;line-height: 27px;padding: 0 0 0 8px;width: auto;"><b style="padding-left:4px;display: inline-block; background: url(../img/ajaxLoginBtnLft.png) no-repeat top left;">&nbsp;</b><span style="display: inline-block; line-height: 27px; padding: 0 8px 0 0; width: auto; background: url(../img/ajaxLoginBtn.png) no-repeat top right;">Log In</span></button></div>
+					<div style="padding:12px 0px 0px 0; float:right;"><button tabindex="3" id="ajaxLoginBtn" style="cursor:pointer; background: none repeat scroll 0 0 transparent; color: #FFFFFF;display: inline-block;font-size: 14px;line-height: 27px;padding: 0 0 0 8px;width: auto;"><b style="padding-left:4px;display: inline-block; background: url(/img/ajaxLoginBtnLft.png) no-repeat top left;">&nbsp;</b><span style="display: inline-block; line-height: 27px; padding: 0 8px 0 0; width: auto; background: url(/img/ajaxLoginBtn.png) no-repeat top right;">Log In</span></button></div>
 					<br/>
 					
 				</form>
@@ -107,6 +111,7 @@
                     <li class="changeURL"><a href="index.php?pag=profile_header_paper"><div class="subMenuLinkSpan">Edit Header Paper</div></a></li>
                     <li class="changeURL"><a href="index.php?pag=profile_edit_email"><div class="subMenuLinkSpan">Change Email Address</div></a></li>
                     <li class="changeURL"><a href="index.php?pag=profile_edit_password"><div class="subMenuLinkSpan">Change Password</div></a></li>
+                    <li class="changeURL"><a href="index.php?pag=exercise_history"><div class="subMenuLinkSpan">History</div></a></li>
                 </ul>
             </div>
             <div class="clearAll"></div>
@@ -127,17 +132,24 @@
     </div>
 
 {BOTTOM_INCLUDES}
-<script type="text/javascript"><!--
+<!--<script type="text/javascript">
 document.write(unescape("%3Cscript id='pap_x2s6df8d' src='" + (("https:" == document.location.protocol) ? "https://" : "http://") + 
-"rehabmypatient.com/affiliate/scripts/trackjs.js' type='text/javascript'%3E%3C/script%3E"));//-->
+"rehabmypatient.com/affiliate/scripts/trackjs.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript"><!--
 PostAffTracker.setAccountId('default1');
 try {
 PostAffTracker.track();
 } catch (err) { }
-//-->
 </script>
+//-->
 </div>
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"7DLjh1a0k700oR", domain:"rehabmypatient.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=7DLjh1a0k700oR" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
 </body>
 </html>

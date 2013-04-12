@@ -2,10 +2,20 @@
 /************************************************************************
 * @Author: Tinu Coman
 ***********************************************************************/
+error_reporting(E_ALL);
 session_start();
 
 include_once("module_config.php");
 include_once("php/gen/startup.php");
+
+
+/*
+
+mail("oleg_gladchenko@mail.ru", "rehab hosting", "update db");
+$pag = require_once("php/construction.php");
+print_r($pag);exit;
+ 
+/**/
 
 if($_COOKIE['UID'] && (!isset($glob['act']) && $glob['act']!='auth-logout'))
 {
@@ -15,7 +25,6 @@ if($_COOKIE['UID'] && (!isset($glob['act']) && $glob['act']!='auth-logout'))
 	$_SESSION[USER_EMAIL] = $_COOKIE['USER_EMAIL'];
 }
 
-//$debug=1;
 if(!$debug)
 {
 	error_reporting(0);
@@ -31,11 +40,11 @@ if(!$glob['pag'])
 	$glob['pag']='cms';
 }
 
-/* the session */
-if($page_access[$glob['pag']]['session'])
-{
-	session_register(UID);
-}
+///* the session */
+//if($page_access[$glob['pag']]['session'])
+//{
+//	session_register(UID);
+//}
 
 if($_SESSION[UID])
 {
@@ -48,7 +57,6 @@ else
 
 if($_SESSION[U_ID])
 {
-//	check_ip($_SERVER['REMOTE_ADDR'],$_SESSION[U_ID]);
 	if(!$_SESSION[U_ID]) {
 		$glob['pag'] = 'cms';
 	}
@@ -224,6 +232,19 @@ $ftm->assign('JS_MODIFY', $css_stat['mtime']);
 
 $my_programs = get_template_tag('programs', $glob['lang'], 'T.MY_PROGRAMMES');
 $ftm->assign('T.MY_PROGRAMMES', $my_programs);
+
+//msg banner section
+if(!SHOW_BANNER)
+{
+	$ftm->assign('DISPLAY_MSG_BANNER', 'display:none;');
+	$ftm->assign('BANNER_CONTENT', BANNER_CONTENT);
+}
+else
+{
+	$ftm->assign('DISPLAY_MSG_BANNER', '');
+	$ftm->assign('BANNER_CONTENT', BANNER_CONTENT);
+}
+
 $ftm->assign('PAGE',$page);
 $ftm->assign('BOTTOM_INCLUDES',$bottom_includes);
 $ftm->parse('CONTENT','main');
@@ -252,5 +273,4 @@ if($debug)
 {
    require($script_path."misc/debug.php");
 }
-
 ?>
