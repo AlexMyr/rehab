@@ -28,11 +28,12 @@ else
 
 if(isset($glob['search_key']))
 {
+  $search_key = mysql_escape_string(trim($glob['search_key']));
   
   $dbu=new mysql_db;
   if($glob['search_key'])
   {
-    $dbu->query("select * from trainer where username like '%".$glob['search_key']."%' or email like '%".$glob['search_key']."%' order by create_date desc, trainer_id asc");
+    $dbu->query("select * from trainer where username like '%".$search_key."%' or email like '%".$search_key."%' order by create_date desc, trainer_id asc");
     
     $max_rows=$dbu->records_count();
 
@@ -82,7 +83,20 @@ if(isset($glob['search_key']))
           }
       }
       else $is_trial = "<span style='color:#ff0000;'>never used</span>";
-      
+		
+		$extend_3_name = 'Extend to 3 month';
+		$extend_3_link = "index.php?pag=member_list&act=member-extend_trial&to=90&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+		$extend_6_name = 'Extend to 6 month';
+		$extend_6_link = "index.php?pag=member_list&act=member-extend_trial&to=180&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+		$extend_12_name = 'Extend to 1 year';
+        $extend_12_link = "index.php?pag=member_list&act=member-extend_trial&to=365&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+		$ft->assign('EXTEND_3_NAME',$extend_3_name);
+		$ft->assign('EXTEND_3_LINK',$extend_3_link);
+		$ft->assign('EXTEND_6_NAME',$extend_6_name);
+		$ft->assign('EXTEND_6_LINK',$extend_6_link);
+		$ft->assign('EXTEND_12_NAME',$extend_12_name);
+        $ft->assign('EXTEND_12_LINK',$extend_12_link);
+	  
       if($dbu->f('is_clinic')==2) $is_clinic = "not set";
       else if($dbu->f('is_clinic')==1) $is_clinic = "clinic";
       else if($dbu->f('is_clinic')==0) $is_clinic = "user";

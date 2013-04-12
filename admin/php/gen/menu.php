@@ -4,7 +4,8 @@
 ***********************************************************************/
 if($page_access[$glob['pag']]['menu']) 
 {
-	$user_level=$_SESSION['user_level'];
+	//$user_level=$_SESSION[ACCESS_LEVEL];
+	$user_level=$_SESSION['admin_access'];
 	if($user_level==1)
 	{
 		$menu_name="1_";

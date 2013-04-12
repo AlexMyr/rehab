@@ -267,25 +267,33 @@ function activate(&$ld)
 }
 function activate_full_rights(&$ld)
 {
+  $ld['to'] = 5*365;
   $expire_date = date("Y-m-d H:i:S", (time() + 5*365*24*3600));
   $this->dbu->query("update trainer set active=2,is_trial=0,expire_date='$expire_date' where trainer_id=".$ld['trainer_id']."");                  
+  $this->log_prolong($ld, 'full');
   $ld['error'].="The member has full rights.";
   return true;
 }
-function trial($ld)
+function trial(&$ld)
 {
   $expire_date = date("Y-m-d H:i:S", (time() + 14*24*3600));
   $this->dbu->query("update trainer set active=2,is_trial=1,expire_date='$expire_date' where trainer_id=".$ld['trainer_id']."");                  
   $ld['error'].="The member became trial user.";
   return true;
 }
-function extend_trial($ld)
+function extend_trial(&$ld)
 {
-    $to = $ld['to'];
-    $expire_date = date("Y-m-d H:i:S", (time() + $to*24*3600));
-    $this->dbu->query("UPDATE trainer SET expire_date='$expire_date' WHERE trainer_id=".$ld['trainer_id']."");                  
-    $ld['error'].="Trial period is extended.";
-    return true;
+  $to = $ld['to'];
+  $expire_date = date("Y-m-d H:i:S", (time() + $to*24*3600));
+  $this->dbu->query("UPDATE trainer SET active=2, expire_date='$expire_date' WHERE trainer_id=".$ld['trainer_id']."");                  
+  $this->log_prolong($ld, 'extend');
+  $ld['error'].="Trial period is extended.";
+  return true;
+}
+
+function log_prolong(&$ld, $type)
+{
+  $this->dbu->query("insert into trainer_prolong_log set trainer_id='".$ld['trainer_id']."', type='$type', time_prolonged='".$ld['to']."', date='".time()."'");
 }
 /****************************************************************
 * function send_notiffication_mail_activate(&$ld)                        *

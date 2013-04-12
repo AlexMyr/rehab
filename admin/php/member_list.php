@@ -9,9 +9,10 @@
 $ft = new ft(ADMIN_PATH.MODULE."templates/");
 $ft->define( array(main => "member_list.html"));
 $ft->define_dynamic('member_row','main');
-$l_r=ROW_PER_PAGE;
+$l_r = ROW_PER_PAGE;
 
-$dbu=new mysql_db;
+$dbu = new mysql_db;
+$dbu1 = new mysql_db;
 
 if(($glob['ofs']) || (is_numeric($glob['ofs'])))
 {
@@ -28,7 +29,11 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
-//$dbu->query("select * from trainer where active=2 and  or expire_date-".date("Y-m-d H:i:S")." order by trainer_id");
+$show_logo_column = false;
+
+$where = '';
+//if($glob['search_key'])
+//	$where = "and (trainer.username like '%".mysql_escape_string($glob['search_key'])."%' or trainer.email like '%".mysql_escape_string($glob['search_key'])."%')";
 
 $order_by = ' order by create_date desc, trainer_id asc';
 
@@ -37,52 +42,33 @@ if($glob['active']==2)
 {
 	if($glob['trial']==0)
 	{
-		$dbu->query("select * from trainer where active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
+		$dbu->query("select trainer.*,trainer_header_paper.logo_image from trainer left join trainer_header_paper on trainer_header_paper.trainer_id=trainer.trainer_id where 1 $where and active=2 and is_trial=0 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");
 		$bannName='Block';
 		$pageTitle='Full Paid Members List';
         $ft->assign('SHOW_PASS', '<td height="20" bgcolor="#E8E8E8" width="100" align="center"><strong>Password</strong></td>');
+		$ft->assign('SHOW_LOGO', '<td height="20" bgcolor="#E8E8E8" width="60" align="center"><strong>Logo</strong></td>');
         $show_pass = true;
+		$show_logo_column = true;
 	}
 	else
 	{
-		$dbu->query("select * from trainer where active=2 and is_trial=1 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
+		$dbu->query("select * from trainer where 1 $where and active=2 and is_trial=1 and TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) > 0 $order_by");	 
 		$bannName='Block';
 		$pageTitle='Trial Members List';
 	}
 }
 else if($glob['active']==0)
 {
-	$dbu->query("select * from trainer where active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0 $order_by");	
+	$dbu->query("select * from trainer where 1 $where and (active=0 or TIMESTAMPDIFF(MINUTE, '".date("Y-m-d H:i:S")."', expire_date) < 0) $order_by");	
 	$bannName='Trial';
 	$pageTitle='Blocked Members List';
 }
 else if($glob['active']==1)
 {
-	$dbu->query("select * from trainer where active=1 or(active=2 and expire_date='0000-00-00 00:00:00') $order_by");	 
+	$dbu->query("select * from trainer where 1  and (active=1 or (active=2 and expire_date='0000-00-00 00:00:00')) $where $order_by");
 	$bannName='Block';
 	$pageTitle='Members List';
 }
-
-
-
-//if($glob['active']==0)
-//{
-//	$dbu->query("select * from trainer where active=0 order by trainer_id");	
-//	$bannName='Activate';
-//	$pageTitle='New Members List';
-//}
-//else if($glob['active']==2)
-//{
-//	$dbu->query("select * from trainer where active=2 order by trainer_id");	 
-//	$bannName='Block';
-//	$pageTitle='Members List';
-//}
-//else if($glob['active']==1)
-//{
-//	$dbu->query("select * from trainer where active=1 order by trainer_id");	 
-//	$bannName='Block';
-//	$pageTitle='Members List';
-//}
 
 $max_rows=$dbu->records_count();
 
@@ -103,9 +89,27 @@ while($dbu->move_next()&&$i<$l_r)
 		$expire_time = ($expire_date-time());
 		if($expire_time<1)
 		{
-			$is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
-			$trial_name = 'Trial';
-			$trial_link = "index.php?pag=member_list&act=member-trial&trainer_id=".$dbu->f('trainer_id');
+			if($dbu->f('is_trial')==1){
+				$is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
+                $extend_3_name = 'Extend to 3 month';
+                $extend_3_link = "index.php?pag=member_list&act=member-extend_trial&to=90&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+                $extend_6_name = 'Extend to 6 month';
+                $extend_6_link = "index.php?pag=member_list&act=member-extend_trial&to=180&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+				$extend_12_name = 'Extend to 1 year';
+                $extend_12_link = "index.php?pag=member_list&act=member-extend_trial&to=360&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+                $ft->assign('EXTEND_3_NAME',$extend_3_name);
+                $ft->assign('EXTEND_3_LINK',$extend_3_link);
+                $ft->assign('EXTEND_6_NAME',$extend_6_name);
+                $ft->assign('EXTEND_6_LINK',$extend_6_link);
+				$ft->assign('EXTEND_12_NAME',$extend_12_name);
+                $ft->assign('EXTEND_12_LINK',$extend_12_link);
+			}
+			else
+			{
+				$is_trial = "<span style='color:#ff0000; font-weight:bold;'>expired</span>";
+				$trial_name = 'Trial';
+				$trial_link = "index.php?pag=member_list&act=member-trial&trainer_id=".$dbu->f('trainer_id');
+			}
 		}
 		else if($expire_time>0)
 		{
@@ -115,13 +119,20 @@ while($dbu->move_next()&&$i<$l_r)
                 $extend_3_link = "index.php?pag=member_list&act=member-extend_trial&to=90&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
                 $extend_6_name = 'Extend to 6 month';
                 $extend_6_link = "index.php?pag=member_list&act=member-extend_trial&to=180&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
+				$extend_12_name = 'Extend to 1 year';
+                $extend_12_link = "index.php?pag=member_list&act=member-extend_trial&to=365&active=2&trial=1&trainer_id=".$dbu->f('trainer_id');
                 $ft->assign('EXTEND_3_NAME',$extend_3_name);
                 $ft->assign('EXTEND_3_LINK',$extend_3_link);
                 $ft->assign('EXTEND_6_NAME',$extend_6_name);
                 $ft->assign('EXTEND_6_LINK',$extend_6_link);
+				$ft->assign('EXTEND_12_NAME',$extend_12_name);
+                $ft->assign('EXTEND_12_LINK',$extend_12_link);
 			}
 			else if($dbu->f('is_trial')==0){
-				$is_trial = "payed";
+				if($dbu1->field("select count(*) from paypal_transactions where trainer_id='".$dbu->f('trainer_id')."' and ack='Success' and type in('CreateRecurringPaymentsProfile', 'ConfirmPayment')"))
+					$is_trial = 'payed';
+				else
+					$is_trial = 'free';
 				$trial_name = 'Trial';
 				$trial_link = "index.php?pag=member_list&act=member-trial&trainer_id=".$dbu->f('trainer_id');
 			}
@@ -139,8 +150,12 @@ while($dbu->move_next()&&$i<$l_r)
 	$ft->assign('IS_TRIAL', $is_trial );
 	$ft->assign('IS_CLINIC', $is_clinic );
 	$ft->assign('EMAIL',$dbu->f('email'));
+	
     if(isset( $show_pass) && $show_pass)
         $ft->assign('PASS','<td height="20" align="center" style="color:#777;">'.$dbu->f('password').'</td>');
+		
+	if($show_logo_column)
+        $ft->assign('HAS_LOGO','<td height="20" align="center">'.($dbu->f('logo_image') ? 'Y' : 'N').'</td>');
     
 
 	if($glob['active']==0) $activation="index.php?pag=member_list&active=0&act=member-trial&trainer_id=".$dbu->f('trainer_id');
@@ -182,7 +197,7 @@ while($dbu->move_next()&&$i<$l_r)
 if($i==0)
 {
     unset($ft);
-	return get_error_message("Empty database.");
+	return get_error_message("Search list empty.");
 }
 
 if($offset>=$l_r)
@@ -204,10 +219,13 @@ else
 }
 
 //*****************JUMP TO FORM***************
-$ft->assign('PAG_DD',get_pagination_dd($offset, $max_rows, $l_r, $glob));
+$ft->assign('PAG_DD', get_pagination_dd($offset, $max_rows, $l_r, $glob));
 //*****************JUMP TO FORM***************
 
 $ft->assign('PAGE',$glob['pag']);
+$ft->assign('PAG',$glob['pag']);
+$ft->assign('ACTIVE',$glob['active']);
+$ft->assign('TRIAL',$glob['trial']);
 $ft->assign('PAGE_TITLE',$pageTitle);
 $ft->assign('MESSAGE',$glob['error']);
 $ft->parse('content','main');

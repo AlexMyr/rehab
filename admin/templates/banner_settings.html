@@ -1,0 +1,40 @@
+<table width="620" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="PageTitle">Edit Banner</div></td>
+  </tr>
+  <tr>
+    <td><img src="../img/spacer.gif" height="10" width="1"></td>
+  </tr>
+  <tr>
+    <td align="center" class="verdanaRed11">{MESSAGE}</td>
+  </tr>
+</table>
+
+
+<form action="index.php" method="post">
+  <input type="hidden" name="pag" value="banner_settings">
+  <input type="hidden" name="act" value="{NEXT_FUNCTION}">
+ <table width="620" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top" bgcolor="#F5F5F5" ><strong>Show banner</strong></td>
+    <td width="385" align="left" valign="top" bgcolor="#F5F5F5">	<input type="checkbox" name="show_banner" {SHOW_BANNER} class="txtField"></td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top"><strong>Banner text</strong></td>
+    <td width="385" align="left" valign="top">
+    	<textarea name="banner_content" class="txtField" style="height:50px; width:380px;">{BANNER_CONTENT}</textarea>
+    </td>
+    <td width="15" height="25">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="14" height="25">&nbsp;</td>
+    <td width="190" align="left" valign="top">&nbsp;</td>
+    <td width="385" align="left" valign="top"><input type="submit" name="save" value="Save" class="button"></td>
+    <td width="15" height="25">&nbsp;</td>
+    </tr>
+  </tr>
+</table>
+</form>

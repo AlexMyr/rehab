@@ -208,7 +208,9 @@
 
                             'settings' => array(
 
-                                         'admin_update'=>1
+                                         'admin_update'=>1,
+                                         
+                                         'update_banner_settings'=>1,
 
                                          ),
 
@@ -219,6 +221,10 @@
                                         'add'=>1,
 
                                         'add_mult'=>1,
+                                        
+                                        'upload_excel'=>1,
+                                        
+                                        'upload_tags'=>1,
                                         
                                         'update'=>1,
 

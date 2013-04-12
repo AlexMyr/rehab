@@ -2,13 +2,22 @@
 /************************************************************************
 * @Author: Tinu Coman
 ***********************************************************************/
+error_reporting(E_ALL);
+define("ROOT_PATH", dirname(dirname(dirname(__FILE__))));
+require_once(ROOT_PATH.'/phpexcel/PHPExcel.php');
+require_once(ROOT_PATH.'/phpexcel/PHPExcel/IOFactory.php');
+require_once(ROOT_PATH.'/misc/bmp_img_lib.php');
+
 class programs
 {
   var $dbu;
+  var $phpExcel;
 
 	function programs()
 	{
 		$this->dbu = new mysql_db();
+		$this->dbu1 = new mysql_db();
+		//$this->phpExcel = new PHPExcel();
 	}
 
 	/****************************************************************
@@ -282,6 +291,7 @@ class programs
         $allowed['.jpg']=1;
         $allowed['.jpeg']=1;
         $allowed['.png']=1;
+		$allowed['.bmp']=1;
         
         if(!empty($_FILES['lineart']['name']))
         {
@@ -508,205 +518,449 @@ class programs
 	        return $is_ok;
 	} 
 	
-/****************************************************************
-* function upload_file(&$ld)                                    *
-****************************************************************/
-function upload_file(&$ld)
-{
-        global $_FILES, $script_path, $is_live;
-        $allowed['.gif']=1;
-        $allowed['.jpg']=1;
-        $allowed['.jpeg']=1;
-        $allowed['.png']=1;
-        
-        if(!is_numeric($_SESSION[U_ID]))
-        {
-        	$ld['error'].="Error.".'<br>';
-        	return false;
-        }
-        else 
-        {
-         	$this->dbu->query("select programs_id, lineart, thumb_lineart, image, thumb_image from programs where programs_id='".$ld['programs_id']."'");
-        	if(!$this->dbu->move_next())
-        	{
-	        	$ld['error'].="Error.".'<br>';
-	        	return false;
-        	}
-        	else 
-        	{
-        		if(!empty($_FILES['lineart']['tmp_name']))
-        		{
-        		@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('lineart') );
-				@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_lineart') );
-				$this->dbu->query("UPDATE programs SET lineart=NULL, thumb_lineart=NULL where programs_id='".$ld['programs_id']."'");
-        		}
-        		if(!empty($_FILES['image']['tmp_name']))
-        		{
-        		@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('image') );
-				@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_image') );
-				$this->dbu->query("UPDATE programs SET image=NULL, thumb_image=NULL where programs_id='".$ld['programs_id']."'");
-        		}
-        	}
-        }
+  /****************************************************************
+  * function upload_file(&$ld)                                    *
+  ****************************************************************/
+  function upload_file(&$ld)
+  {
+	global $_FILES, $script_path, $is_live;
+	$allowed['.gif']=1;
+	$allowed['.jpg']=1;
+	$allowed['.jpeg']=1;
+	$allowed['.png']=1;
+	$allowed['.bmp']=1;
+		  
+	if(!is_numeric($_SESSION[U_ID]))
+	{
+		$ld['error'].="Error.".'<br>';
+		return false;
+	}
+	else 
+	{
+	  $this->dbu->query("select programs_id, lineart, thumb_lineart, image, thumb_image from programs where programs_id='".$ld['programs_id']."'");
+	  if(!$this->dbu->move_next())
+	  {
+		$ld['error'].="Error.".'<br>';
+		return false;
+	  }
+	  else 
+	  {
+		if(!empty($_FILES['lineart']['tmp_name']))
+		{
+		  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('lineart') );
+		  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_lineart') );
+		  $this->dbu->query("UPDATE programs SET lineart=NULL, thumb_lineart=NULL where programs_id='".$ld['programs_id']."'");
+		}
+		if(!empty($_FILES['image']['tmp_name']))
+		{
+		  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('image') );
+		  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_image') );
+		  $this->dbu->query("UPDATE programs SET image=NULL, thumb_image=NULL where programs_id='".$ld['programs_id']."'");
+		  if(!isset($_FILES['lineart']))
+			$this->dbu->query("UPDATE programs SET lineart=NULL, thumb_lineart=NULL where programs_id='".$ld['programs_id']."'");
+		}
+	  }
+	}
+		  
+	if(!empty($_FILES['lineart']['tmp_name'])) 
+	{
+	  $f_lineart_ext=substr($_FILES['lineart']['name'],strrpos($_FILES['lineart']['name'],"."));
+	  $f_lineart_title="programs_lineart"."_".$ld['programs_id'].$f_lineart_ext;
+	  $t_lineart_title="programs_thumb_lineart"."_".$ld['programs_id'].$f_lineart_ext;
+	  $f_lineart_out=$script_path.UPLOAD_PATH.$f_lineart_title;
+	  $t_lineart_out=$script_path.UPLOAD_PATH.$t_lineart_title;
+	}
+		  
+	if(!empty($_FILES['image']['tmp_name'])) 
+	{
+	  $f_image_ext=substr($_FILES['image']['name'],strrpos($_FILES['image']['name'],"."));
+	  $f_image_title="programs_image"."_".$ld['programs_id'].$f_image_ext;
+	  $t_image_title="programs_thumb_image"."_".$ld['programs_id'].$f_image_ext;
+	  $f_image_out=$script_path.UPLOAD_PATH.$f_image_title;
+	  $t_image_out=$script_path.UPLOAD_PATH.$t_image_title;
+	}
+  
+	$owner = $this->dbu->field("select owner from programs where programs_id='".$ld['programs_id']."'");
+  
+	if(!$is_live || (strtolower($f_lineart_ext) =='.gif')/* || (strtolower($f_lineart_ext) =='.png')*/)
+	{
+	  if(FALSE === move_uploaded_file($_FILES['lineart']['tmp_name'],$f_lineart_out))
+	  {
+		// $ld['error'].="Unable to upload the file.  Move operation failed."."<!-- Check file permissions -->";
+		 return false;
+	  }
 		
-        if(!empty($_FILES['lineart']['tmp_name'])) 
-        {
-        $f_lineart_ext=substr($_FILES['lineart']['name'],strrpos($_FILES['lineart']['name'],"."));
-        $f_lineart_title="programs_lineart"."_".$ld['programs_id'].$f_lineart_ext;
-        $t_lineart_title="programs_thumb_lineart"."_".$ld['programs_id'].$f_lineart_ext;
-        $f_lineart_out=$script_path.UPLOAD_PATH.$f_lineart_title;
-        $t_lineart_out=$script_path.UPLOAD_PATH.$t_lineart_title;
-        }
-        
-        if(!empty($_FILES['image']['tmp_name'])) 
-        {
-        $f_image_ext=substr($_FILES['image']['name'],strrpos($_FILES['image']['name'],"."));
-        $f_image_title="programs_image"."_".$ld['programs_id'].$f_image_ext;
-        $t_image_title="programs_thumb_image"."_".$ld['programs_id'].$f_image_ext;
-        $f_image_out=$script_path.UPLOAD_PATH.$f_image_title;
-        $t_image_out=$script_path.UPLOAD_PATH.$t_image_title;
-        }
-
-		$owner = $this->dbu->field("select owner from programs where programs_id='".$ld['programs_id']."'");
-
-        if(!$is_live || (strtolower($f_lineart_ext) =='.gif') || (strtolower($f_lineart_ext) =='.png'))
-        {
-        	if(FALSE === move_uploaded_file($_FILES['lineart']['tmp_name'],$f_lineart_out))
-	        {
-	               // $ld['error'].="Unable to upload the file.  Move operation failed."."<!-- Check file permissions -->";
-	                return false;
-	        }
-	        
-        	$this->dbu->query("update programs set
-	                           lineart='".$f_lineart_title."',
-	                           thumb_lineart='".$t_lineart_title."'
-	                           where programs_id='".$ld['programs_id']."'" 
-	                          );
-			@chmod($f_lineart_out, 0777);
-        	$ld['error'].="Image Succesfully saved.<br>";
-        	return true;
-        }
-        if(!$is_live || (strtolower($f_image_ext) =='.gif') || (strtolower($f_image_ext) =='.png'))
-        {
-        	if(FALSE === move_uploaded_file($_FILES['image']['tmp_name'],$f_image_out))
-	        {
-	               // $ld['error'].="Unable to upload the file.  Move operation failed."."<!-- Check file permissions -->";
-	                return false;
-	        }
-
-        	$this->dbu->query("update programs set
-	                           image='".$f_image_title."',
-	                           thumb_image='".$t_image_title."'
-	                           where programs_id='".$ld['programs_id']."'" 
-	                          );
-			if($owner > -1)
-			{
-			  $this->dbu->query("update programs set
-	                           lineart='".$f_image_title."',
-	                           thumb_lineart='".$t_image_title."'
-	                           where programs_id='".$ld['programs_id']."'" 
-	                          );
-			}
-			
-			@chmod($f_image_out, 0777);
-        	$ld['error'].="Image Succesfully saved.<br>";
-        	return true;
-        }
-        else
-        {
-//        	$this->resize($_FILES['image']['tmp_name'], PROGRAMS_PICTURE_WIDTH, 0, $f_title);
-//        	$this->resize($_FILES['image']['tmp_name'], PROGRAMS_THUMBNAIL_WIDTH, 0, $t_title);
-       		if(!empty($_FILES['lineart']['tmp_name']))
-       		{
-        	$this->resize($_FILES['lineart']['tmp_name'], 500, 0, $f_lineart_title);
-        	$this->resize($_FILES['lineart']['tmp_name'], 150, 0, $t_lineart_title);
-	        @chmod($f_lineart_out, 0777);
-	        @chmod($t_lineart_out, 0777);
-        	$this->dbu->query("update programs set
-	                           lineart='".$f_lineart_title."',
-	                           thumb_lineart='".$t_lineart_title."'
-	                           where programs_id='".$ld['programs_id']."'" 
-	                          );
-       		}
-       		if(!empty($_FILES['image']['tmp_name']))
-       		{
-        	$this->resize($_FILES['image']['tmp_name'], 500, 0, $f_image_title);
-        	$this->resize($_FILES['image']['tmp_name'], 150, 0, $t_image_title);
-	        @chmod($f_image_out, 0777);
-	        @chmod($t_image_out, 0777);
-        	$this->dbu->query("update programs set
-	                           image='".$f_image_title."',
-	                           thumb_image='".$t_image_title."'
-	                           where programs_id='".$ld['programs_id']."'" 
-	                          );
-       		}
-	        $ld['error'].="Image Succesfully saved.".'<br>';
-	        return true;
-        }
- 
-}
+	  $this->dbu->query("update programs set
+						 lineart='".$f_lineart_title."',
+						 thumb_lineart='".$t_lineart_title."'
+						 where programs_id='".$ld['programs_id']."'" 
+						);
+	  @chmod($f_lineart_out, 0777);
+	  $ld['error'].="Image Succesfully saved.<br>";
+	  return true;
+	}
+	if(!$is_live || (strtolower($f_image_ext) =='.gif')/* || (strtolower($f_image_ext) =='.png')*/)
+	{
+	  if(FALSE === move_uploaded_file($_FILES['image']['tmp_name'],$f_image_out))
+	  {
+		// $ld['error'].="Unable to upload the file.  Move operation failed."."<!-- Check file permissions -->";
+		return false;
+	  }
+  
+	  $this->dbu->query("update programs set
+						 image='".$f_image_title."',
+						 thumb_image='".$t_image_title."'
+						 where programs_id='".$ld['programs_id']."'" 
+						);
+	  if($owner > -1)
+	  {
+		$this->dbu->query("update programs set
+						 lineart='".$f_image_title."',
+						 thumb_lineart='".$t_image_title."'
+						 where programs_id='".$ld['programs_id']."'" 
+						);
+	  }
+		
+	  @chmod($f_image_out, 0777);
+	  $ld['error'].="Image Succesfully saved.<br>";
+	  return true;
+	}
+	else
+	{
+	  if(!empty($_FILES['lineart']['tmp_name']))
+	  {
+		$this->resize($_FILES['lineart']['tmp_name'], 500, 0, $f_lineart_title);
+		if(strpos($f_lineart_title, '.bmp') > 0)
+		  $f_lineart_title = str_replace(".bmp", ".png", $f_lineart_title);
+		  
+		$this->resize($_FILES['lineart']['tmp_name'], 150, 0, $t_lineart_title);
+		if(strpos($t_lineart_title, '.bmp') > 0)
+		  $f_lineart_title = str_replace(".bmp", ".png", $t_lineart_title);
+		  
+		@chmod($f_lineart_out, 0777);
+		@chmod($t_lineart_out, 0777);
+		$this->dbu->query("update programs set
+						   lineart='".$f_lineart_title."',
+						   thumb_lineart='".$t_lineart_title."'
+						   where programs_id='".$ld['programs_id']."'" 
+						  );
+	  }
+	  if(!empty($_FILES['image']['tmp_name']))
+	  {
+		$this->resize($_FILES['image']['tmp_name'], 500, 0, $f_image_title);
+		if(strpos($f_image_title, '.bmp') > 0)
+		  $f_image_title = str_replace(".bmp", ".png", $f_image_title);
+		
+		$this->resize($_FILES['image']['tmp_name'], 150, 0, $t_image_title);
+		if(strpos($t_image_title, '.bmp') > 0)
+		  $t_image_title = str_replace(".bmp", ".png", $t_image_title);
+		
+		@chmod($f_image_out, 0777);
+		@chmod($t_image_out, 0777);
+		$this->dbu->query("update programs set
+						   image='".$f_image_title."',
+						   thumb_image='".$t_image_title."'
+						   where programs_id='".$ld['programs_id']."'" 
+						  );
+		if(empty($_FILES['lineart']['tmp_name']))
+		{
+		  $this->dbu->query("update programs set
+						   lineart='".$f_image_title."',
+						   thumb_lineart='".$t_image_title."'
+						   where programs_id='".$ld['programs_id']."'" 
+						  );
+		}
+	  }
+	  $ld['error'].="Image Succesfully saved.".'<br>';
+	  return true;
+	}
+  }
 /****************************************************************
 * function erasepicture(&$ld)                                   *
 ****************************************************************/
-function erasepicture(&$ld)
-{
-      	$this->dbu->query("select lineart, thumb_lineart, image, thumb_image, programs_id from programs where programs_id='".$ld['programs_id']."'");
-	    if(!$this->dbu->move_next())
-	    {
-	        $ld['error'].="Invalid ID.<br>";
-	        return false;
-	    }
-	    else 
-	    {
-			global $script_path;
-			@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('lineart') );
-			@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_lineart') );
-			@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('image') );
-			@unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_image') );
-			$this->dbu->query("UPDATE programs SET lineart=NULL, thumb_lineart=NULL, image=NULL, thumb_image=NULL WHERE programs_id='".$ld['programs_id']."'");
-	    }
+  function erasepicture(&$ld)
+  {
+	$this->dbu->query("select lineart, thumb_lineart, image, thumb_image, programs_id from programs where programs_id='".$ld['programs_id']."'");
+	if(!$this->dbu->move_next())
+	{
+	  $ld['error'].="Invalid ID.<br>";
+	  return false;
+	}
+	else 
+	{
+	  global $script_path;
+	  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('lineart') );
+	  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_lineart') );
+	  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('image') );
+	  @unlink( $script_path.UPLOAD_PATH.$this->dbu->f('thumb_image') );
+	  $this->dbu->query("UPDATE programs SET lineart=NULL, thumb_lineart=NULL, image=NULL, thumb_image=NULL WHERE programs_id='".$ld['programs_id']."'");
+	}
 	$ld['error'] .= "Image Succesfully deleted!<br>";
 	return true;
-}
+  }
 	/****************************************************************
 	* function resize(&$ld)                                         *
 	****************************************************************/
 
-	function resize($original_image, $new_width, $new_height, $image_title) 
+  function resize($original_image, $new_width, $new_height, $image_title) 
+  {
+	global $script_path;
+	
+	$image_info = getimagesize($original_image);
+	if($image_info['mime'] == 'image/bmp')
 	{
-		global $script_path;
-		$original_image=ImageCreateFromJPEG($original_image);
-		$aspect_ratio = imagesx($original_image) / imagesy($original_image); 
-		if (empty($new_width)) 
-		{ 
-			$new_width = $aspect_ratio * $new_height; 
+	  $original_image = BMP::imagecreatefrombmp($original_image);
+	  $aspect_ratio = imagesx($original_image) / imagesy($original_image); 
+	  if (empty($new_width)) 
+		$new_width = $aspect_ratio * $new_height; 
+	  elseif (empty($new_height)) 
+		$new_height= $new_width / $aspect_ratio; 
+
+	  if (imageistruecolor($original_image))	
+		$image = imagecreatetruecolor($new_width, $new_height); 
+	  else 
+		$image = imagecreate($new_width, $new_height); 
+	  // copy the original image onto the smaller blank 
+	  imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
+	  imagepng($image, $script_path.UPLOAD_PATH.str_replace(".bmp", ".png", $image_title)) or die("Problem In saving");
+	  //BMP::imagebmp($image, $script_path.UPLOAD_PATH.$image_title);//, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
+	}
+	else
+	{
+	  $cur_img = file_get_contents($original_image);
+	  $original_image=imagecreatefromstring($cur_img);
+	  //$original_image=ImageCreateFromJPEG($original_image);
+	  $aspect_ratio = imagesx($original_image) / imagesy($original_image); 
+	  if (empty($new_width)) 
+		$new_width = $aspect_ratio * $new_height; 
+	  elseif (empty($new_height)) 
+		$new_height= $new_width / $aspect_ratio; 
+
+	  if (imageistruecolor($original_image))	
+		$image = imagecreatetruecolor($new_width, $new_height); 
+	  else 
+		$image = imagecreate($new_width, $new_height); 
+	  // copy the original image onto the smaller blank 
+	  imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
+	  imagepng($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving");
+	}
+  }
+  
+  function change_sort_order(&$ld)
+  {
+	foreach($ld['sort_order'] as $program_id => $sort)
+	{
+	  $this->dbu->query("UPDATE programs SET sort_order=$sort WHERE programs_id='".$program_id."'");
+	}
+	return true;
+  }
+	
+  function upload_tags(&$ld)
+  {
+	if($_FILES['programs']['name'])
+	{
+	  $file_ext = pathinfo($_FILES['programs']['name'], PATHINFO_EXTENSION);
+	  $new_file_name = ROOT_PATH.'/test_upload/programs.'.$file_ext;
+	  move_uploaded_file($_FILES['programs']['tmp_name'], $new_file_name);
+	  
+	  $objPHPExcel = PHPExcel_IOFactory::load($new_file_name);
+	  $objWorksheet = $objPHPExcel->getActiveSheet();
+	  $highestRow = $objWorksheet->getHighestRow();
+
+	  for($i=1; $i<=$highestRow; $i++)
+	  {
+		if(!is_null($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()))
+		{
+		  $old_ex = $this->getProgramByCode($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()/*, 'en'*/);
+		  
+		  if(!empty($old_ex))
+			if(!is_null($objWorksheet->getCellByColumnAndRow(4, $i)->getValue()))
+			  $this->save_tags($old_ex['programs_id'], $objWorksheet->getCellByColumnAndRow(4, $i)->getValue());
 		}
-		elseif (empty($new_height)) 
-		{ 
-			$new_height= $new_width / $aspect_ratio; 
+	  }
+	}
+  }
+	
+  function upload_excel(&$ld)
+  {
+	//return false;
+	require_once(ROOT_PATH.'/test_upload/functions.php');
+	$top_categories = get_top_categories_from_db();
+	$programs = array();
+
+	if($_FILES['programs']['name'])
+	{
+	  $file_ext = pathinfo($_FILES['programs']['name'], PATHINFO_EXTENSION);
+	  $new_file_name = ROOT_PATH.'/test_upload/programs.'.$file_ext;
+	  move_uploaded_file($_FILES['programs']['tmp_name'], $new_file_name);
+	  
+	  $objPHPExcel = PHPExcel_IOFactory::load($new_file_name);
+	  $objWorksheet = $objPHPExcel->getActiveSheet();
+	  $highestRow = $objWorksheet->getHighestRow();
+
+	  $cur_top_cat = '';
+	  for($i=1; $i<=$highestRow; $i++)
+	  {
+		if(!is_null($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()))
+		{
+		  if(in_array(strtolower($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()), $top_categories))
+		  {
+			$cur_top_cat = $objWorksheet->getCellByColumnAndRow(0, $i)->getValue();
+		  }
+		  else
+		  {
+			$new_ex = array(
+			  'programs_code'=>trim($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()),
+			  'category'=>serialize(get_category(trim($objWorksheet->getCellByColumnAndRow(1, $i)->getValue()), $cur_top_cat)),
+			  'programs_title'=>trim($objWorksheet->getCellByColumnAndRow(2, $i)->getValue()),
+			  'description'=>trim($objWorksheet->getCellByColumnAndRow(3, $i)->getValue()),
+			  'lineart'=>trim($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()).'L',
+			  'thumb_lineart'=>trim($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()).'L (small)',
+			  'image'=>trim($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()).'P',
+			  'thumb_image'=>trim($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()).'P (small)',
+			);
+
+			if(!is_null($objWorksheet->getCellByColumnAndRow(1, $i)->getValue()))
+			{
+			  $old_ex = $this->getProgramByCode($objWorksheet->getCellByColumnAndRow(0, $i)->getValue()/*, 'en'*/);
+			  if(!empty($old_ex))
+			  {
+				//if($this->compareExercises($old_ex, $new_ex/*, 'en'*/))
+				//{
+				//  print_r($new_ex['programs_code']." changed.");
+				//  print_r("<br>");
+				//}
+			  }
+			  else
+			  {
+				$this->addExerciseXls($new_ex, 'en', array('L1131','L1132','S0291',));
+				print_r($new_ex['programs_code']." added.");
+				print_r("<br>");
+			  }
+			}
+		  }
+		  
+		  //var_dump($objWorksheet->getCellByColumnAndRow(0, $i)->getValue());
+		  //print_r("<br>");
 		}
-		if (imageistruecolor($original_image))	
-		{ 
-			$image = imagecreatetruecolor($new_width, $new_height); 
-		} 
-		else 
-		{ 
-			$image = imagecreate($new_width, $new_height); 
-		} 
-		// copy the original image onto the smaller blank 
-		imagecopyresampled($image, $original_image, 0, 0, 0, 0, $new_width, $new_height, imagesx($original_image), imagesy($original_image));
-		ImageJPEG($image, $script_path.UPLOAD_PATH.$image_title) or die("Problem In saving"); 
+		else
+		  continue;
+	  }
+	}
+  }
+	
+  function getProgramCats($program_code)
+  {
+	$cat_array = array();
+	$query_str = "select pcs.parent_id, pcs.category_id from programs_category_subcategory pcs left join programs_in_category pic on pic.category_id=pcs.category_id left join programs p on p.programs_id=pic.programs_id where p.programs_code='$program_code' order by pcs.parent_id";
+	$this->dbu1->query($query_str);
+	if($this->dbu1->move_next())
+	{
+	  $cat_array[] = array('top_cat_id'=>$this->dbu1->f('parent_id'), 'sub_cat_id'=>$this->dbu1->f('category_id'));
+	}
+	return $cat_array;
+  }
+  
+  function getProgramByCode($program_code, $lang = 'en')
+  {
+	$result = array();
+	$query_str = "select pr.*, pr_trans.* from programs pr left join programs_translate_$lang pr_trans on pr.programs_id=pr_trans.programs_id where pr.programs_code='".$program_code."'";
+
+	$this->dbu->query($query_str);
+	if($this->dbu->move_next())
+	{
+	  $result = array(
+		'programs_code'=>$this->dbu->f('programs_code'),
+		'category'=>serialize($this->getProgramCats($program_code)),//$this->getProgramCats($program_code),
+		'programs_title'=>$this->dbu->f('programs_title'),
+		'description'=>$this->dbu->f('description'),
+		'programs_id'=>$this->dbu->f('programs_id'),
+	  );
 	}
 	
-	function change_sort_order(&$ld)
+	return $result;
+  }
+  
+  function compareExercises($ex1, $ex2, $lang = 'en')
+  {
+	$edited = false;
+	$edited_category = false;
+	
+	if($ex1['programs_title'] !== $ex2['programs_title'] || $ex1['description'] !== $ex2['description'])
 	{
-	  foreach($ld['sort_order'] as $program_id => $sort)
-	  {
-		$this->dbu->query("UPDATE programs SET sort_order=$sort WHERE programs_id='".$program_id."'");
-	  }
-	  return true;
+	  $query_str = "update programs_translate_$lang
+					set programs_title = '".mysql_real_escape_string($ex2['programs_title'])."',
+						description = '".mysql_real_escape_string($ex2['description'])."'
+					where programs_id='".$ex2['programs_id']."'
+	  ";
+	  //$this->dbu1->query($query_str);
+	  
+	  $edited = true;
 	}
+	
+	if($ex1['category'] != $ex2['category'])
+	{
+	  //$this->dbu1->query("delete from programs_in_category where programs_id='".$ex1['programs_id']."'");
+	  $categ_array = unserialize($ex2['category']);
+
+	  foreach($categ_array as $parent_categ => $categ)
+	  {
+		//$this->dbu1->query("insert into programs_in_category (programs_id, category_id, main) values ('".$ex1['programs_id']."', '".$categ['sub_cat_id']."', 1) ");
+	  }
+	  
+	  $edited_category = true;
+	}
+	
+	return ($edited || $edited_category);
+  }
+  
+  function addExerciseXls($ex, $lang = 'en', $list_to_add = array())
+  {
+	if(empty($list_to_add) || !in_array($ex['programs_code'], $list_to_add))
+	  return;
+	
+	$query_str = "insert into programs
+				  set 
+									programs_code='".$ex['programs_code']."', 
+									lineart='".$ex['lineart'].".jpg',
+									thumb_lineart='".$ex['thumb_lineart'].".jpg',
+									image='".$ex['image'].".jpg',
+									thumb_image='".$ex['thumb_image'].".jpg',
+									sort_order='0', 
+									active = '1'
+	  ";
+	$program_id = $this->dbu1->query_get_id($query_str);
+	
+	$lang_array = array("en", "us");
+	foreach($lang_array as $lang)
+	{
+	  $query_str = "insert into programs_translate_$lang
+					set 
+					  programs_id = $program_id,
+					  programs_title='".mysql_real_escape_string($ex['programs_title'])."', 
+					  description='".mysql_real_escape_string($ex['description'])."'
+	  ";
+	  $this->dbu1->query($query_str);
+	}
+	
+	$categ_array = unserialize($ex['category']);
+	foreach($categ_array as $parent_categ => $categ)
+	{
+	  $this->dbu1->query("insert into programs_in_category (programs_id, category_id, main) values ('".$program_id."', '".$categ['sub_cat_id']."', 1) ");
+	}
+	
+  }
+  
+  function save_tags($programs_id, $tags)
+  {
+	$tags = explode(',', $tags);
+	foreach($tags as $tag)
+	  $this->dbu1->query("insert into programs_tags (programs_id, tag) values ('".$programs_id."', '".mysql_real_escape_string(strtolower(trim($tag)))."') ");
+  }
+  
+  
 
 }//end class
+
 
 ?>

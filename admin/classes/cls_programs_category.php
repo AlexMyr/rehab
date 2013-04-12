@@ -13,31 +13,32 @@ class programs_category
 	
 	function add(&$ld)
 	{
-		if(!$this->add_validate($ld))
-		{
-			return false;
-		}
-				
-		$ld['category_id']=$this->dbu->query_get_id("
-								INSERT INTO 
-											programs_category 
-								SET 
-											category_name = '".$ld['category_name']."', 
-											active = '".$ld['active']."',
-											sort_order ='".$ld['sort_order']."',
-											category_level = '".$ld['category_level']."'
-											");
 
-		if(!$ld['parent_id'])
-	    {
-	    	$ld['parent_id'] = $ld['category_id'];
-	    }
+	  if(!$this->add_validate($ld))
+	  {
+		return false;
+	  }
+	  
+	  $ld['category_id']=$this->dbu->query_get_id("
+							  INSERT INTO 
+										  programs_category 
+							  SET 
+										  category_name = '".mysql_real_escape_string($ld['category_name'])."', 
+										  active = '".mysql_real_escape_string($ld['active'])."',
+										  sort_order ='".mysql_real_escape_string($ld['sort_order'])."',
+										  category_level = '".mysql_real_escape_string($ld['category_level'])."'
+										  ");
 
-	    $this->dbu->query("INSERT INTO programs_category_subcategory (parent_id, category_id) VALUES ('".$ld['parent_id']."', '".$ld['category_id']."')");
+	  if(!$ld['parent_id'])
+	  {
+		$ld['parent_id'] = $ld['category_id'];
+	  }
 
-	    $ld['error']="Category Created Successfully.";
-	
-	    return true;
+	  $this->dbu->query("INSERT INTO programs_category_subcategory (parent_id, category_id) VALUES ('".mysql_real_escape_string($ld['parent_id'])."', '".mysql_real_escape_string($ld['category_id'])."')");
+
+	  $ld['error']="Category Created Successfully.";
+
+	  return true;
 	}
 	
 	function add_validate(&$ld)

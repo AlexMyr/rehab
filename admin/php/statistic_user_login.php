@@ -28,7 +28,11 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
-$dbu->query("select * from trainer order by last_login_date desc, trainer_id asc");	 
+$where = " where 1=1 ";
+if(isset($glob['search_key']) && $glob['search_key'])
+	$where .= " and username like '%".$glob['search_key']."%' ";
+
+$dbu->query("select * from trainer $where order by last_login_date desc, trainer_id asc");
 $pageTitle='User Login Statistic';
 
 $max_rows=$dbu->records_count();
@@ -44,7 +48,7 @@ while($dbu->move_next()&&$i<$l_r)
 	$ft->assign('FIRST_NAME',$dbu->f('first_name'));
 	$ft->assign('SURNAME',$dbu->f('surname'));
 	$ft->assign('USER',$dbu->f('username'));
-	$ft->assign('LOGIN_DATE',date("m/d/Y H:i:s",$dbu->f('last_login_date')));
+	$ft->assign('LOGIN_DATE',date("d/m/Y H:i:s",$dbu->f('last_login_date')));
 
 	if($i%2==1)
 	{

@@ -18,7 +18,8 @@ if($_SESSION['mid'])
 }
 if($_SESSION[UID])
 {
-	$user_level=$_SESSION[ACCESS_LEVEL];
+	$user_level=$_SESSION['admin_access'];
+	//$user_level=$_SESSION[ACCESS_LEVEL];
     if(!$glob['pag'])
     {
         $glob['pag']='welcome';

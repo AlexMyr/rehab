@@ -12,6 +12,11 @@
                           			   'tag'=>'SETTINGS',
                           			   'menu'=>'cms'
                           			  ),
+                          'banner_settings' =>array(
+                          			   'perm'=>1,
+                          			   'tag'=>'SETTINGS',
+                          			   'menu'=>'cms'
+                          			  ),
                           			  
                           'welcome' =>array(
                           			   'perm'=>2,
@@ -301,6 +306,10 @@
                           			   'perm'=>1,
                           			   'menu'=>'statistic',
                           			  ),
+                          'statistic_export_expired_users' =>array(
+                          			   'perm'=>1,
+                          			   'menu'=>'statistic',
+                          			  ),
 /**/
                           'programs' =>array(
                           			   'perm'=>1,
@@ -345,6 +354,16 @@
                           			   'menu'=>'programs',
                           			   'tag'=>'PROGRAM'
                           			  ),
+                          'programs_upload' =>array(
+                          			   'perm'=>1,
+                          			   'menu'=>'programs',
+                          			   'tag'=>'PROGRAM'
+                          			  ),
+                          'programs_tags_upload' =>array(
+                          			   'perm'=>1,
+                          			   'menu'=>'programs',
+                          			   'tag'=>'PROGRAM'
+                          			  ),
                           			  
 /************ Member ****************/
 						
@@ -362,6 +381,11 @@
 							   'menu'=>'member',
 							   'tag'=>'MEMBER'
 							  ),
+                        'member_logs' =>array(
+								'perm' =>1,
+								'menu' =>'member',
+                                //'tag' =>'MEMBER',
+								),
 						'member_template_czone_list' =>array(
 								'perm'=>1,
 							   'tag'=>'SETTINGS',

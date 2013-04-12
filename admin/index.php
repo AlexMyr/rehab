@@ -12,14 +12,14 @@ if(!$debug){
 	error_reporting(E_ALL & ~E_NOTICE);
 }
 
-
-if($_SESSION['mid'])
-{
-	session_destroy();
-}
+//if($_SESSION['mid'])
+//{
+//	session_destroy();
+//}
 if($_SESSION[UID])
 {
-	$user_level=$_SESSION[ACCESS_LEVEL];
+	//$user_level=$_SESSION[ACCESS_LEVEL];
+	$user_level=$_SESSION['admin_access'];
     if(!$glob['pag'])
     {
         $glob['pag']='welcome';
@@ -68,9 +68,10 @@ if($glob['act'] && !$glob['skip_action'])
 
 if($_SESSION[UID])
 {
-	if(	$user_level!=$_SESSION[ACCESS_LEVEL])
+	if(	$user_level=$_SESSION['admin_access'])
 	{
-		$user_level=$_SESSION[ACCESS_LEVEL];
+		$user_level=$_SESSION['admin_access'];
+		//$user_level=$_SESSION[ACCESS_LEVEL];
 	}
 }
 else 
@@ -80,6 +81,7 @@ else
 include_once("php/gen/page_perm.php");
 if($glob['pag'])
 {
+//var_dump($page_access, $page_access[$glob['pag']]['perm'], $user_level);exit;
     if($page_access[$glob['pag']]['perm'] && $page_access[$glob['pag']]['perm'] >= $user_level)
     {
     	$page=include_once("php/".$glob['pag'].".php");	

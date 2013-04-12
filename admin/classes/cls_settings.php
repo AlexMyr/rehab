@@ -152,7 +152,28 @@ function admin_update_validate(&$ld)
 	return $is_ok;	
 }
 
+  function update_banner_settings(&$ld)
+  {
+
+	$show_banner = 0;
+	if(isset($ld['show_banner']))
+	  $show_banner = 1;
+	  
+	$this->dbu->query("update settings set 
+						   value='".$show_banner."'
+						   where
+	   					   constant_name='SHOW_BANNER'"
+	   					);
 	
+	$this->dbu->query("update settings set 
+						   long_value='".mysql_real_escape_string($ld['banner_content'])."'
+						   where
+	   					   constant_name='BANNER_CONTENT'"
+	   					);	
+	   				
+	$ld['error'].="Banner settings successfully updated.";
+	return true;
+  }
 
 }//end class
 ?>

@@ -28,7 +28,11 @@ else
 	$ft->assign('OFFSET',$glob['offset']);
 }
 
-$dbu->query("select count(client.client_id), trainer.* from trainer left join client on client.trainer_id = trainer.trainer_id group by trainer.trainer_id order by count(client.client_id) desc, trainer.trainer_id asc");	 
+$where = " where 1=1 ";
+if(isset($glob['search_key']) && $glob['search_key'])
+	$where .= " and username like '%".$glob['search_key']."%' ";
+
+$dbu->query("select count(client.client_id), trainer.* from trainer left join client on client.trainer_id = trainer.trainer_id $where group by trainer.trainer_id order by count(client.client_id) desc, trainer.trainer_id asc");	 
 $pageTitle='User Login Statistic';
 
 $max_rows=$dbu->records_count();
