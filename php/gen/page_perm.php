@@ -48,6 +48,16 @@
 									'module' => 'page',
 									'session' => 1
 									),
+                        'profile_payment_paynow' => array(
+									'perm' => 4,
+									'module' => 'page',
+									'session' => 1
+									),
+                        'getlastactivity' => array(
+                                    'perm' => 4,
+                                    'module' => 'page',
+                                    'session' => 1
+                                    ),
 //--------------------------- Logged in Member page access -----------------------------
                         'programs' => array(
 									'perm' => 3,
@@ -192,6 +202,11 @@
 									'session' => 1
 									),
 						'client_email' => array(
+									'perm' => 3,
+									'module' => 'trainer_dashboard',
+									'session' => 1
+									),
+                        'exercise_history' => array(
 									'perm' => 3,
 									'module' => 'trainer_dashboard',
 									'session' => 1

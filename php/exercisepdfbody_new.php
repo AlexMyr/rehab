@@ -9,10 +9,10 @@ $dbu=new mysql_db();
 $himage_pos = $dbu->field("SELECT himage_pos FROM trainer_header_paper WHERE trainer_id='".$_SESSION[U_ID]."'");
 
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
-if($himage_pos == 'right')
-	$ft->define( array(main => "exercisepdf_right.html"));
-else
+if($himage_pos == 'left')
 	$ft->define( array(main => "exercisepdf.html"));
+else
+	$ft->define( array(main => "exercisepdf_right.html"));
 
 $ft->define_dynamic('exercise_line','main');
 
@@ -31,57 +31,62 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	$default_image = "<img src=\"".K_PATH_IMAGES.'pdfheader.jpg'."\" />";
 	if($dbu->move_next())
 	{
-		$image = "<img style='border:1px solid #000000;' src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+		$image = "<img src=\"".$script_path.UPLOAD_PATH.$dbu->f('logo_image')."\" />";
+		
+		//dynamic change of image size
+		$defaultPDFSizeContactsColumnX = 330;
+		$defaultPDFSizeContactsLeftX = 210;
+		$maxPDFImageSizeX = 260;
+		$maxRealImageSizeX = 400;
+		
+		$imgCreated = ImageCreateFromJPEG($script_path.UPLOAD_PATH.$dbu->f('logo_image'));
+		$curImgSizeX = imagesx($imgCreated);
+		$newImgSizeX = floor(($maxPDFImageSizeX * $curImgSizeX) / $maxRealImageSizeX);
+		$newPDFSizeContactsColumnX = $defaultPDFSizeContactsColumnX + ($maxPDFImageSizeX - $newImgSizeX);
+		$newPDFSizeContactsLeftX = $defaultPDFSizeContactsLeftX + ($maxPDFImageSizeX - $newImgSizeX);
+//var_dump($newImgSizeX, $newPDFSizeContactsColumnX, $newPDFSizeContactsLeftX);exit;
+		
+		$ft->assign(
+			array(
+				'IMG_SIZE' => $newImgSizeX,
+				'CONTACT_COL_SIZE' => $newPDFSizeContactsColumnX,
+				'LEFT_CONTACT_SIZE' => $newPDFSizeContactsLeftX
+				)
+		);
+		
 		$theName = "";
 		if($dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).' '.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>'; 
 		else if($dbu->gf('first_name') && !$dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('first_name'))).'</div>'; 
 		else if(!$dbu->gf('first_name') && $dbu->gf('surname')) $theName = '<div class="name">'.str_replace('’', '\'', htmlentities($dbu->gf('surname'))).'</div>';
 		
 		$ft->assign(array(
-			'THE_IMG'=> ($dbu->gf('logo_image') && file_exists($script_path.UPLOAD_PATH.$dbu->f('logo_image'))) ? $image : $default_image,
+			'THE_IMG'=> $dbu->gf('logo_image') ? $image : $default_image,
 			'COMPANY' => $dbu->f('company_name') ? str_replace('’', '\'', htmlentities($dbu->gf('company_name'))) : ($theName ? $theName : ''),
 			'ADDRESS' => $dbu->f('address') ? str_replace('’', '\'', htmlentities($dbu->gf('address'))) : '',
-			/*'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
-			'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',*/
+			'CITY' => $dbu->f('city') ? str_replace('’', '\'', htmlentities($dbu->gf('city'))) : '',
+			'POST_CODE' => $dbu->f('post_code') ? str_replace('’', '\'', htmlentities($dbu->gf('post_code'))) : '',
 			'PHONE' => $dbu->f('phone') ? 'Tel: '.str_replace('’', '\'', htmlentities($dbu->gf('phone'))) : '',
 			'MOBILE' => $dbu->f('mobile') ? 'Mobile: '.str_replace('’', '\'', htmlentities($dbu->gf('mobile'))) : '',
 			'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->gf('fax'))) : '',
 			'EMAIL' => $dbu->f('email') ? str_replace('’', '\'', htmlentities($dbu->gf('email'))) : '',
 			'WEBSITE' => $dbu->f('website') ? str_replace('’', '\'', htmlentities($dbu->gf('website'))) : '',
-			'CITY' => $dbu->f('city') ? '<td width="210">'.str_replace('’', '\'', htmlentities($dbu->gf('city'))).'</td>' : '<td width="210"></td>',
-			'POST_CODE' => $dbu->f('post_code') ? '<td width="330">'.str_replace('’', '\'', htmlentities($dbu->gf('post_code'))).'</td>' : '<td width="330"></td>',
 		));
-		
-		if(isset($glob['lang']) && $glob['lang'] == 'us')
-			$ft->assign(array(
-				'CITY' => $dbu->f('state_zip') ? '<td width="210">'.$dbu->f('state_zip').'</td>' : '<td width="210"></td>',
-				'POST_CODE' => '<td width="330"></td>',
-			));
 	}
 	else {
 		$ft->assign(array(
 			'THE_IMG'=> $default_image,
 	
-			'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : 'Company Name',
-			//'FIRST_NAME' => $dbu->f('first_name') ? $dbu->f('first_name') : 'First Name',
-			//'SURNAME' => $dbu->f('surname') ? $dbu->f('surname') : 'Surname',
-			'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : 'Address',
-			//'CITY' => $dbu->f('city') ? $dbu->f('city') : 'City',
-			//'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : 'Post code',
-			'PHONE' => $dbu->f('phone') ? 'Tel: '.$dbu->f('phone') : 'Phone',
-			'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : 'Mobile',
-			'EMAIL' => $dbu->f('email') ? $dbu->f('email') : 'E-mail',
-			'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : 'Website',
-			'FAX' => $dbu->f('fax') ? 'Fax: '.str_replace('’', '\'', htmlentities($dbu->f('fax'))) : 'Fax',
-			'CITY' => $dbu->f('city') ? '<td width="210">'.str_replace('’', '\'', htmlentities($dbu->f('city'))).'</td>' : '<td width="210"></td>',
-			'POST_CODE' => $dbu->f('post_code') ? '<td width="330">'.str_replace('’', '\'', htmlentities($dbu->f('post_code'))).'</td>' : '<td width="330"></td>',
-		));
-		
-		if(isset($glob['lang']) && $glob['lang'] == 'us')
-			$ft->assign(array(
-				'CITY' => $dbu->f('state_zip') ? '<td width="210">'.$dbu->f('state_zip').'</td>' : '<td width="210"></td>',
-				'POST_CODE' => '<td width="330"></td>',
-			));
+			'COMPANY' => $dbu->f('company_name') ? $dbu->f('company_name') : 'Company Name here.',
+			'FIRST_NAME' => $dbu->f('first_name') ? $dbu->f('first_name') : 'First Name here.',			
+			'SURNAME' => $dbu->f('surname') ? $dbu->f('surname') : 'Surname here.',
+			'ADDRESS' => $dbu->f('address') ? $dbu->f('address') : 'Your address here.',
+			'CITY' => $dbu->f('city') ? $dbu->f('city') : 'Your city here.',
+			'POST_CODE' => $dbu->f('post_code') ? $dbu->f('post_code') : 'Your post code here.',
+			'PHONE' => $dbu->f('phone') ? 'Tel: '.$dbu->f('phone') : 'Your phone number here.',
+			'MOBILE' => $dbu->f('mobile') ? $dbu->f('mobile') : 'Your mobile number here.',
+			'EMAIL' => $dbu->f('email') ? $dbu->f('email') : 'Your e-mail address here.',
+			'WEBSITE' => $dbu->f('website') ? $dbu->f('website') : 'Your website here.',
+		));		
 	}
 	$get_client_infos = $dbu->query("SELECT first_name, surname FROM client WHERE client_id='".$glob['client_id']."' AND trainer_id='".$_SESSION[U_ID]."'");
 	$get_client_infos->next();
@@ -89,7 +94,7 @@ $ft->assign('MESSAGE', get_error($glob['error'],$glob['success']));
 	$ft->assign(array(
 		'CLIENT_NAME' => str_replace('’', '\'', htmlentities($get_client_infos->gf('first_name')))." ".str_replace('’', '\'', htmlentities($get_client_infos->gf('surname'))),
 		'CURRENT_DATE' => date('d F Y',time()),
-		));
+	));
 
 	$get_exercises = $dbu->field("
 							SELECT 
@@ -160,7 +165,6 @@ while($i<count($exercise))
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
 		$plan_description = mb_eregi_replace('“', '"', $plan_description);
 		$plan_description = mb_eregi_replace('”', '"', $plan_description);
-		$plan_description = nl2br($plan_description);
 		
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_data->gf('programs_title') ? $programs_title : '', ));
 		$ft->assign(array( 'EXERCISE_DESC'=> $get_data->gf('plan_description') ? $plan_description : '', ));
@@ -174,7 +178,6 @@ while($i<count($exercise))
 		$programs_title = mb_eregi_replace('”', '"', $programs_title);
 		$plan_description = mb_eregi_replace('“', '"', $plan_description);
 		$plan_description = mb_eregi_replace('”', '"', $plan_description);
-		$plan_description = nl2br($plan_description);
 		
 		$ft->assign(array( 'EXERCISE_TITLE'=> $get_program->gf('programs_title') ? $programs_title : '', ));
 		$ft->assign(array( 'EXERCISE_DESC'=> $get_program->gf('plan_description') ? $plan_description : '', ));
@@ -182,7 +185,6 @@ while($i<count($exercise))
 	$ft->assign('SETS' , $get_data->gf('plan_set_no') ? "Sets: ".htmlentities($get_data->gf('plan_set_no')) : "");
 	$ft->assign('REPETITIONS' , $get_data->gf('plan_repetitions') ? "Repetitions: ".htmlentities($get_data->gf('plan_repetitions')) : "");
 	$ft->assign('TIME' , $get_data->gf('plan_time') ? "Time: ".$get_data->gf('plan_time') : "");
-	$ft->assign('BOTH_SIDES', $get_data->gf('both_sides') ? "Perform both sides" : "");
     $ft->parse('EXERCISE_LINE_OUT','.exercise_line');
     
     $i++;
@@ -196,12 +198,7 @@ while($i<count($exercise))
 		$get_exercise_notes->next();
 	}
 	
-	$exercise_notes = $get_exercise_notes->gf('exercise_notes');
-	$exercise_notes = str_replace('’', '\'', htmlentities($exercise_notes));
-	$exercise_notes = mb_eregi_replace('“', '"', $exercise_notes);
-	$exercise_notes = mb_eregi_replace('”', '"', $exercise_notes);
-	
-	$ft->assign(array( 'EXERCISE_NOTES'=> nl2br($exercise_notes)));
+	$ft->assign(array( 'EXERCISE_NOTES'=> $get_exercise_notes->gf('exercise_notes')));	
 			
 $ft->parse('CONTENT','main');
 

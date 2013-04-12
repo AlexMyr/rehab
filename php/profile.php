@@ -19,44 +19,42 @@ $ft->assign('HEADER_PAPER_SECTION',build_header_paper_button(true, $glob['lang']
 
 if(isset($glob['paym']))
 {
-	if($glob['paym'])
-	{
-		$glob['error'] = 'Thank you for paying.';
-		$glob['success'] = true;
-	}
-	else
-	{
-		$glob['error'] = 'Error. Please try again or contact administration.';
-		$glob['success'] = false;
-	}
+  if($glob['paym'])
+  {
+	$glob['error'] = 'You are now a fully paid user, thank you for your subscription.';
+	$glob['success'] = true;
+  }
+  else
+  {
+	$glob['error'] = 'Error. Please try again or contact administration.';
+	$glob['success'] = false;
+  }
 }
 
 if($dbu->gf('is_trial')==0 && $dbu->gf('price_plan_id')!=0)
-	{
-		$cancel_form = '<form action="index.php" method="post">
-							<input type="hidden" name="act" value="member-cancel_payment">
-							<input type="hidden" name="pag" value="profile">
-							<input type="hidden" name="pp_del_key" value="123delkey321">
-							<div class="buttons floatRgt" style="margin-top:4px;"><button class="del" type="submit"><b>&nbsp;</b><span>Cancel my Payment</span></button></div>
-						</form>';
-		$ft->assign('CANCEL_PAYMENT',$cancel_form);	
-	}
+{
+  $cancel_form = '<form action="index.php" method="post">
+					  <input type="hidden" name="act" value="member-cancel_payment">
+					  <input type="hidden" name="pag" value="profile">
+					  <input type="hidden" name="pp_del_key" value="123delkey321">
+					  <div class="buttons floatRgt" style="margin-top:4px;"><button class="del" type="submit"><b>&nbsp;</b><span>Cancel my Payment</span></button></div>
+				  </form>';
+  $ft->assign('CANCEL_PAYMENT',$cancel_form);	
+}
 else
-	{
-		$ft->assign('CANCEL_PAYMENT','');
-	}
+{
+  $ft->assign('CANCEL_PAYMENT','');
+}
   
 $dbu2 = new mysql_db();
-
 $dbu2->query("select * from exercise_notes INNER JOIN trainer USING(trainer_id) where trainer_id=".$_SESSION[U_ID]." ");
-
 $dbu2->move_next();
 
 $ft->define(array('main' => "profile.html"));
 $ft->assign(array(
-	'EXERCISE_NOTES'=> stripcslashes($dbu2->gf('exercise_notes')),
-	'LANG_EN' => $dbu2->f('lang') == 'en' ? 'selected' : '',
-	'LANG_US' => $dbu2->f('lang') == 'us' ? 'selected' : ''
+  'EXERCISE_NOTES'=> stripcslashes($dbu2->gf('exercise_notes')),
+  'LANG_EN' => $dbu2->f('lang') == 'en' ? 'selected' : '',
+  'LANG_US' => $dbu2->f('lang') == 'us' ? 'selected' : ''
 ));
 
 if($dbu2->f('title_set'))
@@ -68,18 +66,28 @@ if(!$dbu2->f('email_set'))
   $ft->assign('CHECKED_FIRST_EMAIL', 'checked');
 else
   $ft->assign('CHECKED_SECOND_EMAIL', 'checked');  
-  
+
+$outgoing_message = '';
+$dbu3 = new mysql_db();
+$dbu3->query("select * from custom_out_message where trainer_id='".$_SESSION[U_ID]."' ");
+if($dbu3->move_next())
+  $outgoing_message = $dbu3->field("select message_content from custom_out_message where trainer_id='".$_SESSION[U_ID]."' and in_use='1' ");
+else
+{
+  if($glob['lang'] == 'us')
+	$outgoing_message = $dbu3->field("select message_content from custom_out_message where trainer_id='0' and in_use='1' and  message_id='1' ");
+  else
+	$outgoing_message = $dbu3->field("select message_content from custom_out_message where trainer_id='0' and in_use='1' and  message_id='0' ");
+}
+
+$ft->assign('CUSTOM_OUTGOING_MESSAGE', $outgoing_message);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');
 $site_meta_keywords=$meta_keywords.get_meta($glob['pag'], $glob['lang'], 'keywords');
 $site_meta_description=$meta_description.get_meta($glob['pag'], $glob['lang'], 'description');
 
 $ft->assign('CSS_PAGE', $glob['pag']);
-//because of redirection to another language site after changing profile language
-if($glob['success'] == 1)
-    $err = $ld['error']=get_template_tag($glob['pag'], $glob['lang'], 'T.SUCCESS');
-    
-$ft->assign('MESSAGE',get_error($err, $glob['success']) );
+$ft->assign('MESSAGE',get_error($glob['error'], $glob['success']) );
 $ft->parse('CONTENT','main');
 
 return $ft->fetch('CONTENT');

@@ -28,17 +28,22 @@ if($_SESSION[U_ID])
         
         else if($expire_days<1 && $expire_minutes>0) $time_remained = "<strong>".$tags['T.TODAY']."</strong>"; 
         
+        if(!SHOW_BANNER)
+            $display_expire_time = '';
+        else
+            $display_expire_time = 'display:none;';
+        
         if($expire_days<1 && $expire_minutes<1)
         {
             $dbu->query("UPDATE trainer SET active=0 WHERE trainer_id=".$_SESSION[U_ID]." AND active!=0 ");
             $ft->assign(array(
-                'EXPIRE_DATE' => "<span class='expire_time'><span>".$tags['T.EXPIRE_ALREADY']."</span></span>",
+                'EXPIRE_DATE' => "<span class='expire_time' style='$display_expire_time'><span>".$tags['T.EXPIRE_ALREADY'].": click here to <a href=\"index.php?pag=profile_payment\">PAY NOW</a></span></span>",
             ));
         }
         else
         {
             $ft->assign(array(
-                'EXPIRE_DATE' => "<span class='expire_time'><span>".$tags['T.EXPIRE']." ".$time_remained."</span></span>",
+                'EXPIRE_DATE' => "<span class='expire_time' style='$display_expire_time'><span>".$tags['T.EXPIRE']." ".$time_remained.": click here to <a href=\"index.php?pag=profile_payment\">PAY NOW</a></span></span>",
             ));
         }
         

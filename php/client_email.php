@@ -55,13 +55,12 @@ while($dbu->move_next())
 			'EMAIL'=>$dbu->f('email'),
 			'CLIENT_NOTE'=>$dbu->f('client_note'),
 			'EXERCISE_DESC'=>stripcslashes($dbu->f('exercise_desc')),
+			'IMAGE_TYPE'=>build_print_image_type_list($dbu->f('print_image_type')),
 		));
 		$i++;
 }
 
 $ft->assign('CSS_PAGE', $glob['pag']);
-
-
 
 $ft->define_dynamic('client_record_line','main');
 
@@ -77,8 +76,8 @@ while ($programs->next()&&$i<$l_r)
 //	$dbu->move_next();
 		$ft->assign(array(
 			'EXERCISE_PLAN_ID'=>$programs->f('exercise_plan_id'),
-			'CREATE_DATE'=>date('D jS M Y, h.ia',strtotime($programs->f('date_created'))),
-			'MODIFY_DATE'=>date('D jS M Y, h.ia',strtotime($programs->f('date_modified'))),
+			'CREATE_DATE'=>date('D jS M Y',strtotime($programs->f('date_created'))),
+			'MODIFY_DATE'=>date('D jS M Y',strtotime($programs->f('date_modified'))),
 		));
 	$ft->parse('CLIENT_RECORD_LINE_OUT','.client_record_line');
 	$i++;

@@ -26,16 +26,18 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 							");
 	$glo = array();
 	$program->next();
-	$the_image = (file_exists(PATH_TO_IMAGES.'/upload/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf_small.png' : 'noimage_small.png');
+	//$the_image = ($program->f('owner') == -1 ? "background-image: url('../phpthumb/sprite_thumb.php?img=$image_sprite_name'); width: 64px; height: 64px; float: left; margin-right:5px;" : );
+	$the_image = (file_exists(PATH_TO_IMAGES.'/upload/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-small.png' : 'noimage-small.png');
 	
-	$img = str_replace('.jpg', '', $the_image);
+	$img = str_replace(array('.jpg', '.png', '-small'), '', $the_image);
 
 	$img_array = array();
 	$sprite_name = $glob['spritename'];
 	$sprite_images = explode('_', str_replace('_sprite', '', $sprite_name));
+
 	foreach($sprite_images as $key => $value)
 	{
-		if($sprite_images[$key] == $img)
+		if(str_replace(array('-middle', '-small'), '', $value) == $img)
 		{
 			$pos_of_img = $key;
 			break;
@@ -43,14 +45,15 @@ if(isset($glob['epid']) && isset($glob['pid']) && !in_array($glob['pid'],$_SESSI
 	}
 	$img_array = array('sprite'=>$entry, 'pos'=>$pos_of_img);
 
-	$pos_class = "image_div_thumb_class_".$img_array['pos'];
+	$pos_class = $program->f('owner') == -1 ? "image_div_thumb_class_".$img_array['pos'] : "";
 	
 	$glo['PROGRAM_ID'] = $program->f('programs_id');
 	$glo['PROGRAM_TITLE'] = strip_tags($program->f('programs_title'));
 	$glo['PROGRAM_DESCRIPTION'] = strip_tags($program->f('description'));
 	//$glo['PROGRAM_IMAGE'] = $script_path.UPLOAD_PATH.$the_image;
 	$glo['PROGRAM_IMAGE'] = $img_array['sprite'];
-	$glo['SPRITE_NAME'] = $sprite_name;
+	$glo['SPRITE_NAME'] = $program->f('owner') == -1 ? "url('../phpthumb/sprite_thumb.php?bimg=".$sprite_name."')"
+		: "url('phpthumb/phpThumb.php?src=../upload/".((file_exists(PATH_TO_IMAGES.'/upload/'.$program->f($image_type)) && $program->f($image_type)) ? $program->f($image_type) : ($program->f('uploaded_pdf') ? 'pdf-small.png' : 'noimage-small.png'))."&wl=64&hp=64') no-repeat";
 	$glo['PROGRAM_POS'] = $pos_class;
 	$glo['PROGRAM_CATEGORY'] = strip_tags(get_category_path(get_cat_ID($glob['pid']),0));
 	$glo['err'] = '200';

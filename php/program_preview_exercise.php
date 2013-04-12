@@ -187,12 +187,12 @@ while($i<count($exercise))
 		if($get_data->gf('plan_description'))
 		{
 			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_data->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$get_data->gf('plan_description').'</strong></span>', ));
+			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.nl2br($get_data->gf('plan_description')).'</strong></span>', ));
 		}
 		else 
 		{
 			$ft->assign(array( 'EXERCISE_TITLE'=> '<span style="margin-left:5px; font-size:15px;"><b>'.$get_program->gf('programs_title').'</b></span>'));	
-			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.$description.'</strong></span>', ));
+			$ft->assign(array( 'EXERCISE_DESC'=> '<span class="exercise-desc" style="border:0px solid #ccc;"><strong>'.nl2br($description).'</strong></span>', ));
 		}
 		if(!empty($glob['both_sides'.$exercise[$i]])) $ft->assign('BOTH_SIDES_TEXT' , ($glob['both_sides'.$exercise[$i]] ? 'Perform both sides' : ''));
 		else if(empty($glob['both_sides'.$exercise[$i]])) $ft->assign('BOTH_SIDES_TEXT', ($get_data->gf('both_sides') ? 'Perform both sides' : ''));

@@ -3,7 +3,7 @@ if(!$glob)
 {
 	if(!empty($ld)) $glob = $ld;
 }
-
+//error_reporting(E_ALL);
 require_once('tcpdf/config/lang/eng.php');
 require_once('tcpdf/tcpdf.php');
 
@@ -44,3 +44,4 @@ $pdf->lastPage();
 
 if($glob['pag']=='pexercisepdf') $pdf->Output('pdf/exercisepdf.pdf', 'I');
 else $pdf->Output('pdf/exercisepdf.pdf', 'F');
+

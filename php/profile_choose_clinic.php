@@ -1,23 +1,15 @@
 <?php
 /************************************************************************
 * @Author: MedeeaWeb Works                                              *
-************************************************************************/ 
+************************************************************************/
 $ft=new ft(ADMIN_PATH.MODULE."templates/");
-//$ft->define(array('main' => "profile.html"));
-
-//$page_title='Login Member';
-//$next_function ='auth-login';
-
-
-$dbu = new mysql_db();
-
-$dbu->query("select * from trainer where trainer_id=".$_SESSION[U_ID]." ");
-
-$dbu->move_next();
-
-
 $ft->define(array('main' => "profile_choose_clinic.html"));
 
+$glob['lang'] = (isset($glob['lang']) && $glob['lang']) ? $glob['lang'] : 'en';
+
+$dbu = new mysql_db();
+$dbu->query("select * from trainer where trainer_id=".$_SESSION[U_ID]." ");
+$dbu->move_next();
 $ft->assign('CSS_PAGE', $glob['pag']);
 
 $site_meta_title=$meta_title.get_meta($glob['pag'], $glob['lang'], 'title');

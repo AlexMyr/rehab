@@ -46,7 +46,6 @@ if ($user) {
     $user = null;
   }
 }
-
 if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 {
 	//check existing
@@ -54,7 +53,7 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 	$is_user_in_db = $dbu->move_next();
 	if($is_user_in_db && $dbu->f('active')!=0)
 	{
-		header("Location: /index.php?act=auth-login&pag=login&fb_id=".$user);
+		header("Location: /index.php?act=auth-login&fb_id=".$user);
 		exit;
 	}
 	//elseif($is_user_in_db && $dbu->f('active')==0)
@@ -63,11 +62,12 @@ if($user && isset($_SESSION['fb_login_rmp']) && $_SESSION['fb_login_rmp'])
 	//	header("Location: /index.php?&pag=login&success=false&error=".urlencode('Username was banned for a reason. Please contact support for more details!'));
 	//	exit;
 	//}
-	//else
+	else
 	{
+
 		if(isset($user_profile['email']) && $user_profile['email'])
 		{
-			$dbu->query("SELECT trainer_id FROM trainer WHERE username = '{$user_profile['email']}' AND (fb_id=NULL OR fb_id='')");
+			$dbu->query("SELECT trainer_id FROM trainer WHERE username = '{$user_profile['email']}' AND (fb_id IS NULL OR fb_id='')");
 			if($dbu->move_next())
 			{
 				$dbu->query("

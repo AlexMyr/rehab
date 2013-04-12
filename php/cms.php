@@ -86,8 +86,29 @@ $js_stat = stat(dirname(dirname(__FILE__))."/js/init_dom_private.js");
 $ftm->assign('CSS_MODIFY', $css_stat['mtime']);
 $ftm->assign('JS_MODIFY', $css_stat['mtime']);
 
-if($_SESSION[U_ID]) $ftm->assign('DISPLAY_LOGIN_BLOCK', 'display:none;');
-else $ftm->assign('T.MY_PROGRAMMES', '');
+//if($_SESSION[U_ID]) $ftm->assign('DISPLAY_LOGIN_BLOCK', 'display:none;');
+//else $ftm->assign('T.MY_PROGRAMMES', '');
+//$ftm->assign('DISPLAY_LOGIN_BLOCK', 'display:none;');
+
+if($_SESSION[U_ID])
+{
+	$ftm->assign('DISPLAY_LOGIN_BLOCK', 'display:none;');
+	if(!SHOW_BANNER)
+	{
+		$ftm->assign('DISPLAY_MSG_BANNER', 'display:none;');
+		$ftm->assign('BANNER_CONTENT', BANNER_CONTENT);
+	}
+	else
+	{
+		$ftm->assign('DISPLAY_MSG_BANNER', '');
+		$ftm->assign('BANNER_CONTENT', BANNER_CONTENT);
+	}
+}
+else
+{
+	$ftm->assign('DISPLAY_MSG_BANNER', 'display:none;');
+}
+$ftm->assign('T.MY_PROGRAMMES', '');
 
 $my_programs = get_template_tag('programs', $glob['lang'], 'T.MY_PROGRAMMES');
 $username = get_template_tag('login', $glob['lang'], 'T.USERNAME');
