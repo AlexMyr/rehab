@@ -1,0 +1,24 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine"><span class="pageTitle">History</span></h2>
+		<div class="clientList exHistList">
+			<div class="exHistListTitle clientListTitle curvyCorner20">
+				<span class="date">Date</span>
+				<span class="patient">Patient</span>
+				<span class="action">Action</span>
+				<span class="action"><a href="{CLEAR_HISTORY_LINK}">Clear history</a></span>
+			</div>
+			<div class="exHistListDynamic">
+<!-- BEGIN DYNAMIC BLOCK: client_line -->
+				<div class="exHistListRow">
+					<span class="date">{DATE}</span>
+					<span class="patient">{CLIENT_NAME}</span>
+					<span class="action">{ACTION}</span>
+				</div>
+
+<!-- END DYNAMIC BLOCK: client_line -->
+			</div>
+		</div>
+		<div class="clearAll"></div>
+	</div>
+	

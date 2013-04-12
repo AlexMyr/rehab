@@ -8,40 +8,66 @@
 			<span class="clearAll"></span>
 		</h2>
 		<div class="contactInfo floatLft">
-		{HEADER_PAPER_SECTION}
-		<br/>
-		<br/>
-		<h2>Email Settings:</h2>
-		<br/>
-		<form action="index.php" method="post">
-		<input type="radio" name="email_set" value="0" {CHECKED_FIRST_EMAIL} />&nbsp;&nbsp;Email exercises to patient<br/>
-		<input type="radio" name="email_set" value="1" {CHECKED_SECOND_EMAIL} />&nbsp;&nbsp;Email exercises to patient and clinic
-		<br/>
-		<br/>
-		<h2>Salutation:</h2>
-		<br/>
-		<input type="radio" name="title_set" value="0" {CHECKED_FIRST_TITLE} />&nbsp;&nbsp;Dear (First Name)<br/>
-		<input type="radio" name="title_set" value="1" {CHECKED_SECOND_TITLE} />&nbsp;&nbsp;Dear (Title Surname)
-		<br/>
-		<br/>
-		<h2>Upload your Own Exercise:</h2>
-		<a class="moreBtn blueGlassBtn" href="index.php?pag=profile_exercise_add"><span class="curvyCorner">Add Exercise</span></a>
-		</div>
-		<div class="floatLft" style="width: 460px;">
-			<span style='font-size:20px; color: #3868AA; font-family: "MergeRegular"'>{T.DEFAULT}:</span><br /><br />
-			
+			{HEADER_PAPER_SECTION}
+			<br/>
+			<br/>
+			<h2>Email Settings:</h2>
+			<br/>
+			<form action="index.php" method="post">
 				<input type="hidden" name="act" value="member-update_profile_notes">
 				<input type="hidden" name="pag" value="profile">
 				<input type="hidden" name="profile_id" value="{PROFILE_ID}">			
+				
+				<input type="radio" name="email_set" value="0" {CHECKED_FIRST_EMAIL} />&nbsp;&nbsp;Email exercises to patient<br/>
+				<input type="radio" name="email_set" value="1" {CHECKED_SECOND_EMAIL} />&nbsp;&nbsp;Email exercises to patient and clinic
+				<br/>
+				<br/>
+				
+				<!--<h2>Salutation:</h2>
+				<br/>
+				<input type="radio" name="title_set" value="0" {CHECKED_FIRST_TITLE} />&nbsp;&nbsp;Dear (First Name)<br/>
+				<input type="radio" name="title_set" value="1" {CHECKED_SECOND_TITLE} />&nbsp;&nbsp;Dear (Title Surname)
+				<br/>
+				<br/>-->
+				
+				<h2>Upload your Own Exercise:</h2>
+				<a class="moreBtn blueGlassBtn" href="index.php?pag=profile_exercise_add">
+					<span class="curvyCorner">Add Exercise</span>
+				</a>
+		</div>
+		<div class="floatLft" style="width: 460px;">
+				<span style='font-size:20px; color: #3868AA; font-family: "MergeRegular"'>{T.DEFAULT}:</span><br /><br />
 				<textarea class="textArea curvyCorner" id="notes" name="exercise_notes">{EXERCISE_NOTES}</textarea>
+				<span style='font-size:20px; color: #3868AA; font-family: "MergeRegular"'>Outgoing Email Message:</span>
+				<span id="outMsgPopup" class="infoImg"></span><br /><br />
+				<textarea class="textArea curvyCorner" id="notes" name="custom_outgoing_message">{CUSTOM_OUTGOING_MESSAGE}</textarea>
 				<label class="label" for="language">{T.LANGUAGE}:</label><br /><br />
 				<select id="language" class="curvyCorner" name="language" style="width:120px; display: block;">
 					<option value="en" {LANG_EN}>British</option>
 					<option value="us" {LANG_US}>American</option>
 				</select>
-				
+					
 				<div class="buttons login greenGlassBtn"><button type="submit"><span class="curvyCorner" style="text-align: center; width:95px;">{T.SAVE}</span></button></div>
 			</form>
 		</div>
 		<div class="clearAll"></div>
+		<div id="outMsgInfoDialog" class="hiddenDialogPopup">
+			<div>
+				Replacement meaning: <br />
+				[!USER_FIRST_NAME!] Patient First Name<br />
+				[!USER_SURNAME!] Patient Surname<br />
+				[!SALUTATION!] Patient First Name or Patient Title and Surname<br />
+				[!FIRST_NAME!] Patient First Name<br />
+				[!LAST_NAME!] Patient Last Name<br />
+				[!TITLE!] Patient Title<br />
+				[!CLINIC_NAME!] Clinic Name<br />
+				[!CLINIC_ADDRESS!] Clinic Address<br />
+				[!WEBSITE!] Website Address<br />
+				[!EMAIL!] Email Address<br />
+				[!PHONE!] Telephone<br />
+				[!MOBILE!] Mobile<br />
+				[!FAX!] Fax<br />
+				[!LOGO!] Company Logo<br />
+			</div>
+		</div>
 	</div>

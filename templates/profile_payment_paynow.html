@@ -1,0 +1,32 @@
+	<div id="content" class="siteContent dashboard">
+		{MESSAGE}
+		<h2 class="bottomLine">
+			<div style="font-size:40px; text-align:center; color:#17AE42;" class="pageTitle">{PAGE_TITLE}</div>
+			<span class="clearAll"></span>
+		</h2>
+		<div class="priceList" style="text-align:center;">
+		
+			<form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_xclick">
+			<input type="hidden" name="business" value="info@rehabmypatient.com">
+			<input type="hidden" name="currency_code" value="GBP">
+			<input type="hidden" name="on0" value="Settle an Outstanding Bill Now">Settle an Outstanding Bill Now
+			<input type="hidden" name="item_name" value="Settle an Outstanding Bill Now">
+			<input type="text" name="os0" maxlength="60">
+			<br/>
+			<input type="image" src="https://www.paypal.com/en_US/GB/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+			<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+			</form>
+			
+		</div>
+		
+		<div style="margin-top:20px; text-align:center;">
+			<p>
+				Should you wish to pay by BACS or standing order, please <a href="mailto:support@rehabmypatient.com">contact us</a> and we will send you further instructions.
+			</p>
+			<p>
+				<!--If you have Paypal account please check <a href="/index.php?pag=profile_payment">this</a> page-->
+			</p>
+		</div>
+		<div class="clearAll"></div>
+	</div>
