@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(E_ALL);
 
 $is_not_hacked_yet =true;
 
@@ -21,8 +21,8 @@ $time_now = time();
 	require_once ($root_path.'/misc/cms_front_lib.php');
 	require_once ($root_path."/misc/security_lib.php");
 	require_once ($root_path."/misc/stlib.php");
-	require_once ($root_path.'/classes/class.phpmailer.php');        
-	include_once ($root_path."/classes/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
+	require_once ($root_path.'/phpmailer/class.phpmailer.php');        
+	include_once ($root_path."/phpmailer/class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 
 /*
 send mails to trainers on trial time in order of days
@@ -51,7 +51,7 @@ function get_sys_message($name, $lang)
     $msg['subject']=$_db->f('subject');
     return $msg;
 }
-function send_mail($send_to_email,$send_to_name,$message_data)
+function send_mail($send_to_email,$send_to_name,$message_data, $type='trial')
 {
         $ordermail = $send_to_email;
         $fromMail = $message_data['from_email']; 
@@ -59,7 +59,13 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 
 		$body=$message_data['text'];
 
-		$body=str_replace('[!NAME!]',$send_to_name, $body );
+		if($type == 'never')
+			$body=str_replace('[!EMAIL!]',$send_to_name, $body );
+		elseif($type == 'new')
+			$body=str_replace('[!NAME!]',$send_to_name, $body );
+		else
+			$body=str_replace('[!NAME!]',$send_to_name, $body );
+		
 		$body = nl2br($body);
 /*
 		mail($ordermail,$message_data['subject'],$body);
@@ -96,8 +102,9 @@ function send_mail($send_to_email,$send_to_name,$message_data)
 }
 	
 $dbu = new mysql_db();
+$dbu2 = new mysql_db();
 
-$select = "select t.trainer_id as tid, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date, t.create_date, thp.*  from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1 and t.is_trial<>0 and t.trainer_id IS NOT NULL";
+$select = "select t.trainer_id as tid, t.email as email_contact, t.is_trial, t.is_clinic, t.lang, t.expire_date, t.create_date, t.username, thp.*, t.active from trainer t left join trainer_header_paper thp on t.trainer_id=thp.trainer_id where 1=1 and t.trainer_id IS NOT NULL";
 
 $dbu->query($select);
 
@@ -107,7 +114,86 @@ $ab = array();
 
 while($dbu->move_next())
 {
-	//if($dbu->f('email_contact') != 'ole_gi@miralex.com.ua') continue;
+	//if($dbu->f('email_contact') != 'glad.oleg@gmail.com') continue;
+	//if($dbu->f('email_contact') != 'oleg_gladchenko@mail.ru') continue;
+	//if($dbu->f('email_contact') != 'tim_allardyce@hotmail.com') continue;
+
+	if($dbu->f('active')==1 || ($dbu->f('active')==2 && $dbu->f('expire_date')=='0000-00-00 00:00:00'))
+	{
+		$date_from_reg = ($time_now - strtotime($dbu->f('create_date')));
+		$date_from_reg = intval(intval($date_from_reg) / (3600 * 24));
+
+		$message_data=get_sys_message('never_'.$date_from_reg.'_days', $dbu->f('lang'));
+		$send_to_name = $dbu->f('username');
+		
+		if($message_data['text']!=null) 
+        {
+			send_mail($send_to_email=$dbu->f('email_contact'), $send_to_name, $message_data, 'never');
+            /* USED FOR THE CRON LOG FILE */
+            $ab[$i]['msg_uid'] = $dbu->f('tid');
+            $ab[$i]['msg_email'] = $dbu->f('email_contact');
+            $ab[$i]['reg_date'] = $dbu->f('create_date');
+            $ab[$i]['time'] = $time_now;
+            $ab[$i]['name'] = 'never_'.$date_from_reg.'_days';
+            $ab[$i]['msg_data'] = $message_data;
+        }
+		
+		//if($date_from_reg >= 49)
+		//{
+		//	$dbu->query("delete from trainer where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from trainer_profile where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from trainer_header_paper where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from exercise_program_plan where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from exercise_plan_set where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from exercise_plan where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from exercise_notes where trainer_id=".$dbu->f('tid'));
+		//	$dbu->query("delete from client where trainer_id=".$dbu->f('tid'));
+		//}
+		
+	}
+
+	if($dbu->f('is_trial')==0 && $dbu->f('active')==2 && $time_now < strtotime($dbu->f('expire_date')))
+	{
+		$first_pay = $dbu2->field("select timestamp from paypal_transactions where ack='Success' and type in('ConfirmPayment', 'CreateRecurringPaymentsProfile') and trainer_id=".$dbu->f('tid')." order by id asc limit 0,1");
+
+		$date_from_reg = ceil(($time_now - strtotime($first_pay)) / (3600 * 24));
+
+		$message_data=get_sys_message('new_'.$date_from_reg.'_days', $dbu->f('lang'));
+		
+		if($dbu->f('is_clinic') == 1)
+			$send_to_name=trim($dbu->f('company_name'));
+		else
+			$send_to_name=trim($dbu->f('first_name'));
+
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('first_name'));
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('company_name'));
+		if(!$send_to_name)
+			$send_to_name = trim($dbu->f('surname'));
+		if(!$send_to_name)
+			$send_to_name = 'Client';
+		
+		if($message_data['text']!=null) 
+        {
+			send_mail($send_to_email=$dbu->f('email_contact'), $send_to_name, $message_data, 'new');
+            /* USED FOR THE CRON LOG FILE */
+            $ab[$i]['msg_uid'] = $dbu->f('tid');
+            $ab[$i]['msg_email'] = $dbu->f('email_contact');
+            $ab[$i]['reg_date'] = $first_pay;
+            $ab[$i]['time'] = $time_now;
+            $ab[$i]['name'] = 'new_'.$date_from_reg.'_days';
+            $ab[$i]['msg_data'] = $message_data;
+        }
+		
+		//if(!$dbu->f('logo_image'))
+		//{
+		//	$message_data = array('from_email'=>,'subject'=>'','text'=>'',);
+		//	send_mail($dbu->f('email_contact'),$send_to_name,$message_data, $type='trial');
+		//	var_dump($dbu->f('email_contact'));
+		//	print("<br>");
+		//}
+	}
 
     if($dbu->f('is_trial')!=0)
     {
@@ -129,14 +215,9 @@ while($dbu->move_next())
 		$message_data=get_sys_message('trial_'.$expire_days.'_days', $dbu->f('lang'));
 
 		if($dbu->f('is_clinic') == 1)
-		{
 			$send_to_name=trim($dbu->f('company_name'));
-		}
 		else
-		{
 			$send_to_name=trim($dbu->f('first_name'));
-		}
-		
 		
 		if(!$send_to_name)
 			$send_to_name = trim($dbu->f('first_name'));
@@ -161,6 +242,7 @@ while($dbu->move_next())
             $ab[$i]['msg_data'] = $message_data;
         }
     }
+	
     $i++;
 }
 	
